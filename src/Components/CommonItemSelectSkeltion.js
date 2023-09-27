@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native'
 import React, { memo, useEffect } from 'react'
 import Animated, { useSharedValue, withDelay, withRepeat, withSequence, withTiming } from 'react-native-reanimated';
+import { View } from 'react-native-animatable';
 
 
 const CommonItemSelectSkeltion = memo(() => {
@@ -21,20 +22,25 @@ const CommonItemSelectSkeltion = memo(() => {
 
 
     return (
-
-        <Animated.View
-            style={{ backgroundColor:'#fff', borderRadius: 10, elevation: 10, alignItems: 'center', justifyContent: "center", marginLeft: 10, marginVertical: 10, shadowOpacity: 0.1, shadowRadius: 1, opacity, flex: 0.25 }}
+  <View style={{flexDirection:'column',justifyContent:'center',alignItems:'center'}}>
+  <Animated.View
+            style={{ backgroundColor:'#fff', elevation: 10, alignItems: 'center', justifyContent: "center", marginLeft: 10, marginVertical: 10, shadowOpacity: 0.1, shadowRadius: 1, opacity,width:65,height:65,borderRadius:50 }}
         >
-            <Animated.View
+           
+        </Animated.View>
+        <Animated.View
                 style={{
-                    paddingVertical: 8,
+                    paddingVertical: 4,
                     paddingHorizontal: 5,
                     backgroundColor:'#fff',
-                    opacity
+                    opacity,
+                    width:'80%'
                 }}
             ></Animated.View>
 
-        </Animated.View>
+        
+        </View>
+        
 
     )
 })

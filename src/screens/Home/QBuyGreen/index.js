@@ -38,17 +38,46 @@ import reactotron from 'reactotron-react-native';
 import SplashScreen from 'react-native-splash-screen'
 import CommonWhatsappButton from '../../../Components/CommonWhatsappButton';
 import { navigate } from '../../../Navigations/RootNavigation';
+import Animated, { useSharedValue, withDelay, withRepeat, withSequence, withTiming } from 'react-native-reanimated';
 //import messaging from '@react-native-firebase/messaging';
+
+import {
+    useQuery
+} from '@tanstack/react-query';
+import TypeSkelton from '../Grocery/TypeSkelton';
+import ShopCardSkeltion from '../Grocery/ShopCardSkeltion';
+
+const QbuyGreenHome = async (datas) => {
+    const homeData = await customAxios.post(`customer/home`, datas);
+
+    return {
+        home: homeData?.data?.data,
+        availablePdt: homeData?.data?.data?.find((item, index) => item?.type === 'available_products'),
+        slider: homeData?.data?.data?.find((item, index) => item?.type === 'sliders')
+
+    }
+}
 
 
 const QBuyGreen = ({ navigation }) => {
 
-    const { width, height } = useWindowDimensions()
+    const { width, height } = useWindowDimensions();
+    const firstTimeRef = React.useRef(true);
+
+
+
 
     const loadingg = useContext(LoaderContext)
     const userContext = useContext(AuthContext)
     const cartContext = useContext(CartContext)
 
+
+    let datas = {
+        type: "green",
+        // coordinates: env === "dev" ? location : userContext?.location
+        coordinates: userContext?.location
+    }
+    const { data, isLoading, refetch } = useQuery({ queryKey: ['greenHome'], queryFn: () => QbuyGreenHome(datas) });
 
     let userData = userContext?.userData
 
@@ -56,19 +85,32 @@ const QBuyGreen = ({ navigation }) => {
     let loader = loadingg?.loading;
 
 
+    const opacity = useSharedValue(1);
+
+
+    useEffect(() => {
+        opacity.value = withRepeat(
+            withSequence(
+                withDelay(1000, withTiming(0.5, { duration: 1000 })),
+                withDelay(1000, withTiming(1, { duration: 1000 })),
+            ),
+            -1,
+            false
+        )
+    }, [])
 
     const [homeData, setHomeData] = useState(null)
     const [availablePdt, setavailablePdt] = useState(null)
     const [slider, setSlider] = useState(null)
 
 
-    useEffect(() => {
-        let availPdt = homeData?.find((item, index) => item?.type === 'available_products')
-        setavailablePdt(availPdt?.data)
-        let slider = homeData?.find((item, index) => item?.type === 'sliders')
-        setSlider(slider?.data)
+    // useEffect(() => {
+    //     let availPdt = homeData?.find((item, index) => item?.type === 'available_products')
+    //     setavailablePdt(availPdt?.data)
+    //     let slider = homeData?.find((item, index) => item?.type === 'sliders')
+    //     setSlider(slider?.data)
 
-    }, [homeData])
+    // }, [homeData])
 
     // useEffect(() => {
     //     //requestUserPermission()
@@ -93,6 +135,17 @@ const QBuyGreen = ({ navigation }) => {
     //getCurrentLocation()
     // }
 
+
+
+    useFocusEffect(
+        React.useCallback(() => {
+            if (firstTimeRef.current) {
+                firstTimeRef.current = false;
+                return;
+             }
+            refetch()
+        }, [refetch, userContext?.location])
+    );
 
     const schema = yup.object({
         name: yup.string().required('Name is required'),
@@ -128,11 +181,11 @@ const QBuyGreen = ({ navigation }) => {
 
 
 
-    useFocusEffect(
-        React.useCallback(() => {
-            getHomedata()
-        }, [userContext?.location])
-    );
+    // useFocusEffect(
+    //     React.useCallback(() => {
+    //         getHomedata()
+    //     }, [userContext?.location])
+    // );
 
     // useEffect(() => {
 
@@ -166,7 +219,7 @@ const QBuyGreen = ({ navigation }) => {
                     type: 'error',
                     text1: error
                 });
-           
+
             })
     }
 
@@ -305,8 +358,8 @@ const QBuyGreen = ({ navigation }) => {
     const RenderMainComponets = () => {
         return (
             <View style={styles.container}>
-                {homeData?.map(home => renderItems(home))}
-                {availablePdt?.length > 0 && <CommonTexts label={'Available Products'} ml={15} mb={10} mt={20} />}
+                {data?.home?.map(home => renderItems(home))}
+                {data?.availablePdt?.data.length > 0 && <CommonTexts label={'Available Products'} ml={15} mb={10} mt={20} />}
             </View>
         )
     }
@@ -329,6 +382,40 @@ const QBuyGreen = ({ navigation }) => {
         )
     }
 
+    if(isLoading){
+    return (
+        <View>
+            <Header onPress={onClickDrawer} />
+            <ScrollView showsVerticalScrollIndicator={false} style={{ width: width, height: height }}>
+                <View style={{ justifyContent: 'center' }}>
+                    <View style={{ flexDirection: 'row', margin: 5, justifyContent: 'center', paddingTop: 4 }}>
+                        {[1, 2, 3, 4]?.map(arr => {
+                            return (
+                                <TypeSkelton key={arr} />
+                            )
+                        })}
+                    </View>
+                    <Animated.View style={{ height: height / 5, alignItems: 'center', marginTop: 10, shadowOpacity: 0.1, shadowRadius: 1, opacity, width: width }} >
+                        <Animated.View
+                            style={{ width: '100%', height: '100%', width: '90%', backgroundColor: '#fff', margin: 5, borderRadius: 20, opacity }}
+                        >
+                        </Animated.View>
+                    </Animated.View>
+                    <View style={{ width: width }}>
+                        <SearchBox onPress={null} />
+                    </View>
+                    <CommonTexts label={'Available Stores'} ml={15} fontSize={13} mt={20} />
+                    <View style={{ marginHorizontal: 5, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' }}>
+                        {[1, 2, 3, 4, 5, 6, 7, 8]?.map((item) => (
+                            <ShopCardSkeltion key={item} />
+                        ))}
+                    </View>
+                </View>
+            </ScrollView>
+        </View>
+    )
+    }
+
 
     return (
         <>
@@ -348,7 +435,7 @@ const QBuyGreen = ({ navigation }) => {
                     //     />
                     // }
                     ListHeaderComponent={RenderMainComponets}
-                    data={availablePdt}
+                    data={data?.availablePdt?.data}
                     keyExtractor={(item, index) => index}
                     renderItem={renderProducts}
                     showsVerticalScrollIndicator={false}
@@ -356,8 +443,8 @@ const QBuyGreen = ({ navigation }) => {
                     removeClippedSubviews={true}
                     windowSize={10}
                     maxToRenderPerBatch={5}
-                    refreshing={loadingg?.loading}
-                    onRefresh={getHomedata}
+                    refreshing={isLoading}
+                    onRefresh={refetch}
                     numColumns={2}
                     style={{ marginLeft: 5 }}
                     contentContainerStyle={{ justifyContent: 'center' }}

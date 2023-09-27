@@ -1,10 +1,10 @@
-import { FlatList, SafeAreaView, StatusBar, StyleSheet, Text, View, useWindowDimensions } from 'react-native'
+import { FlatList, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, View, useWindowDimensions } from 'react-native'
 import React, { useCallback, useContext, useState } from 'react'
 import AuthContext from '../../../contexts/Auth'
 import CartContext from '../../../contexts/Cart'
 import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import LoaderContext from '../../../contexts/Loader'
-import { env, location } from '../../../config/constants'
+import { IMG_URL, env, location } from '../../../config/constants'
 import customAxios from '../../../CustomeAxios'
 import Header from '../../../Components/Header'
 import NameText from '../NameText'
@@ -25,13 +25,22 @@ import {
 } from '@tanstack/react-query'
 import TypeSkelton from '../Grocery/TypeSkelton'
 import ShopCardSkeltion from '../Grocery/ShopCardSkeltion'
+import FastImage from 'react-native-fast-image'
 
 
 const fashHome = async(datas) => {
     
     const homeData = await customAxios.post(`customer/home`, datas);
 
-    return homeData?.data?.data
+    return  {
+        Home : homeData?.data?.data,
+        slide : homeData?.data?.data?.find(home => home?.type === "sliders"),
+        category :homeData?.data?.data?.find(home => home?.type === "categories"),
+        availibleProduct:homeData?.data?.data?.find(home => home?.type === "available_products"),
+        suggested_products: homeData?.data?.data?.find(home => home?.type === "suggested_products"),
+        rescent_view:homeData?.data?.data?.find(home => home?.type === "recentlyviewed"),
+        store:homeData?.data?.data?.find(home => home?.type === "stores"),
+    }
 }
 
 const QbuyfashionHome = () => {
@@ -59,6 +68,8 @@ const QbuyfashionHome = () => {
     }
 
     const {data, isLoading, refetch} = useQuery({ queryKey: ['fashionhome'], queryFn: () => fashHome(datas) })
+
+   reactotron.log({data})
 
 
     const addToCart = async (item) => {
@@ -202,15 +213,15 @@ const QbuyfashionHome = () => {
                 <NameText userName={auth?.userData?.name ? auth?.userData?.name : auth?.userData?.mobile} mt={8} />
                 <SearchBox onPress={onSearch} />
                 
-                    <CategoryCard data={data?.[0].data} loading={isLoading} />
-                {data?.[5]?.data?.length > 0 && 
+                    <CategoryCard data={data?.category?.data} loading={isLoading} />
+                {data?.slide?.data?.length > 0 && 
                     <View>
                         <Carousel
                             loop
                             width={width}
                             height={height / 5}
                             autoPlay={true}
-                            data={data?.[5]?.data}
+                            data={data?.slide?.data}
                             scrollAnimationDuration={1000}
                             renderItem={CarouselCardItem}
                         />
@@ -218,7 +229,7 @@ const QbuyfashionHome = () => {
                     } 
                 <CommonTexts label={'Available Stores'} ml={15} fontSize={13} mt={20} />
                 <View style={{ marginHorizontal: 5, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' }}>
-                    {data?.[1]?.data?.map((item) => (
+                    {data?.store?.data?.map((item) => (
                         <ShopCard key={item?._id} item={item} />
                     ))}
                 </View>
@@ -242,7 +253,7 @@ const QbuyfashionHome = () => {
                     <Offer onPress={null} shopName={"GM"} />
                     <Text style={styles.offerValText}>{'Offer valid till period!'}</Text>
                 </View>
-                {data?.[2]?.data?.length > 0 &&
+                {data?.rescent_view?.data?.length > 0 &&
                     <View>
                         <CommonTexts label={'Recently Viewed'} fontSize={13} mt={5} ml={15} mb={5} />
                         <ScrollView
@@ -250,7 +261,7 @@ const QbuyfashionHome = () => {
                             showsHorizontalScrollIndicator={false}
                             style={{ flexDirection: 'row', paddingLeft: 7 }}
                         >
-                            {data?.[2]?.data?.map((item) =>
+                            {data?.rescent_view?.data?.map((item) =>
                                 <CommonItemCard
                                     key={item?._id}
                                     item={item}
@@ -345,7 +356,7 @@ const QbuyfashionHome = () => {
             <Header onPress={onClickDrawer} />
             <FlatList
                 ListHeaderComponent={headerComponents}
-                data={data?.[3]?.data}
+                data={data?.availibleProduct?.data}
                 showsVerticalScrollIndicator={false}
                 initialNumToRender={6}
                 removeClippedSubviews={true}

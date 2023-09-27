@@ -3,6 +3,7 @@ import React, { useCallback, useState } from 'react'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import Ionicons from 'react-native-vector-icons/Ionicons'
+import AntDesign from 'react-native-vector-icons/AntDesign'
 
 const CommonFiltration = ({ margin, onChange }) => {
 
@@ -41,7 +42,7 @@ const CommonFiltration = ({ margin, onChange }) => {
         <View style={{ flexDirection: 'row', alignItems: 'center', margin }}>
             <View style={{flexDirection:'row', alignItems:'center', marginRight:10}}>
                 <TouchableOpacity onPress={clickCheckbox}>
-                    <Ionicons name={"md-checkbox"} size={17} color={toggleCheckBox ? "#A9A9A9" : '#30B948'} />
+                <AntDesign name={"checksquare"} size={17} color={toggleCheckBox ? "#A9A9A9" : '#30B948'} />
                 </TouchableOpacity>
                 <Text style={styles.textStyle}
                 >{'All'}</Text>

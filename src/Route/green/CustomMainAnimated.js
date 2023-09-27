@@ -12,7 +12,7 @@ import Animated, {
     withTiming,
   } from 'react-native-reanimated';
 
-const duration = 3000;
+const duration = 2000;
 const easing = Easing.bezier(0.25, -0.5, 0.25, 1);
 const CustomMainAnimated = (props) => {
 
@@ -32,7 +32,7 @@ const CustomMainAnimated = (props) => {
   }, []);
 
   const animatedStyle = useAnimatedStyle(() => ({
-    transform: [{ rotate: `${sv.value * 45}deg` }],
+    transform: [{ rotate: `${sv.value * 25}deg` }],
   }));
 
 
@@ -49,7 +49,7 @@ const CustomMainAnimated = (props) => {
                     start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} colors={colors}
                     style={styles.panda}
                 >
-                    <Animated.Image
+                    <Animated.Image 
                         style={animatedStyle}
                         source={imageswitch}
                     />

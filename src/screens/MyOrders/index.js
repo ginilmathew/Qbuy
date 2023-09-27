@@ -39,7 +39,7 @@ const MyOrders = () => {
                setIsLoading(false)
             })
             .catch(async error => {
-                console.log(error)
+             
                 Toast.show({
                     type: 'error',
                     text1: error
