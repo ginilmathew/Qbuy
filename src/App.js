@@ -18,6 +18,7 @@ import {
     QueryClientProvider,
     focusManager
 } from '@tanstack/react-query'
+import SplashScreen from 'react-native-splash-screen'
 
 
 
@@ -43,7 +44,7 @@ const App = (props) => {
       
       useEffect(() => {
         const subscription = AppState.addEventListener('change', onAppStateChange)
-      
+        SplashScreen.hide();
         return () => subscription.remove()
       }, [])
 

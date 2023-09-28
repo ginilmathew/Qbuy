@@ -27,7 +27,8 @@ import AddNewLocation from '../screens/MyAccount/MyAddresses/LocationScreen/AddN
 import Green from '../Route/green';
 import PandaContext from '../contexts/Panda';
 import SplashScreen from 'react-native-splash-screen';
-
+import DeviceInfo from 'react-native-device-info';
+import CommonUpdateModal from '../Components/CommonUpdateModal';
 
 
 // import Menu from './Menu';
@@ -37,7 +38,9 @@ const Stack = createNativeStackNavigator();
 
 const RouteTest = () => {
 
+const DeviceVersion = DeviceInfo.getVersion()
 
+console.log({DeviceVersion})
 
 
     const userContext = useContext(AuthContext)
@@ -46,15 +49,19 @@ const RouteTest = () => {
     const [location, setLocation] = useState(null)
     const { active } = useContext(PandaContext)
     const [user, setUserDetails] = useState(null)
+    const [versionUpdate,setversionUpdate]=useState(false);
+    const [forceUpdate,setForceUpdate]=useState(false)
 
-
+    
     const [initialScreen, setInitialScreen] = useState(null);
 
-
+console.log({initialScreen})
 
 
     useEffect(() => {
-        getCurrentLocation()
+
+        getCurrentLocation();
+    
     }, [])
 
     // useEffect(() => {
@@ -194,6 +201,26 @@ const RouteTest = () => {
     }
 
 
+   const VersionManagement = (data)=>{
+    SplashScreen.hide()
+      if(DeviceVersion * 1 < data?.current_version * 1){
+             if(DeviceVersion * 1 < data?.current_version * 1 && data?.update){
+                setversionUpdate(true);
+                setForceUpdate(true);
+             }else if(DeviceVersion * 1 < data?.current_version * 1 && !data?.update){
+                setversionUpdate(true)
+             }
+      }else{
+        setInitialScreen('green');
+      }
+   }
+
+
+   const ColoseUpdateModal = useCallback(()=>{
+    setversionUpdate(false);
+    setInitialScreen('green')
+   },[versionUpdate])
+
     const getProfile = useCallback(async () => {
         loadingContext.setLoading(true);
         await customAxios.get(`customer/customer-profile`)
@@ -201,7 +228,11 @@ const RouteTest = () => {
                 loadingContext.setLoading(false);
                 userContext.setUserData(response?.data?.data);
                 setUserDetails(response?.data?.data)
-                setInitialScreen('green');
+              
+           
+                VersionManagement(response?.data?.data)
+            
+                // setInitialScreen('green');
             })
             .catch(async error => {
                 Toast.show({
@@ -289,6 +320,7 @@ const RouteTest = () => {
             getAddressList()
         }
         else {
+            SplashScreen.hide();
             setInitialScreen('Login');
         }
     }
@@ -323,7 +355,11 @@ const RouteTest = () => {
     if (!initialScreen) {
         SplashScreen.hide()
         return (
+            <>
             <SplashScreenF />
+            {versionUpdate &&  <CommonUpdateModal isopen={versionUpdate} CloseModal={ColoseUpdateModal} ForceUpdate={forceUpdate} /> }
+            </>
+            
         )
     }
 
@@ -334,7 +370,7 @@ const RouteTest = () => {
             <NavigationContainer ref={navigationRef}>
                 <Stack.Navigator initialRouteName={initialScreen} screenOptions={{ headerShown: false }}>
 
-                    <Stack.Screen name="SplashScreen" component={SplashScreenF} />
+                    {/* <Stack.Screen name="SplashScreen" component={SplashScreenF} /> */}
                     <Stack.Screen name="Login" component={Login}/>
                     <Stack.Screen name="Otp" component={Otp} />
                     <Stack.Screen name="LocationScreen" component={LocationScreen} options={{ title: 'home' }} />
@@ -345,6 +381,8 @@ const RouteTest = () => {
                 </Stack.Navigator>
             </NavigationContainer>
             {/* <LoadingModal isVisible={true} /> */}
+
+           {versionUpdate &&  <CommonUpdateModal isopen={versionUpdate} CloseModal={ColoseUpdateModal}/> }
         </>
     )
 }

@@ -50,6 +50,7 @@
     "react-native-countdown-component": "^2.7.1",
     "react-native-curved-bottom-bar": "^3.2.6",
     "react-native-date-picker": "^4.3.3",
+    "react-native-device-info": "^10.11.0",
     "react-native-eject": "^0.2.0",
     "react-native-element-dropdown": "^2.10.0",
     "react-native-fast-image": "^8.6.3",
