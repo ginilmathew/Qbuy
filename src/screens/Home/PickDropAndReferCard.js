@@ -1,6 +1,6 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
-import Lottie from 'lottie-react-native';
+import LottieView from 'lottie-react-native';
 import CommonTexts from '../../Components/CommonTexts';
 
 
@@ -24,9 +24,10 @@ const PickDropAndReferCard = ({label,lotties, onPress, lottieFlex, ml}) => {
                     marginLeft:ml,
                 }}
             >
-                <Lottie 
+                <LottieView 
                     source={lotties} 
                     autoPlay
+                    loop
                 />
             </View>
             <View style={{flex:1 }}>

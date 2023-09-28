@@ -69,7 +69,7 @@ const QbuyfashionHome = () => {
 
     const {data, isLoading, refetch} = useQuery({ queryKey: ['fashionhome'], queryFn: () => fashHome(datas) })
 
-   reactotron.log({data})
+
 
 
     const addToCart = async (item) => {
