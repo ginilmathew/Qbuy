@@ -13,7 +13,8 @@ const HeaderWithTitle = ({ title, noBack, onPressBack, mode }) => {
 
     const contextPanda = useContext(PandaContext)
     let active = contextPanda.active
-
+    const navigation = useNavigation()
+    
     const backAction = useCallback(() => {
         if(mode === 'checkout'){
             navigation.navigate('Checkout')
@@ -21,17 +22,17 @@ const HeaderWithTitle = ({ title, noBack, onPressBack, mode }) => {
             navigation.goBack()
         }
     
-    }, [])
+    }, [navigation,mode])
 
     const onClickFashionCat = useCallback(() => {
         navigation.navigate('FashionCategory')
-    }, [])
+    }, [navigation])
 
     const onClickWishlist = useCallback(() => {
         navigation.navigate('Wishlist')
-    }, [])
+    }, [navigation])
 
-    const navigation = useNavigation()
+
     return (
         <>
             <StatusBar backgroundColor={active === "green" ? '#8ED053' : active === "fashion" ? '#FF7190' : '#58D36E'} barStyle="dark-content" />
