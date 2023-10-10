@@ -16,7 +16,7 @@ import Toast from 'react-native-toast-message';
 import { CommonActions } from '@react-navigation/native';
 import reactotron from 'reactotron-react-native';
 import { NativeModules } from "react-native"
-
+import DeviceInfo from 'react-native-device-info'
 
 const { env, mode } = NativeModules.RNENVConfig
 
@@ -29,7 +29,10 @@ const Otp = ({ navigation }) => {
 	let mobileNo = user?.login?.mobile
 	let userData = user?.userData
 
-	reactotron.log({ user: user?.location })
+	const DeviceVersion = DeviceInfo.getVersion();
+
+	const [versionUpdate, setversionUpdate] = useState(false);
+	const [forceUpdate, setForceUpdate] = useState(false)
 
 
 	const schema = yup.object({
@@ -53,26 +56,20 @@ const Otp = ({ navigation }) => {
 		let datas = {
 			mobile: mobileNo,
 			otp: data?.otp,
-			location: user?.location
-		}
+			location: user?.location,
+			type:mode,
+			os:Platform?.OS
 
+		}
 		await customAxios.post(`auth/customerlogin`, datas)
 			.then(async response => {
 				user.setUserData(response?.data?.user)
 				AsyncStorage.setItem("token", response?.data?.access_token);
 				AsyncStorage.setItem("user", JSON.stringify(response?.data?.user));
-
+				VersionManagement(response?.data)
 				loadingg.setLoading(false)
 				// navigation.navigate(mode)
 				// navigation.navigate('NewUserDetails')
-
-				navigation.dispatch(CommonActions.reset({
-					index: 0,
-					routes: [
-						{ name: 'green' }
-					],
-				}))
-
 			})
 			.catch(async error => {
 				Toast.show({
@@ -102,6 +99,39 @@ const Otp = ({ navigation }) => {
 
 
 	const NavigationToBack = useCallback(()=>{navigation.goBack()},[navigation])
+
+
+	const ColoseUpdateModal = useCallback(()=>{
+        setversionUpdate(false);
+		navigation.dispatch(CommonActions.reset({
+				index: 0,
+				routes: [
+					{ name: 'green' }
+				],
+			}))
+       },[versionUpdate])
+
+	const VersionManagement = (data) => {
+		if (DeviceVersion * 1 < data?.current_version * 1) {
+			if (DeviceVersion * 1 < data?.current_version * 1 && data?.update) {
+				setversionUpdate(true);
+				setForceUpdate(true);
+				navigation.navigate('Login')
+			
+			} else if (DeviceVersion * 1 < data?.current_version * 1 && !data?.update) {
+				setversionUpdate(true);
+				
+			}
+		} else {
+			navigation.dispatch(CommonActions.reset({
+				index: 0,
+				routes: [
+					{ name: 'green' }
+				],
+			}))
+			// setversionUpdate(true);
+		}
+	}
 
 	return (
 		<CommonAuthBg>

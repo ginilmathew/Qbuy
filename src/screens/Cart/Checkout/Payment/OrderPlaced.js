@@ -10,13 +10,15 @@ import PandaContext from '../../../../contexts/Panda'
 import reactotron from '../../../../ReactotronConfig'
 import moment from 'moment'
 import AuthContext from '../../../../contexts/Auth'
-
+import { NativeModules } from "react-native";
+import { green } from 'react-native-reanimated/lib/typescript/reanimated2/Colors'
 
 
 const OrderPlaced = ({ route, navigation }) => {
     const { item } = route.params;
-    
+    const { env, mode } = NativeModules.RNENVConfig
 
+      
 
     const userContext = useContext(AuthContext);
 
@@ -38,7 +40,7 @@ const OrderPlaced = ({ route, navigation }) => {
                 let url = "whatsapp://send?text=" + msg + "&phone=" + mobile;
                 Linking.openURL(url)
                     .then(data => {
-                      
+
                     })
                     .catch(() => {
                         alert("Make sure WhatsApp installed on your device");
@@ -52,6 +54,13 @@ const OrderPlaced = ({ route, navigation }) => {
 
     }, []))
 
+
+    const LottieMode = {
+        green:require('../../../../Lottie/qbuygreen.json'),
+        fashion:require('../../../../Lottie/dressanimation.json'),
+        panda:require('../../../../Lottie/qbuypanda.json')
+ } 
+
     return (
         <>
             <HeaderWithTitle title={'Order Placed'} noBack />
@@ -59,7 +68,8 @@ const OrderPlaced = ({ route, navigation }) => {
 
                 <View style={{ height: 180, }}>
                     <Lottie
-                       source={require('../../../../Lottie/dressanimation.json')}
+                        style={{ height: '100%' }}
+                        source={LottieMode[active]}
                         autoPlay loop
                     />
                 </View>
@@ -74,7 +84,7 @@ const OrderPlaced = ({ route, navigation }) => {
                 </View>
 
 
-                <View style={{  justifyContent: 'space-between' ,alignItems:'center',marginTop:10 }}>
+                <View style={{ justifyContent: 'space-between', alignItems: 'center', marginTop: 10 }}>
                     {/* <CustomButton
                         label={'Call Us'}
                         bg={active === 'green' ? '#FF9C0C' : '#5871D3'}

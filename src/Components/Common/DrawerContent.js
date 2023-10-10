@@ -4,7 +4,6 @@ import Octicons from 'react-native-vector-icons/Octicons'
 import Entypo from 'react-native-vector-icons/Entypo'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
-
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import Fontisto from 'react-native-vector-icons/Fontisto'
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons'
@@ -21,23 +20,26 @@ const DrawerContent = ({ navigation }) => {
 
     const onClickDrawer = useCallback(() => {
         navigation.closeDrawer()
-    }, [])
+    }, [navigation])
 
     const clickSellWithus = useCallback(() => {
         navigation.navigate('SellWithUs')
-    }, [])
+    }, [navigation])
 
     const clickWorkWithPanda = useCallback(() => {
         navigation.navigate('WorkWithPanda')
-    }, [])
+    }, [navigation])
 
     const clickCustFeedback = useCallback(() => {
         navigation.navigate('CustomerFeedback')
-    }, [])
+    }, [navigation])
 
     const clickApplyFran = useCallback(() => {
         navigation.navigate('ApplyFranchisee')
-    }, [])
+    }, [navigation])
+    const clickAboutUs = useCallback(() => {
+        navigation.navigate('About')
+    }, [navigation])
 
 
     return (
@@ -96,6 +98,11 @@ const DrawerContent = ({ navigation }) => {
                     onPress={clickApplyFran}
                     icon={<Entypo name={"shop"} color="#fff" size={15}/>}
                     label={'Apply for a Franchisee'}
+                />
+                   <ListItem
+                    onPress={clickAboutUs}
+                    icon={<Ionicons name={"person"} color="#fff" size={15}/>}
+                    label={'About Us'}
                 />
 
                 <View style={{width:'100%', height: height/2.8, alignItems:'center', justifyContent:'flex-end'}}>

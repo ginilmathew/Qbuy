@@ -19,6 +19,7 @@ import QBuyFashion from '../../screens/Home/QBuyFashion';
 import CategoryScreen from '../../screens/Home/CategoryScreen';
 import StoreScreen from '../../screens/Home/StoreScreen';
 import QbuyfashionHome from '../../screens/Home/QBuyFashion/QbuyfashionHome';
+import About from '../../screens/Drawer/About';
 
 
 
@@ -52,6 +53,7 @@ const HomeNav = () => {
 
             <Stack.Screen name="CustomerFeedback" component={CustomerFeedback}/>
             <Stack.Screen name="ApplyFranchisee" component={ApplyFranchisee}/>
+            <Stack.Screen name="About" component={About}/>
             
             <Stack.Screen name="Wishlist" component={Wishlist}/>
 

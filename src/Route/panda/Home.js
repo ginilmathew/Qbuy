@@ -18,6 +18,7 @@ import FashionCategory from '../../screens/FashionCategory';
 import QbuyPanda from '../../screens/Home';
 import CategoryScreen from '../../screens/Home/CategoryScreen';
 import TagScreen from '../../screens/Home/TagScreen';
+import About from '../../screens/Drawer/About';
 
 
 
@@ -48,6 +49,7 @@ const HomeNav = () => {
 
             <Stack.Screen name="CustomerFeedback" component={CustomerFeedback}/>
             <Stack.Screen name="ApplyFranchisee" component={ApplyFranchisee}/>
+            <Stack.Screen name="About" component={About}/>
             
             <Stack.Screen name="Wishlist" component={Wishlist}/>
 

@@ -26,6 +26,7 @@ import QbuyPanda from '../../screens/Home';
 import TagScreen from '../../screens/Home/TagScreen';
 import PandaHome from '../../screens/Home/pandaHome';
 import QbuyfashionHome from '../../screens/Home/QBuyFashion/QbuyfashionHome';
+import About from '../../screens/Drawer/About';
 
 
 
@@ -68,6 +69,7 @@ const HomeNav = () => {
                 <Stack.Screen name="RegisterAsAffiliate" component={RegisterAsAffiliate} />
                 <Stack.Screen name="CustomerFeedback" component={CustomerFeedback} />
                 <Stack.Screen name="ApplyFranchisee" component={ApplyFranchisee} />
+                <Stack.Screen name="About" component={About} />
                 <Stack.Screen name="ViewAllStore" component={ViewAllStore} />
                 <Stack.Screen name="Wishlist" component={Wishlist} />
                 <Stack.Screen name="FashionCategory" component={FashionCategory} />
