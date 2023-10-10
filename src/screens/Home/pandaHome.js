@@ -68,7 +68,7 @@ export default function PandaHome({ navigation }) {
 
     const userContext = useContext(AuthContext)
     const loadingg = useContext(LoaderContext)
-    const [filter, setFilter] = useState('veg')
+    const [filter, setFilter] = useState('all')
 
     let datas = {
         type: "panda",

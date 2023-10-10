@@ -20,7 +20,33 @@ public class RNENVConfigModule extends ReactContextBaseJavaModule {
     @Override
     public Map<String, Object> getConstants() {
         final Map<String, Object> constants = new HashMap<>();
-        constants.put("env", BuildConfig.FLAVOR);
+        String env, mode;
+        if(BuildConfig.FLAVOR == "pandatest"){
+            env="dev";
+            mode="panda";
+        }
+        else if(BuildConfig.FLAVOR == "greentest"){
+            env="dev";
+            mode="green";
+        }
+        else if(BuildConfig.FLAVOR == "fashiontest"){
+            env="dev";
+            mode="fashion";
+        }
+        else if(BuildConfig.FLAVOR == "panda"){
+            env="live";
+            mode="panda";
+        }
+        else if(BuildConfig.FLAVOR == "green"){
+            env="live";
+            mode="green";
+        }
+        else if(BuildConfig.FLAVOR == "fashion"){
+            env="live";
+            mode="fashion";
+        }
+        constants.put("env", env);
+        constants.put("mode", mode);
         return constants;
     }
 }

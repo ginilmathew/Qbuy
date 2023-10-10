@@ -36,7 +36,10 @@ import { RefreshControl } from 'react-native-gesture-handler'
 import LoaderContext from '../../../contexts/Loader'
 import { max } from 'lodash'
 import reactotron from 'reactotron-react-native'
-import { env } from '../../../config/constants'
+import { NativeModules } from "react-native"
+
+
+const { env, mode } = NativeModules.RNENVConfig
 
 
 const Checkout = ({ navigation }) => {

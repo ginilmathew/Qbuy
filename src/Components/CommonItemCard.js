@@ -27,6 +27,7 @@ import { has } from 'lodash'
 import { getProduct } from '../helper/productHelper';
 import reactotron from 'reactotron-react-native';
 
+
 const CommonItemCard = memo(({ height, width, item, marginHorizontal, wishlistIcon, mr, ml, mb, getWishlist }) => {
 
 
@@ -193,7 +194,7 @@ const CommonItemCard = memo(({ height, width, item, marginHorizontal, wishlistIc
                 onPress={handleClick}
                 style={{ marginHorizontal: marginHorizontal, marginRight: mr, marginLeft: ml, marginBottom: mb }}
             >
-                <FastImage
+                <FastImage 
                     // source={{ uri: `${IMG_URL}${item?.product_image}` }}
                     source={{ uri: `${IMG_URL}${data?.product_image}` }}
                     style={{ height: height ? height : 110, width: width, justifyContent: 'flex-end', borderRadius: 16 }}

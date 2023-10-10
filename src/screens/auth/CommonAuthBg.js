@@ -1,6 +1,9 @@
 import { ImageBackground, StatusBar, StyleSheet } from 'react-native'
 import React from 'react'
-import { env, mode } from '../../config/constants'
+import { NativeModules } from "react-native"
+
+
+const { env, mode } = NativeModules.RNENVConfig
 
 const CommonAuthBg = ({children}) => {
     return (

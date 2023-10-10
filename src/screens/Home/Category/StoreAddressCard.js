@@ -14,7 +14,7 @@ const StoreAddressCard = ({address}) => {
 
     return (
         <View style={styles.container}>
-            <Ionicons name='ios-location-sharp' color={active === 'fashion' ? '#FF7190' : active === 'green' ? '#8ED053' : '#58D36E'} size={15}/>
+            <Ionicons name='location-sharp' color={active === 'fashion' ? '#FF7190' : active === 'green' ? '#8ED053' : '#58D36E'} size={15}/>
             <Text style={styles.regularText}>{address}</Text>
         </View>
     )

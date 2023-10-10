@@ -12,7 +12,6 @@ import SplashScreenF from '../screens/SplashScreen';
 import AuthContext from '../contexts/Auth';
 import CartContext from '../contexts/Cart';
 
-import { mode } from '../config/constants';
 
 import Geolocation from 'react-native-geolocation-service';
 import customAxios from '../CustomeAxios';
@@ -29,6 +28,10 @@ import PandaContext from '../contexts/Panda';
 import SplashScreen from 'react-native-splash-screen';
 import DeviceInfo from 'react-native-device-info';
 import CommonUpdateModal from '../Components/CommonUpdateModal';
+import { NativeModules } from "react-native"
+
+
+const { env, mode } = NativeModules.RNENVConfig
 
 
 // import Menu from './Menu';
@@ -40,7 +43,7 @@ const RouteTest = () => {
 
 const DeviceVersion = DeviceInfo.getVersion()
 
-console.log({DeviceVersion})
+
 
 
     const userContext = useContext(AuthContext)
@@ -55,7 +58,7 @@ console.log({DeviceVersion})
     
     const [initialScreen, setInitialScreen] = useState(null);
 
-console.log({initialScreen})
+
 
 
     useEffect(() => {

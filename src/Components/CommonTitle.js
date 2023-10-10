@@ -2,7 +2,10 @@ import { StyleSheet, TouchableOpacity, useWindowDimensions, View } from 'react-n
 import React, {useContext} from 'react'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import CommonAuthHeading from '../screens/auth/CommonAuthHeading'
-import { mode } from '../config/constants'
+import { NativeModules } from "react-native"
+
+
+const { env, mode } = NativeModules.RNENVConfig
 
 const CommonTitle = ({ mt, goBack}) => {
 

@@ -13,7 +13,6 @@ import AuthContext from '../contexts/Auth';
 import CartContext from '../contexts/Cart';
 import Panda from './panda';
 import Fashion from './fashion';
-import { mode } from '../config/constants';
 import Green from './green';
 import Geolocation from 'react-native-geolocation-service';
 import customAxios from '../CustomeAxios';
@@ -25,7 +24,10 @@ import reactotron from '../ReactotronConfig';
 import LoadingModal from '../Components/LoadingModal';
 import LocationScreen from '../screens/MyAccount/MyAddresses/LocationScreen';
 import AddNewLocation from '../screens/MyAccount/MyAddresses/LocationScreen/AddNewLocation';
+import { NativeModules } from "react-native"
 
+
+const { env, mode } = NativeModules.RNENVConfig
 
 // import Menu from './Menu';
 

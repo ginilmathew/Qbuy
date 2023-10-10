@@ -14,7 +14,10 @@ import LoaderContext from '../../contexts/Loader'
 import { Toast } from 'react-native-toast-message/lib/src/Toast'
 import reactotron from 'reactotron-react-native'
 import { has } from 'lodash'
-import { env } from '../../config/constants'
+import { NativeModules } from "react-native"
+
+
+const { env, mode } = NativeModules.RNENVConfig
 
 const OrderCard = memo(({ item, refreshOrder }) => {
 

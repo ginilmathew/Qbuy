@@ -79,6 +79,18 @@ android {
     namespace "com.diginest"
 
     productFlavors {
+        pandatest {
+            resValue "string", "app_name", "QBuyPanda Dev"
+            applicationIdSuffix ".qbuypanda.dev"
+        }
+        greentest {
+            resValue "string", "app_name", "QBuyGreen Dev"
+            applicationIdSuffix ".qbuygreen.dev"
+        }
+        fashiontest {
+            resValue "string", "app_name", "Shopqbuy Dev"
+            applicationIdSuffix ".qbuyfashion.dev"
+        }
         panda {
             resValue "string", "app_name", "QBuyPanda"
             applicationIdSuffix ".qbuypanda"

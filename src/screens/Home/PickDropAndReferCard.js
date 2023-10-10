@@ -25,6 +25,7 @@ const PickDropAndReferCard = ({label,lotties, onPress, lottieFlex, ml}) => {
                 }}
             >
                 <LottieView 
+                   style={{height:'100%',width:'100%'}}
                     source={lotties} 
                     autoPlay
                     loop

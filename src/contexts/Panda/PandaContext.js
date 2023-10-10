@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import Context from "./index";
-import { mode } from "../../config/constants";
+import { NativeModules } from "react-native"
+
+
+const { env, mode } = NativeModules.RNENVConfig
 
 const PandaProvider = (props) => {
     const [greenPanda, setGreenPanda] = useState(false);

@@ -33,6 +33,7 @@ const Navigation = () => {
     useEffect(() => {
         checkLogin();
     }, [])
+    
     const checkLogin =  async() => {
         const token = await AsyncStorage.getItem("token");
         if (token) {

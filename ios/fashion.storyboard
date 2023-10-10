@@ -22,7 +22,7 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="splash.fashion" translatesAutoresizingMaskIntoConstraints="NO" id="J9a-7F-Y6F">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="splashfashion" translatesAutoresizingMaskIntoConstraints="NO" id="J9a-7F-Y6F">
                                 <rect key="frame" x="0.0" y="59" width="393" height="759"/>
                             </imageView>
                         </subviews>
@@ -45,6 +45,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="splash.fashion" width="322.33334350585938" height="699"/>
+        <image name="splashfashion" width="322.33334350585938" height="699"/>
     </resources>
 </document>

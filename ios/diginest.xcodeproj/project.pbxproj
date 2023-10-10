@@ -11,12 +11,14 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		15199C56FBB7B2B6F8098F5A /* libPods-diginest.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 26A5DA8E84259A41AE7A13BA /* libPods-diginest.a */; };
-		463923F42AC5167B0019A7CB /* fashion.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 463923F32AC5167B0019A7CB /* fashion.storyboard */; };
-		463923F62AC517F80019A7CB /* green.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 463923F52AC517F70019A7CB /* green.storyboard */; };
-		463923F82AC518370019A7CB /* panda.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 463923F72AC518370019A7CB /* panda.storyboard */; };
+		1AED4AB6DBEC398E4A562749 /* libPods-diginest.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B8713E3992BA3F6BC32D38C2 /* libPods-diginest.a */; };
+		46D4D7992AC9AC9100FBF93F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 46D4D7982AC9AC9100FBF93F /* GoogleService-Info.plist */; };
+		46D4D79D2AC9AFC000FBF93F /* green.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 46D4D79A2AC9AFC000FBF93F /* green.storyboard */; };
+		46D4D79E2AC9AFC000FBF93F /* fashion.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 46D4D79B2AC9AFC000FBF93F /* fashion.storyboard */; };
+		46D4D79F2AC9AFC000FBF93F /* panda.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 46D4D79C2AC9AFC000FBF93F /* panda.storyboard */; };
+		46D4D7A52AC9B39700FBF93F /* RNENVConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 46D4D7A42AC9B39700FBF93F /* RNENVConfig.m */; };
+		66ED515782011E7C4F2F165C /* libPods-diginest-diginestTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A2E81A4159C5E03953C72DC /* libPods-diginest-diginestTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
-		F0070CCB0E8DBF3B99EA61E5 /* libPods-diginest-diginestTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D044341EB79C2BC80D6BD61 /* libPods-diginest-diginestTests.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -30,38 +32,41 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0018C6B9C0649C2D01992ECF /* Pods-diginest-diginestTests.debuggreen.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-diginest-diginestTests.debuggreen.xcconfig"; path = "Target Support Files/Pods-diginest-diginestTests/Pods-diginest-diginestTests.debuggreen.xcconfig"; sourceTree = "<group>"; };
 		00E356EE1AD99517003FC87E /* diginestTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = diginestTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* diginestTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = diginestTests.m; sourceTree = "<group>"; };
-		12983F079BE70222CDB19352 /* Pods-diginest.green.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-diginest.green.debug.xcconfig"; path = "Target Support Files/Pods-diginest/Pods-diginest.green.debug.xcconfig"; sourceTree = "<group>"; };
+		021CCF8C4FD718C6095537D4 /* Pods-diginest.releasefashion.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-diginest.releasefashion.xcconfig"; path = "Target Support Files/Pods-diginest/Pods-diginest.releasefashion.xcconfig"; sourceTree = "<group>"; };
+		0E6A45C92F0415066780643B /* Pods-diginest.debugpanda.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-diginest.debugpanda.xcconfig"; path = "Target Support Files/Pods-diginest/Pods-diginest.debugpanda.xcconfig"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* diginest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = diginest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = diginest/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = diginest/AppDelegate.mm; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = diginest/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = diginest/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = diginest/main.m; sourceTree = "<group>"; };
-		15F5F69FEC8A2C4947A84EDA /* Pods-diginest-diginestTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-diginest-diginestTests.release.xcconfig"; path = "Target Support Files/Pods-diginest-diginestTests/Pods-diginest-diginestTests.release.xcconfig"; sourceTree = "<group>"; };
-		1D044341EB79C2BC80D6BD61 /* libPods-diginest-diginestTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-diginest-diginestTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		26A5DA8E84259A41AE7A13BA /* libPods-diginest.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-diginest.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		2D07B1B5EE4150D18A8F08B7 /* Pods-diginest.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-diginest.release.xcconfig"; path = "Target Support Files/Pods-diginest/Pods-diginest.release.xcconfig"; sourceTree = "<group>"; };
-		435BFC75C581F14D5B5AF534 /* Pods-diginest-diginestTests.panda.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-diginest-diginestTests.panda.debug.xcconfig"; path = "Target Support Files/Pods-diginest-diginestTests/Pods-diginest-diginestTests.panda.debug.xcconfig"; sourceTree = "<group>"; };
-		463923F32AC5167B0019A7CB /* fashion.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = fashion.storyboard; sourceTree = "<group>"; };
-		463923F52AC517F70019A7CB /* green.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = green.storyboard; sourceTree = "<group>"; };
-		463923F72AC518370019A7CB /* panda.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = panda.storyboard; sourceTree = "<group>"; };
-		4D9AAFE5AA7E839189DA2DA4 /* Pods-diginest-diginestTests.fashion.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-diginest-diginestTests.fashion.release.xcconfig"; path = "Target Support Files/Pods-diginest-diginestTests/Pods-diginest-diginestTests.fashion.release.xcconfig"; sourceTree = "<group>"; };
-		5186945F5D8E2273933DBEFE /* Pods-diginest-diginestTests.green.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-diginest-diginestTests.green.release.xcconfig"; path = "Target Support Files/Pods-diginest-diginestTests/Pods-diginest-diginestTests.green.release.xcconfig"; sourceTree = "<group>"; };
-		6058FA5FD0CE48F76C8E75F5 /* Pods-diginest.fashion.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-diginest.fashion.release.xcconfig"; path = "Target Support Files/Pods-diginest/Pods-diginest.fashion.release.xcconfig"; sourceTree = "<group>"; };
-		7D9FD75E7EB5A9EE759520D5 /* Pods-diginest.panda.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-diginest.panda.release.xcconfig"; path = "Target Support Files/Pods-diginest/Pods-diginest.panda.release.xcconfig"; sourceTree = "<group>"; };
+		1AB26BCD35CC23E3D0BD4425 /* Pods-diginest.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-diginest.debug.xcconfig"; path = "Target Support Files/Pods-diginest/Pods-diginest.debug.xcconfig"; sourceTree = "<group>"; };
+		1E90D5F9A59B49CDBC8A7764 /* Pods-diginest-diginestTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-diginest-diginestTests.debug.xcconfig"; path = "Target Support Files/Pods-diginest-diginestTests/Pods-diginest-diginestTests.debug.xcconfig"; sourceTree = "<group>"; };
+		2A918FC5235BB00F2B60ABA1 /* Pods-diginest-diginestTests.debugpanda.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-diginest-diginestTests.debugpanda.xcconfig"; path = "Target Support Files/Pods-diginest-diginestTests/Pods-diginest-diginestTests.debugpanda.xcconfig"; sourceTree = "<group>"; };
+		46D4D7982AC9AC9100FBF93F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "diginest/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		46D4D79A2AC9AFC000FBF93F /* green.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = green.storyboard; sourceTree = "<group>"; };
+		46D4D79B2AC9AFC000FBF93F /* fashion.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = fashion.storyboard; sourceTree = "<group>"; };
+		46D4D79C2AC9AFC000FBF93F /* panda.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = panda.storyboard; sourceTree = "<group>"; };
+		46D4D7A32AC9B39700FBF93F /* RNENVConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = RNENVConfig.h; path = diginest/RNENVConfig.h; sourceTree = "<group>"; };
+		46D4D7A42AC9B39700FBF93F /* RNENVConfig.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = RNENVConfig.m; path = diginest/RNENVConfig.m; sourceTree = "<group>"; };
+		5C77F0BAA04EAA2BEF529388 /* Pods-diginest.releasegreen.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-diginest.releasegreen.xcconfig"; path = "Target Support Files/Pods-diginest/Pods-diginest.releasegreen.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = diginest/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		917B48A45FA8BA55B0105F81 /* Pods-diginest.green.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-diginest.green.release.xcconfig"; path = "Target Support Files/Pods-diginest/Pods-diginest.green.release.xcconfig"; sourceTree = "<group>"; };
-		9714736299947435F4DB4C0E /* Pods-diginest-diginestTests.green.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-diginest-diginestTests.green.debug.xcconfig"; path = "Target Support Files/Pods-diginest-diginestTests/Pods-diginest-diginestTests.green.debug.xcconfig"; sourceTree = "<group>"; };
-		A172327F61510EBF9B49E05D /* Pods-diginest-diginestTests.panda.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-diginest-diginestTests.panda.release.xcconfig"; path = "Target Support Files/Pods-diginest-diginestTests/Pods-diginest-diginestTests.panda.release.xcconfig"; sourceTree = "<group>"; };
-		A7D8579D115F0949074F0BBA /* Pods-diginest.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-diginest.debug.xcconfig"; path = "Target Support Files/Pods-diginest/Pods-diginest.debug.xcconfig"; sourceTree = "<group>"; };
-		B38EBF2C25CB449E26CA2343 /* Pods-diginest.fashion.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-diginest.fashion.debug.xcconfig"; path = "Target Support Files/Pods-diginest/Pods-diginest.fashion.debug.xcconfig"; sourceTree = "<group>"; };
+		83CDB3EB4D715CA8346CA393 /* Pods-diginest.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-diginest.release.xcconfig"; path = "Target Support Files/Pods-diginest/Pods-diginest.release.xcconfig"; sourceTree = "<group>"; };
+		8A2E81A4159C5E03953C72DC /* libPods-diginest-diginestTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-diginest-diginestTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A10246A6C28073801D356254 /* Pods-diginest-diginestTests.releasepanda.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-diginest-diginestTests.releasepanda.xcconfig"; path = "Target Support Files/Pods-diginest-diginestTests/Pods-diginest-diginestTests.releasepanda.xcconfig"; sourceTree = "<group>"; };
+		AE54E9DF56F8823DCF47313C /* Pods-diginest-diginestTests.debugfashion.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-diginest-diginestTests.debugfashion.xcconfig"; path = "Target Support Files/Pods-diginest-diginestTests/Pods-diginest-diginestTests.debugfashion.xcconfig"; sourceTree = "<group>"; };
+		B1E4ADA813798764AD2FC9F6 /* Pods-diginest.debuggreen.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-diginest.debuggreen.xcconfig"; path = "Target Support Files/Pods-diginest/Pods-diginest.debuggreen.xcconfig"; sourceTree = "<group>"; };
+		B8713E3992BA3F6BC32D38C2 /* libPods-diginest.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-diginest.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C853B44492BC21E259A68966 /* Pods-diginest-diginestTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-diginest-diginestTests.release.xcconfig"; path = "Target Support Files/Pods-diginest-diginestTests/Pods-diginest-diginestTests.release.xcconfig"; sourceTree = "<group>"; };
+		C887798155603DA4B582E743 /* Pods-diginest.releasepanda.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-diginest.releasepanda.xcconfig"; path = "Target Support Files/Pods-diginest/Pods-diginest.releasepanda.xcconfig"; sourceTree = "<group>"; };
+		DDCD79B17835F189B95A120B /* Pods-diginest-diginestTests.releasegreen.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-diginest-diginestTests.releasegreen.xcconfig"; path = "Target Support Files/Pods-diginest-diginestTests/Pods-diginest-diginestTests.releasegreen.xcconfig"; sourceTree = "<group>"; };
+		E6454B55F4A061375477A03A /* Pods-diginest-diginestTests.releasefashion.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-diginest-diginestTests.releasefashion.xcconfig"; path = "Target Support Files/Pods-diginest-diginestTests/Pods-diginest-diginestTests.releasefashion.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		F1D0A1E9DBA037862CDFFEBC /* Pods-diginest.panda.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-diginest.panda.debug.xcconfig"; path = "Target Support Files/Pods-diginest/Pods-diginest.panda.debug.xcconfig"; sourceTree = "<group>"; };
-		F3879E103F4BF826B7B031B9 /* Pods-diginest-diginestTests.fashion.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-diginest-diginestTests.fashion.debug.xcconfig"; path = "Target Support Files/Pods-diginest-diginestTests/Pods-diginest-diginestTests.fashion.debug.xcconfig"; sourceTree = "<group>"; };
-		F43CF36F9055D2D1E1E81AA5 /* Pods-diginest-diginestTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-diginest-diginestTests.debug.xcconfig"; path = "Target Support Files/Pods-diginest-diginestTests/Pods-diginest-diginestTests.debug.xcconfig"; sourceTree = "<group>"; };
+		F5D767A1D851FB7716C517B1 /* Pods-diginest.debugfashion.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-diginest.debugfashion.xcconfig"; path = "Target Support Files/Pods-diginest/Pods-diginest.debugfashion.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,7 +74,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F0070CCB0E8DBF3B99EA61E5 /* libPods-diginest-diginestTests.a in Frameworks */,
+				66ED515782011E7C4F2F165C /* libPods-diginest-diginestTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -77,7 +82,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				15199C56FBB7B2B6F8098F5A /* libPods-diginest.a in Frameworks */,
+				1AED4AB6DBEC398E4A562749 /* libPods-diginest.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -104,15 +109,18 @@
 		13B07FAE1A68108700A75B9A /* diginest */ = {
 			isa = PBXGroup;
 			children = (
+				46D4D79B2AC9AFC000FBF93F /* fashion.storyboard */,
+				46D4D79A2AC9AFC000FBF93F /* green.storyboard */,
+				46D4D79C2AC9AFC000FBF93F /* panda.storyboard */,
+				46D4D7982AC9AC9100FBF93F /* GoogleService-Info.plist */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
-				463923F32AC5167B0019A7CB /* fashion.storyboard */,
-				463923F52AC517F70019A7CB /* green.storyboard */,
-				463923F72AC518370019A7CB /* panda.storyboard */,
+				46D4D7A32AC9B39700FBF93F /* RNENVConfig.h */,
+				46D4D7A42AC9B39700FBF93F /* RNENVConfig.m */,
 			);
 			name = diginest;
 			sourceTree = "<group>";
@@ -121,8 +129,8 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				26A5DA8E84259A41AE7A13BA /* libPods-diginest.a */,
-				1D044341EB79C2BC80D6BD61 /* libPods-diginest-diginestTests.a */,
+				B8713E3992BA3F6BC32D38C2 /* libPods-diginest.a */,
+				8A2E81A4159C5E03953C72DC /* libPods-diginest-diginestTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -161,22 +169,22 @@
 		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				A7D8579D115F0949074F0BBA /* Pods-diginest.debug.xcconfig */,
-				B38EBF2C25CB449E26CA2343 /* Pods-diginest.fashion.debug.xcconfig */,
-				12983F079BE70222CDB19352 /* Pods-diginest.green.debug.xcconfig */,
-				F1D0A1E9DBA037862CDFFEBC /* Pods-diginest.panda.debug.xcconfig */,
-				2D07B1B5EE4150D18A8F08B7 /* Pods-diginest.release.xcconfig */,
-				6058FA5FD0CE48F76C8E75F5 /* Pods-diginest.fashion.release.xcconfig */,
-				917B48A45FA8BA55B0105F81 /* Pods-diginest.green.release.xcconfig */,
-				7D9FD75E7EB5A9EE759520D5 /* Pods-diginest.panda.release.xcconfig */,
-				F43CF36F9055D2D1E1E81AA5 /* Pods-diginest-diginestTests.debug.xcconfig */,
-				F3879E103F4BF826B7B031B9 /* Pods-diginest-diginestTests.fashion.debug.xcconfig */,
-				9714736299947435F4DB4C0E /* Pods-diginest-diginestTests.green.debug.xcconfig */,
-				435BFC75C581F14D5B5AF534 /* Pods-diginest-diginestTests.panda.debug.xcconfig */,
-				15F5F69FEC8A2C4947A84EDA /* Pods-diginest-diginestTests.release.xcconfig */,
-				4D9AAFE5AA7E839189DA2DA4 /* Pods-diginest-diginestTests.fashion.release.xcconfig */,
-				5186945F5D8E2273933DBEFE /* Pods-diginest-diginestTests.green.release.xcconfig */,
-				A172327F61510EBF9B49E05D /* Pods-diginest-diginestTests.panda.release.xcconfig */,
+				1AB26BCD35CC23E3D0BD4425 /* Pods-diginest.debug.xcconfig */,
+				0E6A45C92F0415066780643B /* Pods-diginest.debugpanda.xcconfig */,
+				F5D767A1D851FB7716C517B1 /* Pods-diginest.debugfashion.xcconfig */,
+				B1E4ADA813798764AD2FC9F6 /* Pods-diginest.debuggreen.xcconfig */,
+				83CDB3EB4D715CA8346CA393 /* Pods-diginest.release.xcconfig */,
+				C887798155603DA4B582E743 /* Pods-diginest.releasepanda.xcconfig */,
+				021CCF8C4FD718C6095537D4 /* Pods-diginest.releasefashion.xcconfig */,
+				5C77F0BAA04EAA2BEF529388 /* Pods-diginest.releasegreen.xcconfig */,
+				1E90D5F9A59B49CDBC8A7764 /* Pods-diginest-diginestTests.debug.xcconfig */,
+				2A918FC5235BB00F2B60ABA1 /* Pods-diginest-diginestTests.debugpanda.xcconfig */,
+				AE54E9DF56F8823DCF47313C /* Pods-diginest-diginestTests.debugfashion.xcconfig */,
+				0018C6B9C0649C2D01992ECF /* Pods-diginest-diginestTests.debuggreen.xcconfig */,
+				C853B44492BC21E259A68966 /* Pods-diginest-diginestTests.release.xcconfig */,
+				A10246A6C28073801D356254 /* Pods-diginest-diginestTests.releasepanda.xcconfig */,
+				E6454B55F4A061375477A03A /* Pods-diginest-diginestTests.releasefashion.xcconfig */,
+				DDCD79B17835F189B95A120B /* Pods-diginest-diginestTests.releasegreen.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -188,12 +196,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "diginestTests" */;
 			buildPhases = (
-				393E9CDC48B58392CF14B6EA /* [CP] Check Pods Manifest.lock */,
+				116639DD311616EEE250CC47 /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
-				29121CC4805BC8E9A525F623 /* [CP] Embed Pods Frameworks */,
-				93FE8686AE6B2487A8196930 /* [CP] Copy Pods Resources */,
+				EC687E3F786BEDB573B92599 /* [CP] Embed Pods Frameworks */,
+				1AADB3A76E303D10ACA688A6 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -209,14 +217,14 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "diginest" */;
 			buildPhases = (
-				D677F608B175CCBDA419228D /* [CP] Check Pods Manifest.lock */,
+				AF3AAA6D4157297BF720B1BE /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				61ADFA7C38A8F73B96E3039A /* [CP] Embed Pods Frameworks */,
-				A73EB1609951257BC5AB41ED /* [CP] Copy Pods Resources */,
+				FC7C6A8044301E011FFB96AB /* [CP] Embed Pods Frameworks */,
+				E59E9B45876CF7FDF8AF5817 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -275,11 +283,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				463923F62AC517F80019A7CB /* green.storyboard in Resources */,
-				463923F42AC5167B0019A7CB /* fashion.storyboard in Resources */,
+				46D4D79E2AC9AFC000FBF93F /* fashion.storyboard in Resources */,
+				46D4D79D2AC9AFC000FBF93F /* green.storyboard in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
+				46D4D79F2AC9AFC000FBF93F /* panda.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				463923F82AC518370019A7CB /* panda.storyboard in Resources */,
+				46D4D7992AC9AC9100FBF93F /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -302,24 +311,7 @@
 			shellPath = /bin/sh;
 			shellScript = "set -e\n\nWITH_ENVIRONMENT=\"../node_modules/react-native/scripts/xcode/with-environment.sh\"\nREACT_NATIVE_XCODE=\"../node_modules/react-native/scripts/react-native-xcode.sh\"\n\n/bin/sh -c \"$WITH_ENVIRONMENT $REACT_NATIVE_XCODE\"\n";
 		};
-		29121CC4805BC8E9A525F623 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-diginest-diginestTests/Pods-diginest-diginestTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-diginest-diginestTests/Pods-diginest-diginestTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-diginest-diginestTests/Pods-diginest-diginestTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		393E9CDC48B58392CF14B6EA /* [CP] Check Pods Manifest.lock */ = {
+		116639DD311616EEE250CC47 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -341,24 +333,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		61ADFA7C38A8F73B96E3039A /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-diginest/Pods-diginest-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-diginest/Pods-diginest-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-diginest/Pods-diginest-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		93FE8686AE6B2487A8196930 /* [CP] Copy Pods Resources */ = {
+		1AADB3A76E303D10ACA688A6 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -375,24 +350,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-diginest-diginestTests/Pods-diginest-diginestTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		A73EB1609951257BC5AB41ED /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-diginest/Pods-diginest-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-diginest/Pods-diginest-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-diginest/Pods-diginest-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		D677F608B175CCBDA419228D /* [CP] Check Pods Manifest.lock */ = {
+		AF3AAA6D4157297BF720B1BE /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -412,6 +370,57 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E59E9B45876CF7FDF8AF5817 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-diginest/Pods-diginest-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-diginest/Pods-diginest-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-diginest/Pods-diginest-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		EC687E3F786BEDB573B92599 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-diginest-diginestTests/Pods-diginest-diginestTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-diginest-diginestTests/Pods-diginest-diginestTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-diginest-diginestTests/Pods-diginest-diginestTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		FC7C6A8044301E011FFB96AB /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-diginest/Pods-diginest-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-diginest/Pods-diginest-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-diginest/Pods-diginest-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FD10A7F022414F080027D42C /* Start Packager */ = {
@@ -450,6 +459,7 @@
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
+				46D4D7A52AC9B39700FBF93F /* RNENVConfig.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -466,7 +476,7 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F43CF36F9055D2D1E1E81AA5 /* Pods-diginest-diginestTests.debug.xcconfig */;
+			baseConfigurationReference = 1E90D5F9A59B49CDBC8A7764 /* Pods-diginest-diginestTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -493,7 +503,7 @@
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 15F5F69FEC8A2C4947A84EDA /* Pods-diginest-diginestTests.release.xcconfig */;
+			baseConfigurationReference = C853B44492BC21E259A68966 /* Pods-diginest-diginestTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
@@ -517,16 +527,15 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A7D8579D115F0949074F0BBA /* Pods-diginest.debug.xcconfig */;
+			baseConfigurationReference = 1AB26BCD35CC23E3D0BD4425 /* Pods-diginest.debug.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon$(BUNDLE_ID_SUFFIX)";
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "";
-				BUNDLE_ID_SUFFIX = .;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = diginest/Info.plist;
-				LAUNCH_IMAGE_NAME = "";
+				LAUNCH_SCREEN = LaunchScreen;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -537,7 +546,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.diginest.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = diginest;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -547,15 +556,14 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2D07B1B5EE4150D18A8F08B7 /* Pods-diginest.release.xcconfig */;
+			baseConfigurationReference = 83CDB3EB4D715CA8346CA393 /* Pods-diginest.release.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon$(BUNDLE_ID_SUFFIX)";
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "";
-				BUNDLE_ID_SUFFIX = .;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				INFOPLIST_FILE = diginest/Info.plist;
-				LAUNCH_IMAGE_NAME = "";
+				LAUNCH_SCREEN = LaunchScreen;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -566,14 +574,14 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.diginest.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = diginest;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
 		};
-		46287DB42AC4934800458AF6 /* Panda.Debug */ = {
+		46D4D7862AC9A1CA00FBF93F /* DebugGreen */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -656,24 +664,36 @@
 					"-ld_classic",
 					"-Wl",
 					"-ld_classic",
+					"-Wl",
+					"-ld_classic",
 				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 			};
-			name = Panda.Debug;
+			name = DebugGreen;
 		};
-		46287DB52AC4934800458AF6 /* Panda.Debug */ = {
+		46D4D7872AC9A1CA00FBF93F /* DebugGreen */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F1D0A1E9DBA037862CDFFEBC /* Pods-diginest.panda.debug.xcconfig */;
+			baseConfigurationReference = B1E4ADA813798764AD2FC9F6 /* Pods-diginest.debuggreen.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon$(BUNDLE_ID_SUFFIX)";
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "";
-				BUNDLE_ID_SUFFIX = .panda;
+				ASSETCATALOG_COMPILER_APPICON_NAME = green;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_BITCODE = NO;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"COCOAPODS=1",
+					"$(inherited)",
+					"PB_FIELD_32BIT=1",
+					"PB_NO_PACKED_STRUCTS=1",
+					"PB_ENABLE_MALLOC=1",
+					"$(inherited)",
+					"SD_WEBP=1",
+					"DEBUGGREEN=1",
+				);
 				INFOPLIST_FILE = diginest/Info.plist;
-				LAUNCH_IMAGE_NAME = panda;
+				LAUNCH_SCREEN = green;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -684,17 +704,17 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.diginest.qbuypanda.dev;
-				PRODUCT_NAME = "QBuy Panda Dev";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.diginest.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = "QBuyGreen dev";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
-			name = Panda.Debug;
+			name = DebugGreen;
 		};
-		46287DB62AC4934800458AF6 /* Panda.Debug */ = {
+		46D4D7882AC9A1CA00FBF93F /* DebugGreen */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 435BFC75C581F14D5B5AF534 /* Pods-diginest-diginestTests.panda.debug.xcconfig */;
+			baseConfigurationReference = 0018C6B9C0649C2D01992ECF /* Pods-diginest-diginestTests.debuggreen.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -717,9 +737,9 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/diginest.app/diginest";
 			};
-			name = Panda.Debug;
+			name = DebugGreen;
 		};
-		46287DB72AC4935C00458AF6 /* Green.Debug */ = {
+		46D4D7892AC9A1DE00FBF93F /* DebugFashion */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -802,24 +822,36 @@
 					"-ld_classic",
 					"-Wl",
 					"-ld_classic",
+					"-Wl",
+					"-ld_classic",
 				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 			};
-			name = Green.Debug;
+			name = DebugFashion;
 		};
-		46287DB82AC4935C00458AF6 /* Green.Debug */ = {
+		46D4D78A2AC9A1DE00FBF93F /* DebugFashion */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 12983F079BE70222CDB19352 /* Pods-diginest.green.debug.xcconfig */;
+			baseConfigurationReference = F5D767A1D851FB7716C517B1 /* Pods-diginest.debugfashion.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon$(BUNDLE_ID_SUFFIX)";
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "";
-				BUNDLE_ID_SUFFIX = .green;
+				ASSETCATALOG_COMPILER_APPICON_NAME = fashion;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_BITCODE = NO;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"COCOAPODS=1",
+					"$(inherited)",
+					"PB_FIELD_32BIT=1",
+					"PB_NO_PACKED_STRUCTS=1",
+					"PB_ENABLE_MALLOC=1",
+					"$(inherited)",
+					"SD_WEBP=1",
+					"DEBUGFASHION=1",
+				);
 				INFOPLIST_FILE = diginest/Info.plist;
-				LAUNCH_IMAGE_NAME = green;
+				LAUNCH_SCREEN = fashion;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -830,17 +862,17 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.diginest.qbuygreen.dev;
-				PRODUCT_NAME = "QBuy Green Dev";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.diginest.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = "Shopqbuy dev";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
-			name = Green.Debug;
+			name = DebugFashion;
 		};
-		46287DB92AC4935C00458AF6 /* Green.Debug */ = {
+		46D4D78B2AC9A1DE00FBF93F /* DebugFashion */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9714736299947435F4DB4C0E /* Pods-diginest-diginestTests.green.debug.xcconfig */;
+			baseConfigurationReference = AE54E9DF56F8823DCF47313C /* Pods-diginest-diginestTests.debugfashion.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -863,9 +895,9 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/diginest.app/diginest";
 			};
-			name = Green.Debug;
+			name = DebugFashion;
 		};
-		46287DBA2AC4936800458AF6 /* Fashion.Debug */ = {
+		46D4D78C2AC9A1EA00FBF93F /* DebugPanda */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -948,24 +980,36 @@
 					"-ld_classic",
 					"-Wl",
 					"-ld_classic",
+					"-Wl",
+					"-ld_classic",
 				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 			};
-			name = Fashion.Debug;
+			name = DebugPanda;
 		};
-		46287DBB2AC4936800458AF6 /* Fashion.Debug */ = {
+		46D4D78D2AC9A1EA00FBF93F /* DebugPanda */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B38EBF2C25CB449E26CA2343 /* Pods-diginest.fashion.debug.xcconfig */;
+			baseConfigurationReference = 0E6A45C92F0415066780643B /* Pods-diginest.debugpanda.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon$(BUNDLE_ID_SUFFIX)";
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "";
-				BUNDLE_ID_SUFFIX = .fashion;
+				ASSETCATALOG_COMPILER_APPICON_NAME = panda;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_BITCODE = NO;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"COCOAPODS=1",
+					"$(inherited)",
+					"PB_FIELD_32BIT=1",
+					"PB_NO_PACKED_STRUCTS=1",
+					"PB_ENABLE_MALLOC=1",
+					"$(inherited)",
+					"SD_WEBP=1",
+					"DEBUGPANDA=1",
+				);
 				INFOPLIST_FILE = diginest/Info.plist;
-				LAUNCH_IMAGE_NAME = fashion;
+				LAUNCH_SCREEN = panda;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -976,17 +1020,17 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.diginest.qbuyfashion.dev;
-				PRODUCT_NAME = "QBuy Fashion Dev";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.diginest.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = "QBuyPanda Dev";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
-			name = Fashion.Debug;
+			name = DebugPanda;
 		};
-		46287DBC2AC4936800458AF6 /* Fashion.Debug */ = {
+		46D4D78E2AC9A1EA00FBF93F /* DebugPanda */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F3879E103F4BF826B7B031B9 /* Pods-diginest-diginestTests.fashion.debug.xcconfig */;
+			baseConfigurationReference = 2A918FC5235BB00F2B60ABA1 /* Pods-diginest-diginestTests.debugpanda.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -1009,9 +1053,9 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/diginest.app/diginest";
 			};
-			name = Fashion.Debug;
+			name = DebugPanda;
 		};
-		46287DBD2AC4937200458AF6 /* Panda.Release */ = {
+		46D4D78F2AC9A1F500FBF93F /* ReleaseGreen */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -1089,24 +1133,36 @@
 					"-ld_classic",
 					"-Wl",
 					"-ld_classic",
+					"-Wl",
+					"-ld_classic",
 				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
-			name = Panda.Release;
+			name = ReleaseGreen;
 		};
-		46287DBE2AC4937200458AF6 /* Panda.Release */ = {
+		46D4D7902AC9A1F500FBF93F /* ReleaseGreen */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7D9FD75E7EB5A9EE759520D5 /* Pods-diginest.panda.release.xcconfig */;
+			baseConfigurationReference = 5C77F0BAA04EAA2BEF529388 /* Pods-diginest.releasegreen.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon$(BUNDLE_ID_SUFFIX)";
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "";
-				BUNDLE_ID_SUFFIX = .panda;
+				ASSETCATALOG_COMPILER_APPICON_NAME = green;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"COCOAPODS=1",
+					"$(inherited)",
+					"PB_FIELD_32BIT=1",
+					"PB_NO_PACKED_STRUCTS=1",
+					"PB_ENABLE_MALLOC=1",
+					"$(inherited)",
+					"SD_WEBP=1",
+					"RELEASEGREEN=1",
+				);
 				INFOPLIST_FILE = diginest/Info.plist;
-				LAUNCH_IMAGE_NAME = panda;
+				LAUNCH_SCREEN = green;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1117,16 +1173,16 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.diginest.qbuypanda;
-				PRODUCT_NAME = "QBuy Panda ";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.diginest.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = QBuyGreen;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
-			name = Panda.Release;
+			name = ReleaseGreen;
 		};
-		46287DBF2AC4937200458AF6 /* Panda.Release */ = {
+		46D4D7912AC9A1F500FBF93F /* ReleaseGreen */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A172327F61510EBF9B49E05D /* Pods-diginest-diginestTests.panda.release.xcconfig */;
+			baseConfigurationReference = DDCD79B17835F189B95A120B /* Pods-diginest-diginestTests.releasegreen.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
@@ -1146,9 +1202,9 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/diginest.app/diginest";
 			};
-			name = Panda.Release;
+			name = ReleaseGreen;
 		};
-		46287DC02AC4937F00458AF6 /* Green.Release */ = {
+		46D4D7922AC9A20C00FBF93F /* ReleaseFashion */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -1226,24 +1282,36 @@
 					"-ld_classic",
 					"-Wl",
 					"-ld_classic",
+					"-Wl",
+					"-ld_classic",
 				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
-			name = Green.Release;
+			name = ReleaseFashion;
 		};
-		46287DC12AC4937F00458AF6 /* Green.Release */ = {
+		46D4D7932AC9A20C00FBF93F /* ReleaseFashion */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 917B48A45FA8BA55B0105F81 /* Pods-diginest.green.release.xcconfig */;
+			baseConfigurationReference = 021CCF8C4FD718C6095537D4 /* Pods-diginest.releasefashion.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon$(BUNDLE_ID_SUFFIX)";
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "";
-				BUNDLE_ID_SUFFIX = .green;
+				ASSETCATALOG_COMPILER_APPICON_NAME = fashion;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"COCOAPODS=1",
+					"$(inherited)",
+					"PB_FIELD_32BIT=1",
+					"PB_NO_PACKED_STRUCTS=1",
+					"PB_ENABLE_MALLOC=1",
+					"$(inherited)",
+					"SD_WEBP=1",
+					"RELEASEFASHION=1",
+				);
 				INFOPLIST_FILE = diginest/Info.plist;
-				LAUNCH_IMAGE_NAME = green;
+				LAUNCH_SCREEN = fashion;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1254,16 +1322,16 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.diginest.qbuygreen;
-				PRODUCT_NAME = "QBuy Green ";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.diginest.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = Shopqbuy;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
-			name = Green.Release;
+			name = ReleaseFashion;
 		};
-		46287DC22AC4937F00458AF6 /* Green.Release */ = {
+		46D4D7942AC9A20C00FBF93F /* ReleaseFashion */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5186945F5D8E2273933DBEFE /* Pods-diginest-diginestTests.green.release.xcconfig */;
+			baseConfigurationReference = E6454B55F4A061375477A03A /* Pods-diginest-diginestTests.releasefashion.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
@@ -1283,9 +1351,9 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/diginest.app/diginest";
 			};
-			name = Green.Release;
+			name = ReleaseFashion;
 		};
-		46287DC32AC4938A00458AF6 /* Fashion.Release */ = {
+		46D4D7952AC9A21A00FBF93F /* ReleasePanda */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -1363,24 +1431,36 @@
 					"-ld_classic",
 					"-Wl",
 					"-ld_classic",
+					"-Wl",
+					"-ld_classic",
 				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
-			name = Fashion.Release;
+			name = ReleasePanda;
 		};
-		46287DC42AC4938A00458AF6 /* Fashion.Release */ = {
+		46D4D7962AC9A21A00FBF93F /* ReleasePanda */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6058FA5FD0CE48F76C8E75F5 /* Pods-diginest.fashion.release.xcconfig */;
+			baseConfigurationReference = C887798155603DA4B582E743 /* Pods-diginest.releasepanda.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon$(BUNDLE_ID_SUFFIX)";
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "";
-				BUNDLE_ID_SUFFIX = .fashion;
+				ASSETCATALOG_COMPILER_APPICON_NAME = panda;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"COCOAPODS=1",
+					"$(inherited)",
+					"PB_FIELD_32BIT=1",
+					"PB_NO_PACKED_STRUCTS=1",
+					"PB_ENABLE_MALLOC=1",
+					"$(inherited)",
+					"SD_WEBP=1",
+					"RELEASEPANDA=1",
+				);
 				INFOPLIST_FILE = diginest/Info.plist;
-				LAUNCH_IMAGE_NAME = fashion;
+				LAUNCH_SCREEN = panda;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1391,16 +1471,16 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.diginest.qbuyfashion;
-				PRODUCT_NAME = "QBuy Fashion";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.diginest.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = QBuyFashion;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
-			name = Fashion.Release;
+			name = ReleasePanda;
 		};
-		46287DC52AC4938A00458AF6 /* Fashion.Release */ = {
+		46D4D7972AC9A21A00FBF93F /* ReleasePanda */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4D9AAFE5AA7E839189DA2DA4 /* Pods-diginest-diginestTests.fashion.release.xcconfig */;
+			baseConfigurationReference = A10246A6C28073801D356254 /* Pods-diginest-diginestTests.releasepanda.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
@@ -1420,7 +1500,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/diginest.app/diginest";
 			};
-			name = Fashion.Release;
+			name = ReleasePanda;
 		};
 		83CBBA201A601CBA00E9B192 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -1501,6 +1581,8 @@
 				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
+					"-Wl",
+					"-ld_classic",
 					"-Wl",
 					"-ld_classic",
 					"-Wl",
@@ -1589,6 +1671,8 @@
 					"-ld_classic",
 					"-Wl",
 					"-ld_classic",
+					"-Wl",
+					"-ld_classic",
 				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
@@ -1603,13 +1687,13 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				00E356F61AD99517003FC87E /* Debug */,
-				46287DBC2AC4936800458AF6 /* Fashion.Debug */,
-				46287DB92AC4935C00458AF6 /* Green.Debug */,
-				46287DB62AC4934800458AF6 /* Panda.Debug */,
+				46D4D78E2AC9A1EA00FBF93F /* DebugPanda */,
+				46D4D78B2AC9A1DE00FBF93F /* DebugFashion */,
+				46D4D7882AC9A1CA00FBF93F /* DebugGreen */,
 				00E356F71AD99517003FC87E /* Release */,
-				46287DC52AC4938A00458AF6 /* Fashion.Release */,
-				46287DC22AC4937F00458AF6 /* Green.Release */,
-				46287DBF2AC4937200458AF6 /* Panda.Release */,
+				46D4D7972AC9A21A00FBF93F /* ReleasePanda */,
+				46D4D7942AC9A20C00FBF93F /* ReleaseFashion */,
+				46D4D7912AC9A1F500FBF93F /* ReleaseGreen */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -1618,13 +1702,13 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				13B07F941A680F5B00A75B9A /* Debug */,
-				46287DBB2AC4936800458AF6 /* Fashion.Debug */,
-				46287DB82AC4935C00458AF6 /* Green.Debug */,
-				46287DB52AC4934800458AF6 /* Panda.Debug */,
+				46D4D78D2AC9A1EA00FBF93F /* DebugPanda */,
+				46D4D78A2AC9A1DE00FBF93F /* DebugFashion */,
+				46D4D7872AC9A1CA00FBF93F /* DebugGreen */,
 				13B07F951A680F5B00A75B9A /* Release */,
-				46287DC42AC4938A00458AF6 /* Fashion.Release */,
-				46287DC12AC4937F00458AF6 /* Green.Release */,
-				46287DBE2AC4937200458AF6 /* Panda.Release */,
+				46D4D7962AC9A21A00FBF93F /* ReleasePanda */,
+				46D4D7932AC9A20C00FBF93F /* ReleaseFashion */,
+				46D4D7902AC9A1F500FBF93F /* ReleaseGreen */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -1633,13 +1717,13 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,
-				46287DBA2AC4936800458AF6 /* Fashion.Debug */,
-				46287DB72AC4935C00458AF6 /* Green.Debug */,
-				46287DB42AC4934800458AF6 /* Panda.Debug */,
+				46D4D78C2AC9A1EA00FBF93F /* DebugPanda */,
+				46D4D7892AC9A1DE00FBF93F /* DebugFashion */,
+				46D4D7862AC9A1CA00FBF93F /* DebugGreen */,
 				83CBBA211A601CBA00E9B192 /* Release */,
-				46287DC32AC4938A00458AF6 /* Fashion.Release */,
-				46287DC02AC4937F00458AF6 /* Green.Release */,
-				46287DBD2AC4937200458AF6 /* Panda.Release */,
+				46D4D7952AC9A21A00FBF93F /* ReleasePanda */,
+				46D4D7922AC9A20C00FBF93F /* ReleaseFashion */,
+				46D4D78F2AC9A1F500FBF93F /* ReleaseGreen */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

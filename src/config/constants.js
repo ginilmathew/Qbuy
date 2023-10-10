@@ -1,4 +1,7 @@
-export const env = "testing"
+import { NativeModules } from "react-native"
+
+
+const { env, mode } = NativeModules.RNENVConfig
 
 const URLS = {
     live: "https://apiqbuygreen.diginestsolutions.in/public/api/",
@@ -12,7 +15,7 @@ const IMG_BASEPATH = {
     dev: "https://apiqbuypanda.diginestsolutions.in/public/"
 }
 
-export const mode = "fashion"
+//export const mode = "fashion"
 
 
 export const BASE_URL = URLS[env]

@@ -67,9 +67,9 @@ const QBuyGreen = ({ navigation }) => {
 
 
 
-    const loadingg = useContext(LoaderContext)
-    const userContext = useContext(AuthContext)
-    const cartContext = useContext(CartContext)
+    const loadingg = useContext(LoaderContext);
+    const userContext = useContext(AuthContext);
+    const cartContext = useContext(CartContext);
 
 
     let datas = {
@@ -77,6 +77,8 @@ const QBuyGreen = ({ navigation }) => {
         // coordinates: env === "dev" ? location : userContext?.location
         coordinates: userContext?.location
     }
+
+
     const { data, isLoading, refetch } = useQuery({ queryKey: ['greenHome'], queryFn: () => QbuyGreenHome(datas) });
 
     let userData = userContext?.userData
@@ -99,9 +101,9 @@ const QBuyGreen = ({ navigation }) => {
         )
     }, [])
 
-    const [homeData, setHomeData] = useState(null)
-    const [availablePdt, setavailablePdt] = useState(null)
-    const [slider, setSlider] = useState(null)
+    const [homeData, setHomeData] = useState(null);
+    const [availablePdt, setavailablePdt] = useState(null);
+    const [slider, setSlider] = useState(null);
 
 
     // useEffect(() => {
@@ -142,7 +144,7 @@ const QBuyGreen = ({ navigation }) => {
             if (firstTimeRef.current) {
                 firstTimeRef.current = false;
                 return;
-             }
+            }
             refetch()
         }, [refetch, userContext?.location])
     );
@@ -205,9 +207,9 @@ const QBuyGreen = ({ navigation }) => {
             .then(async response => {
                 setHomeData(response?.data?.data)
                 loadingg.setLoading(false)
-                setTimeout(() => {
-                    SplashScreen.hide()
-                }, 500);
+                // setTimeout(() => {
+                //     SplashScreen.hide()
+                // }, 500);
                 loadingg.setLoading(false)
             })
             .catch(async error => {
@@ -271,6 +273,7 @@ const QBuyGreen = ({ navigation }) => {
                     {slider?.length > 0 &&
                         <View>
                             <Carousel
+                                key={item?._id}
                                 loop
                                 width={width}
                                 height={height / 5}
@@ -382,40 +385,41 @@ const QBuyGreen = ({ navigation }) => {
         )
     }
 
-    if(isLoading){
-    return (
-        <View>
-            <Header onPress={onClickDrawer} />
-            <ScrollView showsVerticalScrollIndicator={false} style={{ width: width, height: height }}>
-                <View style={{ justifyContent: 'center' }}>
-                    <View style={{ flexDirection: 'row', margin: 5, justifyContent: 'center', paddingTop: 4 }}>
-                        {[1, 2, 3, 4]?.map(arr => {
-                            return (
-                                <TypeSkelton key={arr} />
-                            )
-                        })}
-                    </View>
-                    <Animated.View style={{ height: height / 5, alignItems: 'center', marginTop: 10, shadowOpacity: 0.1, shadowRadius: 1, opacity, width: width }} >
-                        <Animated.View
-                            style={{ width: '100%', height: '100%', width: '90%', backgroundColor: '#fff', margin: 5, borderRadius: 20, opacity }}
-                        >
+    if (isLoading) {
+        return (
+            <View>
+                <Header onPress={onClickDrawer} />
+                <ScrollView showsVerticalScrollIndicator={false} style={{ width: width, height: height }}>
+                    <View style={{ justifyContent: 'center' }}>
+                        <View style={{ flexDirection: 'row', margin: 5, justifyContent: 'center', paddingTop: 4 }}>
+                            {[1, 2, 3, 4]?.map(arr => {
+                                return (
+                                    <TypeSkelton key={arr} />
+                                )
+                            })}
+                        </View>
+                        <Animated.View style={{ height: height / 5, alignItems: 'center', marginTop: 10, shadowOpacity: 0.1, shadowRadius: 1, opacity, width: width }} >
+                            <Animated.View
+                                style={{ width: '100%', height: '100%', width: '90%', backgroundColor: '#fff', margin: 5, borderRadius: 20, opacity }}
+                            >
+                            </Animated.View>
                         </Animated.View>
-                    </Animated.View>
-                    <View style={{ width: width }}>
-                        <SearchBox onPress={null} />
+                        <View style={{ width: width }}>
+                            <SearchBox onPress={null} />
+                        </View>
+                        <CommonTexts label={'Available Stores'} ml={15} fontSize={13} mt={20} />
+                        <View style={{ marginHorizontal: 5, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' }}>
+                            {[1, 2, 3, 4, 5, 6, 7, 8]?.map((item) => (
+                                <ShopCardSkeltion key={item} />
+                            ))}
+                        </View>
                     </View>
-                    <CommonTexts label={'Available Stores'} ml={15} fontSize={13} mt={20} />
-                    <View style={{ marginHorizontal: 5, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' }}>
-                        {[1, 2, 3, 4, 5, 6, 7, 8]?.map((item) => (
-                            <ShopCardSkeltion key={item} />
-                        ))}
-                    </View>
-                </View>
-            </ScrollView>
-        </View>
-    )
+                </ScrollView>
+            </View>
+        )
     }
 
+    const keyExtractorGreen = (item) => item._id;
 
     return (
         <>
@@ -434,15 +438,16 @@ const QBuyGreen = ({ navigation }) => {
                     //     // tintColor={Colors.GreenLight} // for ios
                     //     />
                     // }
+                    disableVirtualization={true}
                     ListHeaderComponent={RenderMainComponets}
                     data={data?.availablePdt?.data}
-                    keyExtractor={(item, index) => index}
+                    keyExtractor={keyExtractorGreen}
                     renderItem={renderProducts}
                     showsVerticalScrollIndicator={false}
-                    initialNumToRender={6}
+                    initialNumToRender={8}
                     removeClippedSubviews={true}
                     windowSize={10}
-                    maxToRenderPerBatch={5}
+                    maxToRenderPerBatch={8}
                     refreshing={isLoading}
                     onRefresh={refetch}
                     numColumns={2}

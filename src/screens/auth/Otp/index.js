@@ -12,10 +12,13 @@ import AuthContext from '../../../contexts/Auth';
 import LoaderContext from '../../../contexts/Loader';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import customAxios from '../../../CustomeAxios';
-import { mode } from '../../../config/constants';
 import Toast from 'react-native-toast-message';
 import { CommonActions } from '@react-navigation/native';
 import reactotron from 'reactotron-react-native';
+import { NativeModules } from "react-native"
+
+
+const { env, mode } = NativeModules.RNENVConfig
 
 const Otp = ({ navigation }) => {
 

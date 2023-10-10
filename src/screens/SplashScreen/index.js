@@ -1,7 +1,10 @@
-import { Image, ImageBackground, NativeModules, StyleSheet, Text, View, useWindowDimensions } from 'react-native'
+import { Image, ImageBackground, StyleSheet, Text, View, useWindowDimensions } from 'react-native'
 import React from 'react'
 import CommonAuthBg from '../auth/CommonAuthBg'
-import { mode } from '../../config/constants'
+import { NativeModules } from "react-native"
+
+
+const { env, mode } = NativeModules.RNENVConfig
 
 
 const SplashScreenF = ({ navigation }) => {

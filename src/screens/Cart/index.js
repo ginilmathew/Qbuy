@@ -43,6 +43,7 @@ const Cart = ({ navigation }) => {
 
 
     const getCartItems = async () => {
+
         if (cartContext?.cart?._id) {
             loadingg.setLoading(true)
             await customAxios.get(`customer/cart/show/${cartContext?.cart?._id}`)
@@ -51,7 +52,7 @@ const Cart = ({ navigation }) => {
                     let products = response?.data?.data?.product_details;
 
                     // cartContext?.setCart(response?.data?.data)
-                  
+
                     let finalProducts = [];
                     //let quantity = pro?.quantity ? parseFloat(pro?.quantity) : 0
                     products?.map((pro) => {
@@ -59,7 +60,7 @@ const Cart = ({ navigation }) => {
                         let type = pro?.type;
                         let offer, regular, comm, seller, delivery, minQty, stock, fromDate, toDate, stock_value, product;
                         if (type === "single") {
-                          
+
                             offer = pro?.productdata?.offer_price ? parseFloat(pro?.productdata?.offer_price) : 0
                             regular = pro?.productdata?.regular_price ? parseFloat(pro?.productdata?.regular_price) : 0
                             comm = pro?.productdata?.commission ? pro?.productdata?.commission : pro?.productdata?.vendors?.additional_details?.commission ? pro?.productdata?.vendors?.additional_details?.commission : 0
@@ -71,7 +72,7 @@ const Cart = ({ navigation }) => {
                             toDate = moment(pro?.productdata?.offer_date_to).isValid() ? moment(pro?.productdata?.offer_date_to, "YYYY-MM-DD") : null
                             stock_value = pro?.productdata?.stock_value ? parseFloat(pro?.productdata?.stock_value) : 0
                             product = {
-                                store_address : pro?.productdata?.vendors.store_address,
+                                store_address: pro?.productdata?.vendors.store_address,
                                 product_id: pro?.product_id,
                                 name: pro?.name,
                                 image: pro?.image,
@@ -89,8 +90,8 @@ const Cart = ({ navigation }) => {
                             }
                         }
                         else {
-                            store_address= pro?.productdata?.vendors.store_address,
-                            offer = pro?.variants?.offer_price ? parseFloat(pro?.variants?.offer_price) : 0
+                            store_address = pro?.productdata?.vendors.store_address,
+                                offer = pro?.variants?.offer_price ? parseFloat(pro?.variants?.offer_price) : 0
                             regular = pro?.variants?.regular_price ? parseFloat(pro?.variants?.regular_price) : 0
                             comm = pro?.variants?.commission ? pro?.variants?.commission : pro?.productdata?.vendors?.additional_details?.commission ? pro?.productdata?.vendors?.additional_details?.commission : 0
                             seller = pro?.variants?.seller_price ? parseFloat(pro?.variants?.seller_price) : 0
@@ -101,7 +102,7 @@ const Cart = ({ navigation }) => {
                             toDate = moment(pro?.variants?.offer_date_to).isValid() ? moment(pro?.variants?.offer_date_to, "YYYY-MM-DD") : null
                             stock_value = pro?.variants?.stock_value ? parseFloat(pro?.variants?.stock_value) : 0
                             product = {
-                                store_address : pro?.productdata?.vendors.store_address,
+                                store_address: pro?.productdata?.vendors.store_address,
                                 product_id: pro?.product_id,
                                 variant_id: pro?.variants?._id,
                                 attributs: pro?.variants?.attributs,
@@ -207,15 +208,15 @@ const Cart = ({ navigation }) => {
                                         if (moment(moment().format("YYYY-MM-DD"), "YYYY-MM-DD") >= fromDate) {
                                             let finalPrice = offer * quantity;
                                             product['price'] = finalPrice;
-                                            finalProducts.push(product)
+                                            finalProducts.push(product);
                                         }
                                         else if (regular > 0) {
                                             let finalPrice = regular * quantity;
                                             product['price'] = finalPrice;
-                                            finalProducts.push(product)
+                                            finalProducts.push(product);
                                         }
                                         else {
-                                            let commission = (seller / 100) * comm
+                                            let commission = (seller / 100) * comm;
                                             let amount = (seller + commission) * quantity;
                                             product['price'] = amount;
                                             finalProducts.push(product)
@@ -265,7 +266,7 @@ const Cart = ({ navigation }) => {
                     loadingg.setLoading(false)
                 })
                 .catch(async error => {
-         
+
                     loadingg.setLoading(false)
                     Toast.show({
                         type: 'error',
@@ -346,7 +347,7 @@ const Cart = ({ navigation }) => {
             })
             return false;
         } else {
-          
+
             navigation.navigate('Checkout');
             setCartItemsList([])
         }
@@ -400,8 +401,8 @@ const Cart = ({ navigation }) => {
                     />
                 </View> :
                     <>
-                        {cartItemsList?.map((item, index) => 
-                        <CartItemCard item={item} key={index} index={index} refreshCart={refreshCart} />)}
+                        {cartItemsList?.map((item, index) =>
+                            <CartItemCard item={item} key={index} index={index} refreshCart={refreshCart} />)}
                     </>}
                 <View>
                     {cartItemsList?.length > 0 &&

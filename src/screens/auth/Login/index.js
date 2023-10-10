@@ -17,7 +17,10 @@ import customAxios from '../../../CustomeAxios';
 import Toast from 'react-native-toast-message'
 import SplashScreen from 'react-native-splash-screen'
 import reactotron from 'reactotron-react-native';
-import { mode } from '../../../config/constants'
+import { NativeModules } from "react-native"
+
+
+const { env, mode } = NativeModules.RNENVConfig
 
 const Login = ({ navigation }) => {
 

@@ -22,7 +22,7 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="splash.green" translatesAutoresizingMaskIntoConstraints="NO" id="B4g-g8-JZQ">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="splashgreen" translatesAutoresizingMaskIntoConstraints="NO" id="B4g-g8-JZQ">
                                 <rect key="frame" x="0.0" y="59" width="393" height="759"/>
                             </imageView>
                         </subviews>
@@ -45,6 +45,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="splash.green" width="430" height="932"/>
+        <image name="splashgreen" width="430" height="932"/>
     </resources>
 </document>
