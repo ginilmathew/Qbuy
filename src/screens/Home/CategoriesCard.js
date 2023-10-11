@@ -11,7 +11,7 @@ import reactotron from '../../ReactotronConfig';
 
 const CategoriesCard = memo(({ item }) => {
 
-    const { width, fontScale, height } = useWindowDimensions()
+    const { width,height} = useWindowDimensions()
     const { active } = useContext(PandaContext)
 
 
@@ -29,15 +29,15 @@ const CategoriesCard = memo(({ item }) => {
     return (
         <TouchableOpacity
             onPress={onClick}
-            style={{ width: width / 4.2, height: 80, alignItems: 'center' }}
+            style={{ width: width/4, height: width/4, alignItems: 'center' }}
         >
-            <View
-                style={styles.lottieView}
+            <View 
+                style={[styles.lottieView,{width: width/4 - 25, height: width/4 - 25,}]}
             >
                 <FastImage
-                    style={{ borderRadius: imageWidth / 2, width: '100%', height: '100%' }}
+                    style={{ borderRadius: width / 8, width:'100%', height: '100%' }}
                     source={{ uri: `${IMG_URL}${item?.image}` }}
-                    borderRadius={30}
+                    
                 />
             </View>
             <Text style={styles.itemText} numberOfLines={1}>{item?.name}</Text>
@@ -49,8 +49,7 @@ export default CategoriesCard
 
 const styles = StyleSheet.create({
     lottieView: {
-        width: 50,
-        height: 50,
+    
         borderRadius: 25,
         backgroundColor: '#DFEFE2',
     },

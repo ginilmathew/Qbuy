@@ -214,7 +214,7 @@ const QBuyFashion = () => {
 
     const onSearch = useCallback(() => {
         navigation.navigate('ProductSearchScreen', { mode: 'fashion' })
-    }, [])
+    }, [navigation])
 
     // const renderSections = ({ item }) => {
     //     if (item?.type === "categories") {

@@ -639,7 +639,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         flexWrap: 'wrap',
         gap: 2,
-        justifyContent: 'center'
+        justifyContent: 'center',
+        flex:1,
     },
     grossCatView: {
         flexDirection: 'row',
