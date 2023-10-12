@@ -90,6 +90,7 @@
 		352EB54A324B44F0A8EEFA67 /* Montserrat-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Medium.ttf"; path = "../assets/fonts/Montserrat-Medium.ttf"; sourceTree = "<group>"; };
 		3D83060794BC4EAA8E62B11C /* Montserrat-Thin.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Thin.ttf"; path = "../assets/fonts/Montserrat-Thin.ttf"; sourceTree = "<group>"; };
 		43D0880A12244AA2854CFE29 /* Poppins-ExtraLight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-ExtraLight.ttf"; path = "../assets/fonts/Poppins-ExtraLight.ttf"; sourceTree = "<group>"; };
+		4660764D2AD6EB5900257244 /* diginest.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = diginest.entitlements; path = diginest/diginest.entitlements; sourceTree = "<group>"; };
 		46D4D7982AC9AC9100FBF93F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "diginest/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		46D4D79A2AC9AFC000FBF93F /* green.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = green.storyboard; sourceTree = "<group>"; };
 		46D4D79B2AC9AFC000FBF93F /* fashion.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = fashion.storyboard; sourceTree = "<group>"; };
@@ -173,6 +174,7 @@
 		13B07FAE1A68108700A75B9A /* diginest */ = {
 			isa = PBXGroup;
 			children = (
+				4660764D2AD6EB5900257244 /* diginest.entitlements */,
 				46D4D79B2AC9AFC000FBF93F /* fashion.storyboard */,
 				46D4D79A2AC9AFC000FBF93F /* green.storyboard */,
 				46D4D79C2AC9AFC000FBF93F /* panda.storyboard */,
@@ -668,9 +670,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = diginest/diginest.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = S6VQK3KKH5;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = diginest/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.food-and-drink";
 				LAUNCH_SCREEN = LaunchScreen;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -700,8 +705,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = diginest/diginest.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = S6VQK3KKH5;
 				INFOPLIST_FILE = diginest/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.food-and-drink";
 				LAUNCH_SCREEN = LaunchScreen;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -810,6 +818,8 @@
 					"-ld_classic",
 					"-Wl",
 					"-ld_classic",
+					"-Wl",
+					"-ld_classic",
 				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
@@ -823,7 +833,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = green;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = diginest/diginest.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = S6VQK3KKH5;
 				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
@@ -837,6 +849,7 @@
 					"DEBUGGREEN=1",
 				);
 				INFOPLIST_FILE = diginest/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.food-and-drink";
 				LAUNCH_SCREEN = green;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -848,7 +861,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.diginest.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.diginest.qbuygreen;
 				PRODUCT_NAME = "QBuyGreen dev";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -973,6 +986,8 @@
 					"-ld_classic",
 					"-Wl",
 					"-ld_classic",
+					"-Wl",
+					"-ld_classic",
 				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
@@ -986,7 +1001,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = fashion;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = diginest/diginest.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = S6VQK3KKH5;
 				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
@@ -1000,6 +1017,7 @@
 					"DEBUGFASHION=1",
 				);
 				INFOPLIST_FILE = diginest/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.food-and-drink";
 				LAUNCH_SCREEN = fashion;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1011,7 +1029,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.diginest.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.diginest.shopqbuy;
 				PRODUCT_NAME = "Shopqbuy dev";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -1136,6 +1154,8 @@
 					"-ld_classic",
 					"-Wl",
 					"-ld_classic",
+					"-Wl",
+					"-ld_classic",
 				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
@@ -1149,7 +1169,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = panda;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = diginest/diginest.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = S6VQK3KKH5;
 				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
@@ -1163,6 +1185,7 @@
 					"DEBUGPANDA=1",
 				);
 				INFOPLIST_FILE = diginest/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.food-and-drink";
 				LAUNCH_SCREEN = panda;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1174,7 +1197,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.diginest.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.diginest.qbuypanda;
 				PRODUCT_NAME = "QBuyPanda Dev";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -1294,6 +1317,8 @@
 					"-ld_classic",
 					"-Wl",
 					"-ld_classic",
+					"-Wl",
+					"-ld_classic",
 				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
@@ -1308,7 +1333,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = green;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = diginest/diginest.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = S6VQK3KKH5;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					"COCOAPODS=1",
@@ -1321,6 +1348,7 @@
 					"RELEASEGREEN=1",
 				);
 				INFOPLIST_FILE = diginest/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.food-and-drink";
 				LAUNCH_SCREEN = green;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1332,7 +1360,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.diginest.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.diginest.qbuygreen;
 				PRODUCT_NAME = QBuyGreen;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -1448,6 +1476,8 @@
 					"-ld_classic",
 					"-Wl",
 					"-ld_classic",
+					"-Wl",
+					"-ld_classic",
 				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
@@ -1462,7 +1492,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = fashion;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = diginest/diginest.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = S6VQK3KKH5;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					"COCOAPODS=1",
@@ -1475,6 +1507,7 @@
 					"RELEASEFASHION=1",
 				);
 				INFOPLIST_FILE = diginest/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.food-and-drink";
 				LAUNCH_SCREEN = fashion;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1486,7 +1519,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.diginest.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.diginest.shopqbuy;
 				PRODUCT_NAME = Shopqbuy;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -1602,6 +1635,8 @@
 					"-ld_classic",
 					"-Wl",
 					"-ld_classic",
+					"-Wl",
+					"-ld_classic",
 				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
@@ -1616,7 +1651,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = panda;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = diginest/diginest.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = S6VQK3KKH5;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					"COCOAPODS=1",
@@ -1629,6 +1666,7 @@
 					"RELEASEPANDA=1",
 				);
 				INFOPLIST_FILE = diginest/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.food-and-drink";
 				LAUNCH_SCREEN = panda;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1640,8 +1678,8 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.diginest.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = QBuyFashion;
+				PRODUCT_BUNDLE_IDENTIFIER = com.diginest.qbuypanda;
+				PRODUCT_NAME = QBuyPanda;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_VERSION = 5.0;
@@ -1761,6 +1799,8 @@
 					"-ld_classic",
 					"-Wl",
 					"-ld_classic",
+					"-Wl",
+					"-ld_classic",
 				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
@@ -1841,6 +1881,8 @@
 				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
+					"-Wl",
+					"-ld_classic",
 					"-Wl",
 					"-ld_classic",
 					"-Wl",

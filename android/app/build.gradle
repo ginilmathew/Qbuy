@@ -81,27 +81,29 @@ android {
     productFlavors {
         pandatest {
             resValue "string", "app_name", "QBuyPanda Dev"
-            applicationIdSuffix ".qbuypanda.dev"
+            applicationId "com.diginest.qbuypanda.dev"
         }
         greentest {
             resValue "string", "app_name", "QBuyGreen Dev"
-            applicationIdSuffix ".qbuygreen.dev"
+            applicationId "com.diginest.qbuygreen.dev"
         }
         fashiontest {
             resValue "string", "app_name", "Shopqbuy Dev"
-            applicationIdSuffix ".qbuyfashion.dev"
+            applicationId "com.diginest.qbuyfashion.dev"
         }
         panda {
             resValue "string", "app_name", "QBuyPanda"
-            applicationIdSuffix ".qbuypanda"
+            applicationId "com.qbuypanda.app"
+            versionCode 10
+            versionName "2.4"
         }
         green {
             resValue "string", "app_name", "QBuyGreen"
-            applicationIdSuffix ".qbuygreen"
+            applicationId "com.diginest.qbuygreen"
         }
         fashion {
             resValue "string", "app_name", "QBuyFashion"
-            applicationIdSuffix ".qbuyfashion"
+            applicationId "com.diginest.qbuyfashion"
         }
     }
     defaultConfig {
@@ -118,15 +120,23 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
+        release {
+            if (project.hasProperty('MYAPP_UPLOAD_STORE_FILE')) {
+                storeFile file(MYAPP_UPLOAD_STORE_FILE)
+                storePassword MYAPP_UPLOAD_STORE_PASSWORD
+                keyAlias MYAPP_UPLOAD_KEY_ALIAS
+                keyPassword MYAPP_UPLOAD_KEY_PASSWORD
+            }
+        }
     }
     buildTypes {
         debug {
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
         }
         release {
             // Caution! In production, you need to generate your own keystore file.
             // see https://reactnative.dev/docs/signed-apk-android.
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }

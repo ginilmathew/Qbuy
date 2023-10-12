@@ -259,6 +259,42 @@
     },
     {
       "client_info": {
+        "mobilesdk_app_id": "1:678656967091:android:db746fee6f9f767c79cbc6",
+        "android_client_info": {
+          "package_name": "com.qbuypanda.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "678656967091-j6eauj9iupvg70r5gtila7ho2spgq3tn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBr7ldz6R7nUhdB4nIlGklKiRBh3mZUv9k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "678656967091-j6eauj9iupvg70r5gtila7ho2spgq3tn.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "678656967091-9rv3iok9uofcd3oge7g3ljljfj1ogm5p.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.qbuystoreapp.panda"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:678656967091:android:3e236daa9c66782b79cbc6",
         "android_client_info": {
           "package_name": "com.qbuypandanotification"
