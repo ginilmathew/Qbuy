@@ -78,23 +78,23 @@ const DrawerContent = ({ navigation }) => {
                 
 
                 <ListItem
-                    onPress={clickSellWithus}
+                    onPress={null}
                     icon={<SimpleLineIcons name={"handbag"} color="#fff" size={13}/>}
                     label={'Sell With Us'}
                 />
                 <ListItem
-                    onPress={clickWorkWithPanda}
+                    onPress={null}
                     icon={<FontAwesome5 name={"handshake"} color="#fff" size={12}/>}
                     label={'Work With Qbuy Panda'}
                 />
 
                 <ListItem
-                    onPress={clickCustFeedback}
+                    onPress={null}
                     icon={<MaterialCommunityIcons name={"comment-alert"} color="#fff" size={15}/>}
                     label={'Customer Feedbacks'}
                 />
                 <ListItem
-                    onPress={clickApplyFran}
+                    onPress={null}
                     icon={<Entypo name={"shop"} color="#fff" size={15}/>}
                     label={'Apply for a Franchisee'}
                 />

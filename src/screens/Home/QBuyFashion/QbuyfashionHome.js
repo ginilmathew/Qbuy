@@ -192,6 +192,22 @@ const QbuyfashionHome = () => {
         navigation.navigate('ProductSearchScreen', { mode: 'fashion' })
     }, [navigation])
 
+
+    const CarouselSelect = (item) => {
+        switch (item?.screentype) {
+            case "product":
+                let data = getProduct(item?.product)
+                navigation.navigate('SingleItemScreen', { item: data })
+                break;
+            case "store":
+                navigation.navigate('store', { name: item?.vendor?.store_name, mode: 'store', item: item?.vendor, storeId: item?.vendor?._id })
+                break;
+            default:
+                return false;
+        }
+
+    }
+
     const CarouselCardItem = ({ item, index }) => {
         return (
             <TouchableOpacity key={index} onPress={() => CarouselSelect(item)} style={{ alignItems: 'center', marginTop: 20, width: '100%', height: '85%' }} >

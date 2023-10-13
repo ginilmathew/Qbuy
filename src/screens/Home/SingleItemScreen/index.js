@@ -47,7 +47,9 @@ const SingleItemScreen = ({ route, navigation }) => {
     const [loading, setLoading] = useState(false)
     let active = contextPanda.active
 
-    const courasol = useRef(null)
+    const courasol = useRef(null);
+
+  
 
     const [courasolArray, setCourasolArray] = useState([])
 
@@ -83,9 +85,6 @@ const SingleItemScreen = ({ route, navigation }) => {
             }
 
             setCourasolArray(images)
-
-
-
             setItem(route?.params?.item)
             setImages(route?.params?.item?.image ? [route?.params?.item?.product_image, ...route?.params?.item?.image] : [route?.params?.item?.product_image])
             addViewCount(route?.params?.item)
@@ -126,10 +125,7 @@ const SingleItemScreen = ({ route, navigation }) => {
         if (item) {
             if (item?.variant) {
                 let selectedVariant = item?.variants?.find(vari => vari?.available === true)
-
-
                 setSelectedVariant(selectedVariant)
-
                 let names = selectedVariant?.title?.split(" ")
                 let attributes = item?.attributes?.map(att => {
                     let selected;
@@ -229,15 +225,13 @@ const SingleItemScreen = ({ route, navigation }) => {
         } else {
             cartContext.addToCart(item, selectedVariant)
         }
-    }, [selectedVariant, cart?.cart, item?.variant, cart?.products,item])
+    }, [selectedVariant, cart?.cart, item?.variant, cart?.products, item])
 
 
 
 
     const selectAttributes = (value) => {
         let attri = [];
-
-
         let attr = attributes?.map(att => {
             if (att?.options.includes(value)) {
                 if (att?.variant) {
@@ -341,6 +335,7 @@ const SingleItemScreen = ({ route, navigation }) => {
         let imagesss = images?.map((items, index) => {
             return { url: `${IMG_URL}${items}` }
         })
+
         setImagesArray(imagesss)
         setShowSingleImg(true)
     }, [images])
@@ -358,13 +353,14 @@ const SingleItemScreen = ({ route, navigation }) => {
 
 
     const renderImageAnimation = ({ item, index }) => {
+
         if (item?.type === "image") {
             return (
-                <TouchableOpacity onPress={openSingleImg}>
+                <TouchableOpacity onPress={openSingleImg} style={{ width: width }}>
                     <FastImage
                         source={{ uri: `${IMG_URL}${item?.url}` }}
-                        style={{ height: 180, borderRadius: 15, }}
-                        resizeMode='contain'
+                        style={{ height: width / 1.7, width: '100%', borderRadius: 2, }}
+                        resizeMode='cover'
                     >
                     </FastImage>
                 </TouchableOpacity>
@@ -401,6 +397,10 @@ const SingleItemScreen = ({ route, navigation }) => {
         )
     }
 
+    const ImageViewerChange = (index)=>{
+        setSelectedImage(index)
+
+    }
 
 
 
@@ -412,11 +412,12 @@ const SingleItemScreen = ({ route, navigation }) => {
                 showsVerticalScrollIndicator={false}
             >
 
-                <View style={{ height: 250 }}>
+                <View style={{ height: width/1.7 }}>
                     {courasolArray && courasolArray?.length > 0 ?
                         <Carousel
                             ref={courasol}
                             // autoPlay={true}
+                            
                             width={width}
                             data={courasolArray}
                             renderItem={renderImageAnimation}
@@ -426,17 +427,12 @@ const SingleItemScreen = ({ route, navigation }) => {
                             // source={singleProduct?.image[selectedImage]?.name} 
                             source={{ uri: `${IMG_URL}${images?.[0]}` }}
                             style={{ width: width - 30, height: 180, borderRadius: 15, }}
-                            resizeMode='contain'
+                            resizeMode='cover'
                         >
                         </FastImage>
                     }
                     {renderInStock()}
-                    {/* <VideoPlayer
-                        video={ require('../../../Videos/farming.mp4') }
-                        videoWidth={1600}
-                        videoHeight={900}
-                        // thumbnail={{ uri: 'https://i.picsum.photos/id/866/1600/900.jpg' }}
-                    /> */}
+
 
                 </View>
                 {courasolArray?.length > 0 && <ScrollView horizontal showsHorizontalScrollIndicator={false}>
@@ -477,7 +473,7 @@ const SingleItemScreen = ({ route, navigation }) => {
                         }}>{item?.weight}</Text>
 
                     </View>}
-                {singleProduct?.dimensions?.width &&
+                {(singleProduct?.dimensions?.width && singleProduct?.dimensions?.width !== "") &&
                     <View style={{ paddingLeft: 10, display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 2 }}>
                         <Text style={{
                             fontFamily: 'Poppins',
@@ -543,81 +539,8 @@ const SingleItemScreen = ({ route, navigation }) => {
                         label={'Add to Cart'} bg={active === 'green' ? '#8ED053' : active === 'fashion' ? '#FF7190' : '#58D36E'} width={width / 2.2}
                         loading={loader}
                     />}
-
-
-
                 </View>
                 <View style={{ backgroundColor: '#0C256C0D', height: 1, marginVertical: 20 }} />
-
-                {/* <CommonTexts label={'More With Us'} fontSize={13} ml={15} mb={5} />
-                <ScrollView
-                    horizontal
-                    showsHorizontalScrollIndicator={false}
-                    style={{ flexDirection: 'row', paddingLeft: 7, }}
-                >
-                    {more.map((item) =>
-                        <CommonItemCard
-                            key={item?._id}
-                            item={item}
-                            width={width / 2.5}
-                            marginHorizontal={5}
-                        />
-                    )}
-                </ScrollView> */}
-
-                {/* <CommonTexts label={'Panda Basket'} fontSize={13} ml={15} mb={5} mt={15} />
-                <ScrollView
-                    horizontal
-                    showsHorizontalScrollIndicator={false}
-                    style={{ flexDirection: 'row', paddingLeft: 7, }}
-                >
-                    {basket.map((item) =>
-                        <CommonItemCard
-                            key={item?._id}
-                            item={item}
-                            width={width / 2.5}
-                            marginHorizontal={5}
-                        />
-                    )}
-                </ScrollView> */}
-
-                {/* <OrderWhatsapp /> */}
-
-                {/* <CommonTexts label={'Trending Sales'} fontSize={13} ml={15} mb={5} mt={15} />
-                <ScrollView
-                    horizontal
-                    showsHorizontalScrollIndicator={false}
-                    style={{ flexDirection: 'row', paddingLeft: 7, }}
-                >
-                    {trend.map((item) =>
-                        <CommonItemCard
-                            key={item?._id}
-                            item={item}
-                            width={width / 2.5}
-                            marginHorizontal={5}
-                        />
-                    )}
-                </ScrollView> */}
-
-                {/* {pandaSuggestion?.length > 0 && <>
-                    <CommonTexts label={'Panda Suggestions'} fontSize={13} ml={15} mb={5} mt={15} />
-                    <ScrollView
-                        horizontal
-                        showsHorizontalScrollIndicator={false}
-                        style={{ flexDirection: 'row', paddingLeft: 7, paddingBottom: 50 }}
-                    >
-                        {pandaSuggestion?.map((item) =>
-                            <CommonItemCard
-                                key={item?._id}
-                                item={item}
-                                width={width / 2.5}
-                                marginHorizontal={5}
-                            />
-                        )}
-                    </ScrollView>
-                </>} */}
-
-
                 {item?.description &&
                     <View style={{ paddingLeft: 10, paddingRight: 10 }}>
                         <Text style={styles.DetailsText}>Details</Text>
@@ -655,10 +578,7 @@ const SingleItemScreen = ({ route, navigation }) => {
                     checkout={proceedCheckout}
                 />
 
-                {/* 
-               <Animated.View style={cartContext?.animation.getLayout()}>
-                    <Text>cary</Text>
-                </Animated.View>  */}
+
 
                 <Modal
                     // animationType="slide"
@@ -668,8 +588,10 @@ const SingleItemScreen = ({ route, navigation }) => {
 
                     {imagesArray && <Modal visible={showSingleImg} >
                         <ImageViewer
+                            // onChange={(index) =>ImageViewerChange(index)}
                             style={{ flex: 1 }}
                             enableSwipeDown
+                            index={selectedImage}
                             onSwipeDown={closeSingleImg}
                             onCancel={closeSingleImg}
                             imageUrls={imagesArray}

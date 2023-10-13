@@ -37,10 +37,9 @@ import FastImage from 'react-native-fast-image';
 import reactotron from 'reactotron-react-native';
 import SplashScreen from 'react-native-splash-screen'
 import CommonWhatsappButton from '../../../Components/CommonWhatsappButton';
-import { navigate } from '../../../Navigations/RootNavigation';
+
 import Animated, { useSharedValue, withDelay, withRepeat, withSequence, withTiming } from 'react-native-reanimated';
 //import messaging from '@react-native-firebase/messaging';
-
 import {
     useQuery
 } from '@tanstack/react-query';
@@ -602,7 +601,7 @@ const styles = StyleSheet.create({
     },
     pickupReferContainer: {
         flexDirection: 'row',
-        backgroundColor: '#F7F7F7',
+        backgroundColor: '#F4FFE9',
         marginTop: 20,
         justifyContent: 'space-evenly'
     },

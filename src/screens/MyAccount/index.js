@@ -17,11 +17,14 @@ import Toast from 'react-native-toast-message';
 import CartContext from '../../contexts/Cart'
 import { IMG_URL } from '../../config/constants'
 import reactotron from '../../ReactotronConfig'
+import DeleteUserModal from '../../Components/CustomDeleteModal'
 
 
 
 const MyAccount = ({ navigation }) => {
 
+
+    const { height, width } = useWindowDimensions()
     const contextPanda = useContext(PandaContext)
     const cartContext = useContext(CartContext)
     const userContext = useContext(AuthContext)
@@ -30,33 +33,39 @@ const MyAccount = ({ navigation }) => {
     const user = useContext(AuthContext)
     let userData = user?.userData
 
-    const [showModal, setShowModal] = useState(false)
+    const [showModal, setShowModal] = useState(false);
+    const [deleteModal, setDeleteModal] = useState(false);
 
     const gotoMyAddress = useCallback(() => {
         navigation.navigate('MyAddresses', { mode: 'MyAcc' })
-    }, [])
+    }, [navigation])
 
     const gotoPandaCoins = useCallback(() => {
         navigation.navigate('PandaCoins')
-    }, [])
+    }, [navigation])
 
     const gotoAffiliateBonus = useCallback(() => {
         navigation.navigate('AffiliateBonus')
-    }, [])
+    }, [navigation])
 
 
     const onClose = useCallback(() => {
         setShowModal(false)
-    }, [])
+    }, [navigation])
+
+    const OpenDelete = useCallback(()=>{
+        setDeleteModal(true)
+    },[navigation])
+
+    const CloseDelete = useCallback(()=>{
+        setDeleteModal(false)
+    },[navigation])
 
 
     const getPosition = async () => {
         await Geolocation.getCurrentPosition(
             position => {
-
-
                 userContext.setLocation([position?.coords?.latitude, position.coords?.longitude])
-
             },
             error => {
                 Toast.show({
@@ -81,9 +90,34 @@ const MyAccount = ({ navigation }) => {
         );
     }
 
+   const onClickDelete = async ()=>{
+     try {
+        await customAxios.get('/customer/customer-account-delete');
+        cartContext.setCart(null)
+        cartContext.setAddress(null)
+        cartContext.setDefaultAddress(null)
+        userContext.setCurrentAddress(null)
+        userContext.setUserLocation(null)
+        userContext.setCity(null)
+        await AsyncStorage.clear()
+        setDeleteModal(false);
+        navigation.dispatch(
+            CommonActions.reset({
+                index: 0,
+                routes: [
+                    { name: 'Login' },
+                ],
+            })
+        );
+
+     }catch(err){
+
+     }
+   }
+
 
     const onClick = async () => {
-  
+
         // await AsyncStorage.clear()
 
         // let datas = {
@@ -142,63 +176,63 @@ const MyAccount = ({ navigation }) => {
 
     }
 
-    const onEdit = useCallback(async () => {
+    const onEdit = useCallback( () => {
         navigation.navigate('EditProfile')
-    })
+    },[navigation])
 
     return (
         // <>
         //     {active === 'fashion' || active === 'panda' ? <>
         //         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}><Text style={{ fontSize: 20 }}>Coming Soon!!!</Text></View>
         //     </> :
-                <>
-                    <HeaderWithTitle title={'My Account'} noBack />
-                    <ScrollView style={{ flex: 1, backgroundColor: active === 'green' ? '#F4FFE9' : active === 'fashion' ? '#FFF5F7' : '#fff', }}>
-                        <View style={{ alignItems: 'center' }}>
-                            <View>
-                                <Image
-                                    style={styles.logo}
+        <>
+            <HeaderWithTitle title={'My Account'} noBack />
+            <ScrollView style={{ flex: 1, backgroundColor: active === 'green' ? '#F4FFE9' : active === 'fashion' ? '#FFF5F7' : '#fff', }}>
+                <View style={{ alignItems: 'center' }}>
+                    <View>
+                        <Image
+                            style={styles.logo}
 
-                                    source={userData?.image ? { uri: `${IMG_URL}${userData?.image}` } : require('../../Images/drawerLogo.png')}
-                                />
-                                <TouchableOpacity
-                                    onPress={onEdit}
-                                    style={{ width: 25, height: 25, borderRadius: 15, backgroundColor: active === "green" ? '#8ED053' : active === "fashion" ? '#FF7190' : '#58D36E', alignItems: 'center', justifyContent: 'center', alignSelf: 'flex-end', marginTop: -25 }}
-                                >
-                                    <MaterialIcons name='edit' size={15} color='#fff' />
-                                </TouchableOpacity>
-                            </View>
+                            source={userData?.image ? { uri: `${IMG_URL}${userData?.image}` } : require('../../Images/drawerLogo.png')}
+                        />
+                        <TouchableOpacity
+                            onPress={onEdit}
+                            style={{ width: 25, height: 25, borderRadius: 15, backgroundColor: active === "green" ? '#8ED053' : active === "fashion" ? '#FF7190' : '#58D36E', alignItems: 'center', justifyContent: 'center', alignSelf: 'flex-end', marginTop: -25 }}
+                        >
+                            <MaterialIcons name='edit' size={15} color='#fff' />
+                        </TouchableOpacity>
+                    </View>
 
 
-                            <CommonTexts
-                                label={userData?.name}
-                                color="#23233C"
-                                fontSize={13}
-                                mt={3}
-                            />
-                            <Text
-                                style={{
-                                    fontFamily: 'Poppins-Regular',
-                                    color: '#A9A9A9',
-                                    fontSize: 9,
-                                }}
-                            >{userData?.email}</Text>
-                            <Text
-                                style={{
-                                    fontFamily: 'Poppins-Regular',
-                                    color: '#A9A9A9',
-                                    fontSize: 9,
-                                    marginTop: 1,
-                                }}
-                            >{userData?.mobile}</Text>
-                        </View>
-                        <View style={{ marginHorizontal: 20 }}>
-                            <ListCard
-                                onPress={gotoMyAddress}
-                                img={active === 'green' ? require('../../Images/addressOrange.png') : active === 'fashion' ? require('../../Images/fashionAddress.png') : require('../../Images/address.png')}
-                                label={'My Addresses'}
-                            />
-                            <ListCard
+                    <CommonTexts
+                        label={userData?.name}
+                        color="#23233C"
+                        fontSize={13}
+                        mt={3}
+                    />
+                    <Text
+                        style={{
+                            fontFamily: 'Poppins-Regular',
+                            color: '#A9A9A9',
+                            fontSize: 9,
+                        }}
+                    >{userData?.email}</Text>
+                    <Text
+                        style={{
+                            fontFamily: 'Poppins-Regular',
+                            color: '#A9A9A9',
+                            fontSize: 9,
+                            marginTop: 1,
+                        }}
+                    >{userData?.mobile}</Text>
+                </View>
+                <View style={{ marginHorizontal: 20 }}>
+                    <ListCard
+                        onPress={gotoMyAddress}
+                        img={active === 'green' ? require('../../Images/addressOrange.png') : active === 'fashion' ? require('../../Images/fashionAddress.png') : require('../../Images/address.png')}
+                        label={'My Addresses'}
+                    />
+                    {/* <ListCard
                                 onPress={
                                     // gotoPandaCoins
                                     null
@@ -206,16 +240,16 @@ const MyAccount = ({ navigation }) => {
                                 img={active === 'green' ? require('../../Images/Orangepanda.png') : active === 'fashion' ? require('../../Images/fashionPanda.png') : require('../../Images/panda.png')}
                                 label={'Panda Coins'}
                                 pandaCoin=''
-                            />
-                            {!active === 'fashion' || !active === 'green' ? null : <ListCard
+                            /> */}
+                    {/* {!active === 'fashion' || !active === 'green' ? null : <ListCard
                                 onPress={
                                     // gotoAffiliateBonus
                                 null
                                 }
                                 img={active === 'green' ? require('../../Images/affiliateOrange.png') : require('../../Images/affiliate.png')}
                                 label={'Affiliate Bonus'}
-                            />}
-                            {/* <ListCard
+                            />} */}
+                    {/* <ListCard
                         img={active === 'green' ? require('../../Images/buildingOrange.png') : active === 'fashion' ? require('../../Images/fashionBuilding.png') : require('../../Images/building.png')}
                         label={'About Us'}
                     />
@@ -245,23 +279,42 @@ const MyAccount = ({ navigation }) => {
                         DntshowRightArrow
                         noBorder
                     /> */}
-                            <CustomButton
-                                onPress={() => setShowModal(true)}
-                                label={'Logout'}
-                                bg={active === 'green' ? '#8ED053' : active === 'fashion' ? '#FF7190' : '#58D36E'}
-                                mb={100}
-                                mt={20}
-                            />
-                        </View>
 
-                        <LogoutModal
-                            visible={showModal}
-                            onDismiss={onClose}
-                            onPress={onClick}
-                            label={'Are you sure to logout?'}
-                        />
-                    </ScrollView>
-                </>
+                </View>
+
+                <View style={{ flexDirection: 'row', gap: 5, width: width, justifyContent: 'space-around' }}>
+                    <CustomButton
+                        width={width / 2.5}
+                        onPress={() => setShowModal(true)}
+                        label={'Logout'}
+                        bg={active === 'green' ? '#8ED053' : active === 'fashion' ? '#FF7190' : '#58D36E'}
+                        mb={100}
+                        mt={20}
+                    />
+                    <CustomButton
+                        width={width / 2.5}
+                        onPress={OpenDelete}
+                        label={'Delete'}
+                        bg={'red'}
+                        mb={100}
+                        mt={20}
+                    />
+                </View>
+
+                {showModal && <LogoutModal
+                    visible={showModal}
+                    onDismiss={onClose}
+                    onPress={onClick}
+                    label={'Are you sure to logout?'}
+                />}
+                   {deleteModal && <DeleteUserModal
+                    visible={deleteModal}
+                    onDismiss={CloseDelete}
+                    onPress={onClickDelete}
+                    label={'Are you sure you want to delete your account?'}
+                />}
+            </ScrollView>
+        </>
         // </>
     )
 }

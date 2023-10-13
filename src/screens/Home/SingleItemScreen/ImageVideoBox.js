@@ -16,9 +16,10 @@ const ImageVideoBox = memo(({selectedImage, setSelectedImage, onPress, item, ind
     let active = contextPanda.active
 
 
+
     const onClick = useCallback(() => {
         setSelectedImage(index)
-    },[])
+    },[index,item])
 
     return (
         <TouchableOpacity

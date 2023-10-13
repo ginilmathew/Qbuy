@@ -15,7 +15,7 @@ import AuthContext from '../../contexts/Auth'
 
 const DrawerContent = ({ navigation }) => {
 
-    const {width, height} = useWindowDimensions()
+    const { width, height } = useWindowDimensions()
     const auth = useContext(AuthContext)
 
     const onClickDrawer = useCallback(() => {
@@ -43,12 +43,12 @@ const DrawerContent = ({ navigation }) => {
 
 
     return (
-        <ScrollView showsVerticalScrollIndicator={false} style={{ backgroundColor:'#23233C', }}>
+        <ScrollView showsVerticalScrollIndicator={false} style={{ backgroundColor: '#23233C', }}>
             <SafeAreaView>
 
-                <View style={{alignItems:'center', borderBottomColor:'#fff', borderBottomWidth:2, paddingBottom:15}}>
-                    <TouchableOpacity onPress={onClickDrawer} style={{ alignSelf:'flex-end',  padding:10 }}>
-                        <Ionicons name={"close"} color="#fff" size={28}  />
+                <View style={{ alignItems: 'center', borderBottomColor: '#fff', borderBottomWidth: 2, paddingBottom: 15 }}>
+                    <TouchableOpacity onPress={onClickDrawer} style={{ alignSelf: 'flex-end', padding: 10 }}>
+                        <Ionicons name={"close"} color="#fff" size={28} />
                     </TouchableOpacity>
                     <Image
                         style={styles.logo}
@@ -63,7 +63,7 @@ const DrawerContent = ({ navigation }) => {
                     <Text
                         style={{
                             fontFamily: 'Poppins-Regular',
-                            color:'#fff',
+                            color: '#fff',
                             fontSize: 9,
                         }}
                     >{auth?.userData?.email}</Text>
@@ -76,36 +76,36 @@ const DrawerContent = ({ navigation }) => {
                         }}
                     >{auth?.userData?.mobile}</Text>
                 </View>
-                
+
 
                 <ListItem
-                    onPress={clickSellWithus}
-                    icon={<SimpleLineIcons name={"handbag"} color="#fff" size={13}/>}
+                    onPress={null}
+                    icon={<SimpleLineIcons name={"handbag"} color="#fff" size={13} />}
                     label={'Sell With Us'}
                 />
                 <ListItem
-                    onPress={clickWorkWithPanda}
-                    icon={<FontAwesome5 name={"handshake"} color="#fff" size={12}/>}
+                    onPress={null}
+                    icon={<FontAwesome5 name={"handshake"} color="#fff" size={12} />}
                     label={'Work With Qbuy Panda'}
                 />
 
                 <ListItem
-                    onPress={clickCustFeedback}
-                    icon={<MaterialCommunityIcons name={"comment-alert"} color="#fff" size={15}/>}
+                    onPress={null}
+                    icon={<MaterialCommunityIcons name={"comment-alert"} color="#fff" size={15} />}
                     label={'Customer Feedbacks'}
                 />
                 <ListItem
-                    onPress={clickApplyFran}
-                    icon={<Entypo name={"shop"} color="#fff" size={15}/>}
+                    onPress={null}
+                    icon={<Entypo name={"shop"} color="#fff" size={15} />}
                     label={'Apply for a Franchisee'}
                 />
-                   <ListItem
+                <ListItem
                     onPress={clickAboutUs}
-                    icon={<Ionicons name={"person"} color="#fff" size={15}/>}
+                    icon={<Ionicons name={"person"} color="#fff" size={15} />}
                     label={'About Us'}
                 />
 
-                <View style={{width:'100%', height: height/2.8, alignItems:'center', justifyContent:'flex-end'}}>
+                <View style={{ width: '100%', height: height / 2.8, alignItems: 'center', justifyContent: 'flex-end' }}>
                     <Text
                         style={{
                             fontFamily: 'Poppins-Regular',
@@ -113,11 +113,11 @@ const DrawerContent = ({ navigation }) => {
                             fontSize: 11,
                         }}
                     >{'Version 2.0.1'}</Text>
-                    <View style={{flexDirection:'row', marginVertical:15, width:'50%', justifyContent:'space-between'}}>
-                        <FontAwesome name='facebook' color='#fff' size={18}/>
-                        <FontAwesome name='instagram' color='#fff' size={18}/>
-                        <Ionicons name='logo-twitter' color='#fff' size={18}/>
-                        <Entypo name='linkedin' color='#fff' size={18}/>
+                    <View style={{ flexDirection: 'row', marginVertical: 15, width: '50%', justifyContent: 'space-between' }}>
+                        <FontAwesome name='facebook' color='#fff' size={18} />
+                        <FontAwesome name='instagram' color='#fff' size={18} />
+                        <Ionicons name='logo-twitter' color='#fff' size={18} />
+                        <Entypo name='linkedin' color='#fff' size={18} />
                     </View>
                 </View>
 
@@ -130,9 +130,9 @@ export default DrawerContent
 
 const styles = StyleSheet.create({
     logo: {
-		width: 60,
-		height: 60,
-		resizeMode: 'contain',
-        marginTop:-30
-	},
+        width: 60,
+        height: 60,
+        resizeMode: 'contain',
+        marginTop: -30
+    },
 })

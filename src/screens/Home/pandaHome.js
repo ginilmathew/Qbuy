@@ -388,7 +388,7 @@ export default function PandaHome({ navigation }) {
                 <View
                     style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 15, marginBottom: 5, justifyContent: 'space-between', marginRight: 5 }}
                 >
-                    <CommonTexts label={'Recently Viewed'} fontSize={13} />
+                    <CommonTexts label={'Recently Viewed'} fontSize={13}/>
                     <CommonFiltration onChange={setFilter} />
                 </View>
                 <ScrollView
@@ -429,8 +429,6 @@ export default function PandaHome({ navigation }) {
                     {rendePandaSuggestion()}
                 </ScrollView>
                 <CommonTexts label={'Available Products'} fontSize={13} ml={15} mb={5} mt={15} />
-
-
             </View>
         )
     }
@@ -627,7 +625,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         backgroundColor: '#F7F7F7',
         marginTop: 10,
-        paddingLeft: 8
+        marginLeft:10
     },
     foodTypeText: {
         fontFamily: 'Poppins-Regular',

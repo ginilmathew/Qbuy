@@ -304,7 +304,6 @@ const QbuyPanda = ({ navigation }) => {
                         renderItem={CarouselCardItem}
                     />
                 </View>}
-
                 <ScrollView
                     horizontal
                     showsHorizontalScrollIndicator={false}
@@ -319,7 +318,6 @@ const QbuyPanda = ({ navigation }) => {
                     />)
                     )}
                 </ScrollView>
-
                 <SearchBox onPress={onSearch} />
 
 
