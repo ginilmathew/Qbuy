@@ -236,13 +236,14 @@ const DeviceVersion = DeviceInfo.getVersion()
                 VersionManagement(response?.data?.data)
             
                 // setInitialScreen('green');
+                setInitialScreen('green')
             })
             .catch(async error => {
                 Toast.show({
                     type: 'error',
                     text1: error
                 });
-                setInitialScreen('Login');
+                // setInitialScreen('Login');
                 await AsyncStorage.clear()
                 loadingContext.setLoading(false);
             })
@@ -324,7 +325,8 @@ const DeviceVersion = DeviceInfo.getVersion()
         }
         else {
             SplashScreen.hide();
-            setInitialScreen('Login');
+            // setInitialScreen('Login');
+            setInitialScreen('green')
         }
     }
 

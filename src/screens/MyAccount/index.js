@@ -93,13 +93,13 @@ const MyAccount = ({ navigation }) => {
    const onClickDelete = async ()=>{
      try {
         await customAxios.get('/customer/customer-account-delete');
-        cartContext.setCart(null)
-        cartContext.setAddress(null)
-        cartContext.setDefaultAddress(null)
-        userContext.setCurrentAddress(null)
-        userContext.setUserLocation(null)
-        userContext.setCity(null)
-        await AsyncStorage.clear()
+        cartContext.setCart(null);
+        cartContext.setAddress(null);
+        cartContext.setDefaultAddress(null);
+        userContext.setCurrentAddress(null);
+        userContext.setUserLocation(null);
+        userContext.setCity(null);
+        await AsyncStorage.clear();
         setDeleteModal(false);
         navigation.dispatch(
             CommonActions.reset({
@@ -109,7 +109,7 @@ const MyAccount = ({ navigation }) => {
                 ],
             })
         );
-
+        userContext.setUserData(null);
      }catch(err){
 
      }
@@ -173,6 +173,7 @@ const MyAccount = ({ navigation }) => {
                 ],
             })
         );
+        userContext.setUserData(null);
 
     }
 

@@ -14,6 +14,7 @@ import reactotron from 'reactotron-react-native'
 import CartContext from '../../../../contexts/Cart'
 import AuthContext from '../../../../contexts/Auth'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { CommonActions } from '@react-navigation/native'
 
 const LocationScreen = ({ route, navigation }) => {
 
@@ -22,7 +23,7 @@ const LocationScreen = ({ route, navigation }) => {
 
 
     const homeNavigationbasedIndex = navigation.getState()
-   
+
 
     const cartContext = useContext(CartContext)
     const contextPanda = useContext(PandaContext)
@@ -106,8 +107,18 @@ const LocationScreen = ({ route, navigation }) => {
     }, [homeNavigationbasedIndex?.index])
 
     const onConfirm = useCallback(async () => {
-  
 
+        if (!userContext?.userData) {
+            navigation.dispatch(
+                CommonActions.reset({
+                    index: 0,
+                    routes: [
+                        { name: 'home' },
+                    ],
+                })
+            )
+            return false;
+        }
         //below code for checking the location is denied condition
         if (homeNavigationbasedIndex?.index === 1 && mode !== "currentlocation") {
             let value = {
@@ -126,7 +137,7 @@ const LocationScreen = ({ route, navigation }) => {
             }
 
         } else {
-          
+
             let locationData = {
                 location: addressContext?.currentAddress?.location ? addressContext?.currentAddress?.location : address,
                 city: addressContext?.currentAddress?.city ? addressContext?.currentAddress?.city : city,
@@ -134,14 +145,14 @@ const LocationScreen = ({ route, navigation }) => {
                 longitude: addressContext?.currentAddress?.longitude ? addressContext?.currentAddress?.longitude : location?.longitude,
             }
 
-   
+
             navigation.navigate('AddDeliveryAddress', { item: { ...editAddress, ...locationData } })
         }
 
 
 
 
-    }, [location, address, city, addressContext?.currentAddress, addressContext?.location])
+    }, [location, address, city, addressContext?.currentAddress, addressContext?.location,navigation])
 
     const addNewAddress = useCallback(() => {
         navigation.navigate('AddNewLocation')
@@ -164,7 +175,7 @@ const LocationScreen = ({ route, navigation }) => {
 
             }
             // addressContext.setCurrentAddress(value)
-         
+
         })
             .catch(err => {
             })
@@ -179,7 +190,7 @@ const LocationScreen = ({ route, navigation }) => {
         setLocation({ latitude: coordinates?.latitude, longitude: coordinates?.longitude })
         addressContext.setCurrentAddress({ latitude: coordinates?.latitude, longitude: coordinates?.longitude })
         //setLocation(region)
-   
+
     }
 
     return (

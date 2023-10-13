@@ -45,8 +45,8 @@ const WorkWithPanda = ({ navigation, route }) => {
     
     return (
         <>
-            <HeaderWithTitle title={'Work With Qbuy Panda'} noBack />
-            <ScrollView
+            <HeaderWithTitle title={'Work With Qbuy Panda'}  />
+            {/* <ScrollView
                 style={{
                     flex: 1,
                     backgroundColor: active === 'green' ? '#F4FFE9' : active === 'fashion' ? '#FFF5F7' : '#fff', 
@@ -118,7 +118,12 @@ const WorkWithPanda = ({ navigation, route }) => {
 
 
 
-            </ScrollView>
+            </ScrollView> */}
+
+<View style={{flex:1,alignItems:'center',justifyContent:'center'}}>
+                <Text style={{fontSize:18,letterSpacing:1}}>Coming Soon!...</Text>
+
+            </View>
         </>
     )
 }

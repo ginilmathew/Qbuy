@@ -96,9 +96,15 @@ const Header = ({ onPress, openAddress, goCart }) => {
                     justifyContent: 'center'
                 }}
             >
+                {userContext?.userData &&
                 <TouchableOpacity onPress={onPress} style={{ flex: 0.13, marginLeft: 13 }} >
                     <EvilIcons name={"navicon"} color="#23233C" size={36} />
-                </TouchableOpacity>
+                </TouchableOpacity> }
+                {!userContext?.userData &&
+                <TouchableOpacity onPress={changeAddress} style={{ flex: 0.13, marginLeft: 13 }} >
+                    <Ionicons name={"location"} color="#23233C" size={32} />
+                </TouchableOpacity> }
+
 
                 <TouchableOpacity
                     onPress={changeAddress}
@@ -119,9 +125,11 @@ const Header = ({ onPress, openAddress, goCart }) => {
                         </TouchableOpacity>
 
                     </>}
-                <TouchableOpacity onPress={onClickWishlist}>
-                    <Fontisto name={"heart"} color="#FF6464" size={20} marginHorizontal={8} />
-                </TouchableOpacity>
+
+                {userContext?.userData &&
+                    <TouchableOpacity onPress={onClickWishlist}>
+                        <Fontisto name={"heart"} color="#FF6464" size={20} marginHorizontal={8} />
+                    </TouchableOpacity>}
                 <TouchableOpacity onPress={onClickNotificatn} style={{ marginRight: 8 }}>
                     <Ionicons name={"notifications"} color="#23233C" size={25} />
                 </TouchableOpacity>

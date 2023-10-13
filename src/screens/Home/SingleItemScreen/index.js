@@ -26,6 +26,7 @@ import Toast from 'react-native-toast-message';
 import reactotron from 'reactotron-react-native'
 import Carousel from 'react-native-reanimated-carousel';
 import ImageViewer from 'react-native-image-zoom-viewer';
+import { CommonActions } from '@react-navigation/native'
 
 
 
@@ -34,6 +35,7 @@ import ImageViewer from 'react-native-image-zoom-viewer';
 const SingleItemScreen = ({ route, navigation }) => {
 
     const refRBSheet = useRef();
+    const userContext = useContext(AuthContext)
     const contextPanda = useContext(PandaContext)
     const cartContext = useContext(CartContext)
     const [showSingleImg, setShowSingleImg] = useState(false)
@@ -216,6 +218,12 @@ const SingleItemScreen = ({ route, navigation }) => {
     }, [])
 
     const addToCart = useCallback(async () => {
+             if(!userContext?.userData){
+         
+                navigation.navigate('Login')
+                return false;
+             }
+
         let price = item?.variant ? selectedVariant?.price : item?.price;
         if (parseInt(price) < 1) {
             Toast.show({

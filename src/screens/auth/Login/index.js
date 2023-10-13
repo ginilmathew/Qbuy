@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, ScrollView, ActivityIndicator, ToastAndroid, } from 'react-native'
+import { StyleSheet, Text, View, Image, ScrollView, ActivityIndicator, ToastAndroid, useWindowDimensions, } from 'react-native'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -18,18 +18,23 @@ import Toast from 'react-native-toast-message'
 import SplashScreen from 'react-native-splash-screen'
 import reactotron from 'reactotron-react-native';
 import { NativeModules } from "react-native"
+import { CommonActions } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
 
 
 const { env, mode } = NativeModules.RNENVConfig
 
 const Login = ({ navigation }) => {
+	const userContext = useContext(AuthContext);
+
+	const { width } = useWindowDimensions()
 
 	useEffect(() => {
 		//reactotron.log("in")
 		SplashScreen.hide()
 	}, [])
 
-
+    const [location, setLocation] = useState(null)
 	const loginUser = useContext(AuthContext)
 	const loadingg = useContext(LoaderContext)
 
@@ -41,7 +46,7 @@ const Login = ({ navigation }) => {
 
 	const phone = /^(\+\d{1,3}[- ]?)?\d{10}$/
 	const schema = yup.object({
-		mobile: yup.string().required('Phone number is required').max(10, "Phone Number must be 10 digits").min(10, "Phone Number must be 10 digits").matches(phone,'Not a valid number'),
+		mobile: yup.string().required('Phone number is required').max(10, "Phone Number must be 10 digits").min(10, "Phone Number must be 10 digits").matches(phone, 'Not a valid number'),
 	}).required();
 
 	const { control, handleSubmit, formState: { errors }, setValue } = useForm({
@@ -68,12 +73,138 @@ const Login = ({ navigation }) => {
 	}, [])
 
 	const imageURl = {
-        panda: require('../../../Images/pandaLogo.png'),
-        green: require('../../../Images/loginLogo.png'),
-        fashion: require('../../../Images/FashionloginLogo.png')
+		panda: require('../../../Images/pandaLogo.png'),
+		green: require('../../../Images/loginLogo.png'),
+		fashion: require('../../../Images/FashionloginLogo.png')
+	}
+
+	function getAddressFromCoordinates(lat, lng) {
+        if (lat && lng) {
+            axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${lat},${lng}&key=AIzaSyBBcghyB0FvhqML5Vjmg3uTwASFdkV8wZY`).then(response => {
+                userContext.setCurrentAddress(response?.data?.results[0]?.formatted_address);
+        
+                //setLocation
+            })
+                .catch(err => {
+                })
+        }
+
     }
 
+    useEffect(() => {
+        if (location) {
+            getAddressFromCoordinates()
+        }
+    }, [location])
 
+
+
+
+	const getCurrentLocation = useCallback(async () => {
+        if (Platform.OS === 'ios') {
+            const status = await Geolocation.requestAuthorization('whenInUse');
+            if (status === "granted") {
+                getPosition()
+            } else {
+                Toast.show({
+                    type: 'error',
+                    text1: 'Location permission denied by user.'
+                });
+              
+				navigation.navigate('AddNewLocation')
+            }
+
+        }
+        else {
+            const hasPermission = await PermissionsAndroid.check(
+                PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+
+            );
+
+            if ((Platform.OS === 'android' && Platform.Version < 23) || hasPermission) {
+                getPosition()
+            }else {
+                const status = await PermissionsAndroid.request(
+                    PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+    
+                );
+    
+                if (status === PermissionsAndroid.RESULTS.GRANTED) {
+                    getPosition()
+    
+                }else if(status === PermissionsAndroid.RESULTS.DENIED || status === PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN ){
+            
+            
+					navigation.navigate('AddNewLocation')
+                    Toast.show({
+                        type: 'error',
+                        text1: 'Location permission denied by user.'
+                    });
+                }
+
+            }
+        }
+
+    }, [])
+
+
+
+	const getPosition = async () => {
+        await Geolocation.getCurrentPosition(
+            position => {
+        
+                getAddressFromCoordinates(position?.coords?.latitude, position.coords?.longitude)
+            
+                userContext.setLocation([position?.coords?.latitude, position.coords?.longitude])
+				setLocation(position?.coords)
+                SplashScreen.hide();
+				navigation.dispatch(CommonActions.reset({
+					index: 0,
+					routes: [
+						{ name: 'green' }
+					],
+				}))
+            },
+            async error => {
+            	navigation.navigate('AddNewLocation')
+                Toast.show({
+                    type: 'error',
+                    text1: error.message
+                });
+                // checkLogin();
+            },
+            {
+                accuracy: {
+                    android: 'high',
+                    ios: 'best',
+                },
+                enableHighAccuracy: true,
+                timeout: 15000,
+                maximumAge: 10000,
+                distanceFilter: 0,
+                forceRequestLocation: true,
+                forceLocationManager: false,
+                showLocationDialog: true,
+            },
+        );
+    }
+
+	const NaviagteToGuest = useCallback(() => {
+          if(userContext?.location){
+			navigation.dispatch(
+				CommonActions.reset({
+					index: 0,
+					routes: [
+						{ name: 'green' },
+					],
+				})
+			)
+		  }else{
+			getCurrentLocation()
+		  }
+        
+
+	}, [navigation])
 
 	return (
 		<CommonAuthBg>
@@ -105,13 +236,26 @@ const Login = ({ navigation }) => {
 				/>
 				<TermsAndPrivacyText />
 
-				<CustomButton
-					onPress={handleSubmit(onSubmit)}
-					bg={mode ===  "fashion" ?'#FF7190' : "#58D36E"}
-					label={'Sign In'}
-					mt={20}
-					loading={loader}
-				/>
+				<View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+					<CustomButton
+						width={width / 2.5}
+						onPress={handleSubmit(onSubmit)}
+						bg={mode === "fashion" ? '#FF7190' : "#58D36E"}
+						label={'Sign In'}
+						mt={20}
+						loading={loader}
+					/>
+					<CustomButton
+						width={width / 2.5}
+						onPress={NaviagteToGuest}
+						bg={'blue'}
+						label={'Guest'}
+						mt={20}
+						
+					/>
+
+				</View>
+
 
 				<Text style={styles.textStyle}>{"Need Support to Login?"}</Text>
 				<HelpAndSupportText />

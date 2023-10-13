@@ -10,7 +10,7 @@ const ChooseAddressType = memo(({ setSelected, selected, item, color }) => {
 
     const onClick = useCallback(() => {
         setSelected(item?.name)
-    }, [])
+    }, [item])
 
 
     return (

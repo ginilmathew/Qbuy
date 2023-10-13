@@ -19,7 +19,7 @@ import { useFocusEffect } from '@react-navigation/native'
 
 const CategoryScreen = ({ route, navigation }) => {
 
-    const { width } = useWindowDimensions()
+    const { width ,height} = useWindowDimensions()
   
 
     const { active } = useContext(PandaContext)
@@ -127,11 +127,15 @@ const CategoryScreen = ({ route, navigation }) => {
 
             >
                 <View style={{ paddingHorizontal: 10 }}>
+                    <View style={{height:height/3.5}}>
                     <FastImage
                         source={{ uri: `${IMG_URL}${item?.image}` }}
-                        style={styles.mainImage}
+                        style={[styles.mainImage,{height:'100%'}]}
                         borderRadius={15}
+                        resizeMode='center'
                     />
+                    </View>
+                   
                     <Text style={styles.description}>{item?.seo_description === null ? '' : item?.seo_description}</Text>
                 </View>
 
@@ -196,7 +200,7 @@ export default CategoryScreen
 const styles = StyleSheet.create({
     mainImage: {
         width: '100%',
-        height: 200,
+        // height: 200,
         alignSelf: 'center',
         marginTop: 10,
         borderRadius: 15

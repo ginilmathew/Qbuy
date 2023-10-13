@@ -33,8 +33,7 @@ const Category = ({ route }) => {
 
 
 
-    const { width } = useWindowDimensions()
-
+    const { width } = useWindowDimensions();
 
     const contextPanda = useContext(PandaContext)
     const userContext = useContext(AuthContext)
@@ -87,7 +86,6 @@ const Category = ({ route }) => {
 
         await customAxios.post(`customer/product/category-based`, datas)
             .then(async response => {
-
                 let categories = response?.data?.data?.find(home => home?.type === "categories");
                 setAvailabelPdts(categories?.data);
                 let stores = response?.data?.data?.find(home => home?.type === "stores");
@@ -97,9 +95,8 @@ const Category = ({ route }) => {
                 let related_product = response?.data?.data?.find(home => home?.type === "related_product");
                 setRelatedProduct(related_product?.data);
                 let subcategory = response?.data?.data?.find(home => home?.type === "subcategories");
-                setSubCategory(subcategory?.data)
-
-                setLoading(false)
+                setSubCategory(subcategory?.data);
+                setLoading(false);
                 loadingContex.setLoading(false);
             })
             .catch(async error => {
@@ -148,7 +145,6 @@ const Category = ({ route }) => {
                 <PandaShopCard name={lowercse} item={item} key={index} />
             </View>
         )
-
     }
 
     const HeaderComponents = () => {
@@ -163,12 +159,9 @@ const Category = ({ route }) => {
                 <View style={{ paddingHorizontal: 10 }}>
                     <FastImage
                         source={{ uri: `${IMG_URL}${item?.image}` }}
-                        // source={{ uri: `${IMG_URL}${item?.image}` }}
                         style={styles.mainImage}
                         borderRadius={15}
                     />
-
-
                     {mode === 'store' && <StoreAddressCard />}
                     <Text style={styles.description}>{item?.seo_description}</Text>
                 </View>
@@ -204,8 +197,7 @@ const Category = ({ route }) => {
                     </ScrollView>
                 </View>
                 }
-
-
+                
                 {stores && stores?.length > 0 &&
                     <CommonTexts label={'Available Shops'} mt={15} mb={5} ml={10} fontSize={13} />
                 }

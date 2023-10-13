@@ -1,5 +1,5 @@
 import { ActivityIndicator, ScrollView, StyleSheet, Text, TouchableOpacity, View, RefreshControl, Platform, PermissionsAndroid, Linking } from 'react-native'
-import React, { useCallback, useContext, useState } from 'react'
+import React, { useCallback, useContext, useState, useEffect } from 'react'
 import HeaderWithTitle from '../../../Components/HeaderWithTitle'
 import CommonTexts from '../../../Components/CommonTexts'
 import Ionicons from 'react-native-vector-icons/Ionicons'
@@ -39,17 +39,21 @@ const MyAddresses = ({ route, navigation }) => {
 
 
 
-
-    // useEffect(() => {
-    //     getAddressList()
-    // }, [])
-
-
-    useFocusEffect(
-        React.useCallback(() => {
+    useEffect(() => {
+        if (userContext?.userData) {
             getAddressList()
-        }, [])
-    );
+        }
+    }, [userContext?.userData])
+
+
+    // useFocusEffect(
+    //     React.useCallback(() => {
+    //         if(useContext?.userData){
+    //             getAddressList()
+    //         }
+
+    //     }, [])
+    // );
 
     const getAddressList = async () => {
         loadingContex.setLoading(true)
@@ -128,8 +132,6 @@ const MyAddresses = ({ route, navigation }) => {
                     type: 'error',
                     text1: 'Location permission denied by user.'
                 });
-
-
 
             }
 
@@ -215,23 +217,23 @@ const MyAddresses = ({ route, navigation }) => {
             // userContext.setLocation([latitude, longitude])
             // addressContext?.setCurrentAddress(null)
             // addressContext?.setLocation(null)
-                
-                 let locality = response?.data?.results?.[0]?.address_components?.find(add => add.types.includes('locality'));
 
-         
+            let locality = response?.data?.results?.[0]?.address_components?.find(add => add.types.includes('locality'));
+
+
             let value = {
                 latitude: latitude,
                 longitude: longitude,
-                location:response?.data?.results[0]?.formatted_address,
-                city:locality?.long_name
+                location: response?.data?.results[0]?.formatted_address,
+                city: locality?.long_name
 
             }
 
-                  
+
 
             addressContext.setCurrentAddress(value)
-         
-            navigation.navigate('LocationScreen',{mode:'currentlocation'})
+
+            navigation.navigate('LocationScreen', { mode: 'currentlocation' })
 
         })
             .catch(err => {
@@ -279,10 +281,10 @@ const MyAddresses = ({ route, navigation }) => {
     const selectAddress = async (id) => {
         let address = addrList.find(addr => addr?._id === id);
         //  await customAxios.post(`customer/get-cart-product`,{cart_id:cartContext?.cart?._id,address_id:address})
-      
+
         userContext.setLocation([address?.area?.latitude, address?.area?.longitude])
         userContext.setCurrentAddress(address?.area?.address)
-      
+
 
         // if (!address?.default) {
         address.default_status = true;
@@ -329,7 +331,7 @@ const MyAddresses = ({ route, navigation }) => {
                         <RefreshControl refreshing={loadingg} onRefresh={getAddressList} />
                     }
                 >
-                    {(mode === 'home' || addrList?.length === 0) && <CustomButton
+                    {((mode === 'home' || addrList?.length === 0) && userContext?.userData) && <CustomButton
                         onPress={getCurrentLocation}
                         bg={'#19B836'}
                         label='Choose Current Location'

@@ -44,8 +44,8 @@ const ApplyFranchisee = () => {
 
     return (
         <>
-            <HeaderWithTitle title={'Apply for a franchisee'} noBack/>
-            <ScrollView 
+            <HeaderWithTitle title={'Apply for a franchisee'} />
+            {/* <ScrollView 
                 style={{ 
                     flex:1, 
                     backgroundColor: active === 'green' ? '#F4FFE9' : active === 'fashion' ? '#FFF5F7' : '#fff', 
@@ -58,9 +58,9 @@ const ApplyFranchisee = () => {
                         autoPlay
                     />
                 </View>
-                <Text style={styles.mainText}>{'Connect with your ineterested franchisee!'}</Text>
+                <Text style={styles.mainText}>{'Connect with your ineterested franchisee!'}</Text> */}
 
-                <CommonInput
+                {/* <CommonInput
 					control={control}
 					error={errors.mobile}
 					fieldName="mobile"
@@ -74,7 +74,7 @@ const ApplyFranchisee = () => {
 					fieldName="mobile"
                     topLabel={'Contact Number'}
                     mb={20}
-				/>
+				/> */}
                 {/* <CommonSelectDropdown
                     topLabel={'Store Category'}
                     mb={20}
@@ -92,7 +92,7 @@ const ApplyFranchisee = () => {
                     setValue={setFran}
                 /> */}
 
-                <CommonInput
+                {/* <CommonInput
 					control={control}
 					error={errors.mobile}
 					fieldName="mobile"
@@ -110,7 +110,11 @@ const ApplyFranchisee = () => {
 
               
                 
-            </ScrollView>
+            </ScrollView> */}
+                 <View style={{flex:1,alignItems:'center',justifyContent:'center'}}>
+                <Text style={{fontSize:18,letterSpacing:1}}>Coming Soon!...</Text>
+
+            </View>
         </>
     )
 }

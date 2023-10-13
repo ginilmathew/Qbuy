@@ -26,8 +26,8 @@ const SellWithUs = () => {
 
     return (
         <>
-            <HeaderWithTitle title={'Sell With Us'} noBack/>
-            <ScrollView 
+            <HeaderWithTitle title={'Sell With Us'} />
+            {/* <ScrollView 
                 style={{ 
                     flex:1, 
                     backgroundColor: active === 'green' ? '#F4FFE9' : active === 'fashion' ? '#FFF5F7' : '#fff', 
@@ -92,7 +92,11 @@ const SellWithUs = () => {
 
               
                 
-            </ScrollView>
+            </ScrollView> */}
+            <View style={{flex:1,alignItems:'center',justifyContent:'center'}}>
+                <Text style={{fontSize:18,letterSpacing:1}}>Coming Soon!...</Text>
+
+            </View>
         </>
     )
 }

@@ -69,7 +69,10 @@ const QBuyGreen = ({ navigation }) => {
     const loadingg = useContext(LoaderContext);
     const userContext = useContext(AuthContext);
     const cartContext = useContext(CartContext);
-
+ 
+    
+   
+  
 
     let datas = {
         type: "green",
@@ -242,7 +245,6 @@ const QBuyGreen = ({ navigation }) => {
             default:
                 return false;
         }
-
     }
 
 
@@ -424,10 +426,7 @@ const QBuyGreen = ({ navigation }) => {
         <>
             <Header onPress={onClickDrawer} />
             <View style={styles.container} >
-
                 <NameText userName={userContext?.userData?.name ? userContext?.userData?.name : userContext?.userData?.mobile} mt={8} />
-
-
                 <FlatList
                     // refreshControl={
                     //     <RefreshControl

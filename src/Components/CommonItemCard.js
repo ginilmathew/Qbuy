@@ -37,7 +37,7 @@ const CommonItemCard = memo(({ height, width, item, marginHorizontal, wishlistIc
     const calculation = useMemo(() => getProduct(item), [item]);
 
 
-   
+
     const { fontScale, height: height1 } = useWindowDimensions()
 
     const styles = makeStyles(height1);
@@ -70,16 +70,18 @@ const CommonItemCard = memo(({ height, width, item, marginHorizontal, wishlistIc
 
     const handleClick = useCallback(() => {
 
- 
-        if(item?.status === "active"){
+
+        if (item?.status === "active") {
             startTransition(() => {
                 navigation.navigate('SingleItemScreen', { item: data })
             })
         }
-       
-    }, [data,data?.status])
+
+    }, [data, data?.status])
 
     const openBottomSheet = useCallback(() => {
+
+
         // refRBSheet.current.open()
         // if(data?.variant){
         //     setVariant(true)
@@ -106,7 +108,7 @@ const CommonItemCard = memo(({ height, width, item, marginHorizontal, wishlistIc
         }
 
         //navigation.navigate('SingleItemScreen', { item: item })
-    }, [data, cartContext.cart, cartContext?.products,item])
+    }, [data, cartContext.cart, cartContext?.products, item])
 
 
 
@@ -194,7 +196,7 @@ const CommonItemCard = memo(({ height, width, item, marginHorizontal, wishlistIc
                 onPress={handleClick}
                 style={{ marginHorizontal: marginHorizontal, marginRight: mr, marginLeft: ml, marginBottom: mb }}
             >
-                <FastImage 
+                <FastImage
                     // source={{ uri: `${IMG_URL}${item?.product_image}` }}
                     source={{ uri: `${IMG_URL}${data?.product_image}` }}
                     style={{ height: height ? height : 110, width: width, justifyContent: 'flex-end', borderRadius: 16 }}
@@ -222,7 +224,7 @@ const CommonItemCard = memo(({ height, width, item, marginHorizontal, wishlistIc
 
                     </View>}
 
-                    {(data?.available && item?.status === "active") && <View style={styles.addContainer}>
+                    {(data?.available && item?.status === "active" && userContext?.userData) && <View style={styles.addContainer}>
                         <CommonAddButton
                             onPress={openBottomSheet}
                         />
@@ -234,13 +236,14 @@ const CommonItemCard = memo(({ height, width, item, marginHorizontal, wishlistIc
                         <Text style={styles.tagText}>{item?.openCloseTag}</Text>
                     </View>} */}
 
-                    <TouchableOpacity
-                        onPress={(data?.is_wishlist || wishlistIcon) ? RemoveAction : AddAction}
-                        style={styles.hearIcon}
-                    >
+                    {userContext?.userData &&
+                        <TouchableOpacity
+                            onPress={(data?.is_wishlist || wishlistIcon) ? RemoveAction : AddAction}
+                            style={styles.hearIcon}
+                        >
 
-                        <Fontisto name={"heart"} color={(data?.is_wishlist || wishlistIcon) ? "#FF6464" : '#EDEDED'} size={12 / fontScale} />
-                    </TouchableOpacity>
+                            <Fontisto name={"heart"} color={(data?.is_wishlist || wishlistIcon) ? "#FF6464" : '#EDEDED'} size={12 / fontScale} />
+                        </TouchableOpacity>}
 
                 </FastImage>
 

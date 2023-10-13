@@ -16,19 +16,28 @@ import * as Animatable from 'react-native-animatable';
 import CartItemsCount from '../Components/CartItemsCount';
 import MyAccountNav from './MyAccountNav';
 import PandaContext from '../contexts/Panda';
+import AuthContext from '../contexts/Auth';
+import reactotron from 'reactotron-react-native';
+
 
 const Tab = createBottomTabNavigator();
 
 const TabNavigator = ({ navigation }) => {
 
     const contextPanda = useContext(PandaContext)
+    const userContext = useContext(AuthContext)
+  
+
+  
+
+
     let grocery = contextPanda.greenPanda
     let fashion = contextPanda.pinkPanda
 
     let colors = contextPanda.color
     let logos = contextPanda.logo
 
-
+   reactotron.log({colors})
 
     const [showPandas, setShowPandas] = useState(false)
 
@@ -37,7 +46,6 @@ const TabNavigator = ({ navigation }) => {
         contextPanda.setGreenPanda(!contextPanda.greenPanda)
         contextPanda.setColor(contextPanda.greenPanda ? ['#7BE495', '#329D9C'] : ['#8BC852', '#9BFF58'])
         contextPanda.setPinkPanda(false)
-
         contextPanda.setLogo(contextPanda.greenPanda ? require('../Images/home.png') : require('../Images/grocery.png'))
     })
 
@@ -46,11 +54,11 @@ const TabNavigator = ({ navigation }) => {
         contextPanda.setPinkPanda(!contextPanda.pinkPanda)
         contextPanda.setColor(contextPanda.pinkPanda ? ['#7BE495', '#329D9C'] : ['#FF41F2', '#FF5757'])
         contextPanda.setGreenPanda(false)
-
         contextPanda.setLogo(contextPanda.pinkPanda ? require('../Images/home.png') : require('../Images/textile.png'))
     })
 
     const onPressHome = useCallback(() => {
+    
         navigation.navigate('HomeNav', {screen:'SwitchHome'})
     }, [navigation])
 

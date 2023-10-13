@@ -29,6 +29,7 @@ import customAxios from '../../CustomeAxios';
 import Tooltip from 'react-native-walkthrough-tooltip';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import moment from 'moment';
+import reactotron from 'reactotron-react-native';
 
 
 
@@ -44,21 +45,22 @@ const TabNav = () => {
     const userContext = useContext(AuthContext)
 
 
+
     useEffect(() => {
         checkFirst()
     }, [])
 
 
-    const checkFirst = async() => {
-       //await AsyncStorage.removeItem("tooltip")
+    const checkFirst = async () => {
+        //await AsyncStorage.removeItem("tooltip")
         let toolTip = await AsyncStorage.getItem("tooltip");
 
-        if(!toolTip){
+        if (!toolTip) {
             setToolTip(true)
             await AsyncStorage.setItem("tooltip", `1`)
-            
+
         }
-       
+
 
     }
 
@@ -215,17 +217,27 @@ const TabNav = () => {
                 );
         }
     };
+
+
+
+
     const renderTabBar = ({ routeName, selectedTab, navigate }) => {
+
+        const NavigationPage = () => {
+            navigation.dispatch(
+                CommonActions.reset({
+                    index: 0,
+                    routes: [
+                        { name: routeName },
+                    ],
+                })
+            )
+
+        }
+
         return (
             <TouchableOpacity
-                onPress={() => navigation.dispatch(
-                    CommonActions.reset({
-                        index: 0,
-                        routes: [
-                            { name: routeName },
-                        ],
-                    })
-                )}
+                onPress={userContext?.userData ? NavigationPage : null}
                 style={styles.tabbarItem}
             >
                 {_renderIcon(routeName, selectedTab)}
@@ -356,13 +368,17 @@ const TabNav = () => {
                 headerShown: false
             }}
             renderCircle={({ selectedTab, navigate }) => (
+
+
                 <>
+
+
                     {pandaContext?.active === "green" &&
                         <Animated.View style={styles.btnCircleUp}>
                             {showSwitch && <View style={{ position: 'absolute', bottom: 70, flexDirection: 'row', width: 120, justifyContent: 'space-between' }}>
                                 <Tooltip
                                     isVisible={enableSub}
-                                    content={<Text style={{ fontFamily: 'Poppins-Bold', textAlign: 'center', color:'#fff' }}>Switch to Panda!</Text>}
+                                    content={<Text style={{ fontFamily: 'Poppins-Bold', textAlign: 'center', color: '#fff' }}>Switch to Panda!</Text>}
                                     placement="top"
                                     onClose={disableSecond}
                                     contentStyle={{
@@ -377,9 +393,9 @@ const TabNav = () => {
                                 </Tooltip>
                                 <Tooltip
                                     isVisible={enableThird}
-                                    content={<Text style={{ fontFamily: 'Poppins-Bold', textAlign: 'center', color:'#fff' }}>Switch to Fashion!</Text>}
+                                    content={<Text style={{ fontFamily: 'Poppins-Bold', textAlign: 'center', color: '#fff' }}>Switch to Fashion!</Text>}
                                     placement="top"
-                                    onClose={() =>  setEnableThird(false)}
+                                    onClose={() => setEnableThird(false)}
                                     contentStyle={{
                                         backgroundColor: '#FF5757'
                                     }}
@@ -403,8 +419,8 @@ const TabNav = () => {
                                     height: 100,
                                     borderRadius: 5,
                                     backgroundColor: '#8BC852',
-                                    alignItems:'center',
-                                    justifyContent:'center'
+                                    alignItems: 'center',
+                                    justifyContent: 'center'
                                 }}
                             >
                                 <CustomMainAnimated
@@ -421,7 +437,7 @@ const TabNav = () => {
                             {showSwitch && <View style={{ position: 'absolute', bottom: 70, flexDirection: 'row', width: 120, justifyContent: 'space-between' }}>
                                 <Tooltip
                                     isVisible={enableSub}
-                                    content={<Text style={{ fontFamily: 'Poppins-Bold', textAlign: 'center', color:'#fff' }}>Switch to Green!</Text>}
+                                    content={<Text style={{ fontFamily: 'Poppins-Bold', textAlign: 'center', color: '#fff' }}>Switch to Green!</Text>}
                                     placement="top"
                                     onClose={disableSecond}
                                     contentStyle={{
@@ -436,9 +452,9 @@ const TabNav = () => {
                                 </Tooltip>
                                 <Tooltip
                                     isVisible={enableThird}
-                                    content={<Text style={{ fontFamily: 'Poppins-Bold', textAlign: 'center', color:'#fff' }}>Switch to Fashion!</Text>}
+                                    content={<Text style={{ fontFamily: 'Poppins-Bold', textAlign: 'center', color: '#fff' }}>Switch to Fashion!</Text>}
                                     placement="top"
-                                    onClose={() =>  setEnableThird(false)}
+                                    onClose={() => setEnableThird(false)}
                                     contentStyle={{
                                         backgroundColor: '#FF5757'
                                     }}
@@ -462,8 +478,8 @@ const TabNav = () => {
                                     height: 100,
                                     borderRadius: 5,
                                     backgroundColor: '#329D9C',
-                                    alignItems:'center',
-                                    justifyContent:'center'
+                                    alignItems: 'center',
+                                    justifyContent: 'center'
                                 }}
                             >
                                 <CustomMainAnimated
@@ -479,7 +495,7 @@ const TabNav = () => {
                             {showSwitch && <View style={{ position: 'absolute', bottom: 70, flexDirection: 'row', width: 120, justifyContent: 'space-between' }}>
                                 <Tooltip
                                     isVisible={enableSub}
-                                    content={<Text style={{ fontFamily: 'Poppins-Bold', textAlign: 'center', color:'#fff' }}>Switch to Green!</Text>}
+                                    content={<Text style={{ fontFamily: 'Poppins-Bold', textAlign: 'center', color: '#fff' }}>Switch to Green!</Text>}
                                     placement="top"
                                     onClose={disableSecond}
                                     contentStyle={{
@@ -521,8 +537,8 @@ const TabNav = () => {
                                     height: 100,
                                     borderRadius: 5,
                                     backgroundColor: '#FF6184',
-                                    alignItems:'center',
-                                    justifyContent:'center'
+                                    alignItems: 'center',
+                                    justifyContent: 'center'
                                 }}
                             >
                                 <CustomMainAnimated

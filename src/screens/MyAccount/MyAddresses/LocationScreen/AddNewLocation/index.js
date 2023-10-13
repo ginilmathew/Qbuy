@@ -6,18 +6,41 @@ import AddressContext from '../../../../../contexts/Address';
 import SplashScreen from 'react-native-splash-screen'
 import reactotron from 'reactotron-react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons'
+import AuthContext from '../../../../../contexts/Auth';
+import axios from 'axios';
 const AddNewLocation = ({ route, navigation }) => {
 
     const backArrowhide = navigation.getState();
 
     const addressContext = useContext(AddressContext)
-
+    const userContext = useContext(AuthContext)
 
     const { width, height } = useWindowDimensions()
 
     const location = useRef()
 
+    function getAddressFromCoordinates(lat,lon) {
+        axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${lat},${lon}&key=AIzaSyBBcghyB0FvhqML5Vjmg3uTwASFdkV8wZY`).then(response => {
+  
+           reactotron.log({response},'RESPONSE IN ADDRESS')
+            userContext.setUserLocation(response?.data?.results[0]?.formatted_address)
 
+            let locality = response?.data?.results?.[0]?.address_components?.find(add => add.types.includes('locality'));
+            userContext.setCity(locality?.long_name)
+            let value = {
+                area: {
+                    location: locality?.long_name,
+                    address: response?.data?.results[0]?.formatted_address
+                }
+            }
+            //cartContext.setDefaultAddress(value)
+
+            // reactotron.log({ response: response?.data?.results[0]?.formatted_address }, 'LOCATION RESPONSE')
+
+        })
+            .catch(err => {
+            })
+    }
 
     useEffect(() => {
         SplashScreen.hide()
@@ -47,10 +70,19 @@ const AddNewLocation = ({ route, navigation }) => {
                             longitude: details?.geometry?.location?.lng
                         }
 
+                          if(!useContext?.userData){
+                            userContext?.setCurrentAddress(null)
+                            userContext.setLocation([details?.geometry?.location?.lat, details?.geometry?.location?.lng])
+                            getAddressFromCoordinates(details?.geometry?.location?.lat, details?.geometry?.location?.lng);
+                            addressContext.setCurrentAddress(Value)
+                          }else{
+                            addressContext.setCurrentAddress(Value)
+                            // addressContext.setLocation(details)
+                           
+                          }
 
-                        addressContext.setCurrentAddress(Value)
-                        // addressContext.setLocation(details)
-                        navigation.navigate('LocationScreen', { mode: '' })
+
+                       navigation.navigate('LocationScreen', { mode: '' })
 
                     }}
                     query={{

@@ -3,7 +3,7 @@ import Context from "./index";
 
 const AuthProvider = (props) => {
     const [login, setLogin] = useState([]);
-    const [userData, setUserData] = useState([]);
+    const [userData, setUserData] = useState(null);
     const [homeData, setHomeData] = useState([]);
     const [location, setLocation] = useState(null)
     const [currentAddress, setCurrentAddress] = useState(null)
