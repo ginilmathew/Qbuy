@@ -39,21 +39,21 @@ const MyAddresses = ({ route, navigation }) => {
 
 
 
-    useEffect(() => {
-        if (userContext?.userData) {
-            getAddressList()
-        }
-    }, [userContext?.userData])
+    // useEffect(() => {
+    //     if (userContext?.userData) {
+    //         getAddressList()
+    //     }
+    // }, [userContext?.userData])
 
 
-    // useFocusEffect(
-    //     React.useCallback(() => {
-    //         if(useContext?.userData){
-    //             getAddressList()
-    //         }
+    useFocusEffect(
+        React.useCallback(() => {
+            if(userContext?.userData){
+                getAddressList()
+            }
 
-    //     }, [])
-    // );
+        }, [userContext?.userData])
+    );
 
     const getAddressList = async () => {
         loadingContex.setLoading(true)

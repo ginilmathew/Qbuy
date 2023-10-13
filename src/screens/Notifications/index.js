@@ -15,17 +15,17 @@ const Notifications = () => {
     return (
         <>
 
-            <HeaderWithTitle title={'Notifications'}  />
-            <ScrollView
-                style={{
-                    flex: 1,
-                    backgroundColor: grocery ? '#F4FFE9' : fashion ? '#FFF5F7' : '#fff',
-                    paddingHorizontal: 10,
-                }}
-            >
-                
+            <HeaderWithTitle title={'Notifications'} />
 
-            </ScrollView>
+            <View style={{
+                flex: 1, justifyContent: 'center',
+                alignItems: 'center'
+            }}>
+                <Text style={{ fontSize: 30 }}>coming Soon!...</Text>
+            </View>
+
+
+
         </>
 
     )
