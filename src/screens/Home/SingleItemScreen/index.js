@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, ScrollView, Image, FlatList, useWindowDimensions, TouchableOpacity, Moda, RefreshControl, Modal, Pressable } from 'react-native'
+import { StyleSheet, Text, View, ScrollView, Image, FlatList, useWindowDimensions, TouchableOpacity, Moda, RefreshControl, Modal, Pressable, Alert } from 'react-native'
 import React, { useState, useEffect, useContext, useCallback, useRef } from 'react'
 import HeaderWithTitle from '../../../Components/HeaderWithTitle'
 import CommonTexts from '../../../Components/CommonTexts'
@@ -219,8 +219,27 @@ const SingleItemScreen = ({ route, navigation }) => {
 
     const addToCart = useCallback(async () => {
              if(!userContext?.userData){
+                Alert.alert(
+                    'Warning',
+                    'Add to cart option only available for logged in user. Click OK to Login.',
+                    [
+                      {
+                        text: 'Cancel',
+                        //onPress: () => Alert.alert('Cancel Pressed'),
+                        style: 'cancel',
+                      },
+                      {
+                        text: 'OK',
+                        onPress: () => navigation.navigate('Login'),
+                        style: 'cancel',
+                      },
+                    ],
+                    {
+                      cancelable: true,
+                    },
+                );
          
-                navigation.navigate('Login')
+                //navigation.navigate('Login')
                 return false;
              }
 
