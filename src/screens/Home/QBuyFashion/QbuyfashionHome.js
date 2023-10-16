@@ -249,7 +249,7 @@ const QbuyfashionHome = () => {
                         <ShopCard key={item?._id} item={item} />
                     ))}
                 </View>
-                <View style={styles.pickupReferContainer}>
+                {/* <View style={styles.pickupReferContainer}>
                     <PickDropAndReferCard
                         onPress={null}
                         lotties={require('../../../Lottie/farmer.json')}
@@ -263,7 +263,7 @@ const QbuyfashionHome = () => {
                         lottieFlex={0.5}
                         ml={8}
                     />
-                </View>
+                </View> */}
                 <View style={styles.offerView}>
                     <Text style={styles.discountText}>{'50% off Upto Rs 125!'}</Text>
                     <Offer onPress={null} shopName={"GM"} />

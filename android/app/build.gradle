@@ -94,7 +94,7 @@ android {
         panda {
             resValue "string", "app_name", "QBuyPanda"
             applicationId "com.qbuypanda.app"
-            versionCode 10
+            versionCode 12
             versionName "2.4"
         }
         green {

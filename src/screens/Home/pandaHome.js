@@ -374,7 +374,7 @@ export default function PandaHome({ navigation }) {
                     <PickDropAndReferCard
                         onPress={referRestClick}
                         lotties={require('../../Lottie/rating.json')}
-                        label={'Reffer A Restaurant'}
+                        label={'Refer A Restaurant'}
                         lottieFlex={0.5}
                     />
                 </View>

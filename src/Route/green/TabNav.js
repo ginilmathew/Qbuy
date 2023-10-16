@@ -224,20 +224,26 @@ const TabNav = () => {
     const renderTabBar = ({ routeName, selectedTab, navigate }) => {
 
         const NavigationPage = () => {
-            navigation.dispatch(
-                CommonActions.reset({
-                    index: 0,
-                    routes: [
-                        { name: routeName },
-                    ],
-                })
-            )
+            reactotron.log("in")
+            if(userContext?.userData){
+                navigation.dispatch(
+                    CommonActions.reset({
+                        index: 0,
+                        routes: [
+                            { name: routeName },
+                        ],
+                    })
+                )
+            }
+            else{
+                navigation.navigate("Login")
+            }
 
         }
 
         return (
             <TouchableOpacity
-                onPress={userContext?.userData ? NavigationPage : null}
+                onPress={NavigationPage}
                 style={styles.tabbarItem}
             >
                 {_renderIcon(routeName, selectedTab)}
