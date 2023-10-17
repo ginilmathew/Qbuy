@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { StyleSheet, Text, View, ScrollView, Image, FlatList, useWindowDimensions, TouchableOpacity, TouchableHighlight } from 'react-native'
 import React, { useState, useEffect } from 'react'
 
@@ -8,9 +9,9 @@ import reactotron from '../../../ReactotronConfig';
 
 
 const ItemDetails = ({ itemName, hotelName, views, sold, minQty, price, onPress, available }) => {
-    
 
- const [tooltip, setTooltip] = useState(true)
+
+    const [tooltip, setTooltip] = useState(true)
 
     useEffect(() => {
         setTimeout(() => {
@@ -22,133 +23,133 @@ const ItemDetails = ({ itemName, hotelName, views, sold, minQty, price, onPress,
     const { width } = useWindowDimensions()
 
     return (
-        <View style={styles.container}>
-            <View style={{ flex: 0.4, }}>
-                <CommonTexts label={itemName} fontSize={13} />
+        <View style={ styles.container }>
+            <View style={ { flex: 0.4, } }>
+                <CommonTexts label={ itemName } fontSize={ 13 } />
                 <TouchableOpacity
-                    onPress={onPress}
-                    style={{ flexDirection: 'row', alignItems: 'center', flexWrap: "wrap" }}
+                    onPress={ onPress }
+                    style={ { flexDirection: 'row', alignItems: 'center', flexWrap: "wrap" } }
                 >
                     <Text
-                        style={{
+                        style={ {
                             fontFamily: 'Poppins-LightItalic',
                             color: '#23233C',
                             fontSize: 10,
 
-                        }}
-                    >{'Sold by : '}</Text>
+                        } }
+                    >{ 'Sold by : ' }</Text>
 
                     <Tooltip
-                        isVisible={tooltip}
-                        content={<CommonTexts label='Click Here to view store' color={'#fff'} fontSize={9} />}
+                        isVisible={ tooltip }
+                        content={ <CommonTexts label='Click Here to view store' color={ '#fff' } fontSize={ 9 } /> }
                         placement="bottom"
-                        onClose={() => setTooltip(false)}
+                        onClose={ () => setTooltip(false) }
                         backgroundColor='transparent'
-                        contentStyle={{ backgroundColor: '#000', width: width / 3, height: 30, alignItems: 'center', justifyContent: 'center', borderRadius: 12, flexWrap: 'wrap' }}
+                        contentStyle={ { backgroundColor: '#000', width: width / 3, height: 30, alignItems: 'center', justifyContent: 'center', borderRadius: 12, flexWrap: 'wrap' } }
                     >
-                        <TouchableHighlight style={styles.touchable} onPress={onPress}>
+                        <TouchableHighlight style={ styles.touchable } onPress={ onPress }>
                             <Text
-                                style={{
+                                style={ {
                                     fontFamily: 'Poppins-BoldItalic',
                                     color: '#1185E0',
                                     fontSize: 11,
                                     flexWrap: 'wrap'
-                                }}
-                                numberOfLines={2}
-                            >{hotelName}</Text>
+                                } }
+                                numberOfLines={ 2 }
+                            >{ hotelName }</Text>
                         </TouchableHighlight>
                     </Tooltip>
                 </TouchableOpacity>
             </View>
-            <View style={styles.numbersBox}>
-                <View style={{ alignItems: 'center' }}>
+            <View style={ styles.numbersBox }>
+                <View style={ { alignItems: 'center' } }>
                     <Image
-                        source={require('../../../Images/view.png')}
-                        style={{ width: 10, height: 10 }}
+                        source={ require('../../../Images/view.png') }
+                        style={ { width: 10, height: 10 } }
                         resizeMode='contain'
                     />
                     <Text
-                        style={{
+                        style={ {
                             fontFamily: 'Poppins-Regular',
                             color: '#23233C',
                             fontSize: 9,
 
-                        }}
-                    >{'Views'}</Text>
+                        } }
+                    >{ 'Views' }</Text>
                     <Text
-                        style={{
+                        style={ {
                             fontFamily: 'Poppins-Bold',
                             color: '#23233C',
                             fontSize: 12,
 
-                        }}
-                    >{views}</Text>
+                        } }
+                    >{ views }</Text>
                 </View>
-                <View style={{ alignItems: 'center' }}>
+                <View style={ { alignItems: 'center' } }>
                     <Image
-                        source={require('../../../Images/analytics.png')}
-                        style={{ width: 10, height: 10 }}
+                        source={ require('../../../Images/analytics.png') }
+                        style={ { width: 10, height: 10 } }
                         resizeMode='contain'
                     />
                     <Text
-                        style={{
+                        style={ {
                             fontFamily: 'Poppins-Regular',
                             color: '#23233C',
                             fontSize: 9,
 
-                        }}
-                    >{'Sold'}</Text>
+                        } }
+                    >{ 'Sold' }</Text>
                     <Text
-                        style={{
+                        style={ {
                             fontFamily: 'Poppins-Bold',
                             color: '#23233C',
                             fontSize: 12,
 
-                        }}
-                    >{sold}</Text>
+                        } }
+                    >{ sold }</Text>
                 </View>
-                <View style={{ alignItems: 'center' }}>
+                <View style={ { alignItems: 'center' } }>
                     <Image
-                        source={require('../../../Images/box.png')}
-                        style={{ width: 10, height: 10 }}
+                        source={ require('../../../Images/box.png') }
+                        style={ { width: 10, height: 10 } }
                         resizeMode='contain'
                     />
                     <Text
-                        style={{
+                        style={ {
                             fontFamily: 'Poppins-Regular',
                             color: '#23233C',
                             fontSize: 9,
 
-                        }}
-                    >{'Minimum Qty'}</Text>
+                        } }
+                    >{ 'Minimum Qty' }</Text>
                     <Text
-                        style={{
+                        style={ {
                             fontFamily: 'Poppins-Bold',
                             color: '#23233C',
                             fontSize: 12,
 
-                        }}
-                    >{minQty}</Text>
+                        } }
+                    >{ minQty }</Text>
                 </View>
             </View>
-            {available && <View style={{ flex: 0.20 }}>
+            { available && <View style={ { flex: 0.20 } }>
                 <Text
-                    style={{
+                    style={ {
                         fontFamily: 'Poppins-Regular',
                         color: '#23233C',
                         fontSize: 11,
 
-                    }}
-                >{'Price'}</Text>
+                    } }
+                >{ 'Price' }</Text>
                 <Text
-                    style={{
+                    style={ {
                         fontFamily: 'Poppins-ExtraBold',
                         color: '#089321',
-                        fontSize: 14,
+                        fontSize: 12,
 
-                    }}
-                >₹{price}</Text>
-            </View>}
+                    } }
+                >₹{ price }</Text>
+            </View> }
         </View>
     )
 }

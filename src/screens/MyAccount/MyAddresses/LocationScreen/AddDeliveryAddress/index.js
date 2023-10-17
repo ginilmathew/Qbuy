@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View, Switch, KeyboardAvoidingView } from 'react-native'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
@@ -131,86 +132,87 @@ const AddDeliveryAddress = ({ route, navigation }) => {
 
     return (
         <>
-            <HeaderWithTitle title={'Add Delivery Address'} />
+            <HeaderWithTitle title={ 'Add Delivery Address' } />
             <ScrollView
-                style={{
+                style={ {
                     backgroundColor: active === 'green' ? '#F4FFE9' : active === 'fashion' ? '#FFF5F7' : '#fff',
                     flex: 1,
-                    paddingHorizontal: 15
-                }}
+                    paddingHorizontal: 15,
+                    marginBottom: 30
+                } }
             >
                 <KeyboardAvoidingView>
-                    <View style={styles.headerView}>
-                        <View style={{ flexDirection: 'row', }}>
-                            {datas?.map((item, index) =>
+                    <View style={ styles.headerView }>
+                        <View style={ { flexDirection: 'row', } }>
+                            { datas?.map((item, index) =>
                                 <ChooseAddressType
-                                    item={item}
-                                    key={index}
-                                    selected={selected}
-                                    setSelected={setSelected}
+                                    item={ item }
+                                    key={ index }
+                                    selected={ selected }
+                                    setSelected={ setSelected }
                                 />
-                            )}
+                            ) }
                         </View>
 
-                        <View style={{ paddingTop: 10 }} >
-                            <CommonTexts label={'Default'} fontSize={12} />
-                            <CommonSwitch toggleSwitch={toggleSwitch} isEnabled={isEnabled} />
+                        <View style={ { paddingTop: 10 } } >
+                            <CommonTexts label={ 'Default' } fontSize={ 12 } />
+                            <CommonSwitch toggleSwitch={ toggleSwitch } isEnabled={ isEnabled } />
                         </View>
                     </View>
                     <CommonInput
-                        control={control}
-                        error={errors.name}
+                        control={ control }
+                        error={ errors.name }
                         fieldName="name"
-                        topLabel={'Name'}
+                        topLabel={ 'Name' }
                     />
                     <CommonInput
-                        control={control}
-                        error={errors.location}
+                        control={ control }
+                        error={ errors.location }
                         fieldName="location"
-                        topLabel={'Area'}
+                        topLabel={ 'Area' }
                     />
                     <CommonInput
-                        control={control}
-                        error={errors.address}  
+                        control={ control }
+                        error={ errors.address }
                         fieldName="address"
-                        topLabel={'Address'}
+                        topLabel={ 'Address' }
                         placeholder='Complete Address e.g. house number, street name, etc'
                         placeholderTextColor='#0C256C21'
-                        top={10}
+                        top={ 10 }
                     />
                     <CommonInput
-                        control={control}
-                        error={errors.mobile}
+                        control={ control }
+                        error={ errors.mobile }
                         fieldName="mobile"
-                        topLabel={'Mobile'}
+                        topLabel={ 'Mobile' }
                         placeholder='Delivery Mobile Number e.g. mobile of the owner'
                         placeholderTextColor='#0C256C21'
-                        top={10}
+                        top={ 10 }
                     />
                     <CommonInput
-                        control={control}
-                        error={errors.pincode}
+                        control={ control }
+                        error={ errors.pincode }
                         fieldName="pincode"
-                        topLabel={'Pincode'}
+                        topLabel={ 'Pincode' }
                         placeholder='Delivery Pincode e.g. 695111'
                         placeholderTextColor='#0C256C21'
-                        top={10}
+                        top={ 10 }
                     />
                     <CommonInput
-                        control={control}
-                        error={errors.comments}
+                        control={ control }
+                        error={ errors.comments }
                         fieldName="comments"
-                        topLabel={'Comments (Optional)'}
+                        topLabel={ 'Comments (Optional)' }
                         placeholder='Delivery Instructions e.g. Opposite Gold Souk Mall'
                         placeholderTextColor='#0C256C21'
-                        top={10}
+                        top={ 10 }
                     />
                     <CustomButton
-                        onPress={handleSubmit(onSave)}
-                        bg={active === 'green' ? '#8ED053' : active === 'fashion' ? '#FF7190' : '#58D36E'}
+                        onPress={ handleSubmit(onSave) }
+                        bg={ active === 'green' ? '#8ED053' : active === 'fashion' ? '#FF7190' : '#58D36E' }
                         label='Save'
-                        mt={20}
-                        loading={loadingContext?.loading}
+                        mt={ 20 }
+                        loading={ loadingContext?.loading }
                     />
                 </KeyboardAvoidingView>
             </ScrollView>

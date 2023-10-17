@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Alert, Image, Pressable, StyleSheet, Text, TouchableOpacity, useWindowDimensions, View } from 'react-native'
 import React, { memo, useCallback, useContext, useEffect, useState } from 'react'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
@@ -184,7 +185,7 @@ const CartItemCard = ({ item, index, refreshCart }) => {
                 //navigation.navigate('CartNav',{screen: 'Cart'})
             })
             .catch(async error => {
-              
+
                 Toast.show({
                     type: 'error',
                     text1: error
@@ -204,39 +205,39 @@ const CartItemCard = ({ item, index, refreshCart }) => {
 
 
     return (
-        <View style={{ borderBottomWidth: 0.2, borderColor: '#A9A9A9', padding: 10, }} >
+        <View style={ { borderBottomWidth: 0.2, borderColor: '#A9A9A9', padding: 10, } } >
 
-            <View style={styles.container}>
+            <View style={ styles.container }>
                 <FastImage
-                    style={{ width: 70, height: 70, borderRadius: 10 }}
-                    source={{ uri: `${IMG_URL}${item?.image}` }}
+                    style={ { width: 70, height: 70, borderRadius: 10 } }
+                    source={ { uri: `${IMG_URL}${item?.image}` } }
                 />
-                <View style={{ marginLeft: 5, flex: 0.95 }}>
-                    {item?.attributes?.length > 0 ? <Text style={styles.nameText}>{`${item?.name}${'('}${item?.attributes.join(', ')}${')'} `}</Text> : <Text style={styles.nameText}>{item?.name}</Text>}
-                    <TouchableOpacity onPress={gotoStore}>
-                        <Text style={styles.shopText}>{item?.store?.name}</Text>
+                <View style={ { marginLeft: 5, flex: 0.95 } }>
+                    { item?.attributes?.length > 0 ? <Text style={ styles.nameText }>{ `${item?.name}${'('}${item?.attributes.join(', ')}${')'} ` }</Text> : <Text style={ styles.nameText }>{ item?.name }</Text> }
+                    <TouchableOpacity onPress={ gotoStore }>
+                        <Text style={ styles.shopText }>{ item?.store?.name }</Text>
                     </TouchableOpacity>
                 </View>
-                {/* {renderPricing()} */}
-                <View style={{ flexDirection: 'row', alignItems: 'center', }}>
-                    <Text style={styles.rateText}>{(item?.available && item?.status === 'active' && item?.availability) ? `₹ ${parseFloat(item?.price).toFixed(2)}` : ""}</Text>
+                {/* {renderPricing()} */ }
+                <View style={ { flexDirection: 'row', alignItems: 'center', } }>
+                    <Text style={ styles.rateText }>{ (item?.available && item?.status === 'active' && item?.availability) ? `₹ ${parseFloat(item?.price).toFixed(2)}` : "" }</Text>
                     <CommonCounter
-                        count={data.quantity}
-                        addItem={addItem}
-                        removeItem={removeItem}
-                        disabled={!item?.available || item?.status !== 'active' || !item.availability}
+                        count={ data.quantity }
+                        addItem={ addItem }
+                        removeItem={ removeItem }
+                        disabled={ !item?.available || item?.status !== 'active' || !item.availability }
                     />
                 </View>
             </View>
 
             <TouchableOpacity
-                onPress={deleteItem}
-                style={{ marginLeft: 5, justifyContent: 'center', alignItems: 'center', position: 'absolute', right: 15, top: 10 }}>
-                <MaterialCommunityIcons name={"delete-forever"} size={20} color={'red'} />
+                onPress={ deleteItem }
+                style={ { marginLeft: 5, justifyContent: 'center', alignItems: 'center', position: 'absolute', right: 15, top: 2 } }>
+                <MaterialCommunityIcons name={ "delete-forever" } size={ 20 } color={ 'red' } />
             </TouchableOpacity>
-            {item?.quantity < item?.minimum_qty && <Text style={styles.outofStock}>{`Min. quantity:${item?.minimum_qty}`}</Text>}
-            {!item?.availability && <Text style={styles.outofStock}>{"Not Available"}</Text>}
-            {(!item?.available || item?.status !== 'active') && <Text style={styles.outofStock}>{"Out of Stock"}</Text>}
+            { item?.quantity < item?.minimum_qty && <Text style={ styles.outofStock }>{ `Min. quantity:${item?.minimum_qty}` }</Text> }
+            { !item?.availability && <Text style={ styles.outofStock }>{ "Not Available" }</Text> }
+            { (!item?.available || item?.status !== 'active') && <Text style={ styles.outofStock }>{ "Out of Stock" }</Text> }
         </View>
 
     )

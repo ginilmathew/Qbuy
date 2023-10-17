@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { StyleSheet, Text, View, ScrollView, Image, TouchableOpacity } from 'react-native'
 import React, { useCallback, useContext, useState } from 'react'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
@@ -119,18 +120,18 @@ const EditProfile = ({ navigation }) => {
 
         launchImageLibrary(options, (res) => {
 
-            let format = ['image/png', 'image/jpeg','image/jpg']
+            let format = ['image/png', 'image/jpeg', 'image/jpg']
 
             let image = res?.assets?.some(obj => format.includes(obj.type))
 
             if (image) {
-                setFilePath(res)
+                setFilePath(res);
             } else {
-                setFilePath(null)
+                setFilePath(null);
                 Toast.show({
                     type: 'info',
                     text1: 'unsupported format'
-                })
+                });
                 return;
             }
 
@@ -156,47 +157,48 @@ const EditProfile = ({ navigation }) => {
 
         <>
             <HeaderWithTitle
-                title={'Edit Profile'}
+                title={ 'Edit Profile' }
             // onPress={mode === 'header' ?}
             />
 
 
-            <ScrollView style={{ paddingHorizontal: 30, backgroundColor: active === 'green' ? '#F4FFE9' : active === 'fashion' ? '#FFF5F7' : '#fff', }}>
+            <ScrollView style={ { paddingHorizontal: 30, backgroundColor: active === 'green' ? '#F4FFE9' : active === 'fashion' ? '#FFF5F7' : '#fff', } }>
 
-                <View style={{ alignSelf: 'center' }}>
+                <View style={ { alignSelf: 'center' } }>
                     <Image
-                        style={styles.image}
-                        source={filePath ? { uri: filePath?.assets?.[0]?.uri } : userdata.image ? { uri: `${IMG_URL}${userdata?.image}` } : require('../../../Images/drawerLogo.png')}
+                        style={ styles.image }
+                        resizeMode='contain'
+                        source={ filePath ? { uri: filePath?.assets?.[0]?.uri } : userdata.image ? { uri: `${IMG_URL}${userdata?.image}` } : require('../../../Images/drawerLogo.png') }
                     />
                     <TouchableOpacity
-                        onPress={imageGalleryLaunch}
-                        style={{ width: 25, height: 25, borderRadius: 15, backgroundColor: active === "green" ? '#8ED053' : active === "fashion" ? '#FF7190' : '#58D36E', alignItems: 'center', justifyContent: 'center', alignSelf: 'flex-end', marginTop: -25 }}
+                        onPress={ imageGalleryLaunch }
+                        style={ { width: 25, height: 25, borderRadius: 15, backgroundColor: active === "green" ? '#8ED053' : active === "fashion" ? '#FF7190' : '#58D36E', alignItems: 'center', justifyContent: 'center', alignSelf: 'flex-end', marginTop: -25 } }
                     >
-                        <MaterialIcons name='photo-camera' size={15} color='#fff' />
+                        <MaterialIcons name='photo-camera' size={ 15 } color='#fff' />
                     </TouchableOpacity>
                 </View>
                 <CommonInput
-                    control={control}
-                    error={errors.name}
+                    control={ control }
+                    error={ errors.name }
                     fieldName="name"
-                    topLabel={'Name'}
-                    top={10}
+                    topLabel={ 'Name' }
+                    top={ 10 }
                 />
                 <CommonInput
-                    control={control}
-                    error={errors.email}
+                    control={ control }
+                    error={ errors.email }
                     fieldName="email"
-                    topLabel={'Email'}
-                    top={10}
+                    topLabel={ 'Email' }
+                    top={ 10 }
 
                 />
                 <CommonInput
-                    control={control}
-                    error={errors.mobile}
+                    control={ control }
+                    error={ errors.mobile }
                     fieldName="mobile"
-                    topLabel={'Phone Number'}
-                    top={10}
-                    editable={false}
+                    topLabel={ 'Phone Number' }
+                    top={ 10 }
+                    editable={ false }
                 />
 
                 {/* <View style={styles.headerView}>
@@ -260,11 +262,11 @@ const EditProfile = ({ navigation }) => {
                     /> */}
 
                 <CustomButton
-                    label={'Submit'}
-                    bg={active === 'green' ? '#FF9C0C' : active === 'fashion' ? '#2D8FFF' : '#5871D3'}
-                    my={30}
-                    onPress={handleSubmit(onSubmit)}
-                    loading={loading}
+                    label={ 'Submit' }
+                    bg={ active === 'green' ? '#FF9C0C' : active === 'fashion' ? '#2D8FFF' : '#5871D3' }
+                    my={ 30 }
+                    onPress={ handleSubmit(onSubmit) }
+                    loading={ loading }
                 />
             </ScrollView>
 

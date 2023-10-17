@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Image, StyleSheet, Text, View, ScrollView } from 'react-native'
 import React, { useContext, useState } from 'react'
 import Lottie from 'lottie-react-native';
@@ -15,18 +16,18 @@ import PandaContext from '../../../contexts/Panda';
 const SellWithUs = () => {
     const contextPanda = useContext(PandaContext)
     let active = contextPanda.active
-    
-    const schema = yup.object({
-		mobile: yup.string().min(8).required('Phone number is required'),
-	}).required();
 
-	const { control, handleSubmit, formState: { errors }, setValue } = useForm({
-		resolver: yupResolver(schema)
-	});
+    const schema = yup.object({
+        mobile: yup.string().min(8).required('Phone number is required'),
+    }).required();
+
+    const { control, handleSubmit, formState: { errors }, setValue } = useForm({
+        resolver: yupResolver(schema)
+    });
 
     return (
         <>
-            <HeaderWithTitle title={'Sell With Us'} />
+            <HeaderWithTitle title={ 'Sell With Us' } />
             {/* <ScrollView 
                 style={{ 
                     flex:1, 
@@ -93,8 +94,8 @@ const SellWithUs = () => {
               
                 
             </ScrollView> */}
-            <View style={{flex:1,alignItems:'center',justifyContent:'center'}}>
-                <Text style={{fontSize:18,letterSpacing:1}}>Coming Soon!...</Text>
+            <View style={ { flex: 1, alignItems: 'center', justifyContent: 'center' } }>
+                <Text style={ { fontSize: 18, letterSpacing: 1 } }>Coming Soon!...</Text>
 
             </View>
         </>
@@ -105,18 +106,18 @@ export default SellWithUs
 
 const styles = StyleSheet.create({
 
-    lottieView : {
-        height:170, 
-        alignItems:'center', 
-        marginTop:20
+    lottieView: {
+        height: 170,
+        alignItems: 'center',
+        marginTop: 20
     },
-    mainText : {
+    mainText: {
         fontFamily: 'Poppins-Medium',
         color: '#23233C',
         fontSize: 13,
-        textAlign:'center',
-        paddingHorizontal:40,
-        marginTop:10,
-        marginBottom:20
+        textAlign: 'center',
+        paddingHorizontal: 40,
+        marginTop: 10,
+        marginBottom: 20
     }
 })
