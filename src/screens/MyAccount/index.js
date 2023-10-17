@@ -204,8 +204,6 @@ const MyAccount = ({ navigation }) => {
                             <MaterialIcons name='edit' size={ 15 } color='#fff' />
                         </TouchableOpacity>
                     </View>
-
-
                     <CommonTexts
                         label={ userData?.name }
                         color="#23233C"

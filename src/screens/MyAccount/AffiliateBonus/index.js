@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useContext, useEffect, useState } from 'react'
 import HeaderWithTitle from '../../../Components/HeaderWithTitle'
@@ -9,7 +10,7 @@ import PandaContext from '../../../contexts/Panda';
 
 
 
-const AffiliateBonus = ({route, navigation}) => {
+const AffiliateBonus = ({ route, navigation }) => {
 
     const contextPanda = useContext(PandaContext)
     let active = contextPanda.active
@@ -19,7 +20,7 @@ const AffiliateBonus = ({route, navigation}) => {
     coins = [
         {
             totalDownloads: 55,
-            totalOrders : 320,
+            totalOrders: 320,
             todaysOrders: 10
         }
     ]
@@ -66,48 +67,43 @@ const AffiliateBonus = ({route, navigation}) => {
 
     return (
         <>
-            <HeaderWithTitle  title={'Affiliate Bonus'}/>
+            <HeaderWithTitle title={ 'Affiliate Bonus' } />
             <ScrollView
-                showsHorizontalScrollIndicator={false}
-                style={{ 
+                showsHorizontalScrollIndicator={ false }
+                style={ {
                     backgroundColor: active === 'green' ? '#F4FFE9' : active === 'fashion' ? '#FFF5F7' : '#fff',
-                    paddingHorizontal:15, 
-                    flex:1
-                }}
+                    paddingHorizontal: 15,
+                    flex: 1
+                } }
             >
-                <View style={{height:200, marginBottom:20}}>
-                    <Lottie 
-                        source={{uri: 'https://assets1.lottiefiles.com/packages/lf20_fjv8qxqn.json'}} 
+                <View style={ { height: 200, marginBottom: 20 } }>
+                    <Lottie
+                        source={ { uri: 'https://assets1.lottiefiles.com/packages/lf20_fjv8qxqn.json' } }
                         autoPlay loop
                     />
                 </View>
-
-                <EarnCoinText coins={TotalCoins}/>
-
-                <Text style={{fontFamily:'Poppins-Regular', color:'#23233C', fontSize:11, textAlign:'center', marginTop:5, paddingHorizontal:50}}>This is the total earnings from orders of your referrals</Text>
-
+                <EarnCoinText coins={ TotalCoins } />
+                <Text style={ { fontFamily: 'Poppins-Regular', color: '#23233C', fontSize: 11, textAlign: 'center', marginTop: 5, paddingHorizontal: 50 } }>This is the total earnings from orders of your referrals</Text>
                 <EarningsTable
-                    totalDownloads={coins?.[0]?.totalDownloads}
-                    totalOrders={coins?.[0]?.totalOrders}
-                    todaysOrders={coins?.[0]?.todaysOrders}
+                    totalDownloads={ coins?.[0]?.totalDownloads }
+                    totalOrders={ coins?.[0]?.totalOrders }
+                    todaysOrders={ coins?.[0]?.todaysOrders }
                 />
-                
+
             </ScrollView>
-         
+
         </>
-        
+
     )
 }
 
 export default AffiliateBonus
 
 const styles = StyleSheet.create({
- 
-    container : { 
-        backgroundColor: '#fff', 
-        paddingHorizontal:15, 
-        flex:1
-    },
 
-   
+    container: {
+        backgroundColor: '#fff',
+        paddingHorizontal: 15,
+        flex: 1
+    },
 })
