@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { AppState, PermissionsAndroid, Platform, StyleSheet, ToastAndroid } from 'react-native'
 import React, { useState, useEffect, useContext, useCallback } from 'react'
 import { NavigationContainer } from '@react-navigation/native';
@@ -41,7 +42,7 @@ const Stack = createNativeStackNavigator();
 
 const RouteTest = () => {
 
-const DeviceVersion = DeviceInfo.getVersion()
+    const DeviceVersion = DeviceInfo.getVersion()
 
 
 
@@ -52,10 +53,10 @@ const DeviceVersion = DeviceInfo.getVersion()
     const [location, setLocation] = useState(null)
     const { active } = useContext(PandaContext)
     const [user, setUserDetails] = useState(null)
-    const [versionUpdate,setversionUpdate]=useState(false);
-    const [forceUpdate,setForceUpdate]=useState(false)
+    const [versionUpdate, setversionUpdate] = useState(false);
+    const [forceUpdate, setForceUpdate] = useState(false)
 
-    
+
     const [initialScreen, setInitialScreen] = useState(null);
 
 
@@ -64,7 +65,7 @@ const DeviceVersion = DeviceInfo.getVersion()
     useEffect(() => {
 
         getCurrentLocation();
-    
+
     }, [])
 
     // useEffect(() => {
@@ -115,16 +116,16 @@ const DeviceVersion = DeviceInfo.getVersion()
 
             if ((Platform.OS === 'android' && Platform.Version < 23) || hasPermission) {
                 getPosition()
-            }else {
+            } else {
                 const status = await PermissionsAndroid.request(
                     PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-    
+
                 );
-    
+
                 if (status === PermissionsAndroid.RESULTS.GRANTED) {
                     getPosition()
-    
-                }else if(status === PermissionsAndroid.RESULTS.DENIED || status === PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN ){
+
+                } else if (status === PermissionsAndroid.RESULTS.DENIED || status === PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN) {
                     const token = await AsyncStorage.getItem("token");
                     if (token) {
                         getProfile()
@@ -143,11 +144,11 @@ const DeviceVersion = DeviceInfo.getVersion()
 
     }, [])
 
-    function getAddressFromCoordinates(lat, lng) {
+    function getAddressFromCoordinates (lat, lng) {
         if (lat && lng) {
             axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${lat},${lng}&key=AIzaSyBBcghyB0FvhqML5Vjmg3uTwASFdkV8wZY`).then(response => {
                 userContext.setCurrentAddress(response?.data?.results[0]?.formatted_address);
-        
+
                 //setLocation
             })
                 .catch(err => {
@@ -158,7 +159,7 @@ const DeviceVersion = DeviceInfo.getVersion()
 
     useEffect(() => {
         if (location) {
-            getAddressFromCoordinates()
+            getAddressFromCoordinates();
         }
     }, [location])
 
@@ -166,14 +167,14 @@ const DeviceVersion = DeviceInfo.getVersion()
     const getPosition = async () => {
         await Geolocation.getCurrentPosition(
             position => {
-        
-                getAddressFromCoordinates(position?.coords?.latitude, position.coords?.longitude)
+
+                getAddressFromCoordinates(position?.coords?.latitude, position.coords?.longitude);
                 setLocation(position?.coords)
-                userContext.setLocation([position?.coords?.latitude, position.coords?.longitude])
+                userContext.setLocation([position?.coords?.latitude, position.coords?.longitude]);
                 checkLogin();
             },
             async error => {
-                const token = await AsyncStorage.getItem("token");
+                const token = await AsyncStorage.getItem('token');
 
                 if (token) {
                     getProfile()
@@ -201,28 +202,28 @@ const DeviceVersion = DeviceInfo.getVersion()
                 showLocationDialog: true,
             },
         );
+    };
+
+
+    const VersionManagement = (data) => {
+        SplashScreen.hide()
+        if (DeviceVersion * 1 < data?.current_version * 1) {
+            if (DeviceVersion * 1 < data?.current_version * 1 && data?.update) {
+                setversionUpdate(true);
+                setForceUpdate(true);
+            } else if (DeviceVersion * 1 < data?.current_version * 1 && !data?.update) {
+                setversionUpdate(true)
+            }
+        } else {
+            setInitialScreen('green');
+        }
     }
 
 
-   const VersionManagement = (data)=>{
-    SplashScreen.hide()
-      if(DeviceVersion * 1 < data?.current_version * 1){
-             if(DeviceVersion * 1 < data?.current_version * 1 && data?.update){
-                setversionUpdate(true);
-                setForceUpdate(true);
-             }else if(DeviceVersion * 1 < data?.current_version * 1 && !data?.update){
-                setversionUpdate(true)
-             }
-      }else{
-        setInitialScreen('green');
-      }
-   }
-
-
-   const ColoseUpdateModal = useCallback(()=>{
-    setversionUpdate(false);
-    setInitialScreen('green')
-   },[versionUpdate])
+    const ColoseUpdateModal = useCallback(() => {
+        setversionUpdate(false);
+        setInitialScreen('green')
+    }, [versionUpdate])
 
     const getProfile = useCallback(async () => {
         loadingContext.setLoading(true);
@@ -231,10 +232,10 @@ const DeviceVersion = DeviceInfo.getVersion()
                 loadingContext.setLoading(false);
                 userContext.setUserData(response?.data?.data);
                 setUserDetails(response?.data?.data)
-              
-           
+
+
                 VersionManagement(response?.data?.data)
-            
+
                 // setInitialScreen('green');
                 setInitialScreen('green')
             })
@@ -284,16 +285,16 @@ const DeviceVersion = DeviceInfo.getVersion()
             .then(async response => {
                 if (response?.data?.data?.length > 0) {
                     if (response?.data?.data?.length === 1) {
-                        if(!userContext.location){
+                        if (!userContext.location) {
                             userContext.setLocation([response?.data?.data?.[0]?.area?.latitude, response?.data?.data?.[0]?.area?.longitude])
                             userContext?.setCurrentAddress(response?.data?.data?.[0]?.area?.address)
                         }
-                      
+
 
                     }
                     else {
                         let defaultAdd = response?.data?.data?.find(add => add?.default === true)
-                        if(!userContext.location){
+                        if (!userContext.location) {
                             userContext.setLocation([defaultAdd?.area?.latitude, defaultAdd?.area?.longitude])
                             userContext?.setCurrentAddress(defaultAdd?.area?.address)
                         }
@@ -361,10 +362,10 @@ const DeviceVersion = DeviceInfo.getVersion()
         SplashScreen.hide()
         return (
             <>
-            <SplashScreenF />
-            {versionUpdate &&  <CommonUpdateModal isopen={versionUpdate} CloseModal={ColoseUpdateModal} ForceUpdate={forceUpdate} /> }
+                <SplashScreenF />
+                { versionUpdate && <CommonUpdateModal isopen={ versionUpdate } CloseModal={ ColoseUpdateModal } ForceUpdate={ forceUpdate } /> }
             </>
-            
+
         )
     }
 
@@ -372,22 +373,22 @@ const DeviceVersion = DeviceInfo.getVersion()
 
     return (
         <>
-            <NavigationContainer ref={navigationRef}>
-                <Stack.Navigator initialRouteName={initialScreen} screenOptions={{ headerShown: false }}>
+            <NavigationContainer ref={ navigationRef }>
+                <Stack.Navigator initialRouteName={ initialScreen } screenOptions={ { headerShown: false } }>
 
-                    {/* <Stack.Screen name="SplashScreen" component={SplashScreenF} /> */}
-                    <Stack.Screen name="Login" component={Login}/>
-                    <Stack.Screen name="Otp" component={Otp} />
-                    <Stack.Screen name="LocationScreen" component={LocationScreen} options={{ title: 'home' }} />
-                    <Stack.Screen name="AddNewLocation" component={AddNewLocation} />
+                    {/* <Stack.Screen name="SplashScreen" component={SplashScreenF} /> */ }
+                    <Stack.Screen name="Login" component={ Login } />
+                    <Stack.Screen name="Otp" component={ Otp } />
+                    <Stack.Screen name="LocationScreen" component={ LocationScreen } options={ { title: 'home' } } />
+                    <Stack.Screen name="AddNewLocation" component={ AddNewLocation } />
                     {/* <Stack.Screen name="panda" component={Panda} />
                     <Stack.Screen name="fashion" component={Fashion} /> */}
-                    <Stack.Screen name="green" component={Green} />
+                    <Stack.Screen name="green" component={ Green } />
                 </Stack.Navigator>
             </NavigationContainer>
-            {/* <LoadingModal isVisible={true} /> */}
+            {/* <LoadingModal isVisible={true} /> */ }
 
-           {versionUpdate &&  <CommonUpdateModal isopen={versionUpdate} CloseModal={ColoseUpdateModal}/> }
+            { versionUpdate && <CommonUpdateModal isopen={ versionUpdate } CloseModal={ ColoseUpdateModal } /> }
         </>
     )
 }

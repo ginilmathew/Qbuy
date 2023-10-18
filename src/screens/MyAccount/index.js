@@ -154,12 +154,12 @@ const MyAccount = ({ navigation }) => {
         //             text1: error
         //         });
         //     })
-        cartContext.setCart(null)
-        cartContext.setAddress(null)
-        cartContext.setDefaultAddress(null)
-        userContext.setCurrentAddress(null)
-        userContext.setUserLocation(null)
-        userContext.setCity(null)
+        cartContext.setCart(null);
+        cartContext.setAddress(null);
+        cartContext.setDefaultAddress(null);
+        userContext.setCurrentAddress(null);
+        userContext.setUserLocation(null);
+        userContext.setCity(null);
         await AsyncStorage.clear()
         setShowModal(false)
         Toast.show({
@@ -179,8 +179,8 @@ const MyAccount = ({ navigation }) => {
     }
 
     const onEdit = useCallback(() => {
-        navigation.navigate('EditProfile')
-    }, [navigation])
+        navigation.navigate('EditProfile');
+    }, [navigation]);
 
     return (
         // <>

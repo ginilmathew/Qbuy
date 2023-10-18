@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View, Switch, Platform, useWindowDimensions, ToastAndroid, Image, ActivityIndicator, SafeAreaView } from 'react-native'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import ImageSlider from '../../../Components/ImageSlider';
@@ -191,7 +192,7 @@ const QBuyFashion = () => {
     const getHomedata = async (coords) => {
         loadingg.setLoading(true)
 
- 
+
 
         let datas = {
             type: "fashion",
@@ -263,7 +264,7 @@ const QBuyFashion = () => {
     //             <View>
     //                   <RecentlyViewed data={item?.data} addToCart={addToCart} />
     //             </View>
-              
+
     //         )
     //     }
     //     else if (item?.type === "available_products") {
@@ -274,46 +275,46 @@ const QBuyFashion = () => {
     // }
 
 
-    const renderSections = ({item})=>{
+    const renderSections = ({ item }) => {
         return (
             <>
-                  <SearchBox onPress={onSearch} />
-                  <CategoryCard data={item?.data} />
+                <SearchBox onPress={ onSearch } />
+                <CategoryCard data={ item?.data } />
 
             </>
         )
     }
 
 
-    const ListFooterComponent =()=>{
+    const ListFooterComponent = () => {
         return (
-            <View style={{paddingBottom:100}}>
+            <View style={ { paddingBottom: 100 } }>
 
             </View>
         )
     }
 
-    const headerComponent = useCallback(({item}) => {
+    const headerComponent = useCallback(({ item }) => {
         return (
-            <View style={{flex:1}}>
-                <NameText userName={auth?.userData?.name ? auth?.userData?.name : auth?.userData?.mobile} mt={8} />
-                {homeData?.map(home => renderSections(home))}
-              
+            <View style={ { flex: 1 } }>
+                <NameText userName={ auth?.userData?.name ? auth?.userData?.name : auth?.userData?.mobile } mt={ 8 } />
+                { homeData?.map(home => renderSections(home)) }
+
             </View>
         )
     }, [])
 
     const renderProducts = ({ item, index }) => {
         return (
-            <View key={index} style={{ flex: 0.5, justifyContent: 'center' }}>
+            <View key={ index } style={ { flex: 0.5, justifyContent: 'center' } }>
                 <CommonItemCard
-                    item={item}
-                    key={item?._id}
-                    width={width / 2.2}
-                    height={height / 3.6}
-                    mr={5}
-                    ml={8}
-                    mb={15}
+                    item={ item }
+                    key={ item?._id }
+                    width={ width / 2.2 }
+                    height={ height / 3.6 }
+                    mr={ 5 }
+                    ml={ 8 }
+                    mb={ 15 }
                 />
             </View>
         )
@@ -322,16 +323,16 @@ const QBuyFashion = () => {
 
     return (
         <>
-            <Header onPress={onClickDrawer} />
+            <Header onPress={ onClickDrawer } />
             <FlatList
-                data={homeData}
-                keyExtractor={({ item }) => item?.type}
-                removeClippedSubviews={true}
-                maxToRenderPerBatch={4}
-                renderItem={renderSections}
-                ListHeaderComponent={headerComponent}
-                contentContainerStyle={styles.container}
-                ListFooterComponent={ListFooterComponent}
+                data={ homeData }
+                keyExtractor={ ({ item }) => item?.type }
+                removeClippedSubviews={ true }
+                maxToRenderPerBatch={ 4 }
+                renderItem={ renderSections }
+                ListHeaderComponent={ headerComponent }
+                contentContainerStyle={ styles.container }
+                ListFooterComponent={ ListFooterComponent }
             />
             {/* <ScrollView style={styles.container}>
 
@@ -422,8 +423,8 @@ const QBuyFashion = () => {
 
             <CommonWhatsappButton
                 position='absolute'
-                bottom={10}
-                right={10}
+                bottom={ 10 }
+                right={ 10 }
             />
         </>
     )
@@ -441,7 +442,7 @@ const styles = StyleSheet.create({
     grossCatView: {
         flexDirection: 'row',
         flexWrap: 'wrap',
-    
+
         paddingHorizontal: '2%'
     },
     pickupReferContainer: {

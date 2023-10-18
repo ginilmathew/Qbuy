@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { StyleSheet, Text, View, ScrollView, Image, FlatList, useWindowDimensions, TouchableOpacity, ActivityIndicator, RefreshControl } from 'react-native'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import CommonTexts from '../../../Components/CommonTexts'
@@ -19,8 +20,8 @@ import { useFocusEffect } from '@react-navigation/native'
 
 const CategoryScreen = ({ route, navigation }) => {
 
-    const { width ,height} = useWindowDimensions()
-  
+    const { width, height } = useWindowDimensions()
+
 
     const { active } = useContext(PandaContext)
     const auth = useContext(AuthContext)
@@ -69,8 +70,8 @@ const CategoryScreen = ({ route, navigation }) => {
     useFocusEffect(
         React.useCallback(() => {
             getProductBasedCat();
-        }, [item?._id,item?.id])
-      );
+        }, [item?._id, item?.id])
+    );
 
 
     const getProductBasedCat = async (coords) => {
@@ -117,58 +118,58 @@ const CategoryScreen = ({ route, navigation }) => {
 
     return (
         <>
-            <HeaderWithTitle mode={mode} title={name} />
+            <HeaderWithTitle mode={ mode } title={ name } />
             <ScrollView
-                style={{ flex: 1, backgroundColor: active === "green" ? '#F4FFE9' : active === "fashion" ? '#FFF5F7' : '#fff', }}
-                showsVerticalScrollIndicator={false}
+                style={ { flex: 1, backgroundColor: active === "green" ? '#F4FFE9' : active === "fashion" ? '#FFF5F7' : '#fff', } }
+                showsVerticalScrollIndicator={ false }
                 refreshControl={
-                    <RefreshControl refreshing={loadingContex?.loading} onRefresh={getProductBasedCat} />
+                    <RefreshControl refreshing={ loadingContex?.loading } onRefresh={ getProductBasedCat } />
                 }
 
             >
-                <View style={{ paddingHorizontal: 10 }}>
-                    <View style={{height:height/3.5}}>
-                    <FastImage
-                        source={{ uri: `${IMG_URL}${item?.image}` }}
-                        style={[styles.mainImage,{height:'100%'}]}
-                        borderRadius={15}
-                        resizeMode='center'
-                    />
+                <View style={ { paddingHorizontal: 10 } }>
+                    <View style={ { height: height / 3.5 } }>
+                        <FastImage
+                            source={ { uri: `${IMG_URL}${item?.image}` } }
+                            style={ [styles.mainImage, { height: '100%' }] }
+                            borderRadius={ 15 }
+                            resizeMode='contain'
+                        />
                     </View>
-                   
-                    <Text style={styles.description}>{item?.seo_description === null ? '' : item?.seo_description}</Text>
+
+                    <Text style={ styles.description }>{ item?.seo_description === null ? '' : item?.seo_description }</Text>
                 </View>
 
 
                 <ScrollView
                     horizontal
-                    showsHorizontalScrollIndicator={false}
-                    style={{ backgroundColor: '#76867314', marginTop: 5 }}
+                    showsHorizontalScrollIndicator={ false }
+                    style={ { backgroundColor: '#76867314', marginTop: 5 } }
                 >
-                    {item?.subcategories?.map((item, index) =>
+                    { item?.subcategories?.map((item, index) =>
                     (<CommonItemSelect
-                        item={item}
-                        key={index}
-                        selected={selected}
-                        setSelected={setSelected}
+                        item={ item }
+                        key={ index }
+                        selected={ selected }
+                        setSelected={ setSelected }
                     />)
-                    )}
+                    ) }
                 </ScrollView>
 
-                {availablePdts?.length > 0 && <>
-                    <CommonTexts label={'Available Products'} mt={15} ml={10} fontSize={13} mb={5} />
-                    <View style={styles.itemContainer}>
-                        {availablePdts?.map((item) => (
+                { availablePdts?.length > 0 && <>
+                    <CommonTexts label={ 'Available Products' } mt={ 15 } ml={ 10 } fontSize={ 13 } mb={ 5 } />
+                    <View style={ styles.itemContainer }>
+                        { availablePdts?.map((item) => (
                             <CommonItemCard
-                                item={item}
-                                key={item?._id}
-                                width={width / 2.2}
-                                height={250}
+                                item={ item }
+                                key={ item?._id }
+                                width={ width / 2.2 }
+                                height={ 250 }
                             // wishlistIcon={fashion ? true : false}
                             />
-                        ))}
+                        )) }
                     </View>
-                </>}
+                </> }
 
 
 

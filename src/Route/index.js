@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { AppState, PermissionsAndroid, Platform, StyleSheet, ToastAndroid } from 'react-native'
 import React, { useState, useEffect, useContext, useCallback } from 'react'
 import { NavigationContainer } from '@react-navigation/native';
@@ -50,7 +51,7 @@ const Route = () => {
     useEffect(() => {
         getCurrentLocation()
 
-    
+
     }, [])
 
     // useEffect(() => {
@@ -61,12 +62,12 @@ const Route = () => {
     //     //   ) {
     //     //     console.log('App has come to the foreground!');
     //     //   }
-    
+
     //     //   appState.current = nextAppState;
     //     //   setAppStateVisible(appState.current);
     //       reactotron.log('AppState', nextAppState, cartContext.cart);
     //     });
-    
+
     //     return () => {
     //       subscription.remove();
     //     };
@@ -100,7 +101,7 @@ const Route = () => {
 
             const hasPermission = await PermissionsAndroid.check(
                 PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-                
+
             );
 
             if (hasPermission) {
@@ -114,7 +115,7 @@ const Route = () => {
 
             if (status === PermissionsAndroid.RESULTS.GRANTED) {
                 getPosition()
-             
+
             }
 
             if (status === PermissionsAndroid.RESULTS.DENIED) {
@@ -149,13 +150,13 @@ const Route = () => {
 
     }, [])
 
-    function getAddressFromCoordinates() {
+    function getAddressFromCoordinates () {
         axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${location?.latitude},${location?.longitude}&key=AIzaSyBBcghyB0FvhqML5Vjmg3uTwASFdkV8wZY`).then(response => {
             userContext.setCurrentAddress(response?.data?.results[0]?.formatted_address)
             //setLocation
         })
             .catch(err => {
-                
+
             })
     }
 
@@ -175,7 +176,7 @@ const Route = () => {
                     getProfile()
                     getCartDetails()
                     getAddressList()
-            
+
                 }
                 setInitialScreen('AddNewLocation');
                 Toast.show({
@@ -245,7 +246,7 @@ const Route = () => {
         }
 
     }, [])
-    
+
 
     const getAddressList = async () => {
         loadingContext.setLoading(true)
@@ -254,13 +255,13 @@ const Route = () => {
                 if (response?.data?.data?.length > 0) {
                     if (response?.data?.data?.length === 1) {
                         userContext.setLocation([response?.data?.data?.[0]?.area?.latitude, response?.data?.data?.[0]?.area?.longitude])
-                        userContext?.setCurrentAddress(response?.data?.data?.[0]?.area?.address)
+                        userContext?.setCurrentAddress(response?.data?.data?.[0]?.area?.address);
                         // reactotron.log('API RESPONSE CALLED IN GEO')
                     }
                     else {
-                        let defaultAdd = response?.data?.data?.find(add => add?.default === true)
-                        userContext.setLocation([defaultAdd?.area?.latitude, defaultAdd?.area?.longitude])
-                        userContext?.setCurrentAddress(defaultAdd?.area?.address)
+                        let defaultAdd = response?.data?.data?.find(add => add?.default === true);
+                        userContext.setLocation([defaultAdd?.area?.latitude, defaultAdd?.area?.longitude]);
+                        userContext?.setCurrentAddress(defaultAdd?.area?.address);
                         // reactotron.log('API RESPONSE CALLED IN GEO')
                     }
                 }
@@ -274,8 +275,8 @@ const Route = () => {
                     text1: error
                 });
                 loadingContext.setLoading(false)
-            })
-    }
+            });
+    };
 
     const checkLogin = async () => {
         // await AsyncStorage.clear()
@@ -294,7 +295,7 @@ const Route = () => {
     }
 
 
-    
+
 
     useEffect(async () => {
         const token = await AsyncStorage.getItem("token");
@@ -302,12 +303,12 @@ const Route = () => {
             const subscription = AppState.addEventListener('change', async nextAppState => {
 
                 if (nextAppState === 'active') {
-              
+
                     await customAxios.post('customer/login-status-update', { login_status: true })
-                
+
                 } else {
                     await customAxios.post('customer/login-status-update', { login_status: false })
-            
+
                 }
             });
             return () => {
@@ -326,20 +327,20 @@ const Route = () => {
 
     return (
         <>
-            <NavigationContainer ref={navigationRef}>
-                <Stack.Navigator initialRouteName={initialScreen} screenOptions={{ headerShown: false }}>
+            <NavigationContainer ref={ navigationRef }>
+                <Stack.Navigator initialRouteName={ initialScreen } screenOptions={ { headerShown: false } }>
 
-                    <Stack.Screen name="SplashScreen" component={SplashScreen} />
-                    <Stack.Screen name="Login" component={Login} />
-                    <Stack.Screen name="Otp" component={Otp} />
-                    <Stack.Screen name="LocationScreen" component={LocationScreen} options={{ title: 'home' }} />
-                    <Stack.Screen name="AddNewLocation" component={AddNewLocation} />
-                    <Stack.Screen name="panda" component={Panda} />
-                    <Stack.Screen name="fashion" component={Fashion} />
-                    <Stack.Screen name="green" component={Green} />
+                    <Stack.Screen name="SplashScreen" component={ SplashScreen } />
+                    <Stack.Screen name="Login" component={ Login } />
+                    <Stack.Screen name="Otp" component={ Otp } />
+                    <Stack.Screen name="LocationScreen" component={ LocationScreen } options={ { title: 'home' } } />
+                    <Stack.Screen name="AddNewLocation" component={ AddNewLocation } />
+                    <Stack.Screen name="panda" component={ Panda } />
+                    <Stack.Screen name="fashion" component={ Fashion } />
+                    <Stack.Screen name="green" component={ Green } />
                 </Stack.Navigator>
             </NavigationContainer>
-            {/* <LoadingModal isVisible={true} /> */}
+            {/* <LoadingModal isVisible={true} /> */ }
         </>
     )
 }

@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { StyleSheet, View, SafeAreaView, StatusBar, Image, Text, TouchableOpacity } from 'react-native'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import AntDesign from 'react-native-vector-icons/AntDesign'
@@ -24,7 +25,7 @@ const Header = ({ onPress, openAddress, goCart }) => {
 
 
 
-    let currentAddress = userContext?.currentAddress
+    let currentAddress = userContext?.currentAddress;
 
 
 
@@ -61,7 +62,7 @@ const Header = ({ onPress, openAddress, goCart }) => {
     }, [userContext?.location])
 
 
-    function getAddressFromCoordinates() {
+    function getAddressFromCoordinates () {
         axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${loc[0]},${loc[1]}&key=AIzaSyBBcghyB0FvhqML5Vjmg3uTwASFdkV8wZY`).then(response => {
 
             userContext.setUserLocation(response?.data?.results[0]?.formatted_address)
@@ -86,52 +87,52 @@ const Header = ({ onPress, openAddress, goCart }) => {
 
     return (
         <>
-            {/* <StatusBar hidden={false} translucent={true} backgroundColor={'#000'} barStyle="dark-content" marginBottom={10} /> */}
+            {/* <StatusBar hidden={false} translucent={true} backgroundColor={'#000'} barStyle="dark-content" marginBottom={10} /> */ }
             <SafeAreaView
-                style={{
+                style={ {
                     flexDirection: 'row',
                     backgroundColor: active === "green" ? '#F4FFE9' : active === 'fashion' ? '#FFF5F7' : '#fff',
                     paddingTop: 5,
                     alignItems: 'center',
                     justifyContent: 'center'
-                }}
+                } }
             >
-                {userContext?.userData &&
-                <TouchableOpacity onPress={onPress} style={{ flex: 0.13, marginLeft: 13 }} >
-                    <EvilIcons name={"navicon"} color="#23233C" size={36} />
-                </TouchableOpacity> }
-                {!userContext?.userData &&
-                <TouchableOpacity onPress={changeAddress} style={{ flex: 0.13, marginLeft: 13 }} >
-                    <Ionicons name={"location"} color="#23233C" size={32} />
-                </TouchableOpacity> }
+                { userContext?.userData &&
+                    <TouchableOpacity onPress={ onPress } style={ { flex: 0.13, marginLeft: 13 } } >
+                        <EvilIcons name={ "navicon" } color="#23233C" size={ 36 } />
+                    </TouchableOpacity> }
+                { !userContext?.userData &&
+                    <TouchableOpacity onPress={ changeAddress } style={ { flex: 0.13, marginLeft: 13 } } >
+                        <Ionicons name={ "location" } color="#23233C" size={ 32 } />
+                    </TouchableOpacity> }
 
 
                 <TouchableOpacity
-                    onPress={changeAddress}
-                    style={{ flexDirection: 'row', flex: 0.84, justifyContent: 'center', alignItems: 'center' }}
+                    onPress={ changeAddress }
+                    style={ { flexDirection: 'row', flex: 0.84, justifyContent: 'center', alignItems: 'center' } }
                 >
-                    {userContext?.currentAddress && <FastImage
-                        style={styles.logo}
-                        source={active === 'green' ? require('../Images/locationGrocery.png') : active === 'fashion' ? require('../Images/fashionLocation.png') : require('../Images/location.png')}
-                    />}
-                    <View style={{ marginLeft: 5, flex: 0.98, }}>
-                        <Text numberOfLines={2} style={styles.textStyle}>{userContext?.currentAddress ? userContext?.currentAddress : myLocation}</Text>
+                    { userContext?.currentAddress && <FastImage
+                        style={ styles.logo }
+                        source={ active === 'green' ? require('../Images/locationGrocery.png') : active === 'fashion' ? require('../Images/fashionLocation.png') : require('../Images/location.png') }
+                    /> }
+                    <View style={ { marginLeft: 5, flex: 0.98, } }>
+                        <Text numberOfLines={ 2 } style={ styles.textStyle }>{ userContext?.currentAddress ? userContext?.currentAddress : myLocation }</Text>
                     </View>
                 </TouchableOpacity>
-                {active === 'fashion' &&
+                { active === 'fashion' &&
                     <>
-                        <TouchableOpacity onPress={onClickFashionCat}>
-                            <AntDesign name={"appstore1"} color="#FF7190" size={20} />
+                        <TouchableOpacity onPress={ onClickFashionCat }>
+                            <AntDesign name={ "appstore1" } color="#FF7190" size={ 20 } />
                         </TouchableOpacity>
 
-                    </>}
+                    </> }
 
-                {userContext?.userData &&
-                    <TouchableOpacity onPress={onClickWishlist}>
-                        <Fontisto name={"heart"} color="#FF6464" size={20} marginHorizontal={8} />
-                    </TouchableOpacity>}
-                <TouchableOpacity onPress={onClickNotificatn} style={{ marginRight: 8 }}>
-                    <Ionicons name={"notifications"} color="#23233C" size={25} />
+                { userContext?.userData &&
+                    <TouchableOpacity onPress={ onClickWishlist }>
+                        <Fontisto name={ "heart" } color="#FF6464" size={ 20 } marginHorizontal={ 8 } />
+                    </TouchableOpacity> }
+                <TouchableOpacity onPress={ onClickNotificatn } style={ { marginRight: 8 } }>
+                    <Ionicons name={ "notifications" } color="#23233C" size={ 25 } />
                 </TouchableOpacity>
 
             </SafeAreaView>

@@ -1,4 +1,5 @@
-import { StyleSheet, Text, View, Image, ScrollView, ActivityIndicator, ToastAndroid, useWindowDimensions, } from 'react-native'
+/* eslint-disable prettier/prettier */
+import { StyleSheet, Text, View, Image, ScrollView, ActivityIndicator, ToastAndroid, useWindowDimensions, PermissionsAndroid, Platform, } from 'react-native'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -34,7 +35,8 @@ const Login = ({ navigation }) => {
 		SplashScreen.hide()
 	}, [])
 
-    const [location, setLocation] = useState(null)
+	const [location, setLocation] = useState(null)
+	// eslint-disable-next-line prettier/prettier
 	const loginUser = useContext(AuthContext)
 	const loadingg = useContext(LoaderContext)
 
@@ -78,119 +80,120 @@ const Login = ({ navigation }) => {
 		fashion: require('../../../Images/FashionloginLogo.png')
 	}
 
-	function getAddressFromCoordinates(lat, lng) {
-        if (lat && lng) {
-            axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${lat},${lng}&key=AIzaSyBBcghyB0FvhqML5Vjmg3uTwASFdkV8wZY`).then(response => {
-                userContext.setCurrentAddress(response?.data?.results[0]?.formatted_address);
-        
-                //setLocation
-            })
-                .catch(err => {
-                })
-        }
+	function getAddressFromCoordinates (lat, lng) {
+		if (lat && lng) {
+			axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${lat},${lng}&key=AIzaSyBBcghyB0FvhqML5Vjmg3uTwASFdkV8wZY`).then(response => {
+				userContext.setCurrentAddress(response?.data?.results[0]?.formatted_address);
 
-    }
+				//setLocation
+			})
+				.catch(err => {
+				})
+		}
 
-    useEffect(() => {
-        if (location) {
-            getAddressFromCoordinates()
-        }
-    }, [location])
+	}
+
+	useEffect(() => {
+		if (location) {
+			getAddressFromCoordinates()
+		}
+	}, [location])
 
 
 
 
 	const getCurrentLocation = useCallback(async () => {
-        if (Platform.OS === 'ios') {
-            const status = await Geolocation.requestAuthorization('whenInUse');
-            if (status === "granted") {
-                getPosition()
-            } else {
-                Toast.show({
-                    type: 'error',
-                    text1: 'Location permission denied by user.'
-                });
-              
+		if (Platform.OS === 'ios') {
+			const status = await Geolocation.requestAuthorization('whenInUse');
+			if (status === "granted") {
+				getPosition()
+			} else {
+				Toast.show({
+					type: 'error',
+					text1: 'Location permission denied by user.'
+				});
+
 				navigation.navigate('AddNewLocation')
-            }
+			}
 
-        }
-        else {
-            const hasPermission = await PermissionsAndroid.check(
-                PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+		}
+		else {
+			const hasPermission = await PermissionsAndroid.check(
+				PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
 
-            );
+			);
 
-            if ((Platform.OS === 'android' && Platform.Version < 23) || hasPermission) {
-                getPosition()
-            }else {
-                const status = await PermissionsAndroid.request(
-                    PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-    
-                );
-    
-                if (status === PermissionsAndroid.RESULTS.GRANTED) {
-                    getPosition()
-    
-                }else if(status === PermissionsAndroid.RESULTS.DENIED || status === PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN ){
-            
-            
+			if ((Platform.OS === 'android' && Platform.Version < 23) || hasPermission) {
+				getPosition()
+			} else {
+				const status = await PermissionsAndroid.request(
+					PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+
+				);
+
+				if (status === PermissionsAndroid.RESULTS.GRANTED) {
+					getPosition()
+
+					// eslint-disable-next-line no-undef
+				} else if (status === PermissionsAndroid.RESULTS.DENIED || status === PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN) {
+
+
 					navigation.navigate('AddNewLocation')
-                    Toast.show({
-                        type: 'error',
-                        text1: 'Location permission denied by user.'
-                    });
-                }
+					Toast.show({
+						type: 'error',
+						text1: 'Location permission denied by user.'
+					});
+				}
 
-            }
-        }
+			}
+		}
 
-    }, [])
+	}, [])
 
 
 
 	const getPosition = async () => {
-        await Geolocation.getCurrentPosition(
-            position => {
-        
-                getAddressFromCoordinates(position?.coords?.latitude, position.coords?.longitude)
-            
-                userContext.setLocation([position?.coords?.latitude, position.coords?.longitude])
+		await Geolocation.getCurrentPosition(
+			position => {
+
+				getAddressFromCoordinates(position?.coords?.latitude, position.coords?.longitude)
+
+				userContext.setLocation([position?.coords?.latitude, position.coords?.longitude])
 				setLocation(position?.coords)
-                SplashScreen.hide();
+				SplashScreen.hide();
 				navigation.dispatch(CommonActions.reset({
 					index: 0,
 					routes: [
 						{ name: 'green' }
 					],
 				}))
-            },
-            async error => {
-            	navigation.navigate('AddNewLocation')
-                Toast.show({
-                    type: 'error',
-                    text1: error.message
-                });
-                // checkLogin();
-            },
-            {
-                accuracy: {
-                    android: 'high',
-                    ios: 'best',
-                },
-                enableHighAccuracy: true,
-                timeout: 15000,
-                maximumAge: 10000,
-                distanceFilter: 0,
-                forceRequestLocation: true,
-                forceLocationManager: false,
-                showLocationDialog: true,
-            },
-        );
-    }
+			},
+			async error => {
+				navigation.navigate('AddNewLocation')
+				Toast.show({
+					type: 'error',
+					text1: error.message
+				});
+				// checkLogin();
+			},
+			{
+				accuracy: {
+					android: 'high',
+					ios: 'best',
+				},
+				enableHighAccuracy: true,
+				timeout: 15000,
+				maximumAge: 10000,
+				distanceFilter: 0,
+				forceRequestLocation: true,
+				forceLocationManager: false,
+				showLocationDialog: true,
+			},
+		);
+	}
 
 	const NaviagteToGuest = useCallback(() => {
-          if(userContext?.location){
+		if (userContext?.location) {
 			navigation.dispatch(
 				CommonActions.reset({
 					index: 0,
@@ -199,65 +202,65 @@ const Login = ({ navigation }) => {
 					],
 				})
 			)
-		  }else{
+		} else {
 			getCurrentLocation()
-		  }
-        
+		}
+
 
 	}, [navigation])
 
 	return (
 		<CommonAuthBg>
-			<ScrollView style={{ flex: 1, paddingHorizontal: 20, }}>
+			<ScrollView style={ { flex: 1, paddingHorizontal: 20, } }>
 				<FastImage
-					style={styles.logo}
-					source={imageURl[mode]}
+					style={ styles.logo }
+					source={ imageURl[mode] }
 					resizeMode='contain'
 				/>
 				<CommonAuthHeading
-					label={'Welcome'}
-					mt={20}
+					label={ 'Welcome' }
+					mt={ 20 }
 				/>
 				<CommonTexts
-					label={'Sign in with your mobile for an OTP'}
-					mt={2}
+					label={ 'Sign in with your mobile for an OTP' }
+					mt={ 2 }
 				/>
 				<CommonInput
 					leftElement
-					control={control}
-					error={errors.mobile}
+					control={ control }
+					error={ errors.mobile }
 					fieldName="mobile"
 					placeholder='Mobile Number'
-					inputMode={'numeric'}
-					mt={40}
+					inputMode={ 'numeric' }
+					mt={ 40 }
 					backgroundColor='#fff'
-					shadowOpacity={0.1}
-					elevation={2}
+					shadowOpacity={ 0.1 }
+					elevation={ 2 }
 				/>
 				<TermsAndPrivacyText />
 
-				<View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+				<View style={ { flexDirection: 'row', justifyContent: 'space-between' } }>
 					<CustomButton
-						width={width / 2.5}
-						onPress={handleSubmit(onSubmit)}
-						bg={mode === "fashion" ? '#FF7190' : "#58D36E"}
-						label={'Sign In'}
-						mt={20}
-						loading={loader}
+						width={ width / 2.5 }
+						onPress={ handleSubmit(onSubmit) }
+						bg={ mode === "fashion" ? '#FF7190' : "#58D36E" }
+						label={ 'Sign In' }
+						mt={ 20 }
+						loading={ loader }
 					/>
 					<CustomButton
-						width={width / 2.5}
-						onPress={NaviagteToGuest}
-						bg={'blue'}
-						label={'Guest'}
-						mt={20}
-						
+						width={ width / 2.5 }
+						onPress={ NaviagteToGuest }
+						bg={ 'blue' }
+						label={ 'Guest' }
+						mt={ 20 }
+
 					/>
 
 				</View>
 
 
-				<Text style={styles.textStyle}>{"Need Support to Login?"}</Text>
+				<Text style={ styles.textStyle }>{ "Need Support to Login?" }</Text>
 				<HelpAndSupportText />
 			</ScrollView>
 

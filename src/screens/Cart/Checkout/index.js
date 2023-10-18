@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Image, StyleSheet, Text, View, ScrollView, TouchableOpacity, Pressable, ActivityIndicator } from 'react-native'
 import React, { useRef, useState, useEffect, useContext, useCallback } from 'react'
 import HeaderWithTitle from '../../../Components/HeaderWithTitle'
@@ -477,11 +478,12 @@ const Checkout = ({ navigation }) => {
     //const checkProductAvailability = () => {}
 
     const placeOrder = async () => {
-
+        setIsLoding(true);
         let franchise = await customAxios.post('customer/get-franchise', { coordinates: authContext.location })
 
         if (!franchise) {
-            return false
+            setIsLoding(false);
+            return false;
         }
 
         if (!cartContext?.defaultAddress) {
@@ -489,6 +491,7 @@ const Checkout = ({ navigation }) => {
                 type: 'error',
                 text1: 'Please add Delivery  Address to continue'
             });
+            setIsLoding(false);
             return false;
         }
 
@@ -496,7 +499,7 @@ const Checkout = ({ navigation }) => {
             cart_id: cartContext?.cart?._id,
             address_id: cartContext?.defaultAddress?._id
         }
-        setIsLoding(true);
+
         await customAxios.post('customer/get-cart-product', data).then(async response => {
             let products = [];
             let amount = 0;
@@ -553,11 +556,11 @@ const Checkout = ({ navigation }) => {
                 await customAxios.post(`customer/order/test-create`, orderDetails)
                     .then(async response => {
                         // console.log("response ==>", JSON.stringify(response.data), response.status)
-                        const { data } = response
+                        const { data } = response;
 
 
                         if (data?.type === 'cart') {
-                            navigation.navigate('Cart')
+                            navigation.navigate('Cart');
                         }
                         if (data?.status) {
                             if (data?.data?.payment_type == "online" && has(data?.data, "paymentDetails") && !isEmpty(data?.data?.paymentDetails)) {
@@ -719,32 +722,32 @@ const Checkout = ({ navigation }) => {
 
     return (
         <>
-            <HeaderWithTitle title={'Checkout'} onPressBack={backToCart} />
+            <HeaderWithTitle title={ 'Checkout' } onPressBack={ backToCart } />
             <ScrollView
                 refreshControl={
-                    <RefreshControl refreshing={loader} onRefresh={getCartItems} />
+                    <RefreshControl refreshing={ loader } onRefresh={ getCartItems } />
                 }
-                style={{ flex: 1, backgroundColor: active === 'green' ? '#F4FFE9' : active === 'fashion' ? '#FFF5F7' : '#F3F3F3', }}>
+                style={ { flex: 1, backgroundColor: active === 'green' ? '#F4FFE9' : active === 'fashion' ? '#FFF5F7' : '#F3F3F3', } }>
 
-                {/* products */}
-                <View style={styles.productBox}>
-                    <View style={styles.productHeader}>
-                        <View style={{ flex: 0.42 }}>
-                            <Text style={styles.boldText}>{'Product'}</Text>
+                {/* products */ }
+                <View style={ styles.productBox }>
+                    <View style={ styles.productHeader }>
+                        <View style={ { flex: 0.42 } }>
+                            <Text style={ styles.boldText }>{ 'Product' }</Text>
                         </View>
-                        <Text style={styles.unitPrice}>{'Price'}</Text>
-                        <Text style={styles.quantity}>{'Qty'}</Text>
-                        <Text style={styles.total}>{'Total'}</Text>
+                        <Text style={ styles.unitPrice }>{ 'Price' }</Text>
+                        <Text style={ styles.quantity }>{ 'Qty' }</Text>
+                        <Text style={ styles.total }>{ 'Total' }</Text>
                     </View>
-                    <View style={styles.itemUnderProduct}>
-                        {cartItems?.map((item, index) =>
+                    <View style={ styles.itemUnderProduct }>
+                        { cartItems?.map((item, index) =>
                             <CheckoutItemCard
-                                item={item}
-                                key={index}
-                                index={index}
-                                refreshCart={refreshCart}
+                                item={ item }
+                                key={ index }
+                                index={ index }
+                                refreshCart={ refreshCart }
                             />
-                        )}
+                        ) }
                     </View>
                     {/* <AddMoreItem />
                     <Text style={styles.regularText}>{'Add Cooking Instructions'}</Text>
@@ -762,7 +765,7 @@ const Checkout = ({ navigation }) => {
                     </View> */}
                 </View>
 
-                {/* Order for Others */}
+                {/* Order for Others */ }
                 {/* <View style={styles.commonContainer}>
                     <Text style={styles.boldText}>{'Order for Others'}</Text>
                     <Text style={styles.mediumGrayText}>{'Order food for your friends, family etc...'}</Text>
@@ -774,19 +777,19 @@ const Checkout = ({ navigation }) => {
                     />
                 </View> */}
 
-                {/*Delivery Speed */}
-                <View style={styles.commonContainer}>
-                    <Text style={styles.boldText}>{'Payment Methods'}</Text>
-                    {payment.map((item, index) =>
+                {/*Delivery Speed */ }
+                <View style={ styles.commonContainer }>
+                    <Text style={ styles.boldText }>{ 'Payment Methods' }</Text>
+                    { payment.map((item, index) =>
                         <PaymentMethod
-                            item={item}
-                            key={index}
-                            setSelected={setPaymentMethod}
+                            item={ item }
+                            key={ index }
+                            setSelected={ setPaymentMethod }
                         />
-                    )}
+                    ) }
                 </View>
 
-                {/* Add Coupon */}
+                {/* Add Coupon */ }
                 {/* <View style={styles.commonContainer}>
                     <View style={{flexDirection:'row', alignItems:'center',justifyContent:'space-between'}}>
                         <Text style={styles.boldText}>{'Add Coupon'}</Text>
@@ -826,7 +829,7 @@ const Checkout = ({ navigation }) => {
                     </View>
                 </View> */}
 
-                {/* Give a Tip */}
+                {/* Give a Tip */ }
                 {/* <View style={styles.commonContainer}>
                     <Text style={styles.boldText}>{'Give a Tip!'}</Text>
                     <Text style={styles.mediumGrayText}>{'Leave your delivery partner with a tip so that you could show an appreciation for his efforts!'}</Text>
@@ -842,7 +845,7 @@ const Checkout = ({ navigation }) => {
                     </View>
                 </View> */}
 
-                {/* Add Delivery Instructions */}
+                {/* Add Delivery Instructions */ }
                 {/* <View style={styles.commonContainer}>
                     <Text style={styles.boldText}>{'Add Delivery Instructions'}</Text>
                     <Text style={styles.mediumGrayText}>{'Add necessary instruction for your delivery partner'}</Text>
@@ -858,7 +861,7 @@ const Checkout = ({ navigation }) => {
                     </View>
                 </View> */}
 
-                {/* panda coins */}
+                {/* panda coins */ }
                 {/* <View 
                     style={{
                         backgroundColor: active === 'green' ? '#fae8d4' : '#cae2fa',
@@ -878,8 +881,8 @@ const Checkout = ({ navigation }) => {
                     <CustomButton label={'Apply'} bg={ active === 'green' ? '#FF9C0C' : active === 'fashion' ? '#2D8FFF' :  '#586DD3'} width={100} />
                 </View> */}
 
-                {/* grand total */}
-                <View style={styles.grandTotalBox}>
+                {/* grand total */ }
+                <View style={ styles.grandTotalBox }>
                     {/* <View style={styles.grandTotalTop}>
                         <Text style={styles.textMedium}>{'Delivery Tip'}</Text>
                         <Text
@@ -894,95 +897,95 @@ const Checkout = ({ navigation }) => {
                         <Text style={styles.textMedium}>{'Govt Taxes & Other Charges'}</Text>
                         <Text style={styles.textMedium}>₹ {'10'}</Text>
                     </View> */}
-                    {cartItems?.length > 0 && <View style={styles.grandTotalMid}>
-                        <Text style={styles.textMedium}>{'Delivery Fee'}</Text>
-                        <Text style={styles.textMedium}>₹ {cartItems?.length > 0 ? parseFloat(cartItems?.reduce((a, b) => a.delivery > b.delivery ? a : b).delivery).toFixed(2) : null} </Text>
-                    </View>}
-                    {cartItems?.length > 0 && <View style={styles.grandTotalMid}>
-                        <Text style={styles.textMedium}>{'Platform Charge'}</Text>
-                        <Text style={styles.textMedium}>₹ {cartItems?.length > 0 ? parseFloat(platformCharge?.platformCharge).toFixed(2) : null} </Text>
-                    </View>}
+                    { cartItems?.length > 0 && <View style={ styles.grandTotalMid }>
+                        <Text style={ styles.textMedium }>{ 'Delivery Fee' }</Text>
+                        <Text style={ styles.textMedium }>₹ { cartItems?.length > 0 ? parseFloat(cartItems?.reduce((a, b) => a.delivery > b.delivery ? a : b).delivery).toFixed(2) : null } </Text>
+                    </View> }
+                    { cartItems?.length > 0 && <View style={ styles.grandTotalMid }>
+                        <Text style={ styles.textMedium }>{ 'Platform Charge' }</Text>
+                        <Text style={ styles.textMedium }>₹ { cartItems?.length > 0 ? parseFloat(platformCharge?.platformCharge).toFixed(2) : null } </Text>
+                    </View> }
 
-                    {cartItems?.length > 0 && <View style={styles.grandTotalBottom}>
-                        <Text style={styles.boldText}>{'Grand Total'}</Text>
-                        <Text style={styles.boldText}>₹ {parseFloat(cartItems?.reduce(function (previousVal, currentVal) {
+                    { cartItems?.length > 0 && <View style={ styles.grandTotalBottom }>
+                        <Text style={ styles.boldText }>{ 'Grand Total' }</Text>
+                        <Text style={ styles.boldText }>₹ { parseFloat(cartItems?.reduce(function (previousVal, currentVal) {
                             return previousVal + currentVal?.price;
-                        }, 0) + cartItems?.reduce((a, b) => a.delivery > b.delivery ? a : b).delivery + platformCharge?.platformCharge).toFixed(2)}</Text>
-                    </View>}
+                        }, 0) + cartItems?.reduce((a, b) => a.delivery > b.delivery ? a : b).delivery + platformCharge?.platformCharge).toFixed(2) }</Text>
+                    </View> }
                 </View>
 
             </ScrollView>
 
-            {/* Bottom View */}
-            <View style={styles.addressContainer}>
-                <Pressable style={styles.addrHeader} onPress={navigateToAddress}>
+            {/* Bottom View */ }
+            <View style={ styles.addressContainer }>
+                <Pressable style={ styles.addrHeader } onPress={ navigateToAddress }>
                     <View >
-                        <Foundation name={'target-two'} color='#FF0000' size={20} marginTop={5} />
+                        <Foundation name={ 'target-two' } color='#FF0000' size={ 20 } marginTop={ 5 } />
                     </View>
-                    <View style={{ flex: 0.8, marginLeft: 10 }}>
-                        {cartContext.defaultAddress?.area?.location ? <CommonTexts label={cartContext.defaultAddress?.area?.location} fontSize={16} /> : <CommonTexts label={'Please Add Address !!!'} fontSize={14} color={'#FF5757'} />}
+                    <View style={ { flex: 0.8, marginLeft: 10 } }>
+                        { cartContext.defaultAddress?.area?.location ? <CommonTexts label={ cartContext.defaultAddress?.area?.location } fontSize={ 16 } /> : <CommonTexts label={ 'Please Add Address !!!' } fontSize={ 14 } color={ '#FF5757' } /> }
                         <Text
-                            style={styles.address}
-                        >{cartContext.defaultAddress?.area?.address && cartContext.defaultAddress?.area?.address}</Text>
+                            style={ styles.address }
+                        >{ cartContext.defaultAddress?.area?.address && cartContext.defaultAddress?.area?.address }</Text>
                     </View>
 
-                    <TouchableOpacity style={{ position: 'absolute', right: 20, top: 10 }} onPress={navigateToAddress}>
-                        <MaterialCommunityIcons name={'lead-pencil'} color={active === 'green' ? '#8ED053' : active === 'fashion' ? '#FF7190' : '#5871D3'} size={18} marginTop={5} />
+                    <TouchableOpacity style={ { position: 'absolute', right: 20, top: 10 } } onPress={ navigateToAddress }>
+                        <MaterialCommunityIcons name={ 'lead-pencil' } color={ active === 'green' ? '#8ED053' : active === 'fashion' ? '#FF7190' : '#5871D3' } size={ 18 } marginTop={ 5 } />
                     </TouchableOpacity>
                 </Pressable>
-                {(!showList && cartItems?.length > 0) && <View style={{ flexDirection: 'row', paddingHorizontal: 40, paddingVertical: 5 }}>
+                { (!showList && cartItems?.length > 0) && <View style={ { flexDirection: 'row', paddingHorizontal: 40, paddingVertical: 5 } }>
                     <Text
-                        style={styles.textMedium}
-                    >{'Grand Total  '}</Text>
+                        style={ styles.textMedium }
+                    >{ 'Grand Total  ' }</Text>
                     <Text
-                        style={styles.boldText}
-                    >₹ {parseFloat(cartItems?.reduce(function (previousVal, currentVal) {
+                        style={ styles.boldText }
+                    >₹ { parseFloat(cartItems?.reduce(function (previousVal, currentVal) {
                         return previousVal + currentVal?.price;
-                    }, 0) + cartItems?.reduce((a, b) => a.delivery > b.delivery ? a : b).delivery + platformCharge?.platformCharge).toFixed(2)}</Text>
-                </View>}
+                    }, 0) + cartItems?.reduce((a, b) => a.delivery > b.delivery ? a : b).delivery + platformCharge?.platformCharge).toFixed(2) }</Text>
+                </View> }
 
-                {(showList && cartItems?.length > 0) && <>
-                    <View style={styles.totalBill}>
+                { (showList && cartItems?.length > 0) && <>
+                    <View style={ styles.totalBill }>
                         <Text
-                            style={styles.boldText}
+                            style={ styles.boldText }
                         >Total Bill</Text>
                     </View>
-                    <View style={styles.charges}>
-                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                            {/* {item?.flashIcon && <Fontisto name={'flash'} color={'#FF0000'} size={12} marginRight={4}/>} */}
+                    <View style={ styles.charges }>
+                        <View style={ { flexDirection: 'row', alignItems: 'center' } }>
+                            {/* {item?.flashIcon && <Fontisto name={'flash'} color={'#FF0000'} size={12} marginRight={4}/>} */ }
                             <Text
-                                style={styles.textMedium}
-                            >{"Sub Total"}</Text>
+                                style={ styles.textMedium }
+                            >{ "Sub Total" }</Text>
                         </View>
                         <Text
-                            style={styles.textMedium}
-                        >₹ {parseFloat(cartItems?.reduce(function (previousVal, currentVal) {
+                            style={ styles.textMedium }
+                        >₹ { parseFloat(cartItems?.reduce(function (previousVal, currentVal) {
                             return previousVal + currentVal?.price;
-                        }, 0)).toFixed(2)}</Text>
+                        }, 0)).toFixed(2) }</Text>
 
                     </View>
-                    <View style={styles.charges}>
-                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                            {/* {item?.flashIcon && <Fontisto name={'flash'} color={'#FF0000'} size={12} marginRight={4}/>} */}
+                    <View style={ styles.charges }>
+                        <View style={ { flexDirection: 'row', alignItems: 'center' } }>
+                            {/* {item?.flashIcon && <Fontisto name={'flash'} color={'#FF0000'} size={12} marginRight={4}/>} */ }
                             <Text
-                                style={styles.textMedium}
-                            >{"Delivery Charge"}</Text>
+                                style={ styles.textMedium }
+                            >{ "Delivery Charge" }</Text>
                         </View>
                         <Text
-                            style={styles.textMedium}
-                        >₹ {parseFloat(cartItems?.reduce((a, b) => a.delivery > b.delivery ? a : b).delivery).toFixed(2)}</Text>
+                            style={ styles.textMedium }
+                        >₹ { parseFloat(cartItems?.reduce((a, b) => a.delivery > b.delivery ? a : b).delivery).toFixed(2) }</Text>
 
                     </View>
-                    <View style={styles.charges}>
-                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                            {/* {item?.flashIcon && <Fontisto name={'flash'} color={'#FF0000'} size={12} marginRight={4}/>} */}
+                    <View style={ styles.charges }>
+                        <View style={ { flexDirection: 'row', alignItems: 'center' } }>
+                            {/* {item?.flashIcon && <Fontisto name={'flash'} color={'#FF0000'} size={12} marginRight={4}/>} */ }
                             <Text
-                                style={styles.textMedium}
-                            >{"Platform Charge"}</Text>
+                                style={ styles.textMedium }
+                            >{ "Platform Charge" }</Text>
                         </View>
                         <Text
-                            style={styles.textMedium}
-                        >₹ {platformCharge?.platformCharge}</Text>
+                            style={ styles.textMedium }
+                        >₹ { platformCharge?.platformCharge }</Text>
 
                     </View>
                     {/* {charges.map(item => 
@@ -999,20 +1002,20 @@ const Checkout = ({ navigation }) => {
                             
                         </View>)
                     )} */}
-                    <View style={styles.grandTotal}>
+                    <View style={ styles.grandTotal }>
                         <Text
-                            style={styles.textMedium}
-                        >{'Grand Total  '}</Text>
+                            style={ styles.textMedium }
+                        >{ 'Grand Total  ' }</Text>
                         <Text
-                            style={styles.boldText}
-                        >₹ {parseFloat(cartItems?.reduce(function (previousVal, currentVal) {
+                            style={ styles.boldText }
+                        >₹ { parseFloat(cartItems?.reduce(function (previousVal, currentVal) {
                             return previousVal + currentVal?.price;
-                        }, 0) + cartItems?.reduce((a, b) => a.delivery > b.delivery ? a : b).delivery + platformCharge?.platformCharge).toFixed(2)}</Text>
+                        }, 0) + cartItems?.reduce((a, b) => a.delivery > b.delivery ? a : b).delivery + platformCharge?.platformCharge).toFixed(2) }</Text>
                     </View>
-                </>}
+                </> }
 
                 <View
-                    style={{
+                    style={ {
                         backgroundColor: active === 'green' ? '#8ED053' : active === 'fashion' ? '#FF7190' : '#58D36E',
                         height: 60,
                         flexDirection: 'row',
@@ -1021,21 +1024,21 @@ const Checkout = ({ navigation }) => {
                         position: 'absolute',
                         width: '100%',
                         bottom: 0
-                    }}
+                    } }
                 >
                     <TouchableOpacity
-                        onPress={clickBillDetails}
-                        style={styles.viewDetails}
+                        onPress={ clickBillDetails }
+                        style={ styles.viewDetails }
                     >
-                        <CommonTexts label={'View Detailed Bill'} color='#fff' fontSize={12} />
-                        <Ionicons name={showList ? 'chevron-down' : 'chevron-up'} size={20} color='#fff' marginLeft={2} />
+                        <CommonTexts label={ 'View Detailed Bill' } color='#fff' fontSize={ 12 } />
+                        <Ionicons name={ showList ? 'chevron-down' : 'chevron-up' } size={ 20 } color='#fff' marginLeft={ 2 } />
                     </TouchableOpacity>
                     <TouchableOpacity
-                        disabled={isLoading}
-                        style={{ alignItems: 'flex-end', flex: 0.5 }}
-                        onPress={placeOrder}
+                        disabled={ isLoading }
+                        style={ { alignItems: 'flex-end', flex: 0.5 } }
+                        onPress={ isLoading ? null : placeOrder }
                     >
-                        <CommonTexts label={isLoading ? "Loading..." : 'Place Order'} color='#fff' fontSize={17} />
+                        <CommonTexts label={ isLoading ? "Loading..." : 'Place Order' } color='#fff' fontSize={ 17 } />
                     </TouchableOpacity>
                 </View>
 

@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { StyleSheet, Text, View, Image, ScrollView, Platform, SafeAreaView, ToastAndroid, TouchableOpacity, } from 'react-native'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { useForm } from "react-hook-form";
@@ -17,17 +18,18 @@ import { CommonActions } from '@react-navigation/native';
 import reactotron from 'reactotron-react-native';
 import { NativeModules } from "react-native"
 import DeviceInfo from 'react-native-device-info'
-
+import Geolocation from 'react-native-geolocation-service';
+import axios from 'axios';
 const { env, mode } = NativeModules.RNENVConfig
 
 const Otp = ({ navigation }) => {
 
-	const user = useContext(AuthContext)
-	const loadingg = useContext(LoaderContext)
-	let loader = loadingg?.loading
+	const user = useContext(AuthContext);
+	const loadingg = useContext(LoaderContext);
+	let loader = loadingg?.loading;
+	const [location, setLocation] = useState(null);
+	let mobileNo = user?.login?.mobile;
 
-	let mobileNo = user?.login?.mobile
-	let userData = user?.userData
 
 	const DeviceVersion = DeviceInfo.getVersion();
 
@@ -47,129 +49,177 @@ const Otp = ({ navigation }) => {
 	var first2 = cardnumber?.substring(0, 2);
 	var last1 = cardnumber?.substring(cardnumber.length - 1);
 
-	mask = cardnumber?.substring(2, cardnumber.length - 1).replace(/\d/g, "*");
+	let mask = cardnumber?.substring(2, cardnumber.length - 1).replace(/\d/g, '*');
 	let phoneNum = first2 + mask + last1
 
-	const onSubmit = useCallback(async (data) => {
-		loadingg.setLoading(true)
+	const onSubmit = async (data) => {
+		loadingg.setLoading(true);
 
 		let datas = {
 			mobile: mobileNo,
 			otp: data?.otp,
 			location: user?.location,
-			type:mode,
-			os:Platform?.OS
+			type: mode,
+			os: Platform?.OS,
 
-		}
-		await customAxios.post(`auth/customerlogin`, datas)
+		};
+		await customAxios.post('auth/customerlogin', datas)
 			.then(async response => {
 				user.setUserData(response?.data?.user)
-				AsyncStorage.setItem("token", response?.data?.access_token);
-				AsyncStorage.setItem("user", JSON.stringify(response?.data?.user));
-				VersionManagement(response?.data)
-				loadingg.setLoading(false)
+				AsyncStorage.setItem('token', response?.data?.access_token);
+				AsyncStorage.setItem('user', JSON.stringify(response?.data?.user));
+				VersionManagement(response?.data);
+				loadingg.setLoading(false);
 				// navigation.navigate(mode)
 				// navigation.navigate('NewUserDetails')
 			})
 			.catch(async error => {
 				Toast.show({
 					type: 'error',
-					text1: error
+					text1: error,
 				});
-				loadingg.setLoading(false)
-			})
-	})
+				loadingg.setLoading(false);
+			});
+	};
 
 	const onClickResendOtp = async () => {
-		loadingg.setLoading(true)
-		await customAxios.post(`auth/customerloginotp`, { mobile: mobileNo })
+		loadingg.setLoading(true);
+		await customAxios.post('auth/customerloginotp', { mobile: mobileNo })
 			.then(async response => {
 				// setData(response?.data?.data)
-				loadingg.setLoading(false)
+				loadingg.setLoading(false);
 			})
 			.catch(async error => {
 				Toast.show({
 					type: 'error',
-					text1: error
+					text1: error,
 				});
-				loadingg.setLoading(false)
-			})
+				loadingg.setLoading(false);
+			});
 
-	}
-
-
-	const NavigationToBack = useCallback(()=>{navigation.goBack()},[navigation])
+	};
 
 
-	const ColoseUpdateModal = useCallback(()=>{
-        setversionUpdate(false);
-		navigation.dispatch(CommonActions.reset({
-				index: 0,
-				routes: [
-					{ name: 'green' }
-				],
-			}))
-       },[versionUpdate])
+	const NavigationToBack = useCallback(() => { navigation.goBack(); }, [navigation]);
+
+
+	// const ColoseUpdateModal = useCallback(() => {
+	// 	setversionUpdate(false);
+	// 	navigation.dispatch(CommonActions.reset({
+	// 		index: 0,
+	// 		routes: [
+	// 			{ name: 'green' }
+	// 		],
+	// 	}))
+	// }, [versionUpdate])
 
 	const VersionManagement = (data) => {
 		if (DeviceVersion * 1 < data?.current_version * 1) {
 			if (DeviceVersion * 1 < data?.current_version * 1 && data?.update) {
 				setversionUpdate(true);
 				setForceUpdate(true);
-				navigation.navigate('Login')
-			
+
 			} else if (DeviceVersion * 1 < data?.current_version * 1 && !data?.update) {
 				setversionUpdate(true);
-				
+
 			}
 		} else {
 			navigation.dispatch(CommonActions.reset({
 				index: 0,
 				routes: [
-					{ name: 'green' }
+					{ name: 'green' },
 				],
-			}))
+			}));
 			// setversionUpdate(true);
 		}
-	}
+	};
+
+	// const getPosition = async () => {
+	// 	await Geolocation.getCurrentPosition(
+	// 		position => {
+
+	// 			getAddressFromCoordinates(position?.coords?.latitude, position.coords?.longitude);
+	// 			setLocation(position?.coords);
+	// 			user.setLocation([position?.coords?.latitude, position.coords?.longitude]);
+	// 		},
+	// 		async error => {
+	// 			Toast.show({
+	// 				type: 'error',
+	// 				text1: error.message,
+	// 			});
+	// 			// checkLogin();
+	// 		},
+	// 		{
+	// 			accuracy: {
+	// 				android: 'high',
+	// 				ios: 'best',
+	// 			},
+	// 			enableHighAccuracy: true,
+	// 			timeout: 15000,
+	// 			maximumAge: 10000,
+	// 			distanceFilter: 0,
+	// 			forceRequestLocation: true,
+	// 			forceLocationManager: false,
+	// 			showLocationDialog: true,
+	// 		},
+	// 	);
+	// };
+
+	// function getAddressFromCoordinates (lat, lng) {
+	// 	if (lat && lng) {
+	// 		axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${lat},${lng}&key=AIzaSyBBcghyB0FvhqML5Vjmg3uTwASFdkV8wZY`).then(response => {
+	// 			user.setCurrentAddress(response?.data?.results[0]?.formatted_address);
+
+	// 			//setLocation
+	// 		})
+	// 			.catch(() => {
+	// 			},);
+	// 	}
+
+	// }
+
+
+	// useEffect(() => {
+	// 	getPosition();
+	// }, []);
 
 	return (
 		<CommonAuthBg>
-			<ScrollView style={{ flex: 1, paddingHorizontal: 40, }}>
+			<ScrollView style={ { flex: 1, paddingHorizontal: 40, } }>
 				<SafeAreaView>
-					<CommonTitle goBack={NavigationToBack} mt={40} />
+					<CommonTitle goBack={ NavigationToBack } mt={ 40 } />
 					<CommonTexts
-						label={'Enter the 4 - digit code we sent to your registered mobile number'}
-						mt={40}
+						label={ 'Enter the 4 - digit code we sent to your registered mobile number' }
+						mt={ 40 }
 					/>
 					<CommonTexts
-						label={phoneNum}
-						mt={40}
+						label={ phoneNum }
+						mt={ 40 }
 						textAlign='center'
 					/>
 					<OtpInput
-						onchange={(text) => {
+						onchange={ (text) => {
 							setValue("otp", text)
-						}}
+						} }
 					/>
-					{errors?.otp && <Text style={{ color: 'red', fontSize: 10 }} > {errors?.otp?.message}</Text>}
-					<TouchableOpacity onPress={onClickResendOtp}>
+					{ errors?.otp && <Text style={ { color: 'red', fontSize: 10 } } > { errors?.otp?.message }</Text> }
+					<TouchableOpacity onPress={ onClickResendOtp }>
 						<CommonTexts
-							label={'Resend OTP'}
-							mt={10}
+							label={ 'Resend OTP' }
+							mt={ 10 }
 							textAlign='right'
-							color={'#5871D3'}
+							color={ '#5871D3' }
 						/>
 					</TouchableOpacity>
 
 					<CustomButton
-						onPress={!loader ? handleSubmit(onSubmit) : null}
-						bg={mode ===  "fashion" ?'#FF7190' : "#58D36E"}
-						label={'Confirm'}
-						my={20}
-						width={100}
+						onPress={ !loader ? handleSubmit(onSubmit) : null }
+						bg={ mode === "fashion" ? '#FF7190' : "#58D36E" }
+						label={ 'Confirm' }
+						my={ 20 }
+						width={ 100 }
 						alignSelf='center'
-						loading={loader}
+						loading={ loader }
 					/>
 				</SafeAreaView>
 			</ScrollView>
