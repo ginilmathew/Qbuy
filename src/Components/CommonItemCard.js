@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable prettier/prettier */
 import { StyleSheet, Text, TouchableOpacity, View, ImageBackground, useWindowDimensions, ScrollView } from 'react-native'
 import React, { useRef, useState, useEffect, useContext, startTransition, useCallback, memo, useMemo } from 'react'
 import FastImage from 'react-native-fast-image'
@@ -193,42 +195,42 @@ const CommonItemCard = memo(({ height, width, item, marginHorizontal, wishlistIc
     return (
         <>
             <TouchableOpacity
-                onPress={handleClick}
-                style={{ marginHorizontal: marginHorizontal, marginRight: mr, marginLeft: ml, marginBottom: mb }}
+                onPress={ handleClick }
+                style={ { marginHorizontal: marginHorizontal, marginRight: mr, marginLeft: ml, marginBottom: mb } }
             >
                 <FastImage
                     // source={{ uri: `${IMG_URL}${item?.product_image}` }}
-                    source={{ uri: `${IMG_URL}${data?.product_image}` }}
-                    style={{ height: height ? height : 110, width: width, justifyContent: 'flex-end', borderRadius: 16 }}
-                    progressiveRenderingEnabled={true}
+                    source={ { uri: `${IMG_URL}${data?.product_image}` } }
+                    style={ { height: height ? height : 110, width: width, justifyContent: 'flex-end', borderRadius: 16 } }
+                    progressiveRenderingEnabled={ true }
                 >
-                    <LinearGradient colors={data?.available ? ['rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, 0.7)'] : ['rgba(0, 0, 0, 0.4)', 'rgba(0, 0, 0, 0.9)']} style={{ height: '100%', justifyContent: 'flex-end', padding: 10 }}>
-                        <Text style={styles.textSemi}>{data?.name}</Text>
-                        {data?.available && <Text style={!data?.available ? styles.textSemiError : styles.bottomRateText}>{`₹ ${data?.price}`}</Text>}
-                        <Text style={styles.lightText}>{data?.store?.name}</Text>
+                    <LinearGradient colors={ data?.available ? ['rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, 0.7)'] : ['rgba(0, 0, 0, 0.4)', 'rgba(0, 0, 0, 0.9)'] } style={ { height: '100%', justifyContent: 'flex-end', padding: 10 } }>
+                        <Text style={ styles.textSemi }>{ data?.name }</Text>
+                        { data?.available && <Text style={ !data?.available ? styles.textSemiError : styles.bottomRateText }>{ `₹ ${data?.price}` }</Text> }
+                        <Text style={ styles.lightText }>{ data?.store?.name }</Text>
                     </LinearGradient>
-                    {!data?.available && <View style={{ position: 'absolute', top: '32%', width: '100%' }}>
-                        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                            <View style={{ padding: 5, borderWidth: 1, borderColor: '#fff', margin: 8, borderRadius: 8 }}>
-                                <Text style={{ color: 'red', textAlign: 'center', fontWeight: 'bold', alignSelf: 'center' }}>Out of stock</Text>
+                    { !data?.available && <View style={ { position: 'absolute', top: '32%', width: '100%' } }>
+                        <View style={ { justifyContent: 'center', alignItems: 'center' } }>
+                            <View style={ { padding: 5, borderWidth: 1, borderColor: '#fff', margin: 8, borderRadius: 8 } }>
+                                <Text style={ { color: 'red', textAlign: 'center', fontWeight: 'bold', alignSelf: 'center' } }>Out of stock</Text>
                             </View>
                         </View>
 
-                    </View>}
-                    {item?.status === "inactive" && <View style={{ position: 'absolute', top: '32%', width: '100%' }}>
-                        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                            <View style={{ padding: 5, borderWidth: 1, borderColor: '#fff', margin: 8, borderRadius: 8 }}>
-                                <Text style={{ color: 'red', textAlign: 'center', fontWeight: 'bold', alignSelf: 'center' }}>Product Not Available</Text>
+                    </View> }
+                    { item?.status === "inactive" && <View style={ { position: 'absolute', top: '32%', width: '100%' } }>
+                        <View style={ { justifyContent: 'center', alignItems: 'center' } }>
+                            <View style={ { padding: 5, borderWidth: 1, borderColor: '#fff', margin: 8, borderRadius: 8 } }>
+                                <Text style={ { color: 'red', textAlign: 'center', fontWeight: 'bold', alignSelf: 'center' } }>Product Not Available</Text>
                             </View>
                         </View>
 
-                    </View>}
+                    </View> }
 
-                    {(data?.available && item?.status === "active" && userContext?.userData) && <View style={styles.addContainer}>
+                    { (data?.available && item?.status === "active" && userContext?.userData) && <View style={ styles.addContainer }>
                         <CommonAddButton
-                            onPress={openBottomSheet}
+                            onPress={ openBottomSheet }
                         />
-                    </View>}
+                    </View> }
 
                     {/* {!fashion && item?.openCloseTag && <View
                         style={{ position: 'absolute', right: 7, top: 7, backgroundColor: item?.openCloseTag === 'Closes Soon' ? '#FF0000' : '#58D36E', borderRadius: 8 }}
@@ -236,25 +238,25 @@ const CommonItemCard = memo(({ height, width, item, marginHorizontal, wishlistIc
                         <Text style={styles.tagText}>{item?.openCloseTag}</Text>
                     </View>} */}
 
-                    {userContext?.userData &&
+                    { userContext?.userData &&
                         <TouchableOpacity
-                            onPress={(data?.is_wishlist || wishlistIcon) ? RemoveAction : AddAction}
-                            style={styles.hearIcon}
+                            onPress={ (data?.is_wishlist || wishlistIcon) ? RemoveAction : AddAction }
+                            style={ styles.hearIcon }
                         >
 
-                            <Fontisto name={"heart"} color={(data?.is_wishlist || wishlistIcon) ? "#FF6464" : '#EDEDED'} size={12 / fontScale} />
-                        </TouchableOpacity>}
+                            <Fontisto name={ "heart" } color={ (data?.is_wishlist || wishlistIcon) ? "#FF6464" : '#EDEDED' } size={ 12 / fontScale } />
+                        </TouchableOpacity> }
 
                 </FastImage>
 
             </TouchableOpacity>
 
             <RBSheet
-                ref={refRBSheet}
-                closeOnDragDown={false}
-                closeOnPressMask={true}
-                height={450}
-                customStyles={{
+                ref={ refRBSheet }
+                closeOnDragDown={ false }
+                closeOnPressMask={ true }
+                height={ 450 }
+                customStyles={ {
                     wrapper: {
                         backgroundColor: "transparent",
                     },
@@ -266,24 +268,24 @@ const CommonItemCard = memo(({ height, width, item, marginHorizontal, wishlistIc
                         borderTopLeftRadius: 20,
                         borderTopRightRadius: 20,
                     },
-                }}
+                } }
             >
                 <BlurView
                     blurType="light"
-                    blurAmount={25}
-                    style={{ flex: 1 }}
+                    blurAmount={ 25 }
+                    style={ { flex: 1 } }
                 >
-                    <View style={{ paddingHorizontal: 15, flex: 1 }}>
-                        <View style={styles.RBsheetHeader}>
-                            <CommonTexts label={active === 'fashion' || active === 'green' ? "Similar Products" : 'More items you may like...'} />
+                    <View style={ { paddingHorizontal: 15, flex: 1 } }>
+                        <View style={ styles.RBsheetHeader }>
+                            <CommonTexts label={ active === 'fashion' || active === 'green' ? "Similar Products" : 'More items you may like...' } />
                             <TouchableOpacity
-                                onPress={closeRbSheet}
+                                onPress={ closeRbSheet }
                             >
-                                <Ionicons name='close-circle' color='#000' size={25} />
+                                <Ionicons name='close-circle' color='#000' size={ 25 } />
                             </TouchableOpacity>
                         </View>
-                        <ItemAddedFromSuggtnCard item={item} />
-                        {/* {addedList?.map((item, index) => <ItemAddedFromSuggtnCard item={item} key={index} />)} */}
+                        <ItemAddedFromSuggtnCard item={ item } />
+                        {/* {addedList?.map((item, index) => <ItemAddedFromSuggtnCard item={item} key={index} />)} */ }
                         {/* <ScrollView >
                             {suggestions?.map((item) =>
                                 <FoodSuggestionCard
@@ -296,25 +298,25 @@ const CommonItemCard = memo(({ height, width, item, marginHorizontal, wishlistIc
                     </View>
                 </BlurView>
                 <View
-                    style={{
+                    style={ {
                         backgroundColor: active === 'fashion' ? '#FF7190' : active === 'green' ? '#8ED053' : '#58D36E',
                         height: 60,
                         flexDirection: 'row',
                         alignItems: 'center',
                         paddingHorizontal: 40,
                         width: '100%',
-                    }}
+                    } }
                 >
 
-                    <View style={styles.totalCount}>
-                        {/* <Text style={styles.bottomCountText}>{addedList.length} item</Text> */}
-                        <Text style={styles.bottomRateText}>₹ {total}</Text>
+                    <View style={ styles.totalCount }>
+                        {/* <Text style={styles.bottomCountText}>{addedList.length} item</Text> */ }
+                        <Text style={ styles.bottomRateText }>₹ { total }</Text>
                     </View>
                     <TouchableOpacity
-                        style={styles.viewCartBox}
+                        style={ styles.viewCartBox }
                     // onPress={viewCart}
                     >
-                        <CommonTexts label={'View Cart'} color='#fff' fontSize={23} />
+                        <CommonTexts label={ 'View Cart' } color='#fff' fontSize={ 23 } />
                     </TouchableOpacity>
 
                 </View>

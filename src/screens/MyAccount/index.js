@@ -1,77 +1,79 @@
+/* eslint-disable react-native/no-inline-styles */
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable prettier/prettier */
-import { Image, StyleSheet, Text, View, ScrollView, useWindowDimensions, Modal, TouchableOpacity } from 'react-native'
-import React, { useCallback, useContext, useState } from 'react'
-import CommonTexts from '../../Components/CommonTexts'
-import ListCard from './ListCard'
-import CustomButton from '../../Components/CustomButton'
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+import { Image, StyleSheet, Text, View, ScrollView, useWindowDimensions, Modal, TouchableOpacity } from 'react-native';
+import React, { useCallback, useContext, useState } from 'react';
+import CommonTexts from '../../Components/CommonTexts';
+import ListCard from './ListCard';
+import CustomButton from '../../Components/CustomButton';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Geolocation from 'react-native-geolocation-service';
-import HeaderWithTitle from '../../Components/HeaderWithTitle'
-import { CommonActions, useNavigation } from '@react-navigation/native'
-import PandaContext from '../../contexts/Panda'
-import LogoutModal from './LogoutModal'
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import AuthContext from '../../contexts/Auth'
-import customAxios from '../../CustomeAxios'
+import HeaderWithTitle from '../../Components/HeaderWithTitle';
+import { CommonActions, useNavigation } from '@react-navigation/native';
+import PandaContext from '../../contexts/Panda';
+import LogoutModal from './LogoutModal';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import AuthContext from '../../contexts/Auth';
+import customAxios from '../../CustomeAxios';
 import Toast from 'react-native-toast-message';
-import CartContext from '../../contexts/Cart'
-import { IMG_URL } from '../../config/constants'
-import reactotron from '../../ReactotronConfig'
-import DeleteUserModal from '../../Components/CustomDeleteModal'
+import CartContext from '../../contexts/Cart';
+import { IMG_URL } from '../../config/constants';
+import reactotron from '../../ReactotronConfig';
+import DeleteUserModal from '../../Components/CustomDeleteModal';
 
 
 
 const MyAccount = ({ navigation }) => {
 
 
-    const { height, width } = useWindowDimensions()
-    const contextPanda = useContext(PandaContext)
-    const cartContext = useContext(CartContext)
-    const userContext = useContext(AuthContext)
-    let active = contextPanda.active
+    const { height, width } = useWindowDimensions();
+    const contextPanda = useContext(PandaContext);
+    const cartContext = useContext(CartContext);
+    const userContext = useContext(AuthContext);
+    let active = contextPanda.active;
 
-    const user = useContext(AuthContext)
-    let userData = user?.userData
+    const user = useContext(AuthContext);
+    let userData = user?.userData;
 
     const [showModal, setShowModal] = useState(false);
     const [deleteModal, setDeleteModal] = useState(false);
 
     const gotoMyAddress = useCallback(() => {
-        navigation.navigate('MyAddresses', { mode: 'MyAcc' })
-    }, [navigation])
+        navigation.navigate('MyAddresses', { mode: 'MyAcc' });
+    }, [navigation]);
 
     const gotoPandaCoins = useCallback(() => {
-        navigation.navigate('PandaCoins')
-    }, [navigation])
+        navigation.navigate('PandaCoins');
+    }, [navigation]);
 
     const gotoAffiliateBonus = useCallback(() => {
-        navigation.navigate('AffiliateBonus')
-    }, [navigation])
+        navigation.navigate('AffiliateBonus');
+    }, [navigation]);
 
 
     const onClose = useCallback(() => {
-        setShowModal(false)
-    }, [navigation])
+        setShowModal(false);
+    }, [navigation]);
 
     const OpenDelete = useCallback(() => {
-        setDeleteModal(true)
-    }, [navigation])
+        setDeleteModal(true);
+    }, [navigation]);
 
     const CloseDelete = useCallback(() => {
-        setDeleteModal(false)
-    }, [navigation])
+        setDeleteModal(false);
+    }, [navigation]);
 
 
     const getPosition = async () => {
         await Geolocation.getCurrentPosition(
             position => {
-                userContext.setLocation([position?.coords?.latitude, position.coords?.longitude])
+                userContext.setLocation([position?.coords?.latitude, position.coords?.longitude]);
             },
             error => {
                 Toast.show({
                     type: 'error',
-                    text1: error
+                    text1: error,
                 });
 
             },
@@ -89,7 +91,7 @@ const MyAccount = ({ navigation }) => {
                 showLocationDialog: true,
             },
         );
-    }
+    };
 
     const onClickDelete = async () => {
         try {
@@ -100,6 +102,7 @@ const MyAccount = ({ navigation }) => {
             userContext.setCurrentAddress(null);
             userContext.setUserLocation(null);
             userContext.setCity(null);
+            userContext.setLocation(null);
             await AsyncStorage.clear();
             setDeleteModal(false);
             navigation.dispatch(
@@ -114,7 +117,7 @@ const MyAccount = ({ navigation }) => {
         } catch (err) {
 
         }
-    }
+    };
 
 
     const onClick = async () => {
@@ -157,14 +160,15 @@ const MyAccount = ({ navigation }) => {
         cartContext.setCart(null);
         cartContext.setAddress(null);
         cartContext.setDefaultAddress(null);
+        userContext.setLocation(null);
         userContext.setCurrentAddress(null);
         userContext.setUserLocation(null);
         userContext.setCity(null);
-        await AsyncStorage.clear()
-        setShowModal(false)
+        await AsyncStorage.clear();
+        setShowModal(false);
         Toast.show({
             type: 'success',
-            text1: 'Logout successfully'
+            text1: 'Logout successfully',
         });
         navigation.dispatch(
             CommonActions.reset({
@@ -176,7 +180,7 @@ const MyAccount = ({ navigation }) => {
         );
         userContext.setUserData(null);
 
-    }
+    };
 
     const onEdit = useCallback(() => {
         navigation.navigate('EditProfile');
@@ -189,7 +193,7 @@ const MyAccount = ({ navigation }) => {
         //     </> :
         <>
             <HeaderWithTitle title={ 'My Account' } noBack />
-            <ScrollView style={ { flex: 1, backgroundColor: active === 'green' ? '#F4FFE9' : active === 'fashion' ? '#FFF5F7' : '#fff', } }>
+            <ScrollView style={ { flex: 1, backgroundColor: active === 'green' ? '#F4FFE9' : active === 'fashion' ? '#FFF5F7' : '#fff' } }>
                 <View style={ { alignItems: 'center' } }>
                     <View>
                         <Image
@@ -199,9 +203,9 @@ const MyAccount = ({ navigation }) => {
                         />
                         <TouchableOpacity
                             onPress={ onEdit }
-                            style={ { width: 25, height: 25, borderRadius: 15, backgroundColor: active === "green" ? '#8ED053' : active === "fashion" ? '#FF7190' : '#58D36E', alignItems: 'center', justifyContent: 'center', alignSelf: 'flex-end', marginTop: -25 } }
+                            style={ { width: 25, height: 25, borderRadius: 15, backgroundColor: active === 'green' ? '#8ED053' : active === 'fashion' ? '#FF7190' : '#58D36E', alignItems: 'center', justifyContent: 'center', alignSelf: 'flex-end', marginTop: -25 } }
                         >
-                            <MaterialIcons name='edit' size={ 15 } color='#fff' />
+                            <MaterialIcons name="edit" size={ 15 } color="#fff" />
                         </TouchableOpacity>
                     </View>
                     <CommonTexts
@@ -316,10 +320,10 @@ const MyAccount = ({ navigation }) => {
             </ScrollView>
         </>
         // </>
-    )
-}
+    );
+};
 
-export default MyAccount
+export default MyAccount;
 
 const styles = StyleSheet.create({
     logo: {
@@ -327,6 +331,6 @@ const styles = StyleSheet.create({
         height: 100,
         resizeMode: 'contain',
         marginTop: 20,
-        borderRadius: 50
+        borderRadius: 50,
     },
-})
+});

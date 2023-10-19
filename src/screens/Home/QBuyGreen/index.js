@@ -1,11 +1,14 @@
+/* eslint-disable react-native/no-inline-styles */
+/* eslint-disable semi */
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable prettier/prettier */
 import { FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View, Switch, Platform, useWindowDimensions, SafeAreaView, RefreshControl, PermissionsAndroid, Pressable } from 'react-native'
 import React, { useCallback, useContext, useEffect, useLayoutEffect, useState } from 'react'
 import ImageSlider from '../../../Components/ImageSlider';
 import CustomSearch from '../../../Components/CustomSearch';
-import { useForm } from "react-hook-form";
+import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from "yup";
+import * as yup from 'yup';
 import OfferText from '../OfferText';
 import PickDropAndReferCard from '../PickDropAndReferCard';
 import Header from '../../../Components/Header';
@@ -42,18 +45,18 @@ import CommonWhatsappButton from '../../../Components/CommonWhatsappButton';
 import Animated, { useSharedValue, withDelay, withRepeat, withSequence, withTiming } from 'react-native-reanimated';
 //import messaging from '@react-native-firebase/messaging';
 import {
-    useQuery
+    useQuery,
 } from '@tanstack/react-query';
 import TypeSkelton from '../Grocery/TypeSkelton';
 import ShopCardSkeltion from '../Grocery/ShopCardSkeltion';
 
 const QbuyGreenHome = async (datas) => {
-    const homeData = await customAxios.post(`customer/home`, datas);
+    const homeData = await customAxios.post('customer/home', datas);
 
     return {
         home: homeData?.data?.data,
         availablePdt: homeData?.data?.data?.find((item, index) => item?.type === 'available_products'),
-        slider: homeData?.data?.data?.find((item, index) => item?.type === 'sliders')
+        slider: homeData?.data?.data?.find((item, index) => item?.type === 'sliders'),
 
     }
 }
@@ -69,16 +72,15 @@ const QBuyGreen = ({ navigation }) => {
 
     const loadingg = useContext(LoaderContext);
     const userContext = useContext(AuthContext);
-    const cartContext = useContext(CartContext);
 
 
 
 
 
     let datas = {
-        type: "green",
+        type: 'green',
         // coordinates: env === "dev" ? location : userContext?.location
-        coordinates: userContext?.location
+        coordinates: userContext?.location,
     }
 
 
@@ -177,7 +179,7 @@ const QBuyGreen = ({ navigation }) => {
     }, [navigation])
 
     let offer = {
-        hotel: 'Farm N Fresh'
+        hotel: 'Farm N Fresh',
     }
 
     const goToShop = useCallback(() => {
@@ -197,36 +199,36 @@ const QBuyGreen = ({ navigation }) => {
     // }, [])
 
 
-    const getHomedata = async () => {
+    // const getHomedata = async () => {
 
-        loadingg.setLoading(true)
+    //     loadingg.setLoading(true)
 
-        let datas = {
-            type: "green",
-            // coordinates: env === "dev" ? location : userContext?.location
-            coordinates: userContext?.location
-        }
-        await customAxios.post(`customer/home`, datas)
-            .then(async response => {
-                setHomeData(response?.data?.data)
-                loadingg.setLoading(false)
-                // setTimeout(() => {
-                //     SplashScreen.hide()
-                // }, 500);
-                loadingg.setLoading(false)
-            })
-            .catch(async error => {
-                loadingg.setLoading(false)
-                if (error.includes("Unauthenticated")) {
-                    navigation.navigate("Login")
-                }
-                Toast.show({
-                    type: 'error',
-                    text1: error
-                });
+    //     let datas = {
+    //         type: 'green',
+    //         // coordinates: env === "dev" ? location : userContext?.location
+    //         coordinates: userContext?.location,
+    //     }
+    //     await customAxios.post('customer/home', datas)
+    //         .then(async response => {
+    //             setHomeData(response?.data?.data)
+    //             loadingg.setLoading(false)
+    //             // setTimeout(() => {
+    //             //     SplashScreen.hide()
+    //             // }, 500);
+    //             loadingg.setLoading(false)
+    //         })
+    //         .catch(async error => {
+    //             loadingg.setLoading(false)
+    //             if (error.includes('Unauthenticated')) {
+    //                 navigation.navigate('Login')
+    //             }
+    //             Toast.show({
+    //                 type: 'error',
+    //                 text1: error,
+    //             });
 
-            })
-    }
+    //         })
+    // }
 
     const onSearch = useCallback(() => {
         navigation.navigate('ProductSearchScreen', { mode: 'fashion' })
@@ -236,11 +238,11 @@ const QBuyGreen = ({ navigation }) => {
 
     const CarouselSelect = (item) => {
         switch (item?.screentype) {
-            case "product":
+            case 'product':
                 let data = getProduct(item?.product)
                 navigation.navigate('SingleItemScreen', { item: data })
                 break;
-            case "store":
+            case 'store':
                 navigation.navigate('store', { name: item?.vendor?.store_name, mode: 'store', item: item?.vendor, storeId: item?.vendor?._id })
                 break;
             default:
@@ -256,9 +258,8 @@ const QBuyGreen = ({ navigation }) => {
                 <FastImage
                     source={ { uri: `${IMG_URL}${item?.original_image}` } }
                     style={ { height: '100%', width: '95%', borderRadius: 20 } }
-                    resizeMode='cover'
-                >
-                </FastImage>
+                    resizeMode="cover"
+                />
             </TouchableOpacity>
         )
     }
@@ -403,8 +404,7 @@ const QBuyGreen = ({ navigation }) => {
                         <Animated.View style={ { height: height / 5, alignItems: 'center', marginTop: 10, shadowOpacity: 0.1, shadowRadius: 1, opacity, width: width } } >
                             <Animated.View
                                 style={ { width: '100%', height: '100%', width: '90%', backgroundColor: '#fff', margin: 5, borderRadius: 20, opacity } }
-                            >
-                            </Animated.View>
+                            />
                         </Animated.View>
                         <View style={ { width: width } }>
                             <SearchBox onPress={ null } />
@@ -568,7 +568,7 @@ const QBuyGreen = ({ navigation }) => {
                 </>} */}
 
             </View>
-            {/* 
+            {/*
             <CommonSquareButton
                 onPress={gotoChat}
                 position='absolute'
@@ -576,7 +576,7 @@ const QBuyGreen = ({ navigation }) => {
                 right={10}
             /> */}
             <CommonWhatsappButton
-                position='absolute'
+                position="absolute"
                 bottom={ 10 }
                 right={ 10 }
             />
@@ -590,26 +590,26 @@ const styles = StyleSheet.create({
 
     container: {
         flex: 1,
-        backgroundColor: '#F4FFE9'
+        backgroundColor: '#F4FFE9',
     },
     grossCatView: {
         flexDirection: 'row',
         flexWrap: 'wrap',
         gap: 2,
         marginLeft: 20,
-        marginRight: 10
+        marginRight: 10,
     },
     pickupReferContainer: {
         flexDirection: 'row',
         backgroundColor: '#F4FFE9',
         marginTop: 20,
-        justifyContent: 'space-evenly'
+        justifyContent: 'space-evenly',
     },
     offerView: {
         alignItems: 'center',
         backgroundColor: '#DDFFCB',
         marginBottom: 20,
-        paddingVertical: 15
+        paddingVertical: 15,
     },
     discountText: {
         fontFamily: 'Poppins-Bold',
@@ -620,13 +620,13 @@ const styles = StyleSheet.create({
         fontFamily: 'Poppins-LightItalic',
         color: '#23233C',
         fontSize: 10,
-        marginTop: 5
+        marginTop: 5,
     },
     productContainer: {
         flexDirection: 'row',
         flexWrap: 'wrap',
         gap: 17,
-        paddingHorizontal: '3%'
-    }
+        paddingHorizontal: '3%',
+    },
 
 })

@@ -1,9 +1,11 @@
+/* eslint-disable react-native/no-inline-styles */
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable prettier/prettier */
-import { StyleSheet, Text, View, Image, ScrollView, ActivityIndicator, ToastAndroid, useWindowDimensions, PermissionsAndroid, Platform, } from 'react-native'
-import React, { useCallback, useContext, useEffect, useState } from 'react'
-import { useForm } from "react-hook-form";
+import { StyleSheet, Text, View, Image, ScrollView, ActivityIndicator, ToastAndroid, useWindowDimensions, PermissionsAndroid, Platform } from 'react-native';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from "yup";
+import * as yup from 'yup';
 import CommonAuthBg from '../CommonAuthBg';
 import CommonInput from '../../../Components/CommonInput';
 import CommonAuthHeading from '../CommonAuthHeading';
@@ -11,74 +13,76 @@ import TermsAndPrivacyText from './TermsAndPrivacyText';
 import CustomButton from '../../../Components/CustomButton';
 import HelpAndSupportText from './HelpAndSupportText';
 import CommonTexts from '../../../Components/CommonTexts';
-import FastImage from 'react-native-fast-image'
+import FastImage from 'react-native-fast-image';
 import AuthContext from '../../../contexts/Auth';
 import LoaderContext from '../../../contexts/Loader';
 import customAxios from '../../../CustomeAxios';
-import Toast from 'react-native-toast-message'
-import SplashScreen from 'react-native-splash-screen'
+import Toast from 'react-native-toast-message';
+import SplashScreen from 'react-native-splash-screen';
 import reactotron from 'reactotron-react-native';
-import { NativeModules } from "react-native"
+import { NativeModules } from 'react-native';
 import { CommonActions } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
+import Geolocation from 'react-native-geolocation-service';
+import axios from 'axios';
 
-
-const { env, mode } = NativeModules.RNENVConfig
+const { env, mode } = NativeModules.RNENVConfig;
 
 const Login = ({ navigation }) => {
 	const userContext = useContext(AuthContext);
 
-	const { width } = useWindowDimensions()
+	const { width } = useWindowDimensions();
 
 	useEffect(() => {
 		//reactotron.log("in")
-		SplashScreen.hide()
-	}, [])
+		SplashScreen.hide();
+	}, []);
 
-	const [location, setLocation] = useState(null)
-	// eslint-disable-next-line prettier/prettier
-	const loginUser = useContext(AuthContext)
-	const loadingg = useContext(LoaderContext)
+	const [location, setLocation] = useState(null);
 
-	const [data, setData] = useState('')
+	const loginUser = useContext(AuthContext);
+	const loadingg = useContext(LoaderContext);
 
-
-	let loader = loadingg?.loading
+	const [data, setData] = useState('');
 
 
-	const phone = /^(\+\d{1,3}[- ]?)?\d{10}$/
+	let loader = loadingg?.loading;
+
+
+	const phone = /^(\+\d{1,3}[- ]?)?\d{10}$/;
 	const schema = yup.object({
-		mobile: yup.string().required('Phone number is required').max(10, "Phone Number must be 10 digits").min(10, "Phone Number must be 10 digits").matches(phone, 'Not a valid number'),
+		mobile: yup.string().required('Phone number is required').max(10, 'Phone Number must be 10 digits').min(10, 'Phone Number must be 10 digits').matches(phone, 'Not a valid number'),
 	}).required();
 
 	const { control, handleSubmit, formState: { errors }, setValue } = useForm({
-		resolver: yupResolver(schema)
+		resolver: yupResolver(schema),
 	});
 
 	const onSubmit = useCallback(async (data) => {
 		// navigation.navigate('Otp')
-		loginUser.setLogin(data)
-		loadingg.setLoading(true)
-		await customAxios.post(`auth/customerloginotp`, data)
+
+		loginUser.setLogin(data);
+		loadingg.setLoading(true);
+		await customAxios.post('auth/customerloginotp', data)
 			.then(async response => {
-				setData(response?.data?.data)
-				loadingg.setLoading(false)
-				navigation.navigate('Otp')
+				setData(response?.data?.data);
+				loadingg.setLoading(false);
+				navigation.navigate('Otp');
 			})
 			.catch(async error => {
 				Toast.show({
 					type: 'error',
-					text1: error
+					text1: error,
 				});
-				loadingg.setLoading(false)
-			})
-	}, [])
+				loadingg.setLoading(false);
+			});
+	}, []);
 
 	const imageURl = {
 		panda: require('../../../Images/pandaLogo.png'),
 		green: require('../../../Images/loginLogo.png'),
-		fashion: require('../../../Images/FashionloginLogo.png')
-	}
+		fashion: require('../../../Images/FashionloginLogo.png'),
+	};
 
 	function getAddressFromCoordinates (lat, lng) {
 		if (lat && lng) {
@@ -88,16 +92,16 @@ const Login = ({ navigation }) => {
 				//setLocation
 			})
 				.catch(err => {
-				})
+				});
 		}
 
 	}
 
 	useEffect(() => {
 		if (location) {
-			getAddressFromCoordinates()
+			getAddressFromCoordinates();
 		}
-	}, [location])
+	}, [location]);
 
 
 
@@ -105,15 +109,15 @@ const Login = ({ navigation }) => {
 	const getCurrentLocation = useCallback(async () => {
 		if (Platform.OS === 'ios') {
 			const status = await Geolocation.requestAuthorization('whenInUse');
-			if (status === "granted") {
-				getPosition()
+			if (status === 'granted') {
+				getPosition();
 			} else {
 				Toast.show({
 					type: 'error',
-					text1: 'Location permission denied by user.'
+					text1: 'Location permission denied by user.',
 				});
 
-				navigation.navigate('AddNewLocation')
+				navigation.navigate('AddNewLocation');
 			}
 
 		}
@@ -124,7 +128,7 @@ const Login = ({ navigation }) => {
 			);
 
 			if ((Platform.OS === 'android' && Platform.Version < 23) || hasPermission) {
-				getPosition()
+				getPosition();
 			} else {
 				const status = await PermissionsAndroid.request(
 					PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
@@ -132,23 +136,23 @@ const Login = ({ navigation }) => {
 				);
 
 				if (status === PermissionsAndroid.RESULTS.GRANTED) {
-					getPosition()
+					getPosition();
 
-					// eslint-disable-next-line no-undef
+
 				} else if (status === PermissionsAndroid.RESULTS.DENIED || status === PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN) {
 
 
-					navigation.navigate('AddNewLocation')
+					navigation.navigate('AddNewLocation');
 					Toast.show({
 						type: 'error',
-						text1: 'Location permission denied by user.'
+						text1: 'Location permission denied by user.',
 					});
 				}
 
 			}
 		}
 
-	}, [])
+	}, []);
 
 
 
@@ -156,23 +160,22 @@ const Login = ({ navigation }) => {
 		await Geolocation.getCurrentPosition(
 			position => {
 
-				getAddressFromCoordinates(position?.coords?.latitude, position.coords?.longitude)
-
-				userContext.setLocation([position?.coords?.latitude, position.coords?.longitude])
-				setLocation(position?.coords)
+				getAddressFromCoordinates(position?.coords?.latitude, position.coords?.longitude);
+				userContext.setLocation([position?.coords?.latitude, position.coords?.longitude]);
+				setLocation(position?.coords);
 				SplashScreen.hide();
 				navigation.dispatch(CommonActions.reset({
 					index: 0,
 					routes: [
-						{ name: 'green' }
+						{ name: 'green' },
 					],
-				}))
+				}));
 			},
 			async error => {
-				navigation.navigate('AddNewLocation')
+				navigation.navigate('AddNewLocation');
 				Toast.show({
 					type: 'error',
-					text1: error.message
+					text1: error.message,
 				});
 				// checkLogin();
 			},
@@ -190,7 +193,7 @@ const Login = ({ navigation }) => {
 				showLocationDialog: true,
 			},
 		);
-	}
+	};
 
 	const NaviagteToGuest = useCallback(() => {
 		if (userContext?.location) {
@@ -201,21 +204,21 @@ const Login = ({ navigation }) => {
 						{ name: 'green' },
 					],
 				})
-			)
+			);
 		} else {
-			getCurrentLocation()
+			getCurrentLocation();
 		}
 
 
-	}, [navigation])
+	}, [navigation]);
 
 	return (
 		<CommonAuthBg>
-			<ScrollView style={ { flex: 1, paddingHorizontal: 20, } }>
+			<ScrollView style={ { flex: 1, paddingHorizontal: 20 } }>
 				<FastImage
 					style={ styles.logo }
 					source={ imageURl[mode] }
-					resizeMode='contain'
+					resizeMode="contain"
 				/>
 				<CommonAuthHeading
 					label={ 'Welcome' }
@@ -230,10 +233,10 @@ const Login = ({ navigation }) => {
 					control={ control }
 					error={ errors.mobile }
 					fieldName="mobile"
-					placeholder='Mobile Number'
+					placeholder="Mobile Number"
 					inputMode={ 'numeric' }
 					mt={ 40 }
-					backgroundColor='#fff'
+					backgroundColor="#fff"
 					shadowOpacity={ 0.1 }
 					elevation={ 2 }
 				/>
@@ -243,7 +246,7 @@ const Login = ({ navigation }) => {
 					<CustomButton
 						width={ width / 2.5 }
 						onPress={ handleSubmit(onSubmit) }
-						bg={ mode === "fashion" ? '#FF7190' : "#58D36E" }
+						bg={ mode === 'fashion' ? '#FF7190' : '#58D36E' }
 						label={ 'Sign In' }
 						mt={ 20 }
 						loading={ loader }
@@ -260,15 +263,15 @@ const Login = ({ navigation }) => {
 				</View>
 
 
-				<Text style={ styles.textStyle }>{ "Need Support to Login?" }</Text>
+				<Text style={ styles.textStyle }>{ 'Need Support to Login?' }</Text>
 				<HelpAndSupportText />
 			</ScrollView>
 
 		</CommonAuthBg>
-	)
-}
+	);
+};
 
-export default Login
+export default Login;
 
 const styles = StyleSheet.create({
 
@@ -283,7 +286,7 @@ const styles = StyleSheet.create({
 		color: '#8D8D8D',
 		fontSize: 11,
 		textAlign: 'center',
-		marginTop: 70
-	}
+		marginTop: 70,
+	},
 
-})
+});

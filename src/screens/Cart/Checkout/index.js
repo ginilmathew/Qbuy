@@ -1,3 +1,5 @@
+/* eslint-disable quotes */
+/* eslint-disable semi */
 /* eslint-disable prettier/prettier */
 import { Image, StyleSheet, Text, View, ScrollView, TouchableOpacity, Pressable, ActivityIndicator } from 'react-native'
 import React, { useRef, useState, useEffect, useContext, useCallback } from 'react'
@@ -580,10 +582,10 @@ const Checkout = ({ navigation }) => {
                             setIsLoding(false);
                         }
                     }).catch(error => {
-                        setIsLoding(false);
+
                         Toast.show({ type: 'error', text1: error || "Something went wrong !!!" });
                         setIsLoding(false);
-                    })
+                    });
             }
             else {
                 Toast.show({

@@ -1,3 +1,5 @@
+/* eslint-disable semi */
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable prettier/prettier */
 import { AppState, PermissionsAndroid, Platform, StyleSheet, ToastAndroid } from 'react-native'
 import React, { useState, useEffect, useContext, useCallback } from 'react'
@@ -29,7 +31,7 @@ import PandaContext from '../contexts/Panda';
 import SplashScreen from 'react-native-splash-screen';
 import DeviceInfo from 'react-native-device-info';
 import CommonUpdateModal from '../Components/CommonUpdateModal';
-import { NativeModules } from "react-native"
+import { NativeModules } from 'react-native'
 
 
 const { env, mode } = NativeModules.RNENVConfig
@@ -42,17 +44,17 @@ const Stack = createNativeStackNavigator();
 
 const RouteTest = () => {
 
-    const DeviceVersion = DeviceInfo.getVersion()
+    const DeviceVersion = DeviceInfo.getVersion();
 
 
 
 
-    const userContext = useContext(AuthContext)
-    const cartContext = useContext(CartContext)
-    const loadingContext = useContext(LoaderContext)
-    const [location, setLocation] = useState(null)
-    const { active } = useContext(PandaContext)
-    const [user, setUserDetails] = useState(null)
+    const userContext = useContext(AuthContext);
+    const cartContext = useContext(CartContext);
+    const loadingContext = useContext(LoaderContext);
+    const [location, setLocation] = useState(null);
+    const { active } = useContext(PandaContext);
+    const [user, setUserDetails] = useState(null);
     const [versionUpdate, setversionUpdate] = useState(false);
     const [forceUpdate, setForceUpdate] = useState(false)
 
@@ -66,43 +68,25 @@ const RouteTest = () => {
 
         getCurrentLocation();
 
-    }, [])
+    }, []);
 
-    // useEffect(() => {
-    //     const subscription = AppState.addEventListener('change', nextAppState => {
-    //     //   if (
-    //     //     appState.current.match(/inactive|background/) &&
-    //     //     nextAppState === 'active'
-    //     //   ) {
-    //     //     console.log('App has come to the foreground!');
-    //     //   }
-
-    //     //   appState.current = nextAppState;
-    //     //   setAppStateVisible(appState.current);
-    //       reactotron.log('AppState', nextAppState, cartContext.cart);
-    //     });
-
-    //     return () => {
-    //       subscription.remove();
-    //     };
-    //   }, [cartContext.cart]);
 
     const getCurrentLocation = useCallback(async () => {
         if (Platform.OS === 'ios') {
             const status = await Geolocation.requestAuthorization('whenInUse');
-            if (status === "granted") {
+            if (status === 'granted') {
                 getPosition()
             } else {
                 Toast.show({
                     type: 'error',
-                    text1: 'Location permission denied by user.'
+                    text1: 'Location permission denied by user.',
                 });
-                const token = await AsyncStorage.getItem("token");
+                const token = await AsyncStorage.getItem('token');
 
                 if (token) {
-                    getProfile()
-                    getCartDetails()
-                    getAddressList()
+                    getProfile();
+                    getCartDetails();
+                    getAddressList();
                 }
                 setInitialScreen('AddNewLocation');
             }
@@ -115,7 +99,7 @@ const RouteTest = () => {
             );
 
             if ((Platform.OS === 'android' && Platform.Version < 23) || hasPermission) {
-                getPosition()
+                getPosition();
             } else {
                 const status = await PermissionsAndroid.request(
                     PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
@@ -123,10 +107,10 @@ const RouteTest = () => {
                 );
 
                 if (status === PermissionsAndroid.RESULTS.GRANTED) {
-                    getPosition()
+                    getPosition();
 
                 } else if (status === PermissionsAndroid.RESULTS.DENIED || status === PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN) {
-                    const token = await AsyncStorage.getItem("token");
+                    const token = await AsyncStorage.getItem('token');
                     if (token) {
                         getProfile()
                         getCartDetails()
@@ -135,14 +119,14 @@ const RouteTest = () => {
                     setInitialScreen('AddNewLocation');
                     Toast.show({
                         type: 'error',
-                        text1: 'Location permission denied by user.'
+                        text1: 'Location permission denied by user.',
                     });
                 }
 
             }
         }
 
-    }, [])
+    }, []);
 
     function getAddressFromCoordinates (lat, lng) {
         if (lat && lng) {
@@ -152,7 +136,7 @@ const RouteTest = () => {
                 //setLocation
             })
                 .catch(err => {
-                })
+                });
         }
 
     }
@@ -165,6 +149,9 @@ const RouteTest = () => {
 
 
     const getPosition = async () => {
+
+        reactotron.log('API CALLEDDD')
+
         await Geolocation.getCurrentPosition(
             position => {
 
@@ -177,14 +164,14 @@ const RouteTest = () => {
                 const token = await AsyncStorage.getItem('token');
 
                 if (token) {
-                    getProfile()
-                    getCartDetails()
-                    getAddressList()
+                    getProfile();
+                    getCartDetails();
+                    getAddressList();
                 }
                 setInitialScreen('AddNewLocation');
                 Toast.show({
                     type: 'error',
-                    text1: error.message
+                    text1: error.message,
                 });
                 // checkLogin();
             },
@@ -206,13 +193,13 @@ const RouteTest = () => {
 
 
     const VersionManagement = (data) => {
-        SplashScreen.hide()
+        SplashScreen.hide();
         if (DeviceVersion * 1 < data?.current_version * 1) {
             if (DeviceVersion * 1 < data?.current_version * 1 && data?.update) {
                 setversionUpdate(true);
                 setForceUpdate(true);
             } else if (DeviceVersion * 1 < data?.current_version * 1 && !data?.update) {
-                setversionUpdate(true)
+                setversionUpdate(true);
             }
         } else {
             setInitialScreen('green');
@@ -222,12 +209,12 @@ const RouteTest = () => {
 
     const ColoseUpdateModal = useCallback(() => {
         setversionUpdate(false);
-        setInitialScreen('green')
-    }, [versionUpdate])
+        setInitialScreen('green');
+    }, [versionUpdate]);
 
     const getProfile = useCallback(async () => {
         loadingContext.setLoading(true);
-        await customAxios.get(`customer/customer-profile`)
+        await customAxios.get('customer/customer-profile')
             .then(async response => {
                 loadingContext.setLoading(false);
                 userContext.setUserData(response?.data?.data);
@@ -242,7 +229,7 @@ const RouteTest = () => {
             .catch(async error => {
                 Toast.show({
                     type: 'error',
-                    text1: error
+                    text1: error,
                 });
                 // setInitialScreen('Login');
                 await AsyncStorage.clear()
@@ -255,15 +242,15 @@ const RouteTest = () => {
             loadingContext.setLoading(true);
             let value = {
                 user_id: user?._id,
-                type: active
+                type: active,
             }
-            await customAxios.post(`customer/cart/newshow-cart`, value)
+            await customAxios.post('customer/cart/newshow-cart', value)
                 .then(async response => {
                     if (isObject(response?.data?.data)) {
                         cartContext.setCart(response?.data?.data)
                     }
                     else {
-                        await AsyncStorage.removeItem("cartId")
+                        await AsyncStorage.removeItem('cartId')
                     }
                     loadingContext.setLoading(false);
 
@@ -271,7 +258,7 @@ const RouteTest = () => {
                 .catch(async error => {
                     Toast.show({
                         type: 'error',
-                        text1: error
+                        text1: error,
                     });
                     loadingContext.setLoading(false);
                 })
@@ -281,7 +268,7 @@ const RouteTest = () => {
 
     const getAddressList = async () => {
         loadingContext.setLoading(true)
-        await customAxios.get(`customer/address/list`)
+        await customAxios.get('customer/address/list')
             .then(async response => {
                 if (response?.data?.data?.length > 0) {
                     if (response?.data?.data?.length === 1) {
@@ -310,7 +297,7 @@ const RouteTest = () => {
                 getAddressFromCoordinates()
                 Toast.show({
                     type: 'error',
-                    text1: error
+                    text1: error,
                 });
                 loadingContext.setLoading(false)
             })
@@ -318,7 +305,7 @@ const RouteTest = () => {
 
     const checkLogin = async () => {
         // await AsyncStorage.clear()
-        const token = await AsyncStorage.getItem("token");
+        const token = await AsyncStorage.getItem('token');
         if (token) {
             getProfile()
             getCartDetails()
@@ -339,7 +326,7 @@ const RouteTest = () => {
 
 
     useEffect(async () => {
-        const token = await AsyncStorage.getItem("token");
+        const token = await AsyncStorage.getItem('token');
         if (token) {
             const subscription = AppState.addEventListener('change', async nextAppState => {
 

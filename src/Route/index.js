@@ -1,3 +1,6 @@
+/* eslint-disable semi */
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable quotes */
 /* eslint-disable prettier/prettier */
 import { AppState, PermissionsAndroid, Platform, StyleSheet, ToastAndroid } from 'react-native'
 import React, { useState, useEffect, useContext, useCallback } from 'react'
@@ -50,8 +53,6 @@ const Route = () => {
 
     useEffect(() => {
         getCurrentLocation()
-
-
     }, [])
 
     // useEffect(() => {
@@ -77,7 +78,7 @@ const Route = () => {
         if (Platform.OS === 'ios') {
             const status = await Geolocation.requestAuthorization('whenInUse');
             if (status === "granted") {
-                getPosition()
+                getPosition();
             } else {
                 Toast.show({
                     type: 'error',
@@ -86,9 +87,9 @@ const Route = () => {
                 const token = await AsyncStorage.getItem("token");
 
                 if (token) {
-                    getProfile()
-                    getCartDetails()
-                    getAddressList()
+                    getProfile();
+                    getCartDetails();
+                    getAddressList();
                 }
                 setInitialScreen('AddNewLocation');
             }
@@ -96,7 +97,7 @@ const Route = () => {
         }
         else {
             if (Platform.OS === 'android' && Platform.Version < 23) {
-                getPosition()
+                getPosition();
             }
 
             const hasPermission = await PermissionsAndroid.check(
@@ -105,7 +106,7 @@ const Route = () => {
             );
 
             if (hasPermission) {
-                getPosition()
+                getPosition();
             }
 
             const status = await PermissionsAndroid.request(
@@ -114,11 +115,11 @@ const Route = () => {
             );
 
             if (status === PermissionsAndroid.RESULTS.GRANTED) {
-                getPosition()
+                getPosition();
 
             }
 
-            if (status === PermissionsAndroid.RESULTS.DENIED) {
+            if (status === PermissionsAndroid.RESULTS.DENIED || status === PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN) {
                 const token = await AsyncStorage.getItem("token");
 
                 if (token) {
@@ -129,21 +130,7 @@ const Route = () => {
                 setInitialScreen('AddNewLocation');
                 Toast.show({
                     type: 'error',
-                    text1: 'Location permission denied by user.'
-                });
-            }
-            else if (status === PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN) {
-                const token = await AsyncStorage.getItem("token");
-
-                if (token) {
-                    getProfile()
-                    getCartDetails()
-                    getAddressList()
-                }
-                setInitialScreen('AddNewLocation');
-                Toast.show({
-                    type: 'error',
-                    text1: 'Location permission revoked by user.',
+                    text1: 'Location permission denied by user.',
                 });
             }
         }
@@ -156,11 +143,13 @@ const Route = () => {
             //setLocation
         })
             .catch(err => {
-
+                console.log(err)
             })
     }
 
     const getPosition = async () => {
+
+        reactotron.log('API CALLED');
         await Geolocation.getCurrentPosition(
             position => {
 

@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View, Switch, Platform, useWindowDimensions } from 'react-native'
 import React, { memo, useCallback, useContext, useRef, useState } from 'react'
 
@@ -31,23 +32,23 @@ const PandaShopCard = memo(({ item, mode, onCategoryPress, storeId, mymode, name
 
     }, [item, active, item?._id])
     return (
-        <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', margin: 5, padding: 5 }}>
+        <View style={ { flexDirection: 'column', justifyContent: 'center', alignItems: 'center', margin: 5, padding: 5 } }>
             <TouchableOpacity
-                onPress={onClick}
-                key={item?._id}
-                style={{ alignItems: 'center', width: name === "restaurants" ? width/2.3 : imageWidth, height: name === "restaurants" ? 120 : imageWidth }}
+                onPress={ onClick }
+                key={ item?._id }
+                style={ { alignItems: 'center', width: name === "restaurants" ? width / 2.3 : imageWidth, height: name === "restaurants" ? 120 : imageWidth } }
             >
                 <FastImage
-                    style={{  width: '100%', height: '100%',borderRadius: Platform.OS === 'android' ? name === "restaurants" ? 8 : imageWidth / 2 : 0}}
-                    source={{ uri: `${IMG_URL}${active === "panda" ? (item?.store_logo || item?.image) : item?.image}` }}
-                    borderRadius={ name === "restaurants" ? 8 : imageWidth / 2}
+                    style={ { width: '100%', height: '100%', borderRadius: Platform.OS === 'android' ? name === "restaurants" ? 8 : imageWidth / 2 : 0 } }
+                    source={ { uri: `${IMG_URL}${active === "panda" ? (item?.store_logo || item?.image) : item?.image}` } }
+                    borderRadius={ name === "restaurants" ? 8 : imageWidth / 2 }
                 />
 
             </TouchableOpacity>
             <Text
-                numberOfLines={2}
-                style={styles.shopName}
-            >{(active === "panda" ? item?.store_name || item?.name : item?.name)}</Text>
+                numberOfLines={ 2 }
+                style={ styles.shopName }
+            >{ (active === "panda" ? item?.store_name || item?.name : item?.name) }</Text>
         </View>
     )
 })
