@@ -376,6 +376,7 @@ const QBuyGreen = ({ navigation }) => {
         return (
             <View key={ index } style={ { flex: 0.5, justifyContent: 'center' } }>
                 <CommonItemCard
+                    refetch={ refetch }
                     item={ item }
                     key={ item?._id }
                     width={ width / 2.2 }

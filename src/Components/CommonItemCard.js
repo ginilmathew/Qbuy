@@ -30,7 +30,7 @@ import { getProduct } from '../helper/productHelper';
 import reactotron from 'reactotron-react-native';
 
 
-const CommonItemCard = memo(({ height, width, item, marginHorizontal, wishlistIcon, mr, ml, mb, getWishlist }) => {
+const CommonItemCard = memo(({ height, width, item, marginHorizontal, wishlistIcon, mr, ml, mb, getWishlist, refetch }) => {
 
 
 
@@ -133,6 +133,7 @@ const CommonItemCard = memo(({ height, width, item, marginHorizontal, wishlistIc
                 setHeart(!heart)
                 if (wishlistIcon) {
                     getWishlist()
+                    refetch()
                 }
                 else {
                     data.is_wishlist = false
@@ -172,6 +173,7 @@ const CommonItemCard = memo(({ height, width, item, marginHorizontal, wishlistIc
                 data.is_wishlist = true
                 setData({ ...data })
                 setHeart(!heart)
+                refetch()
                 // if(has(response?.data, 'data')){
                 //     setHeart(!heart)
                 // }

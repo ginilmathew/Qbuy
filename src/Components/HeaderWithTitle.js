@@ -6,23 +6,24 @@ import { useNavigation } from '@react-navigation/native'
 import PandaContext from '../contexts/Panda'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import Fontisto from 'react-native-vector-icons/Fontisto'
+import reactotron from '../ReactotronConfig'
+
 
 const HeaderWithTitle = ({ title, noBack, onPressBack, mode }) => {
-
 
 
     const contextPanda = useContext(PandaContext)
     let active = contextPanda.active
     const navigation = useNavigation()
-    
+
     const backAction = useCallback(() => {
-        if(mode === 'checkout'){
+        if (mode === 'checkout') {
             navigation.navigate('Checkout')
-        }else{
+        } else {
             navigation.goBack()
         }
-    
-    }, [navigation,mode])
+
+    }, [navigation, mode])
 
     const onClickFashionCat = useCallback(() => {
         navigation.navigate('FashionCategory')
@@ -35,33 +36,33 @@ const HeaderWithTitle = ({ title, noBack, onPressBack, mode }) => {
 
     return (
         <>
-            <StatusBar backgroundColor={active === "green" ? '#8ED053' : active === "fashion" ? '#FF7190' : '#58D36E'} barStyle="dark-content" />
+            <StatusBar backgroundColor={ active === "green" ? '#8ED053' : active === "fashion" ? '#FF7190' : '#58D36E' } barStyle="dark-content" />
             <View
-                style={{ backgroundColor: active === "green" ? '#8ED053' : active === "fashion" ? '#FF7190' : '#58D36E', height: Platform.OS === 'android' ? 55 : 90, flexDirection: 'row', paddingLeft: 15, alignItems: 'flex-end', }}
+                style={ { backgroundColor: active === "green" ? '#8ED053' : active === "fashion" ? '#FF7190' : '#58D36E', height: Platform.OS === 'android' ? 55 : 90, flexDirection: 'row', paddingLeft: 15, alignItems: 'flex-end', } }
             >
                 <View
-                    style={{ flexDirection: 'row', alignItems: 'center', paddingBottom: 5 }}
+                    style={ { flexDirection: 'row', alignItems: 'center', paddingBottom: 5 } }
                 >
-                    {!noBack && <TouchableOpacity onPress={onPressBack ? onPressBack : backAction}>
-                        <Ionicons name={"chevron-back"} size={30} color='#fff' marginTop={-2} />
-                    </TouchableOpacity>}
+                    { !noBack && <TouchableOpacity onPress={ onPressBack ? onPressBack : backAction }>
+                        <Ionicons name={ "chevron-back" } size={ 30 } color='#fff' marginTop={ -2 } />
+                    </TouchableOpacity> }
                     <CommonTexts
-                        label={title}
-                        color={'#fff'}
-                        fontSize={21}
-                        mt={Platform.OS === 'android' ? 2 : -2}
-                        numberOfLines={1}
+                        label={ title }
+                        color={ '#fff' }
+                        fontSize={ 21 }
+                        mt={ Platform.OS === 'android' ? 2 : -2 }
+                        numberOfLines={ 1 }
                     />
                 </View>
-                <View style={{ flexDirection: 'row', alignItems: 'center', position: 'absolute', right: 10, bottom: 10 }}>
-                    {active === "fashion" && <>
-                        <TouchableOpacity onPress={onClickFashionCat}>
-                            <AntDesign name={"appstore1"} color="#fff" size={22} />
+                <View style={ { flexDirection: 'row', alignItems: 'center', position: 'absolute', right: 10, bottom: 10 } }>
+                    { active === "fashion" && <>
+                        <TouchableOpacity onPress={ onClickFashionCat }>
+                            <AntDesign name={ "appstore1" } color="#fff" size={ 22 } />
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={onClickWishlist}>
-                            <Fontisto name={"heart"} color="#fff" size={20} marginLeft={10} />
+                        <TouchableOpacity onPress={ onClickWishlist }>
+                            <Fontisto name={ "heart" } color="#fff" size={ 20 } marginLeft={ 10 } />
                         </TouchableOpacity>
-                    </>}
+                    </> }
                 </View>
             </View>
         </>

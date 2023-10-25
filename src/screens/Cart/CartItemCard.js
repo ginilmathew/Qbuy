@@ -170,7 +170,23 @@ const CartItemCard = ({ item, index, refreshCart }) => {
         }
     }
 
+
+
+    const deleteconfirmation = () => {
+        Alert.alert('Are you sure you want to delete?', '', [
+            {
+                text: 'Cancel',
+                // onPress: () => console.log('Cancel Pressed'),
+                style: 'cancel',
+            },
+            { text: 'OK', onPress: () => deleteItem() },
+        ]);
+    }
+
+
     const deleteItem = async () => {
+
+
         let allProducts = cartContext?.cart?.product_details?.filter((prod, i) => i !== index);
         let cartItems = {
             cart_id: cartContext?.cart?._id,
@@ -231,13 +247,16 @@ const CartItemCard = ({ item, index, refreshCart }) => {
             </View>
 
             <TouchableOpacity
-                onPress={ deleteItem }
+                onPress={ deleteconfirmation }
                 style={ { marginLeft: 5, justifyContent: 'center', alignItems: 'center', position: 'absolute', right: 15, top: 2 } }>
                 <MaterialCommunityIcons name={ "delete-forever" } size={ 20 } color={ 'red' } />
             </TouchableOpacity>
-            { item?.quantity < item?.minimum_qty && <Text style={ styles.outofStock }>{ `Min. quantity:${item?.minimum_qty}` }</Text> }
-            { !item?.availability && <Text style={ styles.outofStock }>{ "Not Available" }</Text> }
-            { (!item?.available || item?.status !== 'active') && <Text style={ styles.outofStock }>{ "Out of Stock" }</Text> }
+            <View style={ { display: 'flex', flexDirection: 'column', gap: 1.5 } }>
+                { item?.quantity < item?.minimum_qty && <Text style={ styles.outofStock }>{ `Min. quantity:${item?.minimum_qty}` }</Text> }
+                { !item?.availability && <Text style={ styles.outofStock }>{ "Not Available" }</Text> }
+                { (!item?.available || item?.status !== 'active') && <Text style={ styles.outofStock }>{ "Out of Stock" }</Text> }
+            </View>
+
         </View>
 
     )
