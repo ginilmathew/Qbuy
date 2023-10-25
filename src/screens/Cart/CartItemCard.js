@@ -1,7 +1,6 @@
 /* eslint-disable prettier/prettier */
 import { Alert, Image, Pressable, StyleSheet, Text, TouchableOpacity, useWindowDimensions, View } from 'react-native'
 import React, { memo, useCallback, useContext, useEffect, useState } from 'react'
-import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import FastImage from 'react-native-fast-image'
 import CommonCounter from '../../Components/CommonCounter'
 import { useNavigation } from '@react-navigation/native'
@@ -9,7 +8,6 @@ import PandaContext from '../../contexts/Panda'
 import CommonSelectDropdown from '../../Components/CommonSelectDropdown'
 import { IMG_URL } from '../../config/constants'
 import customAxios from '../../CustomeAxios'
-import moment from 'moment'
 import CartContext from '../../contexts/Cart'
 import AuthContext from '../../contexts/Auth'
 import Toast from 'react-native-toast-message';
@@ -64,10 +62,10 @@ const CartItemCard = ({ item, index, refreshCart }) => {
             }
         }
         data.quantity = data?.quantity + 1
-        //setData(data)
+
         let allProducts = cartContext?.cart?.product_details;
         allProducts[index].quantity = allProducts[index].quantity + 1;
-        //setCount(count + 1)
+
 
         let cartItems = {
             cart_id: cartContext?.cart?._id,
@@ -157,11 +155,8 @@ const CartItemCard = ({ item, index, refreshCart }) => {
                 .then(async response => {
                     cartContext.setCart(response?.data?.data)
                     refreshCart()
-                    //data.quantity = data?.quantity - 1
-                    //navigation.navigate('CartNav',{screen: 'Cart'})
                 })
                 .catch(async error => {
-
                     Toast.show({
                         type: 'error',
                         text1: error
