@@ -32,13 +32,14 @@ import reactotron from 'reactotron-react-native';
 
 const CommonItemCard = memo(({ height, width, item, marginHorizontal, wishlistIcon, mr, ml, mb, getWishlist, refetch }) => {
 
-
+    // reactotron.log({ item }, 'in category')
 
     const [data, setData] = useState([])
     const [variant, setVariant] = useState(false)
     const calculation = useMemo(() => getProduct(item), [item]);
 
 
+    // reactotron.log({ data })
 
     const { fontScale, height: height1 } = useWindowDimensions()
 

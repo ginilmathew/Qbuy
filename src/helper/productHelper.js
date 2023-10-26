@@ -2,12 +2,13 @@ import moment from "moment";
 import { min, max } from 'lodash'
 import reactotron from "../ReactotronConfig";
 
-export function getProduct(product){
+export function getProduct (product) {
 
 
 
-    let { _id, product_id, name, description, store, franchisee, weight, type, image, stock, minimum_qty, product_image, order_count, is_wishlist, viewCount, attributes, video_link,status  } = product
+    let { _id, product_id, name, description, store, franchisee, weight, type, image, stock, minimum_qty, product_image, order_count, is_wishlist, viewCount, attributes, video_link, status } = product
 
+    // reactotron.log({ is_wishlist })
     let variant = product?.variants?.length > 0 ? true : false
     let minQty = minimum_qty ? parseFloat(minimum_qty) : 1
     let vendorCommission = product?.vendors?.additional_details?.commission ? parseFloat(product?.vendors?.additional_details?.commission) : 0
@@ -15,34 +16,34 @@ export function getProduct(product){
 
 
     let newProduct = {
-        _id, 
-        product_id, 
-        name, 
-        description, 
-        store, 
-        franchisee, 
-        weight, 
-        type, 
-        image, 
-        stock, 
-        minQty, 
-        product_image, 
-        order_count, 
+        _id,
+        product_id,
+        name,
+        description,
+        store,
+        franchisee,
+        weight,
+        type,
+        image,
+        stock,
+        minQty,
+        product_image,
+        order_count,
         is_wishlist,
         variant,
         viewCount,
         attributes: attributes,
         video_link,
-        status:status
-       
+        status: status
+
     }
 
-    
+
     let variants = [];
-    if(variant){
+    if (variant) {
         product?.variants?.map(vari => {
             let offer = vari?.offer_price ? parseFloat(vari?.offer_price) : 0;
-            let offerFromDate = moment(vari?.offer_date_from).isValid()  ? moment(vari?.offer_date_from, "YYYY-MM-DD") : null
+            let offerFromDate = moment(vari?.offer_date_from).isValid() ? moment(vari?.offer_date_from, "YYYY-MM-DD") : null
             let offerToDate = moment(vari?.offer_date_to).isValid() ? moment(vari?.offer_date_to, "YYYY-MM-DD") : null
             let regular = vari?.regular_price ? parseFloat(vari?.regular_price) : 0
             let seller = vari?.seller_price ? parseFloat(vari?.seller_price) : 0
@@ -51,56 +52,56 @@ export function getProduct(product){
             let stockValue = vari?.stock_value ? parseFloat(vari?.stock_value) : 0
             let price;
 
-            if(stock){
+            if (stock) {
                 //if product requires stock
-                if(minQty <= stockValue){
-                    if(offer > 0){
+                if (minQty <= stockValue) {
+                    if (offer > 0) {
                         //products have offer price , check offer price in valid range
-                        if(offerFromDate && offerToDate){
-                            if(moment(moment().format("YYYY-MM-DD"), "YYYY-MM-DD") >= offerFromDate && moment(moment().format("YYYY-MM-DD"), "YYYY-MM-DD") <= offerToDate){
+                        if (offerFromDate && offerToDate) {
+                            if (moment(moment().format("YYYY-MM-DD"), "YYYY-MM-DD") >= offerFromDate && moment(moment().format("YYYY-MM-DD"), "YYYY-MM-DD") <= offerToDate) {
                                 price = offer;
                             }
-                            else if(regular > 0){
+                            else if (regular > 0) {
                                 price = regular
                             }
-                            else{
-                                let comm = (seller/100) * commission
+                            else {
+                                let comm = (seller / 100) * commission
                                 let amount = seller + comm;
                                 price = amount
                             }
                         }
-                        else if(offerFromDate && !offerToDate){
-                            if(moment(moment().format("YYYY-MM-DD"), "YYYY-MM-DD") >= offerFromDate){
+                        else if (offerFromDate && !offerToDate) {
+                            if (moment(moment().format("YYYY-MM-DD"), "YYYY-MM-DD") >= offerFromDate) {
                                 price = offer
                             }
-                            else if(regular > 0){
+                            else if (regular > 0) {
                                 price = regular
                             }
-                            else{
-                                let comm = (seller/100) * commission
+                            else {
+                                let comm = (seller / 100) * commission
                                 let amount = seller + comm;
                                 price = amount
                             }
                         }
-                        else if(!offerFromDate && !offerToDate){
+                        else if (!offerFromDate && !offerToDate) {
                             price = offer
                         }
-                        else{
-                            if(regular > 0){
+                        else {
+                            if (regular > 0) {
                                 price = regular
                             }
-                            else{
-                                let comm = (seller/100) * commission
+                            else {
+                                let comm = (seller / 100) * commission
                                 let amount = seller + comm;
                                 price = amount
                             }
                         }
                     }
-                    else if(regular > 0){
+                    else if (regular > 0) {
                         price = regular
                     }
-                    else{
-                        let comm = (seller/100) * commission
+                    else {
+                        let comm = (seller / 100) * commission
                         let amount = seller + comm;
                         price = amount
                     }
@@ -112,72 +113,72 @@ export function getProduct(product){
                         minQty,
                         stockValue,
                         delivery,
-                        available : true
+                        available: true
                     })
                 }
-                else{
+                else {
                     //out of stock
                     variants.push({
                         id: vari?._id,
                         title: vari?.title,
                         attributs: vari?.attributs,
-                        price : null,
+                        price: null,
                         minQty,
                         stockValue,
                         delivery,
-                        available : false
+                        available: false
                     })
                 }
             }
-            else{
+            else {
                 //no need to check stock
-                if(offer > 0){
+                if (offer > 0) {
                     //products have offer price , check offer price in valid range
-                    if(offerFromDate && offerToDate){
-                        if(moment(moment().format("YYYY-MM-DD"), "YYYY-MM-DD") >= offerFromDate && moment(moment().format("YYYY-MM-DD"), "YYYY-MM-DD") <= offerToDate){
+                    if (offerFromDate && offerToDate) {
+                        if (moment(moment().format("YYYY-MM-DD"), "YYYY-MM-DD") >= offerFromDate && moment(moment().format("YYYY-MM-DD"), "YYYY-MM-DD") <= offerToDate) {
                             price = offer;
                         }
-                        else if(regular > 0){
+                        else if (regular > 0) {
                             price = regular
                         }
-                        else{
-                            let comm = (seller/100) * commission
+                        else {
+                            let comm = (seller / 100) * commission
                             let amount = seller + comm;
                             price = amount
                         }
                     }
-                    else if(offerFromDate && !offerToDate){
-                        if(moment(moment().format("YYYY-MM-DD"), "YYYY-MM-DD") >= offerFromDate){
+                    else if (offerFromDate && !offerToDate) {
+                        if (moment(moment().format("YYYY-MM-DD"), "YYYY-MM-DD") >= offerFromDate) {
                             price = offer
                         }
-                        else if(regular > 0){
+                        else if (regular > 0) {
                             price = regular
                         }
-                        else{
-                            let comm = (seller/100) * commission
+                        else {
+                            let comm = (seller / 100) * commission
                             let amount = seller + comm;
                             price = amount
                         }
                     }
-                    else if(!offerFromDate && !offerToDate){
+                    else if (!offerFromDate && !offerToDate) {
                         price = offer
                     }
-                    else{
-                        if(regular > 0){
+                    else {
+                        if (regular > 0) {
                             price = regular
                         }
-                        else{
-                            let comm = (seller/100) * commission
+                        else {
+                            let comm = (seller / 100) * commission
                             let amount = seller + comm;
                             price = amount
                         }
                     }
                 }
-                else if(regular > 0){
+                else if (regular > 0) {
                     price = regular
                 }
-                else{
-                    let comm = (seller/100) * commission
+                else {
+                    let comm = (seller / 100) * commission
                     let amount = seller + comm;
                     price = amount
                 }
@@ -189,37 +190,37 @@ export function getProduct(product){
                     minQty,
                     stockValue,
                     delivery,
-                    available : true
+                    available: true
                 })
             }
         })
         newProduct['variants'] = variants;
         // Get the minimum price
-        let priceList=[];
+        let priceList = [];
         variants.map(vari => {
-            if(vari?.available){
-                if(vari?.price){
+            if (vari?.available) {
+                if (vari?.price) {
                     priceList.push(parseFloat(vari?.price))
                 }
-                
+
             }
         })
-        
-        if(priceList?.length > 1){
+
+        if (priceList?.length > 1) {
             newProduct['price'] = `${parseFloat(min(priceList)).toFixed(2)}-${parseFloat(max(priceList)).toFixed(2)}`
             newProduct['available'] = true
         }
-        else if(priceList?.length === 1){
+        else if (priceList?.length === 1) {
             newProduct['price'] = parseFloat(priceList[0]).toFixed(2)
             newProduct['available'] = true
         }
-        else{
+        else {
             newProduct['available'] = false
-            newProduct['price']= null
+            newProduct['price'] = null
         }
-        
+
     }
-    else{
+    else {
         let offer = product?.offer_price ? parseFloat(product?.offer_price) : 0;
         let offerFromDate = moment(product?.offer_date_from).isValid() ? moment(product?.offer_date_from, "YYYY-MM-DD") : null
         let offerToDate = moment(product?.offer_date_to).isValid() ? moment(product?.offer_date_to, "YYYY-MM-DD") : null
@@ -229,116 +230,116 @@ export function getProduct(product){
         let delivery = product?.fixed_delivery_price ? parseFloat(product?.fixed_delivery_price) : 0
         let stockValue = product?.stock_value ? parseFloat(product?.stock_value) : 0
         let price;
-        if(stock){
-            if(stockValue >= minQty){
-                if(offer > 0){
+        if (stock) {
+            if (stockValue >= minQty) {
+                if (offer > 0) {
                     //products have offer price , check offer price in valid range
-                    if(offerFromDate && offerToDate){
-                        if(moment(moment().format("YYYY-MM-DD"), "YYYY-MM-DD") >= offerFromDate && moment(moment().format("YYYY-MM-DD"), "YYYY-MM-DD") <= offerToDate){
+                    if (offerFromDate && offerToDate) {
+                        if (moment(moment().format("YYYY-MM-DD"), "YYYY-MM-DD") >= offerFromDate && moment(moment().format("YYYY-MM-DD"), "YYYY-MM-DD") <= offerToDate) {
                             price = offer;
                         }
-                        else if(regular > 0){
+                        else if (regular > 0) {
                             price = regular
                         }
-                        else{
-                            let comm = (seller/100) * commission
+                        else {
+                            let comm = (seller / 100) * commission
                             let amount = seller + comm;
                             price = amount
                         }
                     }
-                    else if(offerFromDate && !offerToDate){
-                        if(moment(moment().format("YYYY-MM-DD"), "YYYY-MM-DD") >= offerFromDate){
+                    else if (offerFromDate && !offerToDate) {
+                        if (moment(moment().format("YYYY-MM-DD"), "YYYY-MM-DD") >= offerFromDate) {
                             price = offer
                         }
-                        else if(regular > 0){
+                        else if (regular > 0) {
                             price = regular
                         }
-                        else{
-                            let comm = (seller/100) * commission
+                        else {
+                            let comm = (seller / 100) * commission
                             let amount = seller + comm;
                             price = amount
                         }
                     }
-                    else if(!offerFromDate && !offerToDate){
+                    else if (!offerFromDate && !offerToDate) {
                         price = offer
                     }
-                    else{
-                        if(regular > 0){
+                    else {
+                        if (regular > 0) {
                             price = regular
                         }
-                        else{
-                            let comm = (seller/100) * commission
+                        else {
+                            let comm = (seller / 100) * commission
                             let amount = seller + comm;
                             price = amount
                         }
                     }
                 }
-                else if(regular > 0){
+                else if (regular > 0) {
                     price = regular
                 }
-                else{
-                    let comm = (seller/100) * commission
+                else {
+                    let comm = (seller / 100) * commission
                     let amount = seller + comm;
                     price = amount
                 }
                 newProduct['available'] = true
                 newProduct['price'] = parseFloat(price).toFixed(2);
             }
-            else{
+            else {
                 //OUT OF STOCK
                 newProduct['available'] = false;
                 newProduct['price'] = null;
             }
         }
-        else{
-            if(offer > 0){
+        else {
+            if (offer > 0) {
                 //products have offer price , check offer price in valid range
-                if(offerFromDate && offerToDate){
-                    if(moment(moment().format("YYYY-MM-DD"), "YYYY-MM-DD") >= offerFromDate && moment(moment().format("YYYY-MM-DD"), "YYYY-MM-DD") <= offerToDate){
+                if (offerFromDate && offerToDate) {
+                    if (moment(moment().format("YYYY-MM-DD"), "YYYY-MM-DD") >= offerFromDate && moment(moment().format("YYYY-MM-DD"), "YYYY-MM-DD") <= offerToDate) {
                         price = offer;
                     }
-                    else if(regular > 0){
+                    else if (regular > 0) {
                         price = regular
                     }
-                    else{
-                        let comm = (seller/100) * commission
+                    else {
+                        let comm = (seller / 100) * commission
                         let amount = seller + comm;
                         price = amount
                     }
                 }
-                else if(offerFromDate && !offerToDate){
-                    if(moment(moment().format("YYYY-MM-DD"), "YYYY-MM-DD") >= offerFromDate){
+                else if (offerFromDate && !offerToDate) {
+                    if (moment(moment().format("YYYY-MM-DD"), "YYYY-MM-DD") >= offerFromDate) {
                         price = offer
                     }
-                    else if(regular > 0){
+                    else if (regular > 0) {
                         price = regular
                     }
-                    else{
-                        let comm = (seller/100) * commission
+                    else {
+                        let comm = (seller / 100) * commission
                         let amount = seller + comm;
                         price = amount
                     }
                 }
-                else if(!offerFromDate && !offerToDate){
+                else if (!offerFromDate && !offerToDate) {
                     price = offer
                 }
-                else{
-                    if(regular > 0){
+                else {
+                    if (regular > 0) {
                         price = regular
                     }
-                    else{
-                        let comm = (seller/100) * commission
+                    else {
+                        let comm = (seller / 100) * commission
                         let amount = seller + comm;
                         price = amount
                     }
                 }
-               
+
             }
-            else if(regular > 0){
+            else if (regular > 0) {
                 price = regular
             }
-            else{
-                let comm = (seller/100) * commission
+            else {
+                let comm = (seller / 100) * commission
                 let amount = seller + comm;
                 price = amount
             }
@@ -349,7 +350,7 @@ export function getProduct(product){
         newProduct['stockValue'] = stockValue;
         newProduct['delivery'] = delivery;
     }
-    
+
     return newProduct;
-    
+
 }

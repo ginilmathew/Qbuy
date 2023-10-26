@@ -86,7 +86,7 @@ const RouteTest = () => {
                 if (token) {
                     getProfile();
                     getCartDetails();
-                    getAddressList();
+                    // getAddressList();
                 }
                 setInitialScreen('AddNewLocation');
             }
@@ -166,7 +166,7 @@ const RouteTest = () => {
                 if (token) {
                     getProfile();
                     getCartDetails();
-                    getAddressList();
+                    // getAddressList();
                 }
                 setInitialScreen('AddNewLocation');
                 Toast.show({
@@ -266,42 +266,43 @@ const RouteTest = () => {
 
     }, [user])
 
-    const getAddressList = async () => {
-        loadingContext.setLoading(true)
-        await customAxios.get('customer/address/list')
-            .then(async response => {
-                if (response?.data?.data?.length > 0) {
-                    if (response?.data?.data?.length === 1) {
-                        if (!userContext.location) {
-                            userContext.setLocation([response?.data?.data?.[0]?.area?.latitude, response?.data?.data?.[0]?.area?.longitude])
-                            userContext?.setCurrentAddress(response?.data?.data?.[0]?.area?.address)
-                        }
+    // const getAddressList = async () => {
+    //     reactotron.log('api called in address list route text')
+    //     loadingContext.setLoading(true)
+    //     await customAxios.get('customer/address/list')
+    //         .then(async response => {
+    //             if (response?.data?.data?.length > 0) {
+    //                 if (response?.data?.data?.length === 1) {
+    //                     if (!userContext.location) {
+    //                         userContext.setLocation([response?.data?.data?.[0]?.area?.latitude, response?.data?.data?.[0]?.area?.longitude])
+    //                         userContext?.setCurrentAddress(response?.data?.data?.[0]?.area?.address)
+    //                     }
 
 
-                    }
-                    else {
-                        let defaultAdd = response?.data?.data?.find(add => add?.default === true)
-                        if (!userContext.location) {
-                            userContext.setLocation([defaultAdd?.area?.latitude, defaultAdd?.area?.longitude])
-                            userContext?.setCurrentAddress(defaultAdd?.area?.address)
-                        }
-                    }
-                }
-                else {
-                    getAddressFromCoordinates()
-                }
-                cartContext.setAddress(response?.data?.data)
-                loadingContext.setLoading(false)
-            })
-            .catch(async error => {
-                getAddressFromCoordinates()
-                Toast.show({
-                    type: 'error',
-                    text1: error,
-                });
-                loadingContext.setLoading(false)
-            })
-    }
+    //                 }
+    //                 else {
+    //                     let defaultAdd = response?.data?.data?.find(add => add?.default === true)
+    //                     if (!userContext.location) {
+    //                         userContext.setLocation([defaultAdd?.area?.latitude, defaultAdd?.area?.longitude])
+    //                         userContext?.setCurrentAddress(defaultAdd?.area?.address)
+    //                     }
+    //                 }
+    //             }
+    //             else {
+    //                 getAddressFromCoordinates()
+    //             }
+    //             cartContext.setAddress(response?.data?.data)
+    //             loadingContext.setLoading(false)
+    //         })
+    //         .catch(async error => {
+    //             getAddressFromCoordinates()
+    //             Toast.show({
+    //                 type: 'error',
+    //                 text1: error,
+    //             });
+    //             loadingContext.setLoading(false)
+    //         })
+    // }
 
     const checkLogin = async () => {
         // await AsyncStorage.clear()

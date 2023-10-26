@@ -87,7 +87,10 @@ const Otp = ({ navigation }) => {
 		loadingg.setLoading(true);
 		await customAxios.post('auth/customerloginotp', { mobile: mobileNo })
 			.then(async response => {
-				// setData(response?.data?.data)
+				Toast.show({
+					type: 'success',
+					text1: response?.data?.message,
+				});
 				loadingg.setLoading(false);
 			})
 			.catch(async error => {

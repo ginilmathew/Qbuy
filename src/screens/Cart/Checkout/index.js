@@ -559,8 +559,6 @@ const Checkout = ({ navigation }) => {
                     .then(async response => {
                         // console.log("response ==>", JSON.stringify(response.data), response.status)
                         const { data } = response;
-
-
                         if (data?.type === 'cart') {
                             navigation.navigate('Cart');
                         }

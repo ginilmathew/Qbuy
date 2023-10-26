@@ -11,18 +11,18 @@ import axios from 'axios';
 const AddNewLocation = ({ route, navigation }) => {
 
     const backArrowhide = navigation.getState();
-
+    const googlePlacesRef = React.createRef();
     const addressContext = useContext(AddressContext)
     const userContext = useContext(AuthContext)
 
     const { width, height } = useWindowDimensions()
 
-    const location = useRef()
 
-    function getAddressFromCoordinates(lat,lon) {
+
+    function getAddressFromCoordinates (lat, lon) {
         axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${lat},${lon}&key=AIzaSyBBcghyB0FvhqML5Vjmg3uTwASFdkV8wZY`).then(response => {
-  
-           reactotron.log({response},'RESPONSE IN ADDRESS')
+
+            reactotron.log({ response }, 'RESPONSE IN ADDRESS')
             userContext.setUserLocation(response?.data?.results[0]?.formatted_address)
 
             let locality = response?.data?.results?.[0]?.address_components?.find(add => add.types.includes('locality'));
@@ -48,19 +48,22 @@ const AddNewLocation = ({ route, navigation }) => {
     return (
 
         <>
-            <HeaderWithTitle title={'Location'} noBack={backArrowhide.index === 0 ? true : false} />
-            <View style={{ padding: 15 }}>
+            <HeaderWithTitle title={ 'Location' } noBack={ backArrowhide.index === 0 ? true : false } />
+            <ScrollView style={ { padding: 15 } }>
                 <GooglePlacesAutocomplete
-                    autoFocus={false}
-                    returnKeyType={'default'}
-                    fetchDetails={true}
+
+                    autoFocus={ false }
+
+                    returnKeyType={ 'default' }
+                    fetchDetails={ true }
                     placeholder='Search'
-                    keyboardAppearance={'light'}
-                    textInputProps={{
+                    keyboardAppearance={ 'light' }
+                    textInputProps={ {
                         placeholderTextColor: 'gray',
                         returnKeyType: "search"
-                    }}
-                    onPress={(data, details = null) => {
+                    } }
+                    keyboardShouldPersistTaps='always'
+                    onPress={ (data, details = null) => {
                         // 'details' is provided when fetchDetails = true
 
                         let Value = {
@@ -70,39 +73,40 @@ const AddNewLocation = ({ route, navigation }) => {
                             longitude: details?.geometry?.location?.lng
                         }
 
-                          if(!useContext?.userData){
+                        if (!useContext?.userData) {
                             userContext?.setCurrentAddress(null)
                             userContext.setLocation([details?.geometry?.location?.lat, details?.geometry?.location?.lng])
                             getAddressFromCoordinates(details?.geometry?.location?.lat, details?.geometry?.location?.lng);
                             addressContext.setCurrentAddress(Value)
-                          }else{
+                        } else {
                             addressContext.setCurrentAddress(Value)
                             // addressContext.setLocation(details)
-                           
-                          }
+
+                        }
 
 
-                       navigation.navigate('LocationScreen', { mode: '' })
+                        navigation.navigate('LocationScreen', { mode: '' })
 
-                    }}
-                    query={{
+                    } }
+                    query={ {
                         key: 'AIzaSyBBcghyB0FvhqML5Vjmg3uTwASFdkV8wZY',
                         language: 'en',
-                    }}
-                    renderRow={(rowData) => {
+                    } }
+                    renderRow={ (rowData) => {
                         const title = rowData.structured_formatting.main_text;
                         const address = rowData.structured_formatting.secondary_text;
 
                         return (
                             <View>
-                                <Text style={{ fontSize: 14 }}>{title}</Text>
-                                <Text style={{ fontSize: 14 }}>{address}</Text>
+                                <Text style={ { fontSize: 14 } }>{ title }</Text>
+                                <Text style={ { fontSize: 14 } }>{ address }</Text>
                             </View>
                         );
-                    }}
-                    styles={styles}
+                    } }
+                    styles={ styles }
+
                 />
-            </View>
+            </ScrollView>
 
 
         </>

@@ -14,9 +14,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { isEmpty, isArray } from 'lodash'
 import reactotron from 'reactotron-react-native'
 
-const Wishlist = ({navigation}) => {
+const Wishlist = ({ navigation }) => {
 
-    const { width } = useWindowDimensions()
+    const { width, height } = useWindowDimensions()
 
     const loadingContex = useContext(LoaderContext)
     const cartContext = useContext(CartContext)
@@ -24,11 +24,11 @@ const Wishlist = ({navigation}) => {
     const contextPanda = useContext(PandaContext)
 
     let userData = userContext?.userData
-   
+
 
     let loadingg = loadingContex?.loading
     let active = contextPanda.active
-  
+
     const [wishlist, setWishlist] = useState([])
 
 
@@ -36,57 +36,61 @@ const Wishlist = ({navigation}) => {
         getWishlist()
     }, [])
 
-    const getWishlist = async() => {
+    const getWishlist = async () => {
         loadingContex.setLoading(true)
         let data = {
             type: active,
-            coordinates:userContext?.location
+            coordinates: userContext?.location
         }
         await customAxios.post(`customer/wishlist/list`, data)
-      
-        .then(async response => {
-            let datas = response?.data?.data?.product_details;
-            //setWishlist(datas)
-            if(isArray(datas)){
-                setWishlist(datas)
-            }
-            else{
-                setWishlist([])
-            }
-            loadingContex.setLoading(false)
-        })
-        .catch(async error => {
-            Toast.show({
-                type: 'error',
-                text1: error
-            });
-            loadingContex.setLoading(false)
-        })
+
+            .then(async response => {
+                let datas = response?.data?.data?.product_details;
+                //setWishlist(datas)
+                if (isArray(datas)) {
+                    setWishlist(datas)
+                }
+                else {
+                    setWishlist([])
+                }
+                loadingContex.setLoading(false)
+            })
+            .catch(async error => {
+                Toast.show({
+                    type: 'error',
+                    text1: error
+                });
+                loadingContex.setLoading(false)
+            })
     }
 
-   
+
 
 
 
     return (
         <>
-            <HeaderWithTitle title={'Wishlist'}  />
+            <HeaderWithTitle title={ 'Wishlist' } />
             <ScrollView
-                style={{ flex: 1,  backgroundColor:  active === 'green' ? '#F4FFE9' : active === 'fashion' ? '#FFF5F7' : '#fff' , paddingTop:10}}
+                style={ { flex: 1, backgroundColor: active === 'green' ? '#F4FFE9' : active === 'fashion' ? '#FFF5F7' : '#fff', paddingTop: 10 } }
             >
-                <View style={styles.container}>
-                    {wishlist?.map((item, index) => (
+                { wishlist?.length > 0 && <View style={ styles.container }>
+                    { wishlist?.map((item, index) => (
                         <CommonItemCard
-                            item={item}
-                            key={index}
-                            width={width/2.2}
-                            height={250}
+                            item={ item }
+                            key={ index }
+                            width={ width / 2.2 }
+                            height={ 250 }
                             wishlistIcon
-                            getWishlist={getWishlist}
+                            getWishlist={ getWishlist }
                         />
-                    ))}
-                    
-                </View>
+                    )) }
+
+                </View> }
+                { wishlist?.length <= 0 && <View style={ { display: 'flex', justifyContent: 'center', alignItems: 'center', height: height / 1.3 } }>
+                    <Text style={ { color: '#000' } }>Wishlist is empty!</Text>
+                </View> }
+
             </ScrollView>
         </>
 
@@ -97,10 +101,10 @@ const Wishlist = ({navigation}) => {
 export default Wishlist
 
 const styles = StyleSheet.create({
-    container : {
-        flexDirection:'row', 
-        flexWrap:'wrap', 
-        gap:10, 
-        paddingHorizontal:'3%',
+    container: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        gap: 10,
+        paddingHorizontal: '3%',
     }
 })

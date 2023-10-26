@@ -33,18 +33,18 @@ const RefferRestaurant = () => {
 
 
     const schema = yup.object({
-		mobile: yup.string().min(8).required('Phone number is required'),
-	}).required();
+        mobile: yup.string().min(8).required('Phone number is required'),
+    }).required();
 
-	const { control, handleSubmit, formState: { errors }, setValue } = useForm({
-		resolver: yupResolver(schema)
-	});
+    const { control, handleSubmit, formState: { errors }, setValue } = useForm({
+        resolver: yupResolver(schema)
+    });
 
     return (
         <>
-            <HeaderWithTitle title={active === 'green' ? 'Lets Farm Together' : active === 'fashion' ? "Sell Your Item" : 'Reffer A Restaurant'}/>
-            <View style={{flex:1,alignItems:'center',justifyContent:'center'}}>
-                <Text style={{fontSize:18}}>Coming Soon!...</Text>
+            <HeaderWithTitle title={ active === 'green' ? 'Lets Farm Together' : active === 'fashion' ? "Sell Your Item" : 'Refer A Restaurant' } />
+            <View style={ { flex: 1, alignItems: 'center', justifyContent: 'center' } }>
+                <Text style={ { fontSize: 18 } }>Coming Soon!...</Text>
             </View>
             {/* <ScrollView 
                 style={{ 
@@ -139,7 +139,7 @@ const RefferRestaurant = () => {
                     mb={80}
                 />
                  */}
-                {/* <View style={{alignItems:'center'}}>
+            {/* <View style={{alignItems:'center'}}>
                     {status !== 'approved' && <Text
                         style={{
                             fontFamily: 'Poppins-Medium',
@@ -161,10 +161,10 @@ const RefferRestaurant = () => {
 
 
                 </View> */}
-                
 
-                
-            {/* </ScrollView> */}
+
+
+            {/* </ScrollView> */ }
         </>
     )
 }
@@ -172,13 +172,13 @@ const RefferRestaurant = () => {
 export default RefferRestaurant
 
 const styles = StyleSheet.create({
-    mainText : {
+    mainText: {
         fontFamily: 'Poppins-Medium',
         color: '#23233C',
         fontSize: 13,
-        textAlign:'center',
-        paddingHorizontal:40,
-        marginTop:5,
-        marginBottom:20
+        textAlign: 'center',
+        paddingHorizontal: 40,
+        marginTop: 5,
+        marginBottom: 20
     }
 })
