@@ -121,42 +121,6 @@ const MyAccount = ({ navigation }) => {
 
 
     const onClick = async () => {
-
-        // await AsyncStorage.clear()
-
-        // let datas = {
-        //     id: userData?._id
-        // }
-        // await customAxios.post(`auth/customerlogout`, datas)
-        //     .then(async response => {
-        //         getPosition()
-        //         cartContext.setCart(null)
-        //         cartContext.setAddress(null)
-        //         cartContext.setDefaultAddress(null)
-        //         userContext.setCurrentAddress(null)
-        //         userContext.setUserLocation(null)
-        //         userContext.setCity(null)
-        //         await AsyncStorage.clear()
-        //         Toast.show({
-        //             type: 'success',
-        //             text1: response?.data?.message
-        //         });
-        //         navigation.dispatch(
-        //             CommonActions.reset({
-        //                 index: 0,
-        //                 routes: [
-        //                     { name: 'Login' },
-        //                 ],
-        //             })
-        //         );
-
-        //     })
-        //     .catch(async error => {
-        //         Toast.show({
-        //             type: 'error',
-        //             text1: error
-        //         });
-        //     })
         cartContext.setCart(null);
         cartContext.setAddress(null);
         cartContext.setDefaultAddress(null);

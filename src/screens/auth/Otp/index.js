@@ -21,6 +21,7 @@ import { NativeModules } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 import Geolocation from 'react-native-geolocation-service';
 import axios from 'axios';
+import CommonUpdateModal from '../../../Components/CommonUpdateModal';
 const { mode } = NativeModules.RNENVConfig;
 
 const Otp = ({ navigation }) => {
@@ -213,15 +214,15 @@ const Otp = ({ navigation }) => {
 	const NavigationToBack = useCallback(() => { navigation.goBack(); }, [navigation]);
 
 
-	// const ColoseUpdateModal = useCallback(() => {
-	// 	setversionUpdate(false);
-	// 	navigation.dispatch(CommonActions.reset({
-	// 		index: 0,
-	// 		routes: [
-	// 			{ name: 'green' }
-	// 		],
-	// 	}))
-	// }, [versionUpdate])
+	const ColoseUpdateModal = useCallback(() => {
+		setversionUpdate(false);
+		navigation.dispatch(CommonActions.reset({
+			index: 0,
+			routes: [
+				{ name: 'green' }
+			],
+		}))
+	}, [versionUpdate])
 
 	const VersionManagement = (data) => {
 		if (DeviceVersion * 1 < data?.current_version * 1) {
@@ -284,6 +285,7 @@ const Otp = ({ navigation }) => {
 					/>
 				</SafeAreaView>
 			</ScrollView>
+			{ versionUpdate && <CommonUpdateModal isopen={ versionUpdate } CloseModal={ ColoseUpdateModal } ForceUpdate={ forceUpdate } /> }
 		</CommonAuthBg>
 	);
 };

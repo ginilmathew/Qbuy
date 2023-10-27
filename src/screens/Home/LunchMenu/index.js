@@ -5,12 +5,12 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import CommonItemCard from '../../../Components/CommonItemCard'
 
-const LunchMenu = ({list}) => {
+const LunchMenu = ({ list }) => {
 
     const [isEnabled, setIsEnabled] = useState(false);
-    const toggleSwitch = () => setIsEnabled(previousState => !previousState);
 
-    const {width} = useWindowDimensions()
+
+    const { width } = useWindowDimensions()
 
     datas = [
         {
@@ -18,13 +18,13 @@ const LunchMenu = ({list}) => {
             name: 'Chicken Biriyani',
             rate: 260,
             openCloseTag: 'Closes Soon',
-            hotel : 'MRA'
+            hotel: 'MRA'
         },
         {
             _id: '2',
             name: 'Chicken Mandhi',
             rate: 380,
-            hotel : 'Zam Zam'
+            hotel: 'Zam Zam'
 
 
 
@@ -33,7 +33,7 @@ const LunchMenu = ({list}) => {
             _id: '3',
             name: 'Chicken Fried Rice',
             rate: 200,
-            hotel : 'Al-Saj'
+            hotel: 'Al-Saj'
 
 
         },
@@ -42,7 +42,7 @@ const LunchMenu = ({list}) => {
             name: 'Mutton Biriyani',
             openCloseTag: 'Opens Soon',
             rate: 350,
-            hotel : 'Le-Arabia'
+            hotel: 'Le-Arabia'
 
 
 
@@ -53,22 +53,22 @@ const LunchMenu = ({list}) => {
     return (
         <>
             <View
-                style={{ marginBottom: 10, marginTop: 20, paddingHorizontal: 15 }}
+                style={ { marginBottom: 10, marginTop: 20, paddingHorizontal: 15 } }
             >
-                <CommonTexts label={'Lunch Menu'} fontSize={13} />
+                <CommonTexts label={ 'Lunch Menu' } fontSize={ 13 } />
             </View>
-            <View style={styles.container}>
-                {list?.map((item) => (
+            <View style={ styles.container }>
+                { list?.map((item) => (
                     <CommonItemCard
-                        item={item}
-                        key={item?._id}
-                        width={width/2.2}
-                        height={250}
+                        item={ item }
+                        key={ item?._id }
+                        width={ width / 2.2 }
+                        height={ 250 }
 
                     />
-                ))}
+                )) }
             </View>
-            
+
 
         </>
     )
@@ -77,10 +77,10 @@ const LunchMenu = ({list}) => {
 export default LunchMenu
 
 const styles = StyleSheet.create({
-    container : {
-        flexDirection:'row', 
-        flexWrap:'wrap', 
-        gap:10, 
-        paddingHorizontal:'3%'
+    container: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        gap: 10,
+        paddingHorizontal: '3%'
     }
 })
