@@ -49,18 +49,29 @@ const AddNewLocation = ({ route, navigation }) => {
 
         <>
             <HeaderWithTitle title={ 'Location' } noBack={ backArrowhide.index === 0 ? true : false } />
-            <ScrollView style={ { padding: 15 } }>
+            {/* <ScrollView style={ { padding: 15, } } >
                 <GooglePlacesAutocomplete
 
                     autoFocus={ false }
+                    styles={ {
+                        container: {
+                            // Custom container styles
+                            backgroundColor: 'white',
+                            borderBottomWidth: 1,
+                            borderColor: 'lightgray',
+                            borderRadius: 5,
+                            marginTop: 10,
 
+                        },
+                    } }
                     returnKeyType={ 'default' }
                     fetchDetails={ true }
                     placeholder='Search'
                     keyboardAppearance={ 'light' }
                     textInputProps={ {
                         placeholderTextColor: 'gray',
-                        returnKeyType: "search"
+                        returnKeyType: "search",
+
                     } }
                     keyboardShouldPersistTaps='always'
                     onPress={ (data, details = null) => {
@@ -103,10 +114,96 @@ const AddNewLocation = ({ route, navigation }) => {
                             </View>
                         );
                     } }
-                    styles={ styles }
+
 
                 />
+            </ScrollView> */}
+            <ScrollView style={ { padding: 15, marginBottom: height / 6 } } keyboardShouldPersistTaps='handled'>
+                <GooglePlacesAutocomplete
+                    autoFocus={ false }
+                    styles={ {
+                        container: {
+                            // Custom container styles
+                            backgroundColor: 'white',
+                            borderBottomWidth: 1,
+                            borderColor: 'lightgray',
+                            borderRadius: 5,
+                            marginTop: 10,
+                        },
+                        textInputContainer: {
+                            // Custom styles for the container containing the input field
+                            backgroundColor: 'white',
+                            borderTopWidth: 0, // Remove top border
+                            borderBottomWidth: 0, // Remove bottom border
+                            paddingLeft: 10, // Add left padding
+                        },
+                        textInput: {
+                            // Custom input field styles
+                            height: 40,
+                            fontSize: 16,
+                        },
+                        listView: {
+                            // Custom styles for the suggestion list
+                            backgroundColor: 'white', // Background color of the suggestion list
+                        },
+                    } }
+                    returnKeyType={ 'default' }
+                    fetchDetails={ true }
+                    placeholder='Search'
+                    keyboardAppearance={ 'light' }
+                    textInputProps={ {
+                        placeholderTextColor: 'gray',
+                        returnKeyType: 'search',
+                    } }
+                    keyboardShouldPersistTaps='always'
+                    onPress={ (data, details = null) => {
+                        // 'details' is provided when fetchDetails = true
+
+                        let Value = {
+                            location: data?.description,
+                            city: details?.address_components?.filter(st =>
+                                st.types?.includes('locality')
+                            )[0]?.long_name,
+                            latitude: details?.geometry?.location?.lat,
+                            longitude: details?.geometry?.location?.lng,
+                        };
+
+                        if (!useContext?.userData) {
+                            userContext?.setCurrentAddress(null);
+                            userContext.setLocation([
+                                details?.geometry?.location?.lat,
+                                details?.geometry?.location?.lng,
+                            ]);
+                            getAddressFromCoordinates(
+                                details?.geometry?.location?.lat,
+                                details?.geometry?.location?.lng
+                            );
+                            addressContext.setCurrentAddress(Value);
+                        } else {
+                            addressContext.setCurrentAddress(Value);
+                            // addressContext.setLocation(details)
+                        }
+
+                        navigation.navigate('LocationScreen', { mode: '' });
+                    } }
+                    query={ {
+                        key: 'AIzaSyBBcghyB0FvhqML5Vjmg3uTwASFdkV8wZY',
+                        language: 'en',
+                    } }
+                    renderRow={ (rowData) => {
+                        const title = rowData.structured_formatting.main_text;
+                        const address = rowData.structured_formatting.secondary_text;
+
+                        return (
+                            <View>
+                                <Text style={ { fontSize: 14 } }>{ title }</Text>
+                                <Text style={ { fontSize: 14 } }>{ address }</Text>
+                            </View>
+                        );
+                    } }
+                />
             </ScrollView>
+
 
 
         </>
@@ -142,6 +239,7 @@ const styles = StyleSheet.create({
         borderTopWidth: 0,
         borderBottomWidth: 0,
         zIndex: 999,
+
         width: '100%',
         justifyContent: 'center'
 

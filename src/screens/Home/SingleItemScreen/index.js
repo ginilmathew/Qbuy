@@ -398,7 +398,7 @@ const SingleItemScreen = ({ route, navigation }) => {
         }
         else {
             return (
-                <VideoPlayer videoId={ item?.url } selected={ selectedImage } index={ index } />
+                <VideoPlayer videoId={ item?.url } selected={ selectedImage } index={ index } item={ item } />
             )
         }
     }
