@@ -16,7 +16,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 
 const CartItemCard = ({ item, index, refreshCart }) => {
 
-
+    reactotron.log({ item })
 
     const contextPanda = useContext(PandaContext)
     const cartContext = useContext(CartContext)
@@ -40,7 +40,7 @@ const CartItemCard = ({ item, index, refreshCart }) => {
     const addItem = async () => {
         if (item?.type === "single") {
             if (item?.productdata?.stock) {
-                if (parseFloat(item?.productdata?.stock_value) < data?.quantity + 1) {
+                if (parseFloat(item?.productdata?.stock_value) < data?.quantity * 1 + 1) {
                     Toast.show({
                         type: 'error',
                         text1: 'Required quantity not available'
@@ -52,7 +52,7 @@ const CartItemCard = ({ item, index, refreshCart }) => {
         }
         else {
             if (item?.productdata?.stock) {
-                if (parseFloat(item?.variants?.stock_value) < data?.quantity + 1) {
+                if (parseFloat(item?.variants?.stock_value) < data?.quantity * 1 + 1) {
                     Toast.show({
                         type: 'error',
                         text1: 'Required quantity not available'
@@ -61,8 +61,8 @@ const CartItemCard = ({ item, index, refreshCart }) => {
                 }
             }
         }
-        data.quantity = data?.quantity + 1
-
+        data.quantity = data?.quantity * 1 + 1
+        reactotron.log('API CALLEDDD')
         let allProducts = cartContext?.cart?.product_details;
         allProducts[index].quantity = allProducts[index].quantity + 1;
 
@@ -90,12 +90,12 @@ const CartItemCard = ({ item, index, refreshCart }) => {
     }
 
     const removeItem = async () => {
-        let minimumQty = data?.minimum_qty ? data?.minimum_qty : 1
+        let minimumQty = data?.minimum_qty ? data?.minimum_qty * 1 : 1
         //return false
         let allProducts = cartContext?.cart?.product_details;
         let cartItems;
         if (data?.quantity > 1) {
-            let quantity = data?.quantity
+            let quantity = data?.quantity * 1
 
             if (quantity - 1 >= minimumQty) {
                 data.quantity = quantity - 1

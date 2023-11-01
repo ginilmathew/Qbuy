@@ -2,6 +2,7 @@ import { StyleSheet, Text, TouchableOpacity, useWindowDimensions, View } from 'r
 import React, { memo, useCallback, useContext, useEffect, useState } from 'react'
 import CommonTexts from '../../Components/CommonTexts'
 import Ionicons from 'react-native-vector-icons/Ionicons'
+import AntDesign from 'react-native-vector-icons/AntDesign'
 import CustomButton from '../../Components/CustomButton'
 import { useNavigation } from '@react-navigation/native'
 import ItemsCard from './ItemsCard'
@@ -43,7 +44,7 @@ const OrderCard = memo(({ item, refreshOrder }) => {
 
     const clickItem = useCallback(() => {
         setShowItems(!showItems)
-    }) 
+    })
 
     const clickAddress = useCallback(() => {
         setShowAddress(!showAddress)
@@ -224,116 +225,116 @@ const OrderCard = memo(({ item, refreshOrder }) => {
 
 
     return (
-        <View style={styles.container}>
-            <View style={styles.header}>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Text style={styles.textMedum}>{'Order ID '}</Text>
-                    <CommonTexts label={item?.order_id} />
+        <View style={ styles.container }>
+            <View style={ styles.header }>
+                <View style={ { flexDirection: 'row', alignItems: 'center' } }>
+                    <Text style={ styles.textMedum }>{ 'Order ID ' }</Text>
+                    <CommonTexts label={ item?.order_id } />
                 </View>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Text style={styles.dateText}>{moment(item?.created_at).format("DD-MM-YYYY")}</Text>
+                <View style={ { flexDirection: 'row', alignItems: 'center' } }>
+                    <Text style={ styles.dateText }>{ moment(item?.created_at).format("DD-MM-YYYY") }</Text>
                 </View>
             </View>
-            <View style={styles.itemsContainer}>
+            <View style={ styles.itemsContainer }>
                 <View>
-                    <Text style={styles.textRegular}>{'Total Items'}</Text>
-                    <Text style={styles.textBold}>{item?.product_details?.length}</Text>
+                    <Text style={ styles.textRegular }>{ 'Total Items' }</Text>
+                    <Text style={ styles.textBold }>{ item?.product_details?.length }</Text>
                 </View>
                 <View>
-                    <Text style={styles.textRegular}>{'Total Payment'}</Text>
-                    <Text style={styles.textBold}>{((has(item, "pendingBalance")) && item?.pendingBalance > 0) ? item?.pendingBalance  : item?.grand_total?.toFixed(2)}</Text>
+                    <Text style={ styles.textRegular }>{ 'Total Payment' }</Text>
+                    <Text style={ styles.textBold }>{ ((has(item, "pendingBalance")) && item?.pendingBalance > 0) ? item?.pendingBalance : item?.grand_total?.toFixed(2) }</Text>
                 </View>
                 <View>
-                    <Text style={styles.textRegular}>{'Current Status'}</Text>
+                    <Text style={ styles.textRegular }>{ 'Current Status' }</Text>
                     <View
                         style={
                             item?.status === 'pending' ? styles.pendingStatusBox : item?.status === 'completed' ? styles.completedStatusBox : null
                         }
                     >
-                        <Text style={item?.status === 'pending' ? styles.pendingStatusText : item?.status === 'completed' ? styles.completedStatusText : null} >{item?.status}</Text>
+                        <Text style={ item?.status === 'pending' ? styles.pendingStatusText : item?.status === 'completed' ? styles.completedStatusText : null } >{ item?.status }</Text>
                     </View>
                 </View>
             </View>
 
-            <View style={{ backgroundColor: '#fff', paddingBottom: 10, }}>
-                <View style={styles.itemsRow}>
-                    <Text style={styles.textBold}>{'Items'}</Text>
-                    <TouchableOpacity onPress={clickItem}>
-                        <Ionicons name={showItems ? 'chevron-up-circle' : 'chevron-down-circle'} size={22} color={active === 'green' ? '#8ED053' : active === 'fashion' ? '#FF7190' : '#58D36E'} />
+            <View style={ { backgroundColor: '#fff', paddingBottom: 10, } }>
+                <View style={ styles.itemsRow }>
+                    <Text style={ styles.textBold }>{ 'Items' }</Text>
+                    <TouchableOpacity onPress={ clickItem }>
+                        <Ionicons name={ showItems ? 'chevron-up-circle' : 'chevron-down-circle' } size={ 22 } color={ active === 'green' ? '#8ED053' : active === 'fashion' ? '#FF7190' : '#58D36E' } />
                     </TouchableOpacity>
                 </View>
 
-                {showItems && <>
-                    <View style={styles.itemsHeadingView}>
-                        <View style={{ flex: 0.5 }}>
-                            <Text style={[styles.textRegular, { textAlign: 'left' }]}>{'Product'}</Text>
+                { showItems && <>
+                    <View style={ styles.itemsHeadingView }>
+                        <View style={ { flex: 0.5 } }>
+                            <Text style={ [styles.textRegular, { textAlign: 'left' }] }>{ 'Product' }</Text>
                         </View>
-                        <Text style={[styles.textBold, { textAlign: 'center' }]}>{'Qty'}</Text>
-                        <Text style={[styles.textBold, { textAlign: 'center' }]}>{'Price'}</Text>
+                        <Text style={ [styles.textBold, { textAlign: 'center' }] }>{ 'Qty' }</Text>
+                        <Text style={ [styles.textBold, { textAlign: 'center' }] }>{ 'Price' }</Text>
                     </View>
-                    {item?.product_details.map((ite) =>
-                        <ItemsCard item={ite} key={ite?._id} date={item?.created_at} />
-                    )}
-                    <View style={styles.delivery}>
-                        <View style={{ flex: 0.5 }}>
-                            <Text style={[styles.text1, { textAlign: 'left' }]}>{`Delivery Charge`}</Text>
+                    { item?.product_details.map((ite) =>
+                        <ItemsCard item={ ite } key={ ite?._id } date={ item?.created_at } />
+                    ) }
+                    <View style={ styles.delivery }>
+                        <View style={ { flex: 0.5 } }>
+                            <Text style={ [styles.text1, { textAlign: 'left' }] }>{ `Delivery Charge` }</Text>
                         </View>
-                        <Text style={[styles.text1, { textAlign: 'center' }]}></Text>
-                        <Text style={[styles.text1, { textAlign: 'center' }]}>₹ {item?.delivery_charge}</Text>
+                        <Text style={ [styles.text1, { textAlign: 'center' }] }></Text>
+                        <Text style={ [styles.text1, { textAlign: 'center' }] }>₹ { item?.delivery_charge }</Text>
                     </View>
-                    <View style={styles.delivery}>
-                        <View style={{ flex: 0.5 }}>
-                            <Text style={[styles.text1, { textAlign: 'left' }]}>{`Platform Charge`}</Text>
+                    <View style={ styles.delivery }>
+                        <View style={ { flex: 0.5 } }>
+                            <Text style={ [styles.text1, { textAlign: 'left' }] }>{ `Platform Charge` }</Text>
                         </View>
-                        <Text style={[styles.text1, { textAlign: 'center' }]}></Text>
-                        <Text style={[styles.text1, { textAlign: 'center' }]}>₹ {item?.platform_charge}</Text>
+                        <Text style={ [styles.text1, { textAlign: 'center' }] }></Text>
+                        <Text style={ [styles.text1, { textAlign: 'center' }] }>₹ { item?.platform_charge }</Text>
                     </View>
-                </>}
+                </> }
             </View>
 
             <View
-                style={{ backgroundColor: '#fff', paddingBottom: 10, borderTopWidth: showItems ? 0 : 1, borderColor: '#00000029', marginHorizontal: 7 }}
+                style={ { backgroundColor: '#fff', paddingBottom: 10, borderTopWidth: showItems ? 0 : 1, borderColor: '#00000029', marginHorizontal: 7 } }
             >
-                <View style={styles.shippingView}>
-                    <Text style={styles.textBold}>{'Qbuy Panda Slot Based Shipping'}</Text>
-                    <TouchableOpacity onPress={clickAddress}>
-                        <Ionicons name={showAddress ? 'chevron-up-circle' : 'chevron-down-circle'} size={22} color={active === 'green' ? '#8ED053' : active === 'fashion' ? '#FF7190' : '#58D36E'} />
+                <View style={ styles.shippingView }>
+                    <Text style={ styles.textBold }>{ 'Qbuy Panda Slot Based Shipping' }</Text>
+                    <TouchableOpacity onPress={ clickAddress }>
+                        <Ionicons name={ showAddress ? 'chevron-up-circle' : 'chevron-down-circle' } size={ 22 } color={ active === 'green' ? '#8ED053' : active === 'fashion' ? '#FF7190' : '#58D36E' } />
                     </TouchableOpacity>
 
                 </View>
-                {showAddress && <View style={styles.addressBox}>
-                    <CommonTexts label={'HOME'} fontSize={13} />
-                    <Text style={styles.addressText}>{item?.shipaddress?.area?.address}</Text>
-                </View>}
+                { showAddress && <View style={ styles.addressBox }>
+                    <CommonTexts label={ 'HOME' } fontSize={ 13 } />
+                    <Text style={ styles.addressText }>{ item?.shipaddress?.area?.address }</Text>
+                </View> }
 
-                {item?.paymentStatus === 'success' &&
+                { item?.paymentStatus === 'success' &&
                     <>
 
-                        {item?.status === 'pending' ? <CustomButton
-                            onPress={clickDetails}
-                            label={'View Details'}
-                            bg={active === 'green' ? '#FF9C0C' : active === 'fashion' ? '#2D8FFF' : '#576FD0'}
-                            mt={8}
+                        { item?.status === 'pending' ? <CustomButton
+                            onPress={ clickDetails }
+                            label={ 'View Details' }
+                            bg={ active === 'green' ? '#FF9C0C' : active === 'fashion' ? '#2D8FFF' : '#576FD0' }
+                            mt={ 8 }
                         /> : item?.status === 'completed' ?
-                            <View style={{ flex: 1, marginTop: 8, flexDirection: 'row', justifyContent: 'space-between' }}>
+                            <View style={ { flex: 1, marginTop: 8, flexDirection: 'row', justifyContent: 'space-between' } }>
 
                                 <CustomButton
-                                    onPress={clickDetails}
-                                    label={'Details'}
+                                    onPress={ clickDetails }
+                                    label={ 'Details' }
                                     bg='#576FD0'
-                                    width={width / 3.5}
+                                    width={ width / 3.5 }
                                 />
                                 <CustomButton
                                     // onPress={() => navigation.navigate('ViewDetails', { item: item, qty: qty, totalRate: totalRate })}
-                                    label={'Reorder'}
+                                    label={ 'Reorder' }
                                     bg='#D0A857'
-                                    width={width / 3.5}
+                                    width={ width / 3.5 }
                                 />
                                 <CustomButton
-                                    onPress={clickRateOrder}
-                                    label={'Rate Order'}
+                                    onPress={ clickRateOrder }
+                                    label={ 'Rate Order' }
                                     bg='#58D36E'
-                                    width={width / 3.5}
+                                    width={ width / 3.5 }
                                 />
                             </View> : null
                         }
@@ -341,20 +342,32 @@ const OrderCard = memo(({ item, refreshOrder }) => {
 
                 }
 
-                {(item?.status !== 'cancelled' && item?.payment_status === 'cancelled') && <CustomButton
-                    onPress={payAmount}
-                    label={'Pay Now'}
-                    bg={active === 'green' ? '#8ED053' : active === 'fashion' ? '#FF7190' : '#58D36E'}
-                    mt={8}
-                />}
+                { (item?.status !== 'cancelled' && item?.payment_status === 'cancelled') && <CustomButton
+                    onPress={ payAmount }
+                    label={ 'Pay Now' }
+                    bg={ active === 'green' ? '#8ED053' : active === 'fashion' ? '#FF7190' : '#58D36E' }
+                    mt={ 8 }
+                /> }
 
-                {item?.pendingBalance && item?.payment_type === "online" && item?.payment_status === 'pending' && <CustomButton
-                    onPress={payAmountBalance}
-                    label={'Pay Balance'}
-                    bg={active === 'green' ? '#8ED053' : active === 'fashion' ? '#FF7190' : '#58D36E'}
-                    mt={8}
-                />}
+                { item?.pendingBalance && item?.payment_type === "online" && item?.payment_status === 'pending' && <CustomButton
+                    onPress={ payAmountBalance }
+                    label={ 'Pay Balance' }
+                    bg={ active === 'green' ? '#8ED053' : active === 'fashion' ? '#FF7190' : '#58D36E' }
+                    mt={ 8 }
+                /> }
             </View>
+            { item?.refundAmount && <View
+                style={ { backgroundColor: '#fff', paddingBottom: 10, borderTopWidth: showItems ? 0 : 1, borderColor: '#00000029', height: 35, alignItems: 'center', justifyContent: 'center', marginHorizontal: 10 } }
+            >
+                <View style={ { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', display: 'flex', width: '100%' } }>
+                    <Text style={ styles.textBold }>{ 'Refund' }</Text>
+                    <Text style={ { fontWeight: 'bold', fontSize: 12, color: 'blue', fontFamily: 'Poppins-Medium' } }>{ item?.refundAmount }</Text>
+                    <TouchableOpacity onPress={ clickItem }>
+                        <AntDesign name={ 'checkcircle' } size={ 18 } color={ active === 'green' ? '#8ED053' : active === 'fashion' ? '#FF7190' : '#58D36E' } />
+                    </TouchableOpacity>
+                </View>
+            </View> }
+
         </View>
     )
 })
