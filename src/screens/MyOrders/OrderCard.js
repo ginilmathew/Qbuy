@@ -349,24 +349,25 @@ const OrderCard = memo(({ item, refreshOrder }) => {
                     mt={ 8 }
                 /> }
 
-                { item?.pendingBalance && item?.payment_type === "online" && item?.payment_status === 'pending' && <CustomButton
+                { item?.pendingBalance > 0 && item?.payment_type === "online" && item?.payment_status === 'pending' && <CustomButton
                     onPress={ payAmountBalance }
                     label={ 'Pay Balance' }
                     bg={ active === 'green' ? '#8ED053' : active === 'fashion' ? '#FF7190' : '#58D36E' }
                     mt={ 8 }
                 /> }
             </View>
-            { item?.refundAmount && <View
-                style={ { backgroundColor: '#fff', paddingBottom: 10, borderTopWidth: showItems ? 0 : 1, borderColor: '#00000029', height: 35, alignItems: 'center', justifyContent: 'center', marginHorizontal: 10 } }
-            >
-                <View style={ { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', display: 'flex', width: '100%' } }>
-                    <Text style={ styles.textBold }>{ 'Refund' }</Text>
-                    <Text style={ { fontWeight: 'bold', fontSize: 12, color: 'blue', fontFamily: 'Poppins-Medium' } }>{ item?.refundAmount }</Text>
-                    <TouchableOpacity onPress={ clickItem }>
-                        <AntDesign name={ 'checkcircle' } size={ 18 } color={ active === 'green' ? '#8ED053' : active === 'fashion' ? '#FF7190' : '#58D36E' } />
-                    </TouchableOpacity>
-                </View>
-            </View> }
+            { item?.refundAmount * 1 > 0 &&
+                <View
+                    style={ { backgroundColor: '#fff', paddingBottom: 10, borderTopWidth: showItems ? 0 : 1, borderColor: '#00000029', height: 35, alignItems: 'center', justifyContent: 'center', marginHorizontal: 10 } }
+                >
+                    <View style={ { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', display: 'flex', width: '100%' } }>
+                        <Text style={ styles.textBold }>{ 'Refund' }</Text>
+                        <Text style={ { fontWeight: 'bold', fontSize: 12, color: 'blue', fontFamily: 'Poppins-Medium' } }>{ item?.refundAmount }</Text>
+                        <TouchableOpacity onPress={ clickItem }>
+                            <AntDesign name={ 'checkcircle' } size={ 18 } color={ active === 'green' ? '#8ED053' : active === 'fashion' ? '#FF7190' : '#58D36E' } />
+                        </TouchableOpacity>
+                    </View>
+                </View> }
 
         </View>
     )
