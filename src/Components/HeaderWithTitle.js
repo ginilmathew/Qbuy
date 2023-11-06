@@ -1,4 +1,4 @@
-import { StyleSheet, View, SafeAreaView, StatusBar, Image, Text, TouchableOpacity, Platform, TextInput } from 'react-native'
+import { StyleSheet, View, SafeAreaView, StatusBar, Image, Text, TouchableOpacity, Platform, TextInput, Alert } from 'react-native'
 import React, { useCallback, useContext, useEffect } from 'react'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import CommonTexts from './CommonTexts'
@@ -9,7 +9,9 @@ import Fontisto from 'react-native-vector-icons/Fontisto'
 import reactotron from '../ReactotronConfig'
 
 
-const HeaderWithTitle = ({ title, noBack, onPressBack, mode }) => {
+const HeaderWithTitle = ({ title, noBack, onPressBack, mode,backarrow }) => {
+
+    reactotron.log({backarrow})
 
 
     const contextPanda = useContext(PandaContext)
@@ -19,10 +21,15 @@ const HeaderWithTitle = ({ title, noBack, onPressBack, mode }) => {
     const backAction = useCallback(() => {
         if (mode === 'checkout') {
             navigation.navigate('Checkout')
-        } else {
+        } else if(backarrow * 1 === 0){
+            Alert.alert('warning', 'Please enable location or select any address', [
+                
+                {text: 'OK', onPress: () => console.log('OK Pressed')},
+              ]);
+
+        }else{
             navigation.goBack()
         }
-
     }, [navigation, mode])
 
     const onClickFashionCat = useCallback(() => {

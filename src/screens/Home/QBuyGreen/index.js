@@ -42,6 +42,7 @@ import reactotron from 'reactotron-react-native';
 import SplashScreen from 'react-native-splash-screen'
 import CommonWhatsappButton from '../../../Components/CommonWhatsappButton';
 
+
 import Animated, { useSharedValue, withDelay, withRepeat, withSequence, withTiming } from 'react-native-reanimated';
 //import messaging from '@react-native-firebase/messaging';
 import {
@@ -254,10 +255,10 @@ const QBuyGreen = ({ navigation }) => {
 
     const CarouselCardItem = ({ item, index }) => {
         return (
-            <TouchableOpacity key={ index } onPress={ () => CarouselSelect(item) } style={ { alignItems: 'center', marginTop: 20, width: '100%', height: '85%' } } >
+            <TouchableOpacity key={index} onPress={() => CarouselSelect(item)} style={{ alignItems: 'center', marginTop: 20, width: '100%', height: '85%' }} >
                 <FastImage
-                    source={ { uri: `${IMG_URL}${item?.original_image}` } }
-                    style={ { height: '100%', width: '95%', borderRadius: 20 } }
+                    source={{ uri: `${IMG_URL}${item?.original_image}` }}
+                    style={{ height: '100%', width: '95%', borderRadius: 20 }}
                     resizeMode="cover"
                 />
             </TouchableOpacity>
@@ -271,23 +272,23 @@ const QBuyGreen = ({ navigation }) => {
         if (item?.type === 'categories') {
             return (
                 <>
-                    <CategoryCard data={ item?.data } />
-                    <SearchBox onPress={ onSearch } />
-                    { slider?.length > 0 &&
+                    <CategoryCard data={item?.data} />
+                    <SearchBox onPress={onSearch} />
+                    {slider?.length > 0 &&
                         <View>
                             <Carousel
-                                key={ item?._id }
+                                key={item?._id}
                                 loop
-                                width={ width }
-                                height={ height / 5 }
-                                autoPlay={ true }
-                                data={ slider }
-                                scrollAnimationDuration={ 1000 }
-                                renderItem={ CarouselCardItem }
+                                width={width}
+                                height={height / 5}
+                                autoPlay={true}
+                                data={slider}
+                                scrollAnimationDuration={1000}
+                                renderItem={CarouselCardItem}
                             />
-                        </View> }
+                        </View>}
 
-                    {/* {slider?.length > 0 && <ImageSlider datas={slider} mt={20} />} */ }
+                    {/* {slider?.length > 0 && <ImageSlider datas={slider} mt={20} />} */}
                 </>
             )
         }
@@ -295,23 +296,23 @@ const QBuyGreen = ({ navigation }) => {
             return (
                 <>
 
-                    { item?.data?.length > 0 &&
-                        <AvailableStores key={ item?._id } data={ item?.data } />
+                    {item?.data?.length > 0 &&
+                        <AvailableStores key={item?._id} data={item?.data} />
                     }
 
 
-                    <View style={ styles.pickupReferContainer }>
+                    <View style={styles.pickupReferContainer}>
                         <PickDropAndReferCard
-                            onPress={ ourFarm }
-                            lotties={ require('../../../Lottie/farmer.json') }
-                            label={ 'Our Farms' }
-                            lottieFlex={ 1 }
+                            onPress={ourFarm}
+                            lotties={require('../../../Lottie/farmer.json')}
+                            label={'Our Farms'}
+                            lottieFlex={1}
                         />
                         <PickDropAndReferCard
-                            onPress={ referRestClick }
-                            lotties={ require('../../../Lottie/farm.json') }
-                            label={ "Let's Farm Together" }
-                            lottieFlex={ 0.4 }
+                            onPress={referRestClick}
+                            lotties={require('../../../Lottie/farm.json')}
+                            label={"Let's Farm Together"}
+                            lottieFlex={0.4}
                         />
                     </View>
                     {/* <View style={styles.offerView}>
@@ -326,26 +327,26 @@ const QBuyGreen = ({ navigation }) => {
         if (item?.type === 'offer_array') {
             return (
                 <>
-                    { item?.data?.length > 0 && <View style={ styles.offerView }>
-                        <Text style={ styles.discountText }>{ '50% off Upto Rs 125!' }</Text>
-                        <Offer onPress={ goToShop } shopName={ offer?.hotel } />
-                        {/* <CountDownComponent /> */ }
-                        <Text style={ styles.offerValText }>{ 'Offer valid till period!' }</Text>
-                    </View> }
+                    {item?.data?.length > 0 && <View style={styles.offerView}>
+                        <Text style={styles.discountText}>{'50% off Upto Rs 125!'}</Text>
+                        <Offer onPress={goToShop} shopName={offer?.hotel} />
+                        {/* <CountDownComponent /> */}
+                        <Text style={styles.offerValText}>{'Offer valid till period!'}</Text>
+                    </View>}
                 </>
             )
         }
         if (item?.type === 'recentlyviewed') {
             return (
                 <>
-                    <RecentlyViewed key={ item?._id } data={ item?.data } />
+                    <RecentlyViewed key={item?._id} data={item?.data} />
                 </>
             )
         }
         if (item?.type === 'suggested_products') {
             return (
                 <>
-                    <PandaSuggestions key={ item?._id } data={ item?.data } />
+                    <PandaSuggestions key={item?._id} data={item?.data} />
                 </>
             )
         }
@@ -363,9 +364,9 @@ const QBuyGreen = ({ navigation }) => {
 
     const RenderMainComponets = () => {
         return (
-            <View style={ styles.container }>
-                { data?.home?.map(home => renderItems(home)) }
-                { data?.availablePdt?.data.length > 0 && <CommonTexts label={ 'Available Products' } ml={ 15 } mb={ 10 } mt={ 20 } /> }
+            <View style={styles.container}>
+                {data?.home?.map(home => renderItems(home))}
+                {data?.availablePdt?.data.length > 0 && <CommonTexts label={'Available Products'} ml={15} mb={10} mt={20} />}
             </View>
         )
     }
@@ -374,16 +375,16 @@ const QBuyGreen = ({ navigation }) => {
 
     const renderProducts = ({ item, index }) => {
         return (
-            <View key={ index } style={ { flex: 0.5, justifyContent: 'center' } }>
+            <View key={index} style={{ flex: 0.5, justifyContent: 'center' }}>
                 <CommonItemCard
-                    refetch={ refetch }
-                    item={ item }
-                    key={ item?._id }
-                    width={ width / 2.2 }
-                    height={ height / 3.6 }
-                    mr={ 5 }
-                    ml={ 8 }
-                    mb={ 15 }
+                    refetch={refetch}
+                    item={item}
+                    key={item?._id}
+                    width={width / 2.2}
+                    height={height / 3.6}
+                    mr={5}
+                    ml={8}
+                    mb={15}
                 />
             </View>
         )
@@ -392,29 +393,29 @@ const QBuyGreen = ({ navigation }) => {
     if (isLoading) {
         return (
             <View>
-                <Header onPress={ onClickDrawer } />
-                <ScrollView showsVerticalScrollIndicator={ false } style={ { width: width, height: height } }>
-                    <View style={ { justifyContent: 'center' } }>
-                        <View style={ { flexDirection: 'row', margin: 5, justifyContent: 'center', paddingTop: 4 } }>
-                            { [1, 2, 3, 4]?.map(arr => {
+                <Header onPress={onClickDrawer} />
+                <ScrollView showsVerticalScrollIndicator={false} style={{ width: width, height: height }}>
+                    <View style={{ justifyContent: 'center' }}>
+                        <View style={{ flexDirection: 'row', margin: 5, justifyContent: 'center', paddingTop: 4 }}>
+                            {[1, 2, 3, 4]?.map(arr => {
                                 return (
-                                    <TypeSkelton key={ arr } />
+                                    <TypeSkelton key={arr} />
                                 )
-                            }) }
+                            })}
                         </View>
-                        <Animated.View style={ { height: height / 5, alignItems: 'center', marginTop: 10, shadowOpacity: 0.1, shadowRadius: 1, opacity, width: width } } >
+                        <Animated.View style={{ height: height / 5, alignItems: 'center', marginTop: 10, shadowOpacity: 0.1, shadowRadius: 1, opacity, width: width }} >
                             <Animated.View
-                                style={ { width: '100%', height: '100%', width: '90%', backgroundColor: '#fff', margin: 5, borderRadius: 20, opacity } }
+                                style={{ width: '100%', height: '100%', width: '90%', backgroundColor: '#fff', margin: 5, borderRadius: 20, opacity }}
                             />
                         </Animated.View>
-                        <View style={ { width: width } }>
-                            <SearchBox onPress={ null } />
+                        <View style={{ width: width }}>
+                            <SearchBox onPress={null} />
                         </View>
-                        <CommonTexts label={ 'Available Stores' } ml={ 15 } fontSize={ 13 } mt={ 20 } />
-                        <View style={ { marginHorizontal: 5, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' } }>
-                            { [1, 2, 3, 4, 5, 6, 7, 8]?.map((item) => (
-                                <ShopCardSkeltion key={ item } />
-                            )) }
+                        <CommonTexts label={'Available Stores'} ml={15} fontSize={13} mt={20} />
+                        <View style={{ marginHorizontal: 5, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' }}>
+                            {[1, 2, 3, 4, 5, 6, 7, 8]?.map((item) => (
+                                <ShopCardSkeltion key={item} />
+                            ))}
                         </View>
                     </View>
                 </ScrollView>
@@ -426,9 +427,9 @@ const QBuyGreen = ({ navigation }) => {
 
     return (
         <>
-            <Header onPress={ onClickDrawer } />
-            <View style={ styles.container } >
-                <NameText userName={ userContext?.userData?.name ? userContext?.userData?.name : userContext?.userData?.mobile } mt={ 8 } />
+            <Header onPress={onClickDrawer} />
+            <View style={styles.container} >
+                <NameText userName={userContext?.userData?.name ? userContext?.userData?.name : userContext?.userData?.mobile} mt={8} />
                 <FlatList
                     // refreshControl={
                     //     <RefreshControl
@@ -456,20 +457,9 @@ const QBuyGreen = ({ navigation }) => {
                 />
 
 
+         
 
-                {/* <FlatList
-                    data={homeData}
-                    keyExtractor={(item, index) => index}
-                    renderItem={renderItems}
-                    showsVerticalScrollIndicator={false}
-                    initialNumToRender={2}
-                    removeClippedSubviews={true}
-                    pt={2}
-                    mb={170}
-                    refreshing={loader}
-                    onRefresh={getHomedata}
-                /> */}
-                {/* <NameText userName={userContext?.userData?.name ? userContext?.userData?.name : userContext?.userData?.mobile} mt={8} /> */ }
+                {/* <NameText userName={userContext?.userData?.name ? userContext?.userData?.name : userContext?.userData?.mobile} mt={8} /> */}
 
                 {/* {categories?.length > 0 && <ScrollView
                     horizontal
@@ -578,8 +568,8 @@ const QBuyGreen = ({ navigation }) => {
             /> */}
             <CommonWhatsappButton
                 position="absolute"
-                bottom={ 10 }
-                right={ 10 }
+                bottom={10}
+                right={10}
             />
         </>
     )

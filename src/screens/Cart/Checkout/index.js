@@ -541,10 +541,10 @@ const Checkout = ({ navigation }) => {
                 payment_status: pay._id === "online" ? "pending" : "created",
                 payment_type: pay._id,
                 type: active,
-                total_amount: Math.round(cartItems.reduce(function (previousVal, currentVal) {
+                total_amount:cartItems.reduce(function (previousVal, currentVal) {
                     return previousVal + currentVal?.price;
-                }, 0)),
-                delivery_charge: Math.round(cartItems?.reduce((a, b) => a.delivery > b.delivery ? a : b).delivery),
+                }, 0)?.toFixed(2),
+                delivery_charge: cartItems?.reduce((a, b) => a.delivery > b.delivery ? a : b).delivery?.toFixed(2),
                 delivery_type: "Slot based",
                 franchise: cartItems?.[0]?.franchisee?._id,
                 cart_id: cartItems?.[0]?.cartId,

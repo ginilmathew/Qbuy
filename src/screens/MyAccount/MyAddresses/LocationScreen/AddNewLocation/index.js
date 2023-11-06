@@ -45,10 +45,12 @@ const AddNewLocation = ({ route, navigation }) => {
     useEffect(() => {
         SplashScreen.hide()
     })
+
+    reactotron.log({backArrowhide},'IN API RESPONSE')
     return (
 
         <>
-            <HeaderWithTitle title={ 'Location' } noBack={ backArrowhide.index === 0 ? true : false } />
+            <HeaderWithTitle title={ 'Location' } backarrow ={backArrowhide.index} noBack={ false } />
             {/* <ScrollView style={ { padding: 15, } } >
                 <GooglePlacesAutocomplete
 
@@ -149,7 +151,7 @@ const AddNewLocation = ({ route, navigation }) => {
                     } }
                     returnKeyType={ 'default' }
                     fetchDetails={ true }
-                    placeholder='Search'
+                    placeholder='Search address'
                     keyboardAppearance={ 'light' }
                     textInputProps={ {
                         placeholderTextColor: 'gray',
@@ -189,6 +191,8 @@ const AddNewLocation = ({ route, navigation }) => {
                     query={ {
                         key: 'AIzaSyBBcghyB0FvhqML5Vjmg3uTwASFdkV8wZY',
                         language: 'en',
+                        components:'country:in'
+
                     } }
                     renderRow={ (rowData) => {
                         const title = rowData.structured_formatting.main_text;

@@ -323,7 +323,7 @@ const Route = () => {
                     <Stack.Screen name="Login" component={ Login } />
                     <Stack.Screen name="Otp" component={ Otp } />
                     <Stack.Screen name="LocationScreen" component={ LocationScreen } options={ { title: 'home' } } />
-                    <Stack.Screen name="AddNewLocation" component={ AddNewLocation } />
+                    {/* <Stack.Screen name="AddNewLocation" component={ AddNewLocation } /> */}
                     <Stack.Screen name="panda" component={ Panda } />
                     <Stack.Screen name="fashion" component={ Fashion } />
                     <Stack.Screen name="green" component={ Green } />

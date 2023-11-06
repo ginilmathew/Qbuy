@@ -16,7 +16,6 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 
 const CartItemCard = ({ item, index, refreshCart }) => {
 
-    reactotron.log({ item })
 
     const contextPanda = useContext(PandaContext)
     const cartContext = useContext(CartContext)
@@ -62,9 +61,9 @@ const CartItemCard = ({ item, index, refreshCart }) => {
             }
         }
         data.quantity = data?.quantity * 1 + 1
-        reactotron.log('API CALLEDDD')
+ 
         let allProducts = cartContext?.cart?.product_details;
-        allProducts[index].quantity = allProducts[index].quantity + 1;
+        allProducts[index].quantity = allProducts[index].quantity * 1 + 1;
 
 
         let cartItems = {
@@ -72,6 +71,7 @@ const CartItemCard = ({ item, index, refreshCart }) => {
             product_details: allProducts,
             user_id: userContext?.userData?._id
         }
+
 
 
         await customAxios.post(`customer/cart/update`, cartItems)
