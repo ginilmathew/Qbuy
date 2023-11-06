@@ -62,6 +62,12 @@ const QbuyGreenHome = async (datas) => {
     }
 }
 
+const QbuyGreenProducts = async (items, intialPage) => {
+    const homeDataProduct = await customAxios.post(`customer/new-product-list?page=${intialPage}`, items);
+    return homeDataProduct?.data?.data?.data
+    
+}
+
 
 const QBuyGreen = ({ navigation }) => {
 
@@ -73,7 +79,7 @@ const QBuyGreen = ({ navigation }) => {
 
     const loadingg = useContext(LoaderContext);
     const userContext = useContext(AuthContext);
-
+    const [intialPage, setInitialPage] = useState(1)
 
 
 
@@ -85,10 +91,13 @@ const QBuyGreen = ({ navigation }) => {
     }
 
 
-    const { data, isLoading, refetch } = useQuery({ queryKey: ['greenHome'], queryFn: () => QbuyGreenHome(datas) });
+    const Homeapi = useQuery({ queryKey: ['greenHome'], queryFn: () => QbuyGreenHome(datas) });
+
+    const {data,refetch} = useQuery({ queryKey: ['greenHomeProducts',intialPage], queryFn: () => QbuyGreenProducts(datas, intialPage) ,keepPreviousData:true});
+
+    reactotron.log({data})
 
     let userData = userContext?.userData
-
 
     let loader = loadingg?.loading;
 
@@ -151,8 +160,8 @@ const QBuyGreen = ({ navigation }) => {
                 firstTimeRef.current = false;
                 return;
             }
-            refetch()
-        }, [refetch, userContext?.location])
+            Homeapi.refetch()
+        }, [Homeapi.refetch, userContext?.location])
     );
 
     const schema = yup.object({
@@ -365,8 +374,8 @@ const QBuyGreen = ({ navigation }) => {
     const RenderMainComponets = () => {
         return (
             <View style={styles.container}>
-                {data?.home?.map(home => renderItems(home))}
-                {data?.availablePdt?.data.length > 0 && <CommonTexts label={'Available Products'} ml={15} mb={10} mt={20} />}
+                {Homeapi?.data?.home?.map(home => renderItems(home))}
+                {Homeapi?.data?.availablePdt?.data.length > 0 && <CommonTexts label={'Available Products'} ml={15} mb={10} mt={20} />}
             </View>
         )
     }
@@ -377,7 +386,7 @@ const QBuyGreen = ({ navigation }) => {
         return (
             <View key={index} style={{ flex: 0.5, justifyContent: 'center' }}>
                 <CommonItemCard
-                    refetch={refetch}
+                    refetch={Homeapi?.refetch}
                     item={item}
                     key={item?._id}
                     width={width / 2.2}
@@ -390,7 +399,7 @@ const QBuyGreen = ({ navigation }) => {
         )
     }
 
-    if (isLoading) {
+    if (Homeapi.isLoading) {
         return (
             <View>
                 <Header onPress={onClickDrawer} />
@@ -425,6 +434,19 @@ const QBuyGreen = ({ navigation }) => {
 
     const keyExtractorGreen = (item) => item._id;
 
+    const addMore = () => {
+        setInitialPage((pre) => pre + 1);
+    
+    }
+
+    const ListFooterComponents = () => {
+        return (
+            <TouchableOpacity onPress={addMore} style={{display:'flex',justifyContent:'center',alignItems:'center',marginVertical:20}}>
+                <Text>View More</Text>
+            </TouchableOpacity>
+        )
+    }
+
     return (
         <>
             <Header onPress={onClickDrawer} />
@@ -439,25 +461,26 @@ const QBuyGreen = ({ navigation }) => {
                     //     // tintColor={Colors.GreenLight} // for ios
                     //     />
                     // }
-                    disableVirtualization={ true }
-                    ListHeaderComponent={ RenderMainComponets }
-                    data={ data?.availablePdt?.data }
-                    keyExtractor={ keyExtractorGreen }
-                    renderItem={ renderProducts }
-                    showsVerticalScrollIndicator={ false }
-                    initialNumToRender={ 8 }
-                    removeClippedSubviews={ true }
-                    windowSize={ 10 }
-                    maxToRenderPerBatch={ 8 }
-                    refreshing={ isLoading }
-                    onRefresh={ refetch }
-                    numColumns={ 2 }
-                    style={ { marginLeft: 5 } }
-                    contentContainerStyle={ { justifyContent: 'center' } }
+                    disableVirtualization={true}
+                    ListHeaderComponent={RenderMainComponets}
+                    data={data}
+                    keyExtractor={keyExtractorGreen}
+                    renderItem={renderProducts}
+                    showsVerticalScrollIndicator={false}
+                    initialNumToRender={8}
+                    removeClippedSubviews={true}
+                    windowSize={10}
+                    maxToRenderPerBatch={8}
+                    refreshing={Homeapi?.isLoading}
+                    onRefresh={Homeapi?.refetch}
+                    numColumns={2}
+                    style={{ marginLeft: 5 }}
+                    contentContainerStyle={{ justifyContent: 'center' }}
+                    ListFooterComponent={ListFooterComponents}
                 />
 
 
-         
+
 
                 {/* <NameText userName={userContext?.userData?.name ? userContext?.userData?.name : userContext?.userData?.mobile} mt={8} /> */}
 

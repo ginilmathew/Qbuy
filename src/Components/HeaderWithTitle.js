@@ -11,7 +11,7 @@ import reactotron from '../ReactotronConfig'
 
 const HeaderWithTitle = ({ title, noBack, onPressBack, mode,backarrow }) => {
 
-    reactotron.log({backarrow})
+
 
 
     const contextPanda = useContext(PandaContext)

@@ -21,8 +21,6 @@ const AddNewLocation = ({ route, navigation }) => {
 
     function getAddressFromCoordinates (lat, lon) {
         axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${lat},${lon}&key=AIzaSyBBcghyB0FvhqML5Vjmg3uTwASFdkV8wZY`).then(response => {
-
-            reactotron.log({ response }, 'RESPONSE IN ADDRESS')
             userContext.setUserLocation(response?.data?.results[0]?.formatted_address)
 
             let locality = response?.data?.results?.[0]?.address_components?.find(add => add.types.includes('locality'));
@@ -46,7 +44,7 @@ const AddNewLocation = ({ route, navigation }) => {
         SplashScreen.hide()
     })
 
-    reactotron.log({backArrowhide},'IN API RESPONSE')
+
     return (
 
         <>
@@ -207,9 +205,6 @@ const AddNewLocation = ({ route, navigation }) => {
                     } }
                 />
             </ScrollView>
-
-
-
         </>
 
 

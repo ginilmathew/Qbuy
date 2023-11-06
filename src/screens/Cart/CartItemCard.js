@@ -13,6 +13,8 @@ import AuthContext from '../../contexts/Auth'
 import Toast from 'react-native-toast-message';
 import reactotron from 'reactotron-react-native'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+import { Swipeable } from 'react-native-gesture-handler'
+import Animated from 'react-native-reanimated'
 
 const CartItemCard = ({ item, index, refreshCart }) => {
 
@@ -61,7 +63,7 @@ const CartItemCard = ({ item, index, refreshCart }) => {
             }
         }
         data.quantity = data?.quantity * 1 + 1
- 
+
         let allProducts = cartContext?.cart?.product_details;
         allProducts[index].quantity = allProducts[index].quantity * 1 + 1;
 
@@ -211,41 +213,57 @@ const CartItemCard = ({ item, index, refreshCart }) => {
 
 
 
+    const renderRightActions = () => {
 
+        return (
+            <View style={{height:70,display:'flex',alignItems:'center',justifyContent:'center',}}>
+
+
+                <TouchableOpacity    onPress={ deleteconfirmation }>
+                    
+                <MaterialCommunityIcons name={ "delete-forever" } size={ 20 } color={ 'red' } />
+                
+                </TouchableOpacity>
+            </View>
+        );
+    };
 
 
 
     return (
-        <View style={ { borderBottomWidth: 0.2, borderColor: '#A9A9A9', padding: 10, } } >
+        <View style={{ borderBottomWidth: 0.2, borderColor: '#A9A9A9', padding: 10, }} >
 
-            <View style={ styles.container }>
-                <FastImage
-                    style={ { width: 70, height: 70, borderRadius: 10 } }
-                    source={ { uri: `${IMG_URL}${item?.image}` } }
-                />
-                <View style={ { marginLeft: 5, flex: 0.95 } }>
-                    { item?.attributes?.length > 0 ? <Text style={ styles.nameText }>{ `${item?.name}${'('}${item?.attributes.join(', ')}${')'} ` }</Text> : <Text style={ styles.nameText }>{ item?.name }</Text> }
-                    <TouchableOpacity onPress={ gotoStore }>
-                        <Text style={ styles.shopText }>{ item?.store?.name }</Text>
-                    </TouchableOpacity>
-                </View>
-                {/* {renderPricing()} */ }
-                <View style={ { flexDirection: 'row', alignItems: 'center', } }>
-                    <Text style={ styles.rateText }>{ (item?.available && item?.status === 'active' && item?.availability) ? `₹ ${parseFloat(item?.price).toFixed(2)}` : "" }</Text>
-                    <CommonCounter
-                        count={ data.quantity }
-                        addItem={ addItem }
-                        removeItem={ removeItem }
-                        disabled={ !item?.available || item?.status !== 'active' || !item.availability }
+            <Swipeable renderRightActions={renderRightActions}>
+                <View style={styles.container}>
+                    <FastImage
+                        style={{ width: 70, height: 70, borderRadius: 10 }}
+                        source={{ uri: `${IMG_URL}${item?.image}` }}
                     />
+                    <View style={{ marginLeft: 5, flex: 0.95 }}>
+                        {item?.attributes?.length > 0 ? <Text style={styles.nameText}>{`${item?.name}${'('}${item?.attributes.join(', ')}${')'} `}</Text> : <Text style={styles.nameText}>{item?.name}</Text>}
+                        <TouchableOpacity onPress={gotoStore}>
+                            <Text style={styles.shopText}>{item?.store?.name}</Text>
+                        </TouchableOpacity>
+                    </View>
+                    {/* {renderPricing()} */}
+                    <View style={{ flexDirection: 'row', alignItems: 'center', }}>
+                        <Text style={styles.rateText}>{(item?.available && item?.status === 'active' && item?.availability) ? `₹ ${parseFloat(item?.price).toFixed(2)}` : ""}</Text>
+                        <CommonCounter
+                            count={data.quantity}
+                            addItem={addItem}
+                            removeItem={removeItem}
+                            disabled={!item?.available || item?.status !== 'active' || !item.availability}
+                        />
+                    </View>
                 </View>
-            </View>
 
-            <TouchableOpacity
+            </Swipeable>
+
+            {/* <TouchableOpacity
                 onPress={ deleteconfirmation }
                 style={ { marginLeft: 5, justifyContent: 'center', alignItems: 'center', position: 'absolute', right: 15, top: 2 } }>
                 <MaterialCommunityIcons name={ "delete-forever" } size={ 20 } color={ 'red' } />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             <View style={ { display: 'flex', flexDirection: 'column', gap: 1.5 } }>
                 { item?.quantity < item?.minimum_qty && <Text style={ styles.outofStock }>{ `Min. quantity:${item?.minimum_qty}` }</Text> }
                 { !item?.availability && <Text style={ styles.outofStock }>{ "Not Available" }</Text> }

@@ -34,9 +34,9 @@ const HomeNav = () => {
 
             <Stack.Screen name="SingleHotel" component={SingleHotel}/>
 
-            <Stack.Screen name="SingleItemScreen" component={SingleItemScreen} options={{
+            {/* <Stack.Screen name="SingleItemScreen" component={SingleItemScreen} options={{
                 animationEnabled: false,
-            }}/>
+            }}/> */}
 
 
             <Stack.Screen name="Category" component={CategoryScreen}/>
