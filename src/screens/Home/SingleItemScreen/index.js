@@ -1,7 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable prettier/prettier */
 
-import { StyleSheet, Text, View, ScrollView, Image, FlatList, useWindowDimensions, TouchableOpacity, Moda, RefreshControl, Modal, Pressable, Alert } from 'react-native'
+import { StyleSheet, Text, View, ScrollView, Image, FlatList, useWindowDimensions, TouchableOpacity, Moda, RefreshControl, Modal, Pressable, Alert, ActivityIndicator } from 'react-native'
 import React, { useState, useEffect, useContext, useCallback, useRef } from 'react'
 import HeaderWithTitle from '../../../Components/HeaderWithTitle'
 import CommonTexts from '../../../Components/CommonTexts'
@@ -73,7 +73,7 @@ const SingleItemScreen = ({ route, navigation }) => {
 
     const [item, setItem] = useState(null)
 
-    const { data, isLoading, refetch } = useQuery({ queryKey: ['singleProduct'], queryFn: () => getSingleProductListQuery(route?.params?.item?._id)});
+    const { data, isLoading, refetch } = useQuery({ queryKey: ['singleProduct'], queryFn: () => getSingleProductListQuery(route?.params?.item?._id) });
     reactotron.log({ data })
 
     useEffect(() => {
@@ -442,7 +442,11 @@ const SingleItemScreen = ({ route, navigation }) => {
 
     }
 
-
+    if (isLoading) {
+        return <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+            <ActivityIndicator size="large" color="#00ff00" />
+        </View>
+    }
 
     return (
         <>

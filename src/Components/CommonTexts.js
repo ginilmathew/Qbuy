@@ -21,7 +21,7 @@ const CommonTexts = ({ label, mt, textAlign, color, fontSize, my, ml, mb, textTr
             
             }}
             numberOfLines={numberOfLines}
-        >{label}</Text>
+        >{label?.length > 20 ? label?.substring(0, 20) + '...' : label}</Text>
     )
 }
 
