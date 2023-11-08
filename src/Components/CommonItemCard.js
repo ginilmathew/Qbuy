@@ -56,6 +56,7 @@ const CommonItemCard = memo(({ height, width, item, marginHorizontal, wishlistIc
     const contextPanda = useContext(PandaContext);
     const cartContext = useContext(CartContext);
     const userContext = useContext(AuthContext);
+    
     let active = contextPanda.active
 
 

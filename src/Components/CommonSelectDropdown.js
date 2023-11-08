@@ -72,6 +72,7 @@ const CommonSelectDropdown = ({topLabel, mb, placeholder, data, value, setValue,
                 shadowRadius: 5,
                 elevation: elevation,
                 shadowOffset: { width: 1, height: 5 },
+                
                 marginTop:3,
             }}
             placeholderStyle={styles.placeholderStyle}

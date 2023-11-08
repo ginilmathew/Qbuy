@@ -95,7 +95,7 @@ const QBuyGreen = ({ navigation }) => {
 
     const Homeapi = useQuery({ queryKey: ['greenHome'], queryFn: () => QbuyGreenHome(datas) });
 
-    // const {data,refetch} = useQuery({ queryKey: ['greenHomeProducts',intialPage], queryFn: () => QbuyGreenProducts(datas, intialPage) ,keepPreviousData:true});
+
     const {
         data,
         error,
