@@ -56,7 +56,7 @@ const Otp = ({ navigation }) => {
 
 	const onSubmit = async (data) => {
 		loadingg.setLoading(true);
-		getCurrentLocation();
+		//getCurrentLocation();
 		let datas = {
 			mobile: mobileNo,
 			otp: data?.otp,
@@ -70,7 +70,25 @@ const Otp = ({ navigation }) => {
 				user.setUserData(response?.data?.user);
 				AsyncStorage.setItem('token', response?.data?.access_token);
 				AsyncStorage.setItem('user', JSON.stringify(response?.data?.user));
-				VersionManagement(response?.data);
+
+				if (DeviceVersion * 1 < response?.data?.current_version * 1) {
+					if (DeviceVersion * 1 < response?.data?.current_version * 1 && response?.data?.update) {
+						setversionUpdate(true);
+						setForceUpdate(true);
+		
+					} else if (DeviceVersion * 1 < data?.current_version * 1 && !data?.update) {
+						setversionUpdate(true);
+		
+					}
+				} else {
+					getAddressList()
+					
+					// setversionUpdate(true);
+				}
+
+				//getAddressList()
+
+				//VersionManagement(response?.data);
 				loadingg.setLoading(false);
 				// navigation.navigate(mode)
 				// navigation.navigate('NewUserDetails')
@@ -83,6 +101,58 @@ const Otp = ({ navigation }) => {
 				loadingg.setLoading(false);
 			});
 	};
+
+	const getAddressList = async () => {
+        //loadingContext.setLoading(true)
+        await customAxios.get('customer/address/list')
+            .then(async response => {
+                if (response?.data?.data?.length > 0) {
+                    if (response?.data?.data?.length === 1) {
+                        user.setLocation([response?.data?.data?.[0]?.area?.latitude, response?.data?.data?.[0]?.area?.longitude])
+                        user?.setCurrentAddress(response?.data?.data?.[0]?.area?.address)
+                    }
+                    else {
+                        let defaultAdd = response?.data?.data?.find(add => add?.default === true)
+                        if (defaultAdd) {
+                            user.setLocation([defaultAdd?.area?.latitude, defaultAdd?.area?.longitude])
+                            user?.setCurrentAddress(defaultAdd?.area?.address)
+                        }
+                        else {
+                            user.setLocation([response?.data?.data?.[0]?.area?.latitude, response?.data?.data?.[0]?.area?.longitude])
+                            user?.setCurrentAddress(response?.data?.data?.[0]?.area?.address)
+                        }
+                    }
+
+					navigation.dispatch(CommonActions.reset({
+						index: 0,
+						routes: [
+							{ name: 'green' },
+						],
+					}));
+
+					//navigation.navigate('NewUserDetails')
+
+                    //setInitialScreen('green');
+                }
+                else {
+                    navigation.dispatch(CommonActions.reset({
+						index: 0,
+						routes: [
+							{ name: 'AddDeliveryAddress' },
+						],
+					}));
+                }
+
+            })
+            .catch(async error => {
+                //getAddressFromCoordinates()
+                Toast.show({
+                    type: 'error',
+                    text1: error,
+                });
+
+            })
+    }
 
 	const onClickResendOtp = async () => {
 		loadingg.setLoading(true);

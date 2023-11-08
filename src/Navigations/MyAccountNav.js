@@ -20,7 +20,7 @@ const MyAccountNav = () => {
             <Stack.Screen name="MyAddresses" component={MyAddresses}/>
             <Stack.Screen name="LocationScreen" component={LocationScreen}/>
             {/* <Stack.Screen name="AddNewLocation" component={AddNewLocation}/> */}
-            <Stack.Screen name="AddDeliveryAddress" component={AddDeliveryAddress}/>
+            {/* <Stack.Screen name="AddDeliveryAddress" component={AddDeliveryAddress}/> */}
             <Stack.Screen name="PandaCoins" component={PandaCoins}/>
             <Stack.Screen name="AffiliateBonus" component={AffiliateBonus}/>
             <Stack.Screen name="EditProfile" component={EditProfile}/>

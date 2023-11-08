@@ -6,11 +6,11 @@ const LoadingModal = ({isVisible, label, closeModal, gotoNext }) => {
   const { width, height } = useWindowDimensions()
 
   return (
-    <Modal isOpen={isVisible}  >
+    <Modal visible={isVisible} style={{ backgroundColor: 'transparent' }} transparent={true} >
         <View 
-			style={ styles.loaderStyle }
+			style={ [styles.loaderStyle, { width, height }] }
 		>
-			<ActivityIndicator />
+			<ActivityIndicator color={"red"} size={30} />
 		</View>
     </Modal>
   )

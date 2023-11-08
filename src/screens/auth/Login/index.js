@@ -25,6 +25,7 @@ import { CommonActions } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import Geolocation from 'react-native-geolocation-service';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const { env, mode } = NativeModules.RNENVConfig;
 
@@ -195,19 +196,31 @@ const Login = ({ navigation }) => {
 		);
 	};
 
-	const NaviagteToGuest = useCallback(() => {
-		if (userContext?.location) {
-			navigation.dispatch(
-				CommonActions.reset({
-					index: 0,
-					routes: [
-						{ name: 'green' },
-					],
-				})
-			);
-		} else {
-			getCurrentLocation();
+	const NaviagteToGuest = useCallback(async() => {
+		let location = await AsyncStorage.getItem("location");
+
+		if(location){
+			navigation.navigate('green')
 		}
+		else{
+			navigation.navigate('AddNewLocation')
+		}
+
+		// userContext.setLocation([position?.latitude, position?.longitude]);
+		// userContext.setCurrentAddress(address)
+		// setInitialScreen('green');
+		// if (userContext?.location) {
+		// 	navigation.dispatch(
+		// 		CommonActions.reset({
+		// 			index: 0,
+		// 			routes: [
+		// 				{ name: 'green' },
+		// 			],
+		// 		})
+		// 	);
+		// } else {
+		// 	getCurrentLocation();
+		// }
 
 
 	}, [navigation]);

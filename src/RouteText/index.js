@@ -32,6 +32,7 @@ import SplashScreen from 'react-native-splash-screen';
 import DeviceInfo from 'react-native-device-info';
 import CommonUpdateModal from '../Components/CommonUpdateModal';
 import { NativeModules } from 'react-native'
+import AddDeliveryAddress from '../screens/MyAccount/MyAddresses/LocationScreen/AddDeliveryAddress';
 
 
 const { env, mode } = NativeModules.RNENVConfig
@@ -45,10 +46,6 @@ const Stack = createNativeStackNavigator();
 const RouteTest = () => {
 
     const DeviceVersion = DeviceInfo.getVersion();
-
-
-
-
     const userContext = useContext(AuthContext);
     const cartContext = useContext(CartContext);
     const loadingContext = useContext(LoaderContext);
@@ -66,114 +63,40 @@ const RouteTest = () => {
 
     useEffect(() => {
 
-        getCurrentLocation();
+        checkUserAddress()
+
+        //getCurrentLocation();
 
     }, []);
 
 
-    const getCurrentLocation = useCallback(async () => {
-        if (Platform.OS === 'ios') {
-            const status = await Geolocation.requestAuthorization('whenInUse');
-            if (status === 'granted') {
-                getPosition()
-            } else {
-                Toast.show({
-                    type: 'error',
-                    text1: 'Location permission denied by user.',
-                });
-                const token = await AsyncStorage.getItem('token');
-
-                if (token) {
-                    getProfile();
-                    getCartDetails();
-                    // getAddressList();
-                }
-                setInitialScreen('AddNewLocation');
-            }
-
-        }
-        else {
-            const hasPermission = await PermissionsAndroid.check(
-                PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-
-            );
-
-            if ((Platform.OS === 'android' && Platform.Version < 23) || hasPermission) {
-                getPosition();
-            } else {
-                const status = await PermissionsAndroid.request(
-                    PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-
-                );
-
-                if (status === PermissionsAndroid.RESULTS.GRANTED) {
-                    getPosition();
-
-                } else if (status === PermissionsAndroid.RESULTS.DENIED || status === PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN) {
-                    const token = await AsyncStorage.getItem('token');
-                    if (token) {
-                        getProfile()
-                        getCartDetails()
-                        getAddressList()
-                    }
-                    setInitialScreen('AddNewLocation');
-                    Toast.show({
-                        type: 'error',
-                        text1: 'Location permission denied by user.',
-                    });
-                }
-
-            }
-        }
-
-    }, []);
-
-    function getAddressFromCoordinates (lat, lng) {
-        if (lat && lng) {
-            axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${lat},${lng}&key=AIzaSyBBcghyB0FvhqML5Vjmg3uTwASFdkV8wZY`).then(response => {
-                userContext.setCurrentAddress(response?.data?.results[0]?.formatted_address);
-
-                //setLocation
-            })
-                .catch(err => {
-                });
-        }
-
-    }
-
-    useEffect(() => {
-        if (location) {
-            getAddressFromCoordinates();
-        }
-    }, [location])
-
-
-    const getPosition = async () => {
-
-        reactotron.log('API CALLEDDD')
-
+    const getCureentDeviceLocation = async () => {
         await Geolocation.getCurrentPosition(
-            position => {
+            async position => {
+                if (position) {
 
-                getAddressFromCoordinates(position?.coords?.latitude, position.coords?.longitude);
-                setLocation(position?.coords)
-                userContext.setLocation([position?.coords?.latitude, position.coords?.longitude]);
-                checkLogin();
+                    let response = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${position?.coords?.latitude},${position.coords?.longitude}&key=AIzaSyBBcghyB0FvhqML5Vjmg3uTwASFdkV8wZY`);
+
+
+            
+                    //let address = getAddressFromCoordinates(position?.coords?.latitude, position.coords?.longitude);
+                    let location = {
+                        latitude: position?.coords?.latitude,
+                        longitude: position.coords?.longitude,
+                        address: response?.data?.results[0]?.formatted_address
+                    }
+
+                    await AsyncStorage.setItem("location", JSON.stringify(location))
+                    userContext.setLocation([position?.latitude, position?.longitude]);
+                    userContext.setCurrentAddress(response?.data?.results[0]?.formatted_address)
+                    setInitialScreen('green');
+                }
+                else{
+                    setInitialScreen("Login")
+                }
             },
             async error => {
-                const token = await AsyncStorage.getItem('token');
-
-                if (token) {
-                    getProfile();
-                    getCartDetails();
-                    // getAddressList();
-                }
-                setInitialScreen('AddNewLocation');
-                Toast.show({
-                    type: 'error',
-                    text1: error.message,
-                });
-                // checkLogin();
+                setInitialScreen("Login")
             },
             {
                 accuracy: {
@@ -188,8 +111,184 @@ const RouteTest = () => {
                 forceLocationManager: false,
                 showLocationDialog: true,
             },
-        );
-    };
+        )
+    }
+
+
+    const checkUserAddress = async () => {
+        let user = await AsyncStorage.getItem("user");
+        if (user) {
+            getProfile()
+            getCartDetails()
+            getAddressList()
+        }
+        else {
+            let location = await AsyncStorage.getItem("location")
+            reactotron.log({location})
+            if (location) {
+                let locationData = JSON.parse(location)
+                reactotron.log({locationData})
+                userContext.setLocation([locationData?.latitude, locationData?.longitude]);
+                userContext.setCurrentAddress(locationData?.address)
+                setInitialScreen('green');
+            }
+            else {
+                reactotron.log("get current user location")
+                getCureentDeviceLocation()
+            }
+        }
+
+
+    }
+
+
+    // const getCurrentPosition = async () => {
+    //     await Geolocation.getCurrentPosition(
+    //         position => {
+
+    //             getAddressFromCoordinates(position?.coords?.latitude, position.coords?.longitude);
+    //         },
+    //         async error => {
+    //             setInitialScreen('AddNewLocation');
+    //         },
+    //         {
+    //             accuracy: {
+    //                 android: 'high',
+    //                 ios: 'best',
+    //             },
+    //             enableHighAccuracy: true,
+    //             timeout: 15000,
+    //             maximumAge: 10000,
+    //             distanceFilter: 0,
+    //             forceRequestLocation: true,
+    //             forceLocationManager: false,
+    //             showLocationDialog: true,
+    //         },
+    //     );
+    // }
+
+
+    // const getCurrentLocation = useCallback(async () => {
+    //     if (Platform.OS === 'ios') {
+    //         const status = await Geolocation.requestAuthorization('whenInUse');
+    //         if (status === 'granted') {
+    //             getPosition()
+    //         } else {
+    //             Toast.show({
+    //                 type: 'error',
+    //                 text1: 'Location permission denied by user.',
+    //             });
+    //             const token = await AsyncStorage.getItem('token');
+
+    //             if (token) {
+    //                 getProfile();
+    //                 getCartDetails();
+    //                 // getAddressList();
+    //             }
+    //             setInitialScreen('AddNewLocation');
+    //         }
+
+    //     }
+    //     else {
+    //         const hasPermission = await PermissionsAndroid.check(
+    //             PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+
+    //         );
+
+    //         if ((Platform.OS === 'android' && Platform.Version < 23) || hasPermission) {
+    //             getPosition();
+    //         } else {
+    //             const status = await PermissionsAndroid.request(
+    //                 PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+
+    //             );
+
+    //             if (status === PermissionsAndroid.RESULTS.GRANTED) {
+    //                 getPosition();
+
+    //             } else if (status === PermissionsAndroid.RESULTS.DENIED || status === PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN) {
+    //                 const token = await AsyncStorage.getItem('token');
+    //                 if (token) {
+    //                     getProfile()
+    //                     getCartDetails()
+    //                     getAddressList()
+    //                 }
+    //                 setInitialScreen('AddNewLocation');
+    //                 Toast.show({
+    //                     type: 'error',
+    //                     text1: 'Location permission denied by user.',
+    //                 });
+    //             }
+
+    //         }
+    //     }
+
+    // }, []);
+
+    function getAddressFromCoordinates(lat, lng) {
+        if (lat && lng) {
+            axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${lat},${lng}&key=AIzaSyBBcghyB0FvhqML5Vjmg3uTwASFdkV8wZY`).then(response => {
+                //userContext.setCurrentAddress(response?.data?.results[0]?.formatted_address);
+
+                return response?.data?.results[0]?.formatted_address
+
+                //setLocation
+            })
+                .catch(err => {
+                });
+        }
+
+    }
+
+    // useEffect(() => {
+    //     if (location) {
+    //         getAddressFromCoordinates();
+    //     }
+    // }, [location])
+
+
+    // const getPosition = async () => {
+
+    //     reactotron.log('API CALLEDDD')
+
+    //     await Geolocation.getCurrentPosition(
+    //         position => {
+
+    //             getAddressFromCoordinates(position?.coords?.latitude, position.coords?.longitude);
+    //             setLocation(position?.coords)
+    //             userContext.setLocation([position?.coords?.latitude, position.coords?.longitude]);
+    //             checkLogin();
+    //         },
+    //         async error => {
+    //             const token = await AsyncStorage.getItem('token');
+
+    //             if (token) {
+    //                 getProfile();
+    //                 getCartDetails();
+    //                 // getAddressList();
+    //             }
+    //             setInitialScreen('AddNewLocation');
+    //             Toast.show({
+    //                 type: 'error',
+    //                 text1: error.message,
+    //             });
+    //             // checkLogin();
+    //         },
+    //         {
+    //             accuracy: {
+    //                 android: 'high',
+    //                 ios: 'best',
+    //             },
+    //             enableHighAccuracy: true,
+    //             timeout: 15000,
+    //             maximumAge: 10000,
+    //             distanceFilter: 0,
+    //             forceRequestLocation: true,
+    //             forceLocationManager: false,
+    //             showLocationDialog: true,
+    //         },
+    //     );
+    // };
 
 
     const VersionManagement = (data) => {
@@ -224,7 +323,7 @@ const RouteTest = () => {
                 VersionManagement(response?.data?.data)
 
                 // setInitialScreen('green');
-                setInitialScreen('green')
+                //setInitialScreen('green')
             })
             .catch(async error => {
                 Toast.show({
@@ -266,64 +365,76 @@ const RouteTest = () => {
 
     }, [user])
 
-    // const getAddressList = async () => {
-    //     reactotron.log('api called in address list route text')
-    //     loadingContext.setLoading(true)
-    //     await customAxios.get('customer/address/list')
-    //         .then(async response => {
-    //             if (response?.data?.data?.length > 0) {
-    //                 if (response?.data?.data?.length === 1) {
-    //                     if (!userContext.location) {
-    //                         userContext.setLocation([response?.data?.data?.[0]?.area?.latitude, response?.data?.data?.[0]?.area?.longitude])
-    //                         userContext?.setCurrentAddress(response?.data?.data?.[0]?.area?.address)
-    //                     }
+    const getAddressList = async () => {
+        loadingContext.setLoading(true)
+        await customAxios.get('customer/address/list')
+            .then(async response => {
+                if (response?.data?.data?.length > 0) {
+                    if (response?.data?.data?.length === 1) {
+                        userContext.setLocation([response?.data?.data?.[0]?.area?.latitude, response?.data?.data?.[0]?.area?.longitude])
+                        userContext?.setCurrentAddress(response?.data?.data?.[0]?.area?.address)
+                    }
+                    else {
+                        let defaultAdd = response?.data?.data?.find(add => add?.default === true)
+                        if (defaultAdd) {
+                            userContext.setLocation([defaultAdd?.area?.latitude, defaultAdd?.area?.longitude])
+                            userContext?.setCurrentAddress(defaultAdd?.area?.address)
+                        }
+                        else {
+                            userContext.setLocation([response?.data?.data?.[0]?.area?.latitude, response?.data?.data?.[0]?.area?.longitude])
+                            userContext?.setCurrentAddress(response?.data?.data?.[0]?.area?.address)
+                        }
+                    }
 
+                    setInitialScreen('green');
+                }
+                else {
+                    let location = await AsyncStorage.getItem("location")
+                    if (location) {
+                        let locationData = JSON.parse(location)
+                        userContext.setLocation([locationData?.latitude, locationData?.longitude]);
+                        userContext.setCurrentAddress(locationData?.address)
+                        setInitialScreen('green');
+                    }
+                    else {
+                        getCureentDeviceLocation()
+                    }
+                }
 
-    //                 }
-    //                 else {
-    //                     let defaultAdd = response?.data?.data?.find(add => add?.default === true)
-    //                     if (!userContext.location) {
-    //                         userContext.setLocation([defaultAdd?.area?.latitude, defaultAdd?.area?.longitude])
-    //                         userContext?.setCurrentAddress(defaultAdd?.area?.address)
-    //                     }
-    //                 }
-    //             }
-    //             else {
-    //                 getAddressFromCoordinates()
-    //             }
-    //             cartContext.setAddress(response?.data?.data)
-    //             loadingContext.setLoading(false)
-    //         })
-    //         .catch(async error => {
-    //             getAddressFromCoordinates()
-    //             Toast.show({
-    //                 type: 'error',
-    //                 text1: error,
-    //             });
-    //             loadingContext.setLoading(false)
-    //         })
-    // }
+            })
+            .catch(async error => {
+                //getAddressFromCoordinates()
+                Toast.show({
+                    type: 'error',
+                    text1: error,
+                });
 
-    const checkLogin = async () => {
-        // await AsyncStorage.clear()
-        const token = await AsyncStorage.getItem('token');
-        if (token) {
-            getProfile()
-            getCartDetails()
-            getAddressList()
-        }
-        else {
-            SplashScreen.hide();
-            // setInitialScreen('Login');
-            setInitialScreen('green')
-        }
+            })
+            .finally(() => {
+                loadingContext.setLoading(false)
+            })
     }
 
-    useEffect(() => {
-        if (user) {
-            getCartDetails()
-        }
-    }, [user])
+    // const checkLogin = async () => {
+    //     // await AsyncStorage.clear()
+    //     const token = await AsyncStorage.getItem('token');
+    //     if (token) {
+    //         getProfile()
+    //         getCartDetails()
+    //         //getAddressList()
+    //     }
+    //     else {
+    //         SplashScreen.hide();
+    //         // setInitialScreen('Login');
+    //         setInitialScreen('green')
+    //     }
+    // }
+
+    // useEffect(() => {
+    //     if (user) {
+    //         getCartDetails()
+    //     }
+    // }, [user])
 
 
     useEffect(async () => {
@@ -351,7 +462,7 @@ const RouteTest = () => {
         return (
             <>
                 <SplashScreenF />
-                { versionUpdate && <CommonUpdateModal isopen={ versionUpdate } CloseModal={ ColoseUpdateModal } ForceUpdate={ forceUpdate } /> }
+                {versionUpdate && <CommonUpdateModal isopen={versionUpdate} CloseModal={ColoseUpdateModal} ForceUpdate={forceUpdate} />}
             </>
 
         )
@@ -361,22 +472,23 @@ const RouteTest = () => {
 
     return (
         <>
-            <NavigationContainer ref={ navigationRef }>
-                <Stack.Navigator initialRouteName={ initialScreen } screenOptions={ { headerShown: false } }>
+            <NavigationContainer ref={navigationRef}>
+                <Stack.Navigator initialRouteName={initialScreen} screenOptions={{ headerShown: false }}>
 
-                    {/* <Stack.Screen name="SplashScreen" component={SplashScreenF} /> */ }
-                    <Stack.Screen name="Login" component={ Login } />
-                    <Stack.Screen name="Otp" component={ Otp } />
-                    <Stack.Screen name="LocationScreen" component={ LocationScreen } options={ { title: 'home' } } />
-                    <Stack.Screen name="AddNewLocation" component={ AddNewLocation } />
+                    {/* <Stack.Screen name="SplashScreen" component={SplashScreenF} /> */}
+                    <Stack.Screen name="Login" component={Login} />
+                    <Stack.Screen name="Otp" component={Otp} />
+                    <Stack.Screen name="LocationScreen" component={LocationScreen} options={{ title: 'home' }} />
+                    <Stack.Screen name="AddNewLocation" component={AddNewLocation} />
                     {/* <Stack.Screen name="panda" component={Panda} />
                     <Stack.Screen name="fashion" component={Fashion} /> */}
-                    <Stack.Screen name="green" component={ Green } />
+                    <Stack.Screen name="green" component={Green} />
+                    <Stack.Screen name="AddDeliveryAddress" component={AddDeliveryAddress}/>
                 </Stack.Navigator>
             </NavigationContainer>
-            {/* <LoadingModal isVisible={true} /> */ }
+            {/* <LoadingModal isVisible={true} /> */}
 
-            { versionUpdate && <CommonUpdateModal isopen={ versionUpdate } CloseModal={ ColoseUpdateModal } /> }
+            {versionUpdate && <CommonUpdateModal isopen={versionUpdate} CloseModal={ColoseUpdateModal} />}
         </>
     )
 }

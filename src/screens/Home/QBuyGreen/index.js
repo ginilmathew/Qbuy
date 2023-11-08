@@ -176,6 +176,17 @@ const QBuyGreen = ({ navigation }) => {
     //getCurrentLocation()
     // }
 
+    const RefetchMore = () => {
+
+        Homeapi?.refetch();
+        infiniteQueryRefetch();
+    }
+    const RefetchMoreFlat = () => {
+        infiniteQueryRemove()
+        Homeapi?.refetch();
+        infiniteQueryRefetch();
+    }
+
 
 
     useFocusEffect(
@@ -466,16 +477,7 @@ const QBuyGreen = ({ navigation }) => {
 
     }
 
-    const RefetchMore = () => {
-
-        Homeapi?.refetch();
-        infiniteQueryRefetch();
-    }
-    const RefetchMoreFlat = () => {
-        infiniteQueryRemove()
-        Homeapi?.refetch();
-        infiniteQueryRefetch();
-    }
+    
 
     const ListFooterComponents = () => {
         if (data?.pages?.[0]?.lastpage * 1 <= data?.pageParams?.length * 1) {
@@ -501,7 +503,7 @@ const QBuyGreen = ({ navigation }) => {
 
     return (
         <>
-            <Header onPress={onClickDrawer} />
+            <Header onPress={onClickDrawer}  />
             <View style={styles.container} >
                 <NameText userName={userContext?.userData?.name ? userContext?.userData?.name : userContext?.userData?.mobile} mt={8} />
                 <FlatList

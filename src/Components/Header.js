@@ -31,6 +31,9 @@ const Header = ({ onPress, openAddress, goCart }) => {
     let currentAddress = userContext?.currentAddress;
 
 
+    reactotron.log({currentAddress})
+
+
 
     let myLocation = userContext?.userLocation;
 
@@ -41,8 +44,15 @@ const Header = ({ onPress, openAddress, goCart }) => {
 
 
     const changeAddress = useCallback(() => {
-        navigation.navigate('account', { screen: 'MyAddresses', params: { mode: 'home' } });
-    }, [navigation]);
+        //reactotron.log({user: userContext?.user})
+        if(userContext?.userData){
+            navigation.navigate('account', { screen: 'MyAddresses', params: { mode: 'home' } });
+        }
+        else{
+            navigation?.navigate("AddNewLocation")
+        }
+       
+    }, [navigation, userContext?.userData]);
 
     const onClickFashionCat = useCallback(() => {
         navigation.navigate('FashionCategory');
@@ -103,10 +113,10 @@ const Header = ({ onPress, openAddress, goCart }) => {
                     <TouchableOpacity onPress={ onPress } style={ { flex: 0.13, marginLeft: 13 } } >
                         <EvilIcons name={ 'navicon' } color="#23233C" size={ 36 } />
                     </TouchableOpacity> }
-                { !userContext?.userData &&
+                {/* { !userContext?.userData &&
                     <TouchableOpacity onPress={ changeAddress } style={ { flex: 0.13, marginLeft: 13 } } >
                         <Ionicons name={ 'location' } color="#23233C" size={ 32 } />
-                    </TouchableOpacity> }
+                    </TouchableOpacity> } */}
 
 
                 <TouchableOpacity
