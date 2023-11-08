@@ -175,16 +175,7 @@ const QBuyGreen = ({ navigation }) => {
 
     //getCurrentLocation()
     // }
-    const RefetchMore = () => {
-
-        Homeapi?.refetch();
-        infiniteQueryRefetch();
-    }
-    const RefetchMoreFlat = () => {
-        infiniteQueryRemove()
-        Homeapi?.refetch();
-        infiniteQueryRefetch();
-    }
+   
 
     const RefetchMore = () => {
 
