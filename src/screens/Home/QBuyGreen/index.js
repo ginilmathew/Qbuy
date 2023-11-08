@@ -2,7 +2,7 @@
 /* eslint-disable semi */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable prettier/prettier */
-import { FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View, Switch, Platform, useWindowDimensions, SafeAreaView, RefreshControl, PermissionsAndroid, Pressable } from 'react-native'
+import { FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View, Switch, Platform, useWindowDimensions, SafeAreaView, RefreshControl, PermissionsAndroid, Pressable, ActivityIndicator } from 'react-native'
 import React, { useCallback, useContext, useEffect, useLayoutEffect, useState } from 'react'
 import ImageSlider from '../../../Components/ImageSlider';
 import CustomSearch from '../../../Components/CustomSearch';
@@ -41,12 +41,13 @@ import FastImage from 'react-native-fast-image';
 import reactotron from 'reactotron-react-native';
 import SplashScreen from 'react-native-splash-screen'
 import CommonWhatsappButton from '../../../Components/CommonWhatsappButton';
-
+import Ionicons from 'react-native-vector-icons/Ionicons'
 
 import Animated, { useSharedValue, withDelay, withRepeat, withSequence, withTiming } from 'react-native-reanimated';
 //import messaging from '@react-native-firebase/messaging';
 import {
     useQuery,
+    useInfiniteQuery
 } from '@tanstack/react-query';
 import TypeSkelton from '../Grocery/TypeSkelton';
 import ShopCardSkeltion from '../Grocery/ShopCardSkeltion';
@@ -62,24 +63,25 @@ const QbuyGreenHome = async (datas) => {
     }
 }
 
-const QbuyGreenProducts = async (items, intialPage) => {
-    const homeDataProduct = await customAxios.post(`customer/new-product-list?page=${intialPage}`, items);
-    return homeDataProduct?.data?.data?.data
-    
-}
 
+const QbuyGreenProducts = async (items, pageparam) => {
+    const homeDataProduct = await customAxios.post(`customer/new-product-list?page=` + pageparam, items);
+    return {
+        data: homeDataProduct?.data?.data?.data,
+        lastpage: homeDataProduct?.data?.data?.last_page
+    }
+
+}
 
 const QBuyGreen = ({ navigation }) => {
 
+
+
     const { width, height } = useWindowDimensions();
     const firstTimeRef = React.useRef(true);
-
-
-
-
     const loadingg = useContext(LoaderContext);
     const userContext = useContext(AuthContext);
-    const [intialPage, setInitialPage] = useState(1)
+
 
 
 
@@ -93,9 +95,31 @@ const QBuyGreen = ({ navigation }) => {
 
     const Homeapi = useQuery({ queryKey: ['greenHome'], queryFn: () => QbuyGreenHome(datas) });
 
-    const {data,refetch} = useQuery({ queryKey: ['greenHomeProducts',intialPage], queryFn: () => QbuyGreenProducts(datas, intialPage) ,keepPreviousData:true});
+    // const {data,refetch} = useQuery({ queryKey: ['greenHomeProducts',intialPage], queryFn: () => QbuyGreenProducts(datas, intialPage) ,keepPreviousData:true});
+    const {
+        data,
+        error,
+        fetchNextPage,
+        refetch: infiniteQueryRefetch,
+        hasNextPage,
+        isFetching,
+        isFetchingNextPage,
+        status,
+        isLoading,
+        remove: infiniteQueryRemove
+    } = useInfiniteQuery({
+        queryKey: ['greenHomeProducts'],
+        queryFn: ({ pageParam = 1 }) => QbuyGreenProducts(datas, pageParam),
+        getNextPageParam: (lastPage, pages) => {
+            return pages?.length + 1
+        },
 
-    reactotron.log({data})
+
+    })
+
+
+
+
 
     let userData = userContext?.userData
 
@@ -160,8 +184,10 @@ const QBuyGreen = ({ navigation }) => {
                 firstTimeRef.current = false;
                 return;
             }
-            Homeapi.refetch()
-        }, [Homeapi.refetch, userContext?.location])
+
+            RefetchMore()
+            // infiniteQueryRefetch({ refetchPage: (page, index) => index === 0 })
+        }, [infiniteQueryRefetch, Homeapi.refetch, userContext?.location])
     );
 
     const schema = yup.object({
@@ -435,14 +461,40 @@ const QBuyGreen = ({ navigation }) => {
     const keyExtractorGreen = (item) => item._id;
 
     const addMore = () => {
-        setInitialPage((pre) => pre + 1);
-    
+        // setInitialPage((pre) => pre + 1);
+        fetchNextPage()
+
+    }
+
+    const RefetchMore = () => {
+
+        Homeapi?.refetch();
+        infiniteQueryRefetch();
+    }
+    const RefetchMoreFlat = () => {
+        infiniteQueryRemove()
+        Homeapi?.refetch();
+        infiniteQueryRefetch();
     }
 
     const ListFooterComponents = () => {
+        if (data?.pages?.[0]?.lastpage * 1 <= data?.pageParams?.length * 1) {
+            return null
+        }
         return (
-            <TouchableOpacity onPress={addMore} style={{display:'flex',justifyContent:'center',alignItems:'center',marginVertical:20}}>
-                <Text>View More</Text>
+            <TouchableOpacity onPress={addMore} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: 30 }}>
+                {isFetching ?
+                    <ActivityIndicator size="large" color="#00ff00" />
+                    : <View
+                        style={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            flexDirection: 'row',
+                            gap: 2
+                        }}>
+                        <Text style={{ fontFamily: 'Poppins', letterSpacing: 1, fontSize: 18 }}>Load More</Text>
+                        <Ionicons name={'reload'} size={20} color={"#00ff00"} /></View>}
             </TouchableOpacity>
         )
     }
@@ -463,16 +515,17 @@ const QBuyGreen = ({ navigation }) => {
                     // }
                     disableVirtualization={true}
                     ListHeaderComponent={RenderMainComponets}
-                    data={data}
+                    data={data?.pages?.map(page => page?.data)?.flat()}
+                    // data={[]}
                     keyExtractor={keyExtractorGreen}
                     renderItem={renderProducts}
                     showsVerticalScrollIndicator={false}
-                    initialNumToRender={8}
+                    initialNumToRender={10}
                     removeClippedSubviews={true}
                     windowSize={10}
-                    maxToRenderPerBatch={8}
-                    refreshing={Homeapi?.isLoading}
-                    onRefresh={Homeapi?.refetch}
+                    maxToRenderPerBatch={10}
+                    refreshing={isLoading}
+                    onRefresh={RefetchMoreFlat}
                     numColumns={2}
                     style={{ marginLeft: 5 }}
                     contentContainerStyle={{ justifyContent: 'center' }}

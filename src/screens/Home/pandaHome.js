@@ -40,6 +40,7 @@ import CommonItemSelectSkeltion from '../../Components/CommonItemSelectSkeltion'
 import Animated, { useSharedValue, withDelay, withRepeat, withSequence, withTiming } from 'react-native-reanimated';
 import ShopCardSkeltion from './Grocery/ShopCardSkeltion';
 import Toast from 'react-native-toast-message';
+import Ionicons from 'react-native-vector-icons/Ionicons'
 const pandHome = async (datas) => {
     const homeData = await customAxios.post('customer/home', datas);
     return {

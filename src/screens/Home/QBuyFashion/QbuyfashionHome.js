@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { FlatList, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, View, useWindowDimensions } from 'react-native'
+import { ActivityIndicator, FlatList, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, View, useWindowDimensions } from 'react-native'
 import React, { useCallback, useContext, useState } from 'react'
 import AuthContext from '../../../contexts/Auth'
 import CartContext from '../../../contexts/Cart'
@@ -22,13 +22,14 @@ import Offer from './Offer'
 import CommonItemCard from '../../../Components/CommonItemCard'
 import CommonWhatsappButton from '../../../Components/CommonWhatsappButton'
 import {
+    useInfiniteQuery,
     useQuery
 } from '@tanstack/react-query'
 import TypeSkelton from '../Grocery/TypeSkelton'
 import ShopCardSkeltion from '../Grocery/ShopCardSkeltion'
 import FastImage from 'react-native-fast-image'
 import PandaSuggestions from '../QBuyGreen/PandaSuggestions'
-
+import Ionicons from 'react-native-vector-icons/Ionicons'
 
 const fashHome = async (datas) => {
 
@@ -45,6 +46,15 @@ const fashHome = async (datas) => {
     }
 }
 
+
+const QbuyFashionProducts = async (items, pageparam) => {
+    const homeDataProduct = await customAxios.post(`customer/new-product-list?page=` + pageparam, items);
+    return {
+        data: homeDataProduct?.data?.data?.data,
+        lastpage: homeDataProduct?.data?.data?.last_page
+    }
+
+}
 const QbuyfashionHome = () => {
 
     const navigation = useNavigation()
@@ -56,20 +66,34 @@ const QbuyfashionHome = () => {
 
     let coord = auth.location;
 
-    const [homeData, setHomeData] = useState([]);
-    const [slider, setSlider] = useState([]);
-    const [category, setcategory] = useState([])
-    const [availibleProduct, setAvailibleproduct] = useState([]);
-    const [recentView, setRecentView] = useState([]);
-    const [suggested, setSuggested] = useState([]);
-    const [store, setStore] = useState([]);
+
 
     let datas = {
         type: "fashion",
         coordinates: env === "dev" ? location : coord
     }
 
-    const { data, isLoading, refetch } = useQuery({ queryKey: ['fashionhome'], queryFn: () => fashHome(datas) })
+    const Homeapi = useQuery({ queryKey: ['fashionhome'], queryFn: () => fashHome(datas) })
+
+    const {
+        data,
+        isLoading,
+        error,
+        fetchNextPage,
+        refetch:infiniteQueryRefetch,
+        hasNextPage,
+        isFetching,
+        isFetchingNextPage,
+        status,
+    } = useInfiniteQuery({
+        queryKey: ['fashionHomeProducts'],
+        queryFn: ({ pageParam = 1 }) => QbuyFashionProducts(datas, pageParam),
+        getNextPageParam: (lastPage, pages) => {
+            return pages?.length + 1
+        },
+
+    })
+
 
 
 
@@ -144,34 +168,10 @@ const QbuyfashionHome = () => {
 
 
 
-    const GetHomeData = async () => {
-        loadingg.setLoading(true)
-        let datas = {
-            type: "fashion",
-            coordinates: env === "dev" ? location : coord
-        }
-        try {
-            const response = await customAxios.post(`customer/home`, datas);
-            setHomeData(response?.data?.data);
-            let slide = response?.data?.data?.find(home => home?.type === "sliders");
-            setSlider(slide)
-            let cat = response?.data?.data?.find(home => home?.type === "categories");
-            setcategory(cat)
-            let stores = response?.data?.data?.find(home => home?.type === "stores");
-            setStore(stores)
-            let avaiProduct = response?.data?.data?.find(home => home?.type === "available_products");
-            setAvailibleproduct(avaiProduct);
-            let suggested_products = response?.data?.data?.find(home => home?.type === "suggested_products");
-            setSuggested(suggested_products);
-            let rescent_view = response?.data?.data?.find(home => home?.type === "recentlyviewed");
-            setRecentView(rescent_view)
-            loadingg.setLoading(false)
 
-        } catch (err) {
-            loadingg.setLoading(false)
-        } finally {
-            loadingg.setLoading(false)
-        }
+    const RefetchMore = () => {
+        Homeapi?.refetch(),
+        infiniteQueryRefetch()
     }
 
 
@@ -181,8 +181,8 @@ const QbuyfashionHome = () => {
                 firstTimeRef.current = false;
                 return;
             }
-            refetch()
-        }, [refetch, coord])
+            RefetchMore()
+        }, [Homeapi.refetch,infiniteQueryRefetch, coord])
     );
 
     const onClickDrawer = useCallback(() => {
@@ -231,15 +231,15 @@ const QbuyfashionHome = () => {
                 <NameText userName={ auth?.userData?.name ? auth?.userData?.name : auth?.userData?.mobile } mt={ 8 } />
                 <SearchBox onPress={ onSearch } />
 
-                <CategoryCard data={ data?.category?.data } loading={ isLoading } />
-                { data?.slide?.data?.length > 0 &&
+                <CategoryCard data={ Homeapi?.data?.category?.data } loading={ Homeapi?.isLoading } />
+                { Homeapi?.data?.slide?.data?.length > 0 &&
                     <View>
                         <Carousel
                             loop
                             width={ width }
                             height={ height / 5 }
                             autoPlay={ true }
-                            data={ data?.slide?.data }
+                            data={ Homeapi?.data?.slide?.data }
                             scrollAnimationDuration={ 1000 }
                             renderItem={ CarouselCardItem }
                         />
@@ -247,7 +247,7 @@ const QbuyfashionHome = () => {
                 }
                 <CommonTexts label={ 'Available Stores' } ml={ 15 } fontSize={ 13 } mt={ 20 } />
                 <View style={ { marginHorizontal: 5, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' } }>
-                    { data?.store?.data?.map((item) => (
+                    { Homeapi?.data?.store?.data?.map((item) => (
                         <ShopCard key={ item?._id } item={ item } />
                     )) }
                 </View>
@@ -271,7 +271,7 @@ const QbuyfashionHome = () => {
                     <Offer onPress={ null } shopName={ "GM" } />
                     <Text style={ styles.offerValText }>{ 'Offer valid till period!' }</Text>
                 </View>
-                { data?.rescent_view?.data?.length > 0 &&
+                { Homeapi?.data?.rescent_view?.data?.length > 0 &&
                     <View>
                         <CommonTexts label={ 'Recently Viewed' } fontSize={ 13 } mt={ 5 } ml={ 15 } mb={ 5 } />
                         <ScrollView
@@ -279,7 +279,7 @@ const QbuyfashionHome = () => {
                             showsHorizontalScrollIndicator={ false }
                             style={ { flexDirection: 'row', paddingLeft: 7 } }
                         >
-                            { data?.rescent_view?.data?.map((item) =>
+                            { Homeapi?.data?.rescent_view?.data?.map((item) =>
                                 <CommonItemCard
                                     key={ item?._id }
                                     item={ item }
@@ -290,7 +290,7 @@ const QbuyfashionHome = () => {
                             ) }
                         </ScrollView>
                     </View> }
-                { data?.suggested_products?.data?.length > 0 &&
+                { Homeapi?.data?.suggested_products?.data?.length > 0 &&
                     <View>
                         <CommonTexts label={ 'Panda Suggestions' } fontSize={ 13 } mt={ 5 } ml={ 15 } mb={ 5 } />
                         <ScrollView
@@ -298,7 +298,7 @@ const QbuyfashionHome = () => {
                             showsHorizontalScrollIndicator={ false }
                             style={ { flexDirection: 'row', paddingLeft: 7 } }
                         >
-                            { data?.suggested_products?.data?.map((item) =>
+                            { Homeapi?.data?.suggested_products?.data?.map((item) =>
                                 <CommonItemCard
                                     key={ item?._id }
                                     item={ item }
@@ -341,15 +341,40 @@ const QbuyfashionHome = () => {
 
 
     const keyExtractorfashion = (item) => item._id;
-    const ListFooterComponent = () => {
-        return (
-            <View style={ { height: 20 } }>
 
-            </View>
+    const addMore = () => {
+        // setInitialPage((pre) => pre + 1);
+        fetchNextPage()
+
+    }
+
+
+
+
+
+    const ListFooterComponents = () => {
+        if ( data?.pages?.[0]?.lastpage * 1 <= data?.pageParams?.length * 1) {
+            return null
+        }
+        return (
+            <TouchableOpacity onPress={addMore} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: 30 }}>
+                {isFetching ?
+                    <ActivityIndicator size="large" color="#00ff00" />
+                    : <View
+                        style={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            flexDirection: 'row',
+                            gap: 2
+                        }}>
+                        <Text style={{ fontFamily: 'Poppins', letterSpacing: 1, fontSize: 18 }}>Load More</Text>
+                        <Ionicons name={'reload'} size={20} color={"#00ff00"} /></View>}
+            </TouchableOpacity>
         )
     }
 
-    if (isLoading) {
+    if (Homeapi?.isLoading) {
         return (
             <SafeAreaView style={ { flex: 1, height: height, width: width } } >
                 <StatusBar />
@@ -398,7 +423,7 @@ const QbuyfashionHome = () => {
             <Header onPress={ onClickDrawer } />
             <FlatList
                 ListHeaderComponent={ headerComponents }
-                data={ data?.availibleProduct?.data }
+                data={ data?.pages?.map(page => page?.data)?.flat() }
                 showsVerticalScrollIndicator={ false }
                 initialNumToRender={ 6 }
                 removeClippedSubviews={ true }
@@ -406,12 +431,12 @@ const QbuyfashionHome = () => {
                 maxToRenderPerBatch={ 6 }
                 keyExtractorCategory={ keyExtractorfashion }
                 numColumns={ 2 }
-                refreshing={ isLoading }
-                onRefresh={ refetch }
+                refreshing={ Homeapi?.isLoading  || isLoading}
+                onRefresh={ RefetchMore }
                 style={ { marginLeft: 5 } }
                 contentContainerStyle={ { justifyContent: 'center', gap: 2, backgroundColor: '#FFF5F7' } }
                 renderItem={ renderProducts }
-                ListFooterComponent={ ListFooterComponent }
+                ListFooterComponent={ ListFooterComponents }
 
             />
             <CommonWhatsappButton
