@@ -95,7 +95,7 @@ const QBuyGreen = ({ navigation }) => {
 
     const Homeapi = useQuery({ queryKey: ['greenHome'], queryFn: () => QbuyGreenHome(datas) });
 
-    // const {data,refetch} = useQuery({ queryKey: ['greenHomeProducts',intialPage], queryFn: () => QbuyGreenProducts(datas, intialPage) ,keepPreviousData:true});
+
     const {
         data,
         error,
@@ -175,6 +175,16 @@ const QBuyGreen = ({ navigation }) => {
 
     //getCurrentLocation()
     // }
+    const RefetchMore = () => {
+
+        Homeapi?.refetch();
+        infiniteQueryRefetch();
+    }
+    const RefetchMoreFlat = () => {
+        infiniteQueryRemove()
+        Homeapi?.refetch();
+        infiniteQueryRefetch();
+    }
 
     const RefetchMore = () => {
 
@@ -477,8 +487,7 @@ const QBuyGreen = ({ navigation }) => {
 
     }
 
-    
-
+ 
     const ListFooterComponents = () => {
         if (data?.pages?.[0]?.lastpage * 1 <= data?.pageParams?.length * 1) {
             return null

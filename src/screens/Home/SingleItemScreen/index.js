@@ -1,7 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable prettier/prettier */
 
-import { StyleSheet, Text, View, ScrollView, Image, FlatList, useWindowDimensions, TouchableOpacity, Moda, RefreshControl, Modal, Pressable, Alert } from 'react-native'
+import { StyleSheet, Text, View, ScrollView, Image, FlatList, useWindowDimensions, TouchableOpacity, Moda, RefreshControl, Modal, Pressable, Alert, ActivityIndicator } from 'react-native'
 import React, { useState, useEffect, useContext, useCallback, useRef } from 'react'
 import HeaderWithTitle from '../../../Components/HeaderWithTitle'
 import CommonTexts from '../../../Components/CommonTexts'
@@ -30,8 +30,17 @@ import reactotron from 'reactotron-react-native'
 import Carousel from 'react-native-reanimated-carousel';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import { CommonActions } from '@react-navigation/native'
+import {
+    useQuery,
+
+} from '@tanstack/react-query';
 
 
+
+const getSingleProductListQuery = async (id) => {
+    const response = await customAxios.get(`customer/product/${id}`)
+    return response?.data?.data
+}
 
 
 
@@ -64,7 +73,8 @@ const SingleItemScreen = ({ route, navigation }) => {
 
     const [item, setItem] = useState(null)
 
-
+    const { data, isLoading, refetch } = useQuery({ queryKey: ['singleProduct'], queryFn: () => getSingleProductListQuery(route?.params?.item?._id) });
+    reactotron.log({ data })
 
     useEffect(() => {
         if (route?.params?.item) {
@@ -152,7 +162,7 @@ const SingleItemScreen = ({ route, navigation }) => {
 
                 setAttributes(attributes)
             }
-            getSingleProductList()
+            // getSingleProductList()
         }
     }, [item]);
 
@@ -162,22 +172,22 @@ const SingleItemScreen = ({ route, navigation }) => {
 
     const { width, height } = useWindowDimensions()
 
-    const getSingleProductList = async () => {
-        setLoading(true);
-        await customAxios.get(`customer/product/${item?._id}`)
-            .then((res) => {
-                setSingleProduct(res?.data?.data)
-                setLoading(false)
-            }).catch(err => {
-                Toast.show({
-                    type: 'error',
-                    text1: err
-                });
-                setLoading(false)
+    // const getSingleProductList = async () => {
+    //     setLoading(true);
+    //     await customAxios.get(`customer/product/${item?._id}`)
+    //         .then((res) => {
+    //             setSingleProduct(res?.data?.data)
+    //             setLoading(false)
+    //         }).catch(err => {
+    //             Toast.show({
+    //                 type: 'error',
+    //                 text1: err
+    //             });
+    //             setLoading(false)
 
-            })
+    //         })
 
-    }
+    // }
 
 
 
@@ -321,20 +331,20 @@ const SingleItemScreen = ({ route, navigation }) => {
                     if (parseFloat(item?.stock_value) > 0) {
                         return (
                             <View
-                                style={ { position: 'absolute', left: 20, top: 15, backgroundColor: active === 'green' ? '#8ED053' : active === 'fashion' ? '#FF7190' : '#58D36E', borderRadius: 8 } }
+                                style={{ position: 'absolute', left: 20, top: 15, backgroundColor: active === 'green' ? '#8ED053' : active === 'fashion' ? '#FF7190' : '#58D36E', borderRadius: 8 }}
                             >
-                                <Text style={ { fontFamily: 'Poppins-Regular', color: '#fff', fontSize: 12, padding: 5 } }>{ 'In Stock' }</Text>
+                                <Text style={{ fontFamily: 'Poppins-Regular', color: '#fff', fontSize: 12, padding: 5 }}>{'In Stock'}</Text>
                             </View>
                         )
                     }
                 }
                 else {
-                    if (parseFloat(singleProduct?.stock_value) > 0) {
+                    if (parseFloat(data?.stock_value) > 0) {
                         return (
                             <View
-                                style={ { position: 'absolute', left: 20, top: 15, backgroundColor: active === 'green' ? '#8ED053' : active === 'fashion' ? '#FF7190' : '#58D36E', borderRadius: 8 } }
+                                style={{ position: 'absolute', left: 20, top: 15, backgroundColor: active === 'green' ? '#8ED053' : active === 'fashion' ? '#FF7190' : '#58D36E', borderRadius: 8 }}
                             >
-                                <Text style={ { fontFamily: 'Poppins-Regular', color: '#fff', fontSize: 12, padding: 5 } }>{ 'In Stock' }</Text>
+                                <Text style={{ fontFamily: 'Poppins-Regular', color: '#fff', fontSize: 12, padding: 5 }}>{'In Stock'}</Text>
                             </View>
                         )
                     }
@@ -343,9 +353,9 @@ const SingleItemScreen = ({ route, navigation }) => {
             else {
                 return (
                     <View
-                        style={ { position: 'absolute', left: 20, top: 15, backgroundColor: active === 'green' ? '#8ED053' : active === 'fashion' ? '#FF7190' : '#58D36E', borderRadius: 8 } }
+                        style={{ position: 'absolute', left: 20, top: 15, backgroundColor: active === 'green' ? '#8ED053' : active === 'fashion' ? '#FF7190' : '#58D36E', borderRadius: 8 }}
                     >
-                        <Text style={ { fontFamily: 'Poppins-Regular', color: '#fff', fontSize: 12, padding: 5 } }>{ 'In Stock' }</Text>
+                        <Text style={{ fontFamily: 'Poppins-Regular', color: '#fff', fontSize: 12, padding: 5 }}>{'In Stock'}</Text>
                     </View>
                 )
             }
@@ -353,9 +363,9 @@ const SingleItemScreen = ({ route, navigation }) => {
         else {
             return (
                 <View
-                    style={ { position: 'absolute', left: 20, top: 15, backgroundColor: 'red', borderRadius: 8 } }
+                    style={{ position: 'absolute', left: 20, top: 15, backgroundColor: 'red', borderRadius: 8 }}
                 >
-                    <Text style={ { fontFamily: 'Poppins-Regular', color: '#fff', fontSize: 12, padding: 5 } }>{ 'Out Of Stock' }</Text>
+                    <Text style={{ fontFamily: 'Poppins-Regular', color: '#fff', fontSize: 12, padding: 5 }}>{'Out Of Stock'}</Text>
                 </View>
             )
         }
@@ -386,10 +396,10 @@ const SingleItemScreen = ({ route, navigation }) => {
 
         if (item?.type === "image") {
             return (
-                <TouchableOpacity onPress={ openSingleImg } style={ { width: width } }>
+                <TouchableOpacity onPress={openSingleImg} style={{ width: width }}>
                     <FastImage
-                        source={ { uri: `${IMG_URL}${item?.url}` } }
-                        style={ { height: width / 1.7, width: '100%', borderRadius: 2, } }
+                        source={{ uri: `${IMG_URL}${item?.url}` }}
+                        style={{ height: width / 1.7, width: '100%', borderRadius: 2, }}
                         resizeMode='cover'
                     >
                     </FastImage>
@@ -398,7 +408,7 @@ const SingleItemScreen = ({ route, navigation }) => {
         }
         else {
             return (
-                <VideoPlayer videoId={ item?.url } selected={ selectedImage } index={ index } item={ item } />
+                <VideoPlayer videoId={item?.url} selected={selectedImage} index={index} item={item} />
             )
         }
     }
@@ -413,15 +423,15 @@ const SingleItemScreen = ({ route, navigation }) => {
 
     const renderRelatedProducts = ({ item, index }) => {
         return (
-            <View key={ index } style={ { flex: 0.6, justifyContent: 'center' } }>
+            <View key={index} style={{ flex: 0.6, justifyContent: 'center' }}>
                 <CommonItemCard
-                    item={ item }
-                    key={ item?._id }
-                    width={ width / 2.4 }
-                    height={ height / 3.7 }
-                    mr={ 5 }
-                    ml={ 8 }
-                    mb={ 15 }
+                    item={item}
+                    key={item?._id}
+                    width={width / 2.4}
+                    height={height / 3.7}
+                    mr={5}
+                    ml={8}
+                    mb={15}
                 />
             </View>
         )
@@ -432,123 +442,127 @@ const SingleItemScreen = ({ route, navigation }) => {
 
     }
 
-
+    if (isLoading) {
+        return <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+            <ActivityIndicator size="large" color="#00ff00" />
+        </View>
+    }
 
     return (
         <>
-            <HeaderWithTitle title={ item?.name } />
+            <HeaderWithTitle title={item?.name} />
             <ScrollView
-                style={ { flex: 1, backgroundColor: contextPanda?.active === "green" ? '#F4FFE9' : contextPanda?.active === "fashion" ? '#FFF5F7' : '#fff', } }
-                showsVerticalScrollIndicator={ false }
+                style={{ flex: 1, backgroundColor: contextPanda?.active === "green" ? '#F4FFE9' : contextPanda?.active === "fashion" ? '#FFF5F7' : '#fff', }}
+                showsVerticalScrollIndicator={false}
             >
 
-                <View style={ { height: width / 1.7 } }>
-                    { courasolArray && courasolArray?.length > 0 ?
+                <View style={{ height: width / 1.7 }}>
+                    {courasolArray && courasolArray?.length > 0 ?
                         <Carousel
-                            ref={ courasol }
+                            ref={courasol}
                             // autoPlay={true}
 
-                            width={ width }
-                            data={ courasolArray }
-                            renderItem={ renderImageAnimation }
-                            onSnapToItem={ (index) => setSelectedImage(index) }
-                            scrollAnimationDuration={ 10 }
+                            width={width}
+                            data={courasolArray}
+                            renderItem={renderImageAnimation}
+                            onSnapToItem={(index) => setSelectedImage(index)}
+                            scrollAnimationDuration={10}
                         /> : <FastImage
-                            // source={singleProduct?.image[selectedImage]?.name} 
-                            source={ { uri: `${IMG_URL}${images?.[0]}` } }
-                            style={ { width: width - 30, height: 180, borderRadius: 15, } }
+                            // source={data?.image[selectedImage]?.name} 
+                            source={{ uri: `${IMG_URL}${images?.[0]}` }}
+                            style={{ width: width - 30, height: 180, borderRadius: 15, }}
                             resizeMode='cover'
                         >
                         </FastImage>
                     }
-                    { renderInStock() }
+                    {renderInStock()}
 
 
                 </View>
-                { courasolArray?.length > 0 && <ScrollView horizontal showsHorizontalScrollIndicator={ false }>
-                    { courasolArray?.map((item, index) =>
+                {courasolArray?.length > 0 && <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                    {courasolArray?.map((item, index) =>
                         <ImageVideoBox
-                            key={ index }
-                            setSelectedImage={ makeSelected }
-                            selectedImage={ selectedImage }
-                            item={ item }
-                            index={ index }
+                            key={index}
+                            setSelectedImage={makeSelected}
+                            selectedImage={selectedImage}
+                            item={item}
+                            index={index}
                         />
-                    ) }
-                </ScrollView> }
+                    )}
+                </ScrollView>}
 
                 <ItemDetails
-                    onPress={ gotoStore }
-                    itemName={ item?.name }
-                    hotelName={ item?.store?.name }
-                    views={ item?.viewCount ? item?.viewCount : 0 }
-                    sold={ item?.order_count }
-                    minQty={ item?.minQty }
-                    price={ item?.variant ? selectedVariant?.price : item?.price }
-                    available={ item?.available }
+                    onPress={gotoStore}
+                    itemName={item?.name}
+                    hotelName={item?.store?.name}
+                    views={item?.viewCount ? item?.viewCount : 0}
+                    sold={item?.order_count}
+                    minQty={item?.minQty}
+                    price={item?.variant ? selectedVariant?.price : item?.price}
+                    available={item?.available}
                 />
-                { item?.weight !== ('' || null) &&
-                    <View style={ { paddingLeft: 10, display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 2 } }>
-                        <Text style={ {
+                {item?.weight !== ('' || null) &&
+                    <View style={{ paddingLeft: 10, display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 2 }}>
+                        <Text style={{
                             fontFamily: 'Poppins',
                             letterSpacing: 1,
                             fontSize: 10,
 
-                        } }>weight :</Text>
-                        <Text style={ {
+                        }}>weight :</Text>
+                        <Text style={{
                             fontFamily: 'Poppins',
                             letterSpacing: 1,
                             fontSize: 10,
 
-                        } }>{ item?.weight }</Text>
+                        }}>{item?.weight}</Text>
 
-                    </View> }
-                { (singleProduct?.dimensions?.width && singleProduct?.dimensions?.width !== "") &&
-                    <View style={ { paddingLeft: 10, display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 2 } }>
-                        <Text style={ {
+                    </View>}
+                {(data?.dimensions?.width && data?.dimensions?.width !== "") &&
+                    <View style={{ paddingLeft: 10, display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 2 }}>
+                        <Text style={{
                             fontFamily: 'Poppins',
                             letterSpacing: 1,
                             fontSize: 10,
 
-                        } }>Width :</Text>
-                        <Text style={ {
+                        }}>Width :</Text>
+                        <Text style={{
                             fontFamily: 'Poppins',
                             letterSpacing: 1,
                             fontSize: 10,
 
-                        } }>{ singleProduct?.dimensions?.width }</Text>
+                        }}>{data?.dimensions?.width}</Text>
 
-                    </View> }
-                { singleProduct?.dimensions?.height &&
-                    <View style={ { paddingLeft: 10, display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 2 } }>
-                        <Text style={ {
+                    </View>}
+                {data?.dimensions?.height &&
+                    <View style={{ paddingLeft: 10, display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 2 }}>
+                        <Text style={{
                             fontFamily: 'Poppins',
                             letterSpacing: 1,
                             fontSize: 10,
 
-                        } }>Height :</Text>
-                        <Text style={ {
+                        }}>Height :</Text>
+                        <Text style={{
                             fontFamily: 'Poppins',
                             letterSpacing: 1,
                             fontSize: 10,
 
-                        } }>{ singleProduct?.dimensions?.height }</Text>
+                        }}>{data?.dimensions?.height}</Text>
 
-                    </View> }
+                    </View>}
 
-                <View style={ { paddingHorizontal: 10 } }>
-                    <View style={ { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10, flexWrap: 'wrap' } }>
-                        { (attributes?.map((attr, index) =>
+                <View style={{ paddingHorizontal: 10 }}>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10, flexWrap: 'wrap' }}>
+                        {(attributes?.map((attr, index) =>
                             <CommonSelectDropdown
-                                key={ index }
-                                placeholder={ attr?.name }
-                                data={ attr.options }
-                                value={ attr.selected ? attr.selected : '' }
-                                setValue={ selectAttributes }
-                                height={ 35 }
-                                width={ '48%' }
+                                key={index}
+                                placeholder={attr?.name}
+                                data={attr.options}
+                                value={attr.selected ? attr.selected : ''}
+                                setValue={selectAttributes}
+                                height={40}
+                                width={'48%'}
                             />
-                        )) }
+                        ))}
                     </View>
 
                     {/* {contextPanda?.active === "panda" && <CommonSelectDropdown
@@ -560,81 +574,79 @@ const SingleItemScreen = ({ route, navigation }) => {
                     />} */}
                 </View>
 
-                <View style={ { flexDirection: 'row', width: width, justifyContent: contextPanda?.active === "panda" ? 'center' : 'center', marginTop: 10, paddingHorizontal: 10, gap: 5 } }>
+                <View style={{ flexDirection: 'row', width: width, justifyContent: contextPanda?.active === "panda" ? 'center' : 'center', marginTop: 10, paddingHorizontal: 10, gap: 5 }}>
                     {/* {contextPanda?.active === "panda" && <CustomButton
                         label={'Pre-Order'} bg='#D3D358' width={width / 2.2} onPress={showModals}
                     />} */}
-                    { item?.available && <CustomButton
-                        onPress={ addToCart }
-                        label={ 'Add to Cart' } bg={ active === 'green' ? '#8ED053' : active === 'fashion' ? '#FF7190' : '#58D36E' } width={ width / 2.2 }
-                        loading={ loader }
-                    /> }
+                    {item?.available && <CustomButton
+                        onPress={addToCart}
+                        label={'Add to Cart'} bg={active === 'green' ? '#8ED053' : active === 'fashion' ? '#FF7190' : '#58D36E'} width={width / 2.2}
+                        loading={loader}
+                    />}
                 </View>
-                <View style={ { backgroundColor: '#0C256C0D', height: 1, marginVertical: 20 } } />
-                { item?.description &&
-                    <View style={ { paddingLeft: 10, paddingRight: 10 } }>
-                        <Text style={ styles.DetailsText }>Details</Text>
-                        <Text style={ styles.DetailsTextDescription }>{ item?.description }</Text>
+                <View style={{ backgroundColor: '#0C256C0D', height: 1, marginVertical: 20 }} />
+                {item?.description &&
+                    <View style={{ paddingLeft: 10, paddingRight: 10 }}>
+                        <Text style={styles.DetailsText}>Details</Text>
+                        <Text style={styles.DetailsTextDescription}>{item?.description}</Text>
 
-                    </View> }
-                { singleProduct?.relatedProducts?.length > 0 && <View style={ { backgroundColor: '#0C256C0D', height: 1, marginVertical: 20 } } /> }
-                { singleProduct?.relatedProducts?.length > 0 &&
+                    </View>}
+                {data?.relatedProducts?.length > 0 && <View style={{ backgroundColor: '#0C256C0D', height: 1, marginVertical: 20 }} />}
+                {data?.relatedProducts?.length > 0 &&
 
-                    <View style={ { paddingLeft: 10, paddingRight: 10 } }>
+                    <View style={{ paddingLeft: 10, paddingRight: 10 }}>
 
-                        <Text style={ styles.headingRelatedProduct }>Related Products</Text>
+                        <Text style={styles.headingRelatedProduct}>Related Products</Text>
                         <FlatList
-                            data={ singleProduct?.relatedProducts }
-                            keyExtractor={ (item, index) => index }
-                            renderItem={ renderRelatedProducts }
-                            showsVerticalScrollIndicator={ false }
-                            initialNumToRender={ 6 }
-                            removeClippedSubviews={ true }
-                            windowSize={ 10 }
-                            maxToRenderPerBatch={ 5 }
-                            // refreshing={loader}
-                            // onRefresh={getHomedata}
-                            numColumns={ 2 }
-                            style={ { marginLeft: 5 } }
+                            data={data?.relatedProducts}
+                            keyExtractor={(item, index) => index}
+                            renderItem={renderRelatedProducts}
+                            showsVerticalScrollIndicator={false}
+                            initialNumToRender={6}
+                            removeClippedSubviews={true}
+                            windowSize={10}
+                            maxToRenderPerBatch={5}
+                            numColumns={2}
+                            style={{ marginLeft: 5 }}
                         />
 
-                    </View> }
+                    </View>}
 
                 <ScheduleDeliveryModal
-                    showModal={ showModal }
-                    setDate={ setDate }
-                    date={ date }
-                    onPress={ closeModal }
-                    checkout={ proceedCheckout }
+                    showModal={showModal}
+                    setDate={setDate}
+                    date={date}
+                    onPress={closeModal}
+                    checkout={proceedCheckout}
                 />
 
 
 
                 <Modal
                     // animationType="slide"
-                    transparent={ true }
-                    visible={ showSingleImg }
+                    transparent={true}
+                    visible={showSingleImg}
                 >
 
-                    { imagesArray && <Modal visible={ showSingleImg } >
+                    {imagesArray && <Modal visible={showSingleImg} >
                         <ImageViewer
                             // onChange={(index) =>ImageViewerChange(index)}
-                            style={ { flex: 1 } }
+                            style={{ flex: 1 }}
                             enableSwipeDown
-                            index={ selectedImage }
-                            onSwipeDown={ closeSingleImg }
-                            onCancel={ closeSingleImg }
-                            imageUrls={ imagesArray }
-                            onClick={ closeSingleImg }
-                            renderFooter={ () => <TouchableOpacity
-                                onPress={ closeSingleImg }
-                                style={ { alignSelf: 'flex-end', position: 'absolute', zIndex: 150, bottom: 50, left: width / 2, elevation: 5 } }
+                            index={selectedImage}
+                            onSwipeDown={closeSingleImg}
+                            onCancel={closeSingleImg}
+                            imageUrls={imagesArray}
+                            onClick={closeSingleImg}
+                            renderFooter={() => <TouchableOpacity
+                                onPress={closeSingleImg}
+                                style={{ alignSelf: 'flex-end', position: 'absolute', zIndex: 150, bottom: 50, left: width / 2, elevation: 5 }}
                             >
-                                <AntDesign name='closecircle' onPress={ closeSingleImg } color='#fff' size={ 25 } alignSelf={ 'flex-end' } />
-                            </TouchableOpacity> }
+                                <AntDesign name='closecircle' onPress={closeSingleImg} color='#fff' size={25} alignSelf={'flex-end'} />
+                            </TouchableOpacity>}
                         />
 
-                    </Modal> }
+                    </Modal>}
                     {/* {images &&
 
                             <FastImage

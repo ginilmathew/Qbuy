@@ -55,7 +55,7 @@ const pandHome = async (datas) => {
 }
 
 
-export default function PandaHome ({ navigation }) {
+export default function PandaHome({ navigation }) {
 
     const firstTimeRef = React.useRef(true)
 
@@ -122,70 +122,6 @@ export default function PandaHome ({ navigation }) {
     }, [navigation])
 
 
-    // const getHomedata = async () => {
-    //     setisLoading(true)
-    //     let datas = {
-    //         type: "panda",
-    //         // coordinates: env === "dev" ? location : userContext?.location
-    //         coordinates: userContext?.location
-    //     }
-    //     await customAxios.post(`customer/home`, datas)
-    //         .then(async response => {
-
-    //             setHomeData(response?.data?.data)
-
-    //             let tags = response?.data?.data?.find(home => home?.type === "tags")
-    //             setTags(tags?.data)
-
-    //             let categories = response?.data?.data?.find(home => home?.type === "categories")
-    //             setCategory(categories?.data)
-
-
-    //             let recents = response?.data?.data?.find(home => home?.type === "recentlyviewed")
-    //             setRecentLists(recents?.data)
-
-    //             let pandaSuggestions = response?.data?.data?.find(home => home?.type === "suggested_products")
-    //             setPandaSuggestions(pandaSuggestions?.data)
-
-    //             let products = response?.data?.data?.find(home => home?.type === "available_products")
-    //             setProducts(products?.data)
-
-    //             let sliders = response?.data?.data?.find(home => home?.type === "sliders")
-    //             setSliders(sliders?.data)
-    //             setisLoading(false)
-
-    //             setTimeout(() => {
-    //                 SplashScreen.hide()
-    //             }, 500);
-
-    //         })
-    //         .catch(async error => {
-    //             if (error.includes("Unauthenticated")) {
-    //                 navigation.navigate("Login")
-    //             }
-
-    //             Toast.show({
-    //                 type: 'error',
-    //                 text1: error
-    //             });
-    //             setisLoading(false)
-    //         })
-    // }
-
-
-    // useEffect(() => {
-    //     if (data) {
-    //         setHomeData(data?.home);
-    //         setTags(data?.tags?.data);
-    //         setCategory(data?.categories?.data);
-    //         setRecentLists(data?.recents?.data);
-    //         setPandaSuggestions(data?.pandaSuggestions?.data);
-    //         setProducts(data?.products?.data);
-    //         setSliders(data?.sliders?.data)
-
-
-    //     }
-    // }, [data])
 
 
     useFocusEffect(
@@ -254,10 +190,10 @@ export default function PandaHome ({ navigation }) {
 
     const CarouselCardItem = ({ item, index }) => {
         return (
-            <TouchableOpacity key={ index } onPress={ () => CarouselSelect(item) } style={ { width: '100%', height: '85%', alignItems: 'center', marginTop: 20 } } >
+            <TouchableOpacity key={index} onPress={() => CarouselSelect(item)} style={{ width: '100%', height: '85%', alignItems: 'center', marginTop: 20 }} >
                 <FastImage
-                    source={ { uri: `${IMG_URL}${item?.original_image}` } }
-                    style={ { height: '100%', width: '95%', borderRadius: 20 } }
+                    source={{ uri: `${IMG_URL}${item?.original_image}` }}
+                    style={{ height: '100%', width: '95%', borderRadius: 20 }}
                     resizeMode="cover"
                 />
             </TouchableOpacity>
@@ -267,8 +203,8 @@ export default function PandaHome ({ navigation }) {
     const keyExtractorCategory = (item) => item._id;
     const renderCategory = ({ item, index }) => {
         return (
-            <View key={ index } style={ styles.categoryView }>
-                <CategoriesCard item={ item } />
+            <View key={index} style={styles.categoryView}>
+                <CategoriesCard item={item} />
             </View>
         )
     }
@@ -283,10 +219,10 @@ export default function PandaHome ({ navigation }) {
         return (
             datamy?.map((item, index) => (
                 <CommonItemCard
-                    key={ index }
-                    item={ item }
-                    width={ width / 2.5 }
-                    marginHorizontal={ 5 }
+                    key={index}
+                    item={item}
+                    width={width / 2.5}
+                    marginHorizontal={5}
                 />
             ))
 
@@ -301,10 +237,10 @@ export default function PandaHome ({ navigation }) {
         return (
             datamy.map((item, index) => (
                 <CommonItemCard
-                    key={ index }
-                    item={ item }
-                    width={ width / 2.5 }
-                    marginHorizontal={ 5 }
+                    key={index}
+                    item={item}
+                    width={width / 2.5}
+                    marginHorizontal={5}
                 />
             ))
 
@@ -313,97 +249,75 @@ export default function PandaHome ({ navigation }) {
     }
 
 
-    const MainHeader = () => {
+
+    const ListMainHeader = () => {
         return (
             <View>
-                { data?.sliders?.data > 0 && <View>
+                {data?.sliders?.data > 0 && <View>
                     <Carousel
                         loop
-                        width={ width }
-                        height={ height / 5 }
-                        autoPlay={ true }
-                        data={ data?.sliders?.data }
-                        scrollAnimationDuration={ 1000 }
-                        renderItem={ CarouselCardItem }
+                        width={width}
+                        height={height / 5}
+                        autoPlay={true}
+                        data={data?.sliders?.data}
+                        scrollAnimationDuration={1000}
+                        renderItem={CarouselCardItem}
                     />
-                </View> }
+                </View>}
                 <ScrollView
                     horizontal
-                    showsHorizontalScrollIndicator={ false }
-                    style={ styles.foodTypeView }
+                    showsHorizontalScrollIndicator={false}
+                    style={styles.foodTypeView}
                 >
-                    { data?.tags?.data?.map((item, index) =>
+                    {data?.tags?.data?.map((item, index) =>
                     (<CommonItemSelect
 
-                        item={ item } key={ index }
-                        selected={ selected }
-                        setSelected={ setSelected }
-                        screen={ 'home' }
+                        item={item} key={index}
+                        selected={selected}
+                        setSelected={setSelected}
+                        screen={'home'}
                     />)
-                    ) }
+                    )}
                 </ScrollView>
-                <SearchBox onPress={ onSearch } />
-                <View style={ { marginHorizontal: 2 } }>
-                    <NameText userName={ userContext?.userData?.name ? userContext?.userData?.name : userContext?.userData?.mobile } mt={ 8 } />
+                <SearchBox onPress={onSearch} />
+                <View style={{ marginHorizontal: 2 }}>
+                    <NameText userName={userContext?.userData?.name ? userContext?.userData?.name : userContext?.userData?.mobile} mt={8} />
                 </View>
+            </View>
+        )
 
-                <FlatList
-                    refreshControl={
-                        <RefreshControl
-                            refreshing={ isLoading }
-                            onRefresh={ refetch }
-                        // colors={[Colors.GreenLight]} // for android
-                        // tintColor={Colors.GreenLight} // for ios
-                        />
-                    }
-                    data={ filter === 'all' ? data?.categories?.data : data?.categories?.data?.filter((res) => res?.category_type === filter) }
-                    showsVerticalScrollIndicator={ false }
-                    initialNumToRender={ 6 }
-                    removeClippedSubviews={ true }
-                    windowSize={ 10 }
-                    maxToRenderPerBatch={ 6 }
-                    keyExtractorCategory={ keyExtractorCategory }
-                    refreshing={ isLoading }
-                    onRefresh={ refetch }
-                    numColumns={ 4 }
-                    // style={{ marginLeft: 5 }}
-                    contentContainerStyle={ { justifyContent: 'center', gap: 2 } }
-                    renderItem={ renderCategory }
+    }
 
-                />
-                <View style={ styles.pickupReferContainer }>
+    const ListmainFooter = () => {
+        return (
+            <View>
+                <View style={styles.pickupReferContainer}>
                     <PickDropAndReferCard
-                        onPress={ pickupDropClick }
-                        lotties={ require('../../Lottie/deliveryBike.json') }
-                        label={ 'Pick Up & Drop Off' }
-                        lottieFlex={ 0.5 }
+                        onPress={pickupDropClick}
+                        lotties={require('../../Lottie/deliveryBike.json')}
+                        label={'Pick Up & Drop Off'}
+                        lottieFlex={0.5}
                     />
                     <PickDropAndReferCard
-                        onPress={ referRestClick }
-                        lotties={ require('../../Lottie/rating.json') }
-                        label={ 'Refer A Restaurant' }
-                        lottieFlex={ 0.5 }
+                        onPress={referRestClick}
+                        lotties={require('../../Lottie/rating.json')}
+                        label={'Refer A Restaurant'}
+                        lottieFlex={0.5}
                     />
                 </View>
-                {/* <View style={styles.offerView}> */ }
-                {/* <Text style={styles.discountText}>{'50% off Upto Rs 125!'}</Text> */ }
-                {/* <OfferText /> */ }
-                {/* <CountDownComponent/> */ }
-                {/* <Text style={styles.offerValText}>{'Offer valid till period!'}</Text> */ }
-                {/* </View> */ }
-
                 <View
-                    style={ { flexDirection: 'row', alignItems: 'center', marginLeft: 15, marginBottom: 5, justifyContent: 'space-between', marginRight: 5 } }
+                    style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 15, marginBottom: 5, justifyContent: 'space-between', marginRight: 5 }}
                 >
-                    <CommonTexts label={ 'Recently Viewed' } fontSize={ 13 } />
-                    <CommonFiltration onChange={ setFilter } />
+                    <CommonTexts label={'Recently Viewed'} fontSize={13} />
+                    <CommonFiltration onChange={setFilter} />
                 </View>
+
                 <ScrollView
                     horizontal
-                    showsHorizontalScrollIndicator={ false }
-                    style={ { flexDirection: 'row', paddingLeft: 7 } }
+                    showsHorizontalScrollIndicator={false}
+                    style={{ flexDirection: 'row', paddingLeft: 7 }}
                 >
-                    { renderRecentLists() }
+                    {renderRecentLists()}
 
 
                     {/* ({(filter === "all" ? data?.recents?.data : data?.recents?.data?.filter((item, index) => item?.category_type === filter)).map((item, index) =>
@@ -419,11 +333,11 @@ export default function PandaHome ({ navigation }) {
 
                 </ScrollView>
 
-                <CommonTexts label={ 'Panda Suggestions' } fontSize={ 13 } ml={ 15 } mb={ 5 } mt={ 15 } />
+                <CommonTexts label={'Panda Suggestions'} fontSize={13} ml={15} mb={5} mt={15} />
                 <ScrollView
                     horizontal
-                    showsHorizontalScrollIndicator={ false }
-                    style={ { flexDirection: 'row', paddingLeft: 7 } }
+                    showsHorizontalScrollIndicator={false}
+                    style={{ flexDirection: 'row', paddingLeft: 7 }}
                 >
                     {/* {filter === "all" ? data?.pandaSuggestions?.data?.map((item, index)) : pandaSuggestions.map((item, index) =>
                         <CommonItemCard
@@ -433,17 +347,56 @@ export default function PandaHome ({ navigation }) {
                             marginHorizontal={5}
                         />
                     )} */}
-                    { rendePandaSuggestion() }
+                    {rendePandaSuggestion()}
                 </ScrollView>
-                <CommonTexts label={ 'Available Products' } fontSize={ 13 } ml={ 15 } mb={ 5 } mt={ 15 } />
+                <CommonTexts label={'Available Products'} fontSize={13} ml={15} mb={5} mt={15} />
             </View>
+        )
+    }
+
+    const MainHeader = () => {
+        return (
+            <FlatList
+                ListHeaderComponent={ListMainHeader}
+                disableVirtualization={true}
+                refreshControl={
+                    <RefreshControl
+                        refreshing={isLoading}
+                        onRefresh={refetch}
+                    // colors={[Colors.GreenLight]} // for android
+                    // tintColor={Colors.GreenLight} // for ios
+                    />
+                }
+                data={filter === 'all' ? data?.categories?.data : data?.categories?.data?.filter((res) => res?.category_type === filter)}
+                showsVerticalScrollIndicator={false}
+                initialNumToRender={6}
+                removeClippedSubviews={true}
+                windowSize={10}
+                maxToRenderPerBatch={6}
+                keyExtractorCategory={keyExtractorCategory}
+                refreshing={isLoading}
+                onRefresh={refetch}
+                numColumns={4}
+                // style={{ marginLeft: 5 }}
+                contentContainerStyle={{ justifyContent: 'center', gap: 2 }}
+                renderItem={renderCategory}
+                ListFooterComponent={ListmainFooter}
+
+            />
+
+            // {/* <View style={styles.offerView}> */}
+            // {/* <Text style={styles.discountText}>{'50% off Upto Rs 125!'}</Text> */}
+            // {/* <OfferText /> */}
+            // {/* <CountDownComponent/> */}
+            // {/* <Text style={styles.offerValText}>{'Offer valid till period!'}</Text> */}
+            // {/* </View> */}
         )
     }
 
 
     const ListEmptyComponents = () => {
         return (
-            <View style={ { height: height / 3.6 } }>
+            <View style={{ height: height / 3.6 }}>
                 <Text>No Products Found!...</Text>
             </View>
         )
@@ -453,7 +406,7 @@ export default function PandaHome ({ navigation }) {
 
     const FooterComponent = () => {
         return (
-            <View style={ { height: 150 } } />
+            <View style={{ height: 100 }} />
         )
     }
 
@@ -462,16 +415,16 @@ export default function PandaHome ({ navigation }) {
 
     const renderProducts = ({ item, index }) => {
         return (
-            <View key={ index } style={ { flex: 0.5, justifyContent: 'center' } }>
+            <View key={index} style={{ flex: 0.5, justifyContent: 'center' }}>
 
                 <CommonItemCard
-                    item={ item }
-                    key={ index }
-                    width={ width / 2.2 }
-                    height={ height / 3.6 }
-                    mr={ 4 }
-                    ml={ 4 }
-                    mb={ 15 }
+                    item={item}
+                    key={index}
+                    width={width / 2.2}
+                    height={height / 3.6}
+                    mr={4}
+                    ml={4}
+                    mb={15}
                 />
 
             </View>
@@ -516,54 +469,54 @@ export default function PandaHome ({ navigation }) {
     if (isLoading) {
         return (
             <View>
-                <Header onPress={ onClickDrawer } />
+                <Header onPress={onClickDrawer} />
                 <ScrollView
 
-                    showsHorizontalScrollIndicator={ false }
-                    style={ { width: width, height: height } }
+                    showsHorizontalScrollIndicator={false}
+                    style={{ width: width, height: height }}
                 >
-                    <View style={ { alignItems: 'center', justifyContent: 'center' } }>
-                        <Animated.View style={ { height: height / 5, alignItems: 'center', marginTop: 10, shadowOpacity: 0.1, shadowRadius: 1, opacity, width: width } } >
+                    <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                        <Animated.View style={{ height: height / 5, alignItems: 'center', marginTop: 10, shadowOpacity: 0.1, shadowRadius: 1, opacity, width: width }} >
                             <Animated.View
-                                style={ { height: '100%', width: '90%', backgroundColor: '#fff', margin: 5, borderRadius: 20, opacity } }
+                                style={{ height: '100%', width: '90%', backgroundColor: '#fff', margin: 5, borderRadius: 20, opacity }}
                             />
                         </Animated.View>
-                        <View style={ { width: width } }>
-                            <SearchBox onPress={ null } />
+                        <View style={{ width: width }}>
+                            <SearchBox onPress={null} />
                         </View>
 
-                        <View style={ { display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: 2, justifyContent: 'center' } }>
-                            { [0, 1, 2, 3, 4, 5, 6, 7]?.map((item, index) =>
+                        <View style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: 2, justifyContent: 'center' }}>
+                            {[0, 1, 2, 3, 4, 5, 6, 7]?.map((item, index) =>
 
                             (<CommonItemSelectSkeltion
 
-                                item={ item } key={ index }
-                                selected={ selected }
-                                setSelected={ setSelected }
-                                screen={ 'home' }
+                                item={item} key={index}
+                                selected={selected}
+                                setSelected={setSelected}
+                                screen={'home'}
                             />)
-                            ) }
+                            )}
                         </View>
 
-                        <View style={ { width: width, flexDirection: 'row', justifyContent: 'center', gap: 5, marginTop: 5 } }>
+                        <View style={{ width: width, flexDirection: 'row', justifyContent: 'center', gap: 5, marginTop: 5 }}>
                             <PickDropAndReferCard
-                                onPress={ pickupDropClick }
-                                lotties={ require('../../Lottie/deliveryBike.json') }
-                                label={ 'Pick Up & Drop Off' }
-                                lottieFlex={ 0.5 }
+                                onPress={pickupDropClick}
+                                lotties={require('../../Lottie/deliveryBike.json')}
+                                label={'Pick Up & Drop Off'}
+                                lottieFlex={0.5}
                             />
                             <PickDropAndReferCard
-                                onPress={ pickupDropClick }
-                                lotties={ require('../../Lottie/deliveryBike.json') }
-                                label={ 'Pick Up & Drop Off' }
-                                lottieFlex={ 0.5 }
+                                onPress={pickupDropClick}
+                                lotties={require('../../Lottie/deliveryBike.json')}
+                                label={'Pick Up & Drop Off'}
+                                lottieFlex={0.5}
                             />
                         </View>
 
-                        <View style={ { marginHorizontal: 5, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' } }>
-                            { [1, 2, 3, 4]?.map((item) => (
+                        <View style={{ marginHorizontal: 5, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' }}>
+                            {[1, 2, 3, 4]?.map((item) => (
                                 <ShopCardSkeltion />
-                            )) }
+                            ))}
                         </View>
 
                     </View>
@@ -578,18 +531,19 @@ export default function PandaHome ({ navigation }) {
 
     return (
         <View>
-            <Header onPress={ onClickDrawer } />
+            <Header onPress={onClickDrawer} />
 
 
-            <View style={ styles.menuContainer }>
+            <View style={styles.menuContainer}>
 
                 <FlatList
-                    ListHeaderComponent={ MainHeader }
-                    data={ filter === 'all' ? data?.products?.data : data?.products?.data?.filter((res) => res?.category_type === filter) }
-                    showsVerticalScrollIndicator={ false }
-                    initialNumToRender={ 8 }
+                    disableVirtualization={true}
+                    ListHeaderComponent={MainHeader}
+                    data={filter === 'all' ? data?.products?.data : data?.products?.data?.filter((res) => res?.category_type === filter)}
+                    showsVerticalScrollIndicator={false}
+                    initialNumToRender={10}
                     // removeClippedSubviews={true}
-                    windowSize={ 10 }
+                    windowSize={10}
                     // refreshControl={
                     //     <RefreshControl
                     //         isRefreshing={isloading}
@@ -598,24 +552,24 @@ export default function PandaHome ({ navigation }) {
                     //     // tintColor={Colors.GreenLight} // for ios
                     //     />
                     // }
-                    maxToRenderPerBatch={ 8 }
-                    refreshing={ isLoading }
-                    onRefresh={ refetch }
+                    maxToRenderPerBatch={10}
+                    refreshing={isLoading}
+                    onRefresh={refetch}
                     // getItemLayout={getItemLayoutProduct}
-                    keyExtractor={ keyExtractorProduct }
-                    numColumns={ 2 }
-                    ListEmptyComponents={ ListEmptyComponents }
-                    contentContainerStyle={ { justifyContent: 'center', gap: 2 } }
-                    renderItem={ renderProducts }
-                    ListFooterComponent={ FooterComponent }
+                    keyExtractor={keyExtractorProduct}
+                    numColumns={2}
+                    ListEmptyComponents={ListEmptyComponents}
+                    contentContainerStyle={{ justifyContent: 'center', gap: 2 }}
+                    renderItem={renderProducts}
+                    ListFooterComponent={FooterComponent}
                 />
 
 
             </View>
             <CommonWhatsappButton
-                position={ 'absolute' }
-                bottom={ 85 }
-                right={ 10 }
+                position={'absolute'}
+                bottom={85}
+                right={10}
 
             />
 
