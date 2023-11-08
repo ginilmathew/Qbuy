@@ -175,6 +175,16 @@ const QBuyGreen = ({ navigation }) => {
 
     //getCurrentLocation()
     // }
+    const RefetchMore = () => {
+
+        Homeapi?.refetch();
+        infiniteQueryRefetch();
+    }
+    const RefetchMoreFlat = () => {
+        infiniteQueryRemove()
+        Homeapi?.refetch();
+        infiniteQueryRefetch();
+    }
 
 
 
@@ -466,17 +476,7 @@ const QBuyGreen = ({ navigation }) => {
 
     }
 
-    const RefetchMore = () => {
-
-        Homeapi?.refetch();
-        infiniteQueryRefetch();
-    }
-    const RefetchMoreFlat = () => {
-        infiniteQueryRemove()
-        Homeapi?.refetch();
-        infiniteQueryRefetch();
-    }
-
+ 
     const ListFooterComponents = () => {
         if (data?.pages?.[0]?.lastpage * 1 <= data?.pageParams?.length * 1) {
             return null

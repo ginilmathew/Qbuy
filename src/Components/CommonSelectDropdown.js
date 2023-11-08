@@ -3,6 +3,7 @@ import React, { useContext, useState } from 'react'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import { Dropdown } from 'react-native-element-dropdown';
 import PandaContext from '../contexts/Panda';
+import reactotron from 'reactotron-react-native';
 
 const CommonSelectDropdown = ({topLabel, mb, placeholder, data, value, setValue, search, height, mt, width, shadowOpacity, elevation, flex}) => {
 
@@ -17,6 +18,8 @@ const CommonSelectDropdown = ({topLabel, mb, placeholder, data, value, setValue,
             value: opt
         }
     }) 
+
+
 
     // const renderLabel = () => {
     //     if (values || isFocus) {

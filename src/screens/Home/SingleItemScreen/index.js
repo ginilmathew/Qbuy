@@ -545,7 +545,7 @@ const SingleItemScreen = ({ route, navigation }) => {
                                 data={ attr.options }
                                 value={ attr.selected ? attr.selected : '' }
                                 setValue={ selectAttributes }
-                                height={ 35 }
+                                height={ 40 }
                                 width={ '48%' }
                             />
                         )) }
