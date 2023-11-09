@@ -18,6 +18,7 @@
 		1BF93C034270417F9AEE820B /* Poppins-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9DFB04F758D94DFEA5CF49E4 /* Poppins-Regular.ttf */; };
 		2B33F1EA1EF849CDBAD1D42D /* Nunito-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B19D1166B0914E338206E3BD /* Nunito-Regular.ttf */; };
 		3844CB5808F44E67AB3F9422 /* Nunito-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FD938AAFD0544849AC27B0CF /* Nunito-ExtraBold.ttf */; };
+		3BB9859B736DE0ECB22C1D97 /* libPods-diginest-diginestTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D9716ADA66915B7FF1AD44ED /* libPods-diginest-diginestTests.a */; };
 		46D4D7992AC9AC9100FBF93F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 46D4D7982AC9AC9100FBF93F /* GoogleService-Info.plist */; };
 		46D4D79D2AC9AFC000FBF93F /* green.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 46D4D79A2AC9AFC000FBF93F /* green.storyboard */; };
 		46D4D79E2AC9AFC000FBF93F /* fashion.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 46D4D79B2AC9AFC000FBF93F /* fashion.storyboard */; };
@@ -28,7 +29,6 @@
 		517CF6C35E8A45D9B1B0568E /* Poppins-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 94EC1C4A7C30416FB7045B7C /* Poppins-ExtraBold.ttf */; };
 		58F6C856A9804E0395E745AE /* Nunito-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A6EFE032DD474736B12DB526 /* Nunito-Light.ttf */; };
 		5AEA2812A01C403BAB926E29 /* Montserrat-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4B53CD3DCAE1404FB6664A20 /* Montserrat-ExtraLight.ttf */; };
-		6CF3B46A2B93CF5F1EB343DF /* libPods-diginest.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 91CAA8C978665EAFBBBD5E3B /* libPods-diginest.a */; };
 		6E7578EBA72B4AEF81ABD3B2 /* Quicksand-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0FC34F6CD8F740BEBBE2C171 /* Quicksand-Regular.ttf */; };
 		760FF618C85A493DABA9AAB4 /* Montserrat-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0063B1CBC533431B978932F4 /* Montserrat-Regular.ttf */; };
 		7AE055B6228741CCAD83104E /* Quicksand-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 027E2C8EEB0548EFACFB7262 /* Quicksand-Bold.ttf */; };
@@ -41,10 +41,10 @@
 		A038998A091D43B48215E316 /* Poppins-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8EF6090A78094064BEABBF44 /* Poppins-MediumItalic.ttf */; };
 		A1B862E05B7A4670A29F607A /* Nunito-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C512ADA3A7384548BDFEFC38 /* Nunito-SemiBold.ttf */; };
 		A2EDAD5FE090478289F65F2F /* Nunito-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D773E0CB945C4CA890CF3116 /* Nunito-Bold.ttf */; };
-		AFBAE10E5A132E989A129612 /* libPods-diginest-diginestTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F0EB634CDE151C384B735A7 /* libPods-diginest-diginestTests.a */; };
 		BBC89A2456C54DE79F7322D1 /* Poppins-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C7DAA45742C74F7CA1B5A76D /* Poppins-Thin.ttf */; };
 		C03412C016814EEFB2F71088 /* Poppins-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4F296E3B97AA4039A592D769 /* Poppins-BlackItalic.ttf */; };
 		C147309B74C04C52B77E3730 /* Poppins-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5E2B9E7485554AF18B9118F5 /* Poppins-BoldItalic.ttf */; };
+		D7DB8A7652795D93CB6635C1 /* libPods-diginest.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C81AE405E50A55991FCA497F /* libPods-diginest.a */; };
 		D89DD39D61E34C0084DF2A55 /* Poppins-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E12AD5CFFA074A56BC032D56 /* Poppins-LightItalic.ttf */; };
 		D958F8285FD34D33AC27E39C /* Montserrat-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3D83060794BC4EAA8E62B11C /* Montserrat-Thin.ttf */; };
 		DA924C94C62445709D439192 /* Montserrat-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DFE4F3D265BE400ABE176253 /* Montserrat-Light.ttf */; };
@@ -70,9 +70,8 @@
 		00E356F21AD99517003FC87E /* diginestTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = diginestTests.m; sourceTree = "<group>"; };
 		0198E973A8D3482A8BB9E99A /* Quicksand-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Quicksand-Medium.ttf"; path = "../assets/fonts/Quicksand-Medium.ttf"; sourceTree = "<group>"; };
 		027E2C8EEB0548EFACFB7262 /* Quicksand-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Quicksand-Bold.ttf"; path = "../assets/fonts/Quicksand-Bold.ttf"; sourceTree = "<group>"; };
-		0E235CAC4C9AFE3ECC2BF5D7 /* Pods-diginest-diginestTests.debugpanda.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-diginest-diginestTests.debugpanda.xcconfig"; path = "Target Support Files/Pods-diginest-diginestTests/Pods-diginest-diginestTests.debugpanda.xcconfig"; sourceTree = "<group>"; };
+		0B85A2F72F36946FC1ACF158 /* Pods-diginest.debugfashion.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-diginest.debugfashion.xcconfig"; path = "Target Support Files/Pods-diginest/Pods-diginest.debugfashion.xcconfig"; sourceTree = "<group>"; };
 		0FC34F6CD8F740BEBBE2C171 /* Quicksand-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Quicksand-Regular.ttf"; path = "../assets/fonts/Quicksand-Regular.ttf"; sourceTree = "<group>"; };
-		10E5F260092C22DBB23146B1 /* Pods-diginest.releasegreen.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-diginest.releasegreen.xcconfig"; path = "Target Support Files/Pods-diginest/Pods-diginest.releasegreen.xcconfig"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* diginest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = diginest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = diginest/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = diginest/AppDelegate.mm; sourceTree = "<group>"; };
@@ -80,14 +79,12 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = diginest/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = diginest/main.m; sourceTree = "<group>"; };
 		159796EB6AAF4EC2B1BC763F /* Poppins-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Medium.ttf"; path = "../assets/fonts/Poppins-Medium.ttf"; sourceTree = "<group>"; };
-		18DF7A75A03B1361ADDC80DA /* Pods-diginest.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-diginest.release.xcconfig"; path = "Target Support Files/Pods-diginest/Pods-diginest.release.xcconfig"; sourceTree = "<group>"; };
+		1647EE6D60F1B2E2EC9E379C /* Pods-diginest.releasepanda.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-diginest.releasepanda.xcconfig"; path = "Target Support Files/Pods-diginest/Pods-diginest.releasepanda.xcconfig"; sourceTree = "<group>"; };
 		1E0AB948C8F2444EBA52F254 /* Nunito-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Nunito-Medium.ttf"; path = "../assets/fonts/Nunito-Medium.ttf"; sourceTree = "<group>"; };
-		1F0EB634CDE151C384B735A7 /* libPods-diginest-diginestTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-diginest-diginestTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		22EF92C8738F4B79B55F7B0D /* Quicksand-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Quicksand-Light.ttf"; path = "../assets/fonts/Quicksand-Light.ttf"; sourceTree = "<group>"; };
-		265FF7711AC891D61DB2072E /* Pods-diginest-diginestTests.releasepanda.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-diginest-diginestTests.releasepanda.xcconfig"; path = "Target Support Files/Pods-diginest-diginestTests/Pods-diginest-diginestTests.releasepanda.xcconfig"; sourceTree = "<group>"; };
 		27844A44146743B2AEB808EB /* Montserrat-ExtraBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-ExtraBold.ttf"; path = "../assets/fonts/Montserrat-ExtraBold.ttf"; sourceTree = "<group>"; };
-		2B9B41ADD7D3579D5D6283E7 /* Pods-diginest.debugpanda.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-diginest.debugpanda.xcconfig"; path = "Target Support Files/Pods-diginest/Pods-diginest.debugpanda.xcconfig"; sourceTree = "<group>"; };
 		352EB54A324B44F0A8EEFA67 /* Montserrat-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Medium.ttf"; path = "../assets/fonts/Montserrat-Medium.ttf"; sourceTree = "<group>"; };
+		3844B38631973700345E1871 /* Pods-diginest-diginestTests.debugpanda.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-diginest-diginestTests.debugpanda.xcconfig"; path = "Target Support Files/Pods-diginest-diginestTests/Pods-diginest-diginestTests.debugpanda.xcconfig"; sourceTree = "<group>"; };
 		3D83060794BC4EAA8E62B11C /* Montserrat-Thin.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Thin.ttf"; path = "../assets/fonts/Montserrat-Thin.ttf"; sourceTree = "<group>"; };
 		43D0880A12244AA2854CFE29 /* Poppins-ExtraLight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-ExtraLight.ttf"; path = "../assets/fonts/Poppins-ExtraLight.ttf"; sourceTree = "<group>"; };
 		4660764D2AD6EB5900257244 /* diginest.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = diginest.entitlements; path = diginest/diginest.entitlements; sourceTree = "<group>"; };
@@ -99,39 +96,42 @@
 		46D4D7A42AC9B39700FBF93F /* RNENVConfig.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = RNENVConfig.m; path = diginest/RNENVConfig.m; sourceTree = "<group>"; };
 		4B53CD3DCAE1404FB6664A20 /* Montserrat-ExtraLight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-ExtraLight.ttf"; path = "../assets/fonts/Montserrat-ExtraLight.ttf"; sourceTree = "<group>"; };
 		4F296E3B97AA4039A592D769 /* Poppins-BlackItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-BlackItalic.ttf"; path = "../assets/fonts/Poppins-BlackItalic.ttf"; sourceTree = "<group>"; };
-		5C95490252187B75CD9F7EF2 /* Pods-diginest.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-diginest.debug.xcconfig"; path = "Target Support Files/Pods-diginest/Pods-diginest.debug.xcconfig"; sourceTree = "<group>"; };
-		5E258182275546BC25315CD8 /* Pods-diginest-diginestTests.debugfashion.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-diginest-diginestTests.debugfashion.xcconfig"; path = "Target Support Files/Pods-diginest-diginestTests/Pods-diginest-diginestTests.debugfashion.xcconfig"; sourceTree = "<group>"; };
+		598EBFAE0A3F127CFCFF4F4E /* Pods-diginest.debugpanda.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-diginest.debugpanda.xcconfig"; path = "Target Support Files/Pods-diginest/Pods-diginest.debugpanda.xcconfig"; sourceTree = "<group>"; };
 		5E2B9E7485554AF18B9118F5 /* Poppins-BoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-BoldItalic.ttf"; path = "../assets/fonts/Poppins-BoldItalic.ttf"; sourceTree = "<group>"; };
 		6FC37F41B700444C9724AFAF /* Quicksand-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Quicksand-SemiBold.ttf"; path = "../assets/fonts/Quicksand-SemiBold.ttf"; sourceTree = "<group>"; };
-		7348421A10307F968FA6867E /* Pods-diginest-diginestTests.releasegreen.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-diginest-diginestTests.releasegreen.xcconfig"; path = "Target Support Files/Pods-diginest-diginestTests/Pods-diginest-diginestTests.releasegreen.xcconfig"; sourceTree = "<group>"; };
+		71CA9131175200B8125BD565 /* Pods-diginest.releasefashion.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-diginest.releasefashion.xcconfig"; path = "Target Support Files/Pods-diginest/Pods-diginest.releasefashion.xcconfig"; sourceTree = "<group>"; };
+		77C2EE3D574988C99F6CC10C /* Pods-diginest-diginestTests.debuggreen.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-diginest-diginestTests.debuggreen.xcconfig"; path = "Target Support Files/Pods-diginest-diginestTests/Pods-diginest-diginestTests.debuggreen.xcconfig"; sourceTree = "<group>"; };
+		7B3A5A9C19CDB6A730592D84 /* Pods-diginest-diginestTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-diginest-diginestTests.release.xcconfig"; path = "Target Support Files/Pods-diginest-diginestTests/Pods-diginest-diginestTests.release.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = diginest/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		81FF41FB61E241F5B61DA787 /* Montserrat-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-SemiBold.ttf"; path = "../assets/fonts/Montserrat-SemiBold.ttf"; sourceTree = "<group>"; };
-		8D1748F61543414D7AD28E2F /* Pods-diginest.releasepanda.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-diginest.releasepanda.xcconfig"; path = "Target Support Files/Pods-diginest/Pods-diginest.releasepanda.xcconfig"; sourceTree = "<group>"; };
+		8BFFE99619EBE92E64B6126D /* Pods-diginest-diginestTests.releasegreen.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-diginest-diginestTests.releasegreen.xcconfig"; path = "Target Support Files/Pods-diginest-diginestTests/Pods-diginest-diginestTests.releasegreen.xcconfig"; sourceTree = "<group>"; };
 		8EF6090A78094064BEABBF44 /* Poppins-MediumItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-MediumItalic.ttf"; path = "../assets/fonts/Poppins-MediumItalic.ttf"; sourceTree = "<group>"; };
-		91CAA8C978665EAFBBBD5E3B /* libPods-diginest.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-diginest.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		9289C27599AFD9666D6CCA2F /* Pods-diginest-diginestTests.releasefashion.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-diginest-diginestTests.releasefashion.xcconfig"; path = "Target Support Files/Pods-diginest-diginestTests/Pods-diginest-diginestTests.releasefashion.xcconfig"; sourceTree = "<group>"; };
+		934B6EEC21E86A904F8AB10D /* Pods-diginest-diginestTests.debugfashion.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-diginest-diginestTests.debugfashion.xcconfig"; path = "Target Support Files/Pods-diginest-diginestTests/Pods-diginest-diginestTests.debugfashion.xcconfig"; sourceTree = "<group>"; };
 		94EC1C4A7C30416FB7045B7C /* Poppins-ExtraBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-ExtraBold.ttf"; path = "../assets/fonts/Poppins-ExtraBold.ttf"; sourceTree = "<group>"; };
-		969E6E0C830C1A24CF03A35C /* Pods-diginest-diginestTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-diginest-diginestTests.debug.xcconfig"; path = "Target Support Files/Pods-diginest-diginestTests/Pods-diginest-diginestTests.debug.xcconfig"; sourceTree = "<group>"; };
-		9B0C51CABE3D0C9389394190 /* Pods-diginest.debugfashion.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-diginest.debugfashion.xcconfig"; path = "Target Support Files/Pods-diginest/Pods-diginest.debugfashion.xcconfig"; sourceTree = "<group>"; };
 		9DFB04F758D94DFEA5CF49E4 /* Poppins-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Regular.ttf"; path = "../assets/fonts/Poppins-Regular.ttf"; sourceTree = "<group>"; };
 		A6EFE032DD474736B12DB526 /* Nunito-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Nunito-Light.ttf"; path = "../assets/fonts/Nunito-Light.ttf"; sourceTree = "<group>"; };
+		A76D2D1812455618356BAFCF /* Pods-diginest-diginestTests.releasepanda.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-diginest-diginestTests.releasepanda.xcconfig"; path = "Target Support Files/Pods-diginest-diginestTests/Pods-diginest-diginestTests.releasepanda.xcconfig"; sourceTree = "<group>"; };
+		A80ADAE59F05EA3202C922DB /* Pods-diginest.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-diginest.debug.xcconfig"; path = "Target Support Files/Pods-diginest/Pods-diginest.debug.xcconfig"; sourceTree = "<group>"; };
 		AC0F316570794C2283DE94D9 /* Poppins-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-SemiBold.ttf"; path = "../assets/fonts/Poppins-SemiBold.ttf"; sourceTree = "<group>"; };
 		B19D1166B0914E338206E3BD /* Nunito-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Nunito-Regular.ttf"; path = "../assets/fonts/Nunito-Regular.ttf"; sourceTree = "<group>"; };
 		B51F4A51471E4F4CB9C1B818 /* Poppins-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Bold.ttf"; path = "../assets/fonts/Poppins-Bold.ttf"; sourceTree = "<group>"; };
 		BBE21377B7384DBCB7B91EA9 /* Nunito-ExtraLight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Nunito-ExtraLight.ttf"; path = "../assets/fonts/Nunito-ExtraLight.ttf"; sourceTree = "<group>"; };
-		C17E53643E20132DC9690E63 /* Pods-diginest-diginestTests.debuggreen.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-diginest-diginestTests.debuggreen.xcconfig"; path = "Target Support Files/Pods-diginest-diginestTests/Pods-diginest-diginestTests.debuggreen.xcconfig"; sourceTree = "<group>"; };
 		C512ADA3A7384548BDFEFC38 /* Nunito-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Nunito-SemiBold.ttf"; path = "../assets/fonts/Nunito-SemiBold.ttf"; sourceTree = "<group>"; };
-		C62115A8DF0F4BA30CBA0B8F /* Pods-diginest-diginestTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-diginest-diginestTests.release.xcconfig"; path = "Target Support Files/Pods-diginest-diginestTests/Pods-diginest-diginestTests.release.xcconfig"; sourceTree = "<group>"; };
-		C624C30EB69B676FBEB1BEBD /* Pods-diginest.debuggreen.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-diginest.debuggreen.xcconfig"; path = "Target Support Files/Pods-diginest/Pods-diginest.debuggreen.xcconfig"; sourceTree = "<group>"; };
+		C7D53B03283D27F21789931C /* Pods-diginest-diginestTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-diginest-diginestTests.debug.xcconfig"; path = "Target Support Files/Pods-diginest-diginestTests/Pods-diginest-diginestTests.debug.xcconfig"; sourceTree = "<group>"; };
 		C7DAA45742C74F7CA1B5A76D /* Poppins-Thin.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Thin.ttf"; path = "../assets/fonts/Poppins-Thin.ttf"; sourceTree = "<group>"; };
+		C81AE405E50A55991FCA497F /* libPods-diginest.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-diginest.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0EBE90FD38E4CEF9C196393 /* Poppins-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Light.ttf"; path = "../assets/fonts/Poppins-Light.ttf"; sourceTree = "<group>"; };
 		D773E0CB945C4CA890CF3116 /* Nunito-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Nunito-Bold.ttf"; path = "../assets/fonts/Nunito-Bold.ttf"; sourceTree = "<group>"; };
+		D8736BE6741545CB3C7A21F2 /* Pods-diginest.releasegreen.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-diginest.releasegreen.xcconfig"; path = "Target Support Files/Pods-diginest/Pods-diginest.releasegreen.xcconfig"; sourceTree = "<group>"; };
 		D8EF6923BFB147E6876AB813 /* Montserrat-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Bold.ttf"; path = "../assets/fonts/Montserrat-Bold.ttf"; sourceTree = "<group>"; };
+		D90792230BEFE614E8934A50 /* Pods-diginest-diginestTests.releasefashion.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-diginest-diginestTests.releasefashion.xcconfig"; path = "Target Support Files/Pods-diginest-diginestTests/Pods-diginest-diginestTests.releasefashion.xcconfig"; sourceTree = "<group>"; };
+		D9716ADA66915B7FF1AD44ED /* libPods-diginest-diginestTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-diginest-diginestTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		DE4DB013A7F337B88D76385E /* Pods-diginest.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-diginest.release.xcconfig"; path = "Target Support Files/Pods-diginest/Pods-diginest.release.xcconfig"; sourceTree = "<group>"; };
 		DFE4F3D265BE400ABE176253 /* Montserrat-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Light.ttf"; path = "../assets/fonts/Montserrat-Light.ttf"; sourceTree = "<group>"; };
 		E12AD5CFFA074A56BC032D56 /* Poppins-LightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-LightItalic.ttf"; path = "../assets/fonts/Poppins-LightItalic.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		F11492EE6D438041D31C098A /* Pods-diginest.debuggreen.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-diginest.debuggreen.xcconfig"; path = "Target Support Files/Pods-diginest/Pods-diginest.debuggreen.xcconfig"; sourceTree = "<group>"; };
 		FD938AAFD0544849AC27B0CF /* Nunito-ExtraBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Nunito-ExtraBold.ttf"; path = "../assets/fonts/Nunito-ExtraBold.ttf"; sourceTree = "<group>"; };
-		FF1B8A004CCD558A38FB8B9D /* Pods-diginest.releasefashion.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-diginest.releasefashion.xcconfig"; path = "Target Support Files/Pods-diginest/Pods-diginest.releasefashion.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -139,7 +139,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AFBAE10E5A132E989A129612 /* libPods-diginest-diginestTests.a in Frameworks */,
+				3BB9859B736DE0ECB22C1D97 /* libPods-diginest-diginestTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -147,7 +147,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6CF3B46A2B93CF5F1EB343DF /* libPods-diginest.a in Frameworks */,
+				D7DB8A7652795D93CB6635C1 /* libPods-diginest.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -195,8 +195,8 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				91CAA8C978665EAFBBBD5E3B /* libPods-diginest.a */,
-				1F0EB634CDE151C384B735A7 /* libPods-diginest-diginestTests.a */,
+				C81AE405E50A55991FCA497F /* libPods-diginest.a */,
+				D9716ADA66915B7FF1AD44ED /* libPods-diginest-diginestTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -275,22 +275,22 @@
 		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				5C95490252187B75CD9F7EF2 /* Pods-diginest.debug.xcconfig */,
-				2B9B41ADD7D3579D5D6283E7 /* Pods-diginest.debugpanda.xcconfig */,
-				9B0C51CABE3D0C9389394190 /* Pods-diginest.debugfashion.xcconfig */,
-				C624C30EB69B676FBEB1BEBD /* Pods-diginest.debuggreen.xcconfig */,
-				18DF7A75A03B1361ADDC80DA /* Pods-diginest.release.xcconfig */,
-				8D1748F61543414D7AD28E2F /* Pods-diginest.releasepanda.xcconfig */,
-				FF1B8A004CCD558A38FB8B9D /* Pods-diginest.releasefashion.xcconfig */,
-				10E5F260092C22DBB23146B1 /* Pods-diginest.releasegreen.xcconfig */,
-				969E6E0C830C1A24CF03A35C /* Pods-diginest-diginestTests.debug.xcconfig */,
-				0E235CAC4C9AFE3ECC2BF5D7 /* Pods-diginest-diginestTests.debugpanda.xcconfig */,
-				5E258182275546BC25315CD8 /* Pods-diginest-diginestTests.debugfashion.xcconfig */,
-				C17E53643E20132DC9690E63 /* Pods-diginest-diginestTests.debuggreen.xcconfig */,
-				C62115A8DF0F4BA30CBA0B8F /* Pods-diginest-diginestTests.release.xcconfig */,
-				265FF7711AC891D61DB2072E /* Pods-diginest-diginestTests.releasepanda.xcconfig */,
-				9289C27599AFD9666D6CCA2F /* Pods-diginest-diginestTests.releasefashion.xcconfig */,
-				7348421A10307F968FA6867E /* Pods-diginest-diginestTests.releasegreen.xcconfig */,
+				A80ADAE59F05EA3202C922DB /* Pods-diginest.debug.xcconfig */,
+				598EBFAE0A3F127CFCFF4F4E /* Pods-diginest.debugpanda.xcconfig */,
+				0B85A2F72F36946FC1ACF158 /* Pods-diginest.debugfashion.xcconfig */,
+				F11492EE6D438041D31C098A /* Pods-diginest.debuggreen.xcconfig */,
+				DE4DB013A7F337B88D76385E /* Pods-diginest.release.xcconfig */,
+				1647EE6D60F1B2E2EC9E379C /* Pods-diginest.releasepanda.xcconfig */,
+				71CA9131175200B8125BD565 /* Pods-diginest.releasefashion.xcconfig */,
+				D8736BE6741545CB3C7A21F2 /* Pods-diginest.releasegreen.xcconfig */,
+				C7D53B03283D27F21789931C /* Pods-diginest-diginestTests.debug.xcconfig */,
+				3844B38631973700345E1871 /* Pods-diginest-diginestTests.debugpanda.xcconfig */,
+				934B6EEC21E86A904F8AB10D /* Pods-diginest-diginestTests.debugfashion.xcconfig */,
+				77C2EE3D574988C99F6CC10C /* Pods-diginest-diginestTests.debuggreen.xcconfig */,
+				7B3A5A9C19CDB6A730592D84 /* Pods-diginest-diginestTests.release.xcconfig */,
+				A76D2D1812455618356BAFCF /* Pods-diginest-diginestTests.releasepanda.xcconfig */,
+				D90792230BEFE614E8934A50 /* Pods-diginest-diginestTests.releasefashion.xcconfig */,
+				8BFFE99619EBE92E64B6126D /* Pods-diginest-diginestTests.releasegreen.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -302,12 +302,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "diginestTests" */;
 			buildPhases = (
-				245E8A25DAE255982DE566BF /* [CP] Check Pods Manifest.lock */,
+				9341852CF494526704544A66 /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
-				3120A656CA7597FAB381FAFC /* [CP] Embed Pods Frameworks */,
-				9212A4300E8D857F5B6AD7B3 /* [CP] Copy Pods Resources */,
+				233FD7861A795097F553ED3C /* [CP] Embed Pods Frameworks */,
+				2AC9D2BA2CDEBC16FECEADEA /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -323,14 +323,15 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "diginest" */;
 			buildPhases = (
-				0455C60E7FB2B00729190ABE /* [CP] Check Pods Manifest.lock */,
+				A53276FB736129D552626A35 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				A19D3BD2EC74C319988B1AE3 /* [CP] Embed Pods Frameworks */,
-				D1C8D4C7AC3A244EE71D87E4 /* [CP] Copy Pods Resources */,
+				31D7CB20F170586EBB11A62B /* [CP] Embed Pods Frameworks */,
+				2996C6E9419B4299E7D53F1A /* [CP] Copy Pods Resources */,
+				07028FF4731ACD8568982A07 /* [CP-User] [RNFB] Core Configuration */,
 			);
 			buildRules = (
 			);
@@ -449,29 +450,88 @@
 			shellPath = /bin/sh;
 			shellScript = "set -e\n\nWITH_ENVIRONMENT=\"../node_modules/react-native/scripts/xcode/with-environment.sh\"\nREACT_NATIVE_XCODE=\"../node_modules/react-native/scripts/react-native-xcode.sh\"\n\n/bin/sh -c \"$WITH_ENVIRONMENT $REACT_NATIVE_XCODE\"\n";
 		};
-		0455C60E7FB2B00729190ABE /* [CP] Check Pods Manifest.lock */ = {
+		07028FF4731ACD8568982A07 /* [CP-User] [RNFB] Core Configuration */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)",
+			);
+			name = "[CP-User] [RNFB] Core Configuration";
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#!/usr/bin/env bash\n#\n# Copyright (c) 2016-present Invertase Limited & Contributors\n#\n# Licensed under the Apache License, Version 2.0 (the \"License\");\n# you may not use this library except in compliance with the License.\n# You may obtain a copy of the License at\n#\n#   http://www.apache.org/licenses/LICENSE-2.0\n#\n# Unless required by applicable law or agreed to in writing, software\n# distributed under the License is distributed on an \"AS IS\" BASIS,\n# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n# See the License for the specific language governing permissions and\n# limitations under the License.\n#\nset -e\n\n_MAX_LOOKUPS=2;\n_SEARCH_RESULT=''\n_RN_ROOT_EXISTS=''\n_CURRENT_LOOKUPS=1\n_JSON_ROOT=\"'react-native'\"\n_JSON_FILE_NAME='firebase.json'\n_JSON_OUTPUT_BASE64='e30=' # { }\n_CURRENT_SEARCH_DIR=${PROJECT_DIR}\n_PLIST_BUDDY=/usr/libexec/PlistBuddy\n_TARGET_PLIST=\"${BUILT_PRODUCTS_DIR}/${INFOPLIST_PATH}\"\n_DSYM_PLIST=\"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Info.plist\"\n\n# plist arrays\n_PLIST_ENTRY_KEYS=()\n_PLIST_ENTRY_TYPES=()\n_PLIST_ENTRY_VALUES=()\n\nfunction setPlistValue {\n  echo \"info:      setting plist entry '$1' of type '$2' in file '$4'\"\n  ${_PLIST_BUDDY} -c \"Add :$1 $2 '$3'\" $4 || echo \"info:      '$1' already exists\"\n}\n\nfunction getFirebaseJsonKeyValue () {\n  if [[ ${_RN_ROOT_EXISTS} ]]; then\n    ruby -Ku -e \"require 'rubygems';require 'json'; output=JSON.parse('$1'); puts output[$_JSON_ROOT]['$2']\"\n  else\n    echo \"\"\n  fi;\n}\n\nfunction jsonBoolToYesNo () {\n  if [[ $1 == \"false\" ]]; then\n    echo \"NO\"\n  elif [[ $1 == \"true\" ]]; then\n    echo \"YES\"\n  else echo \"NO\"\n  fi\n}\n\necho \"info: -> RNFB build script started\"\necho \"info: 1) Locating ${_JSON_FILE_NAME} file:\"\n\nif [[ -z ${_CURRENT_SEARCH_DIR} ]]; then\n  _CURRENT_SEARCH_DIR=$(pwd)\nfi;\n\nwhile true; do\n  _CURRENT_SEARCH_DIR=$(dirname \"$_CURRENT_SEARCH_DIR\")\n  if [[ \"$_CURRENT_SEARCH_DIR\" == \"/\" ]] || [[ ${_CURRENT_LOOKUPS} -gt ${_MAX_LOOKUPS} ]]; then break; fi;\n  echo \"info:      ($_CURRENT_LOOKUPS of $_MAX_LOOKUPS) Searching in '$_CURRENT_SEARCH_DIR' for a ${_JSON_FILE_NAME} file.\"\n  _SEARCH_RESULT=$(find \"$_CURRENT_SEARCH_DIR\" -maxdepth 2 -name ${_JSON_FILE_NAME} -print | /usr/bin/head -n 1)\n  if [[ ${_SEARCH_RESULT} ]]; then\n    echo \"info:      ${_JSON_FILE_NAME} found at $_SEARCH_RESULT\"\n    break;\n  fi;\n  _CURRENT_LOOKUPS=$((_CURRENT_LOOKUPS+1))\ndone\n\nif [[ ${_SEARCH_RESULT} ]]; then\n  _JSON_OUTPUT_RAW=$(cat \"${_SEARCH_RESULT}\")\n  _RN_ROOT_EXISTS=$(ruby -Ku -e \"require 'rubygems';require 'json'; output=JSON.parse('$_JSON_OUTPUT_RAW'); puts output[$_JSON_ROOT]\" || echo '')\n\n  if [[ ${_RN_ROOT_EXISTS} ]]; then\n    if ! python3 --version >/dev/null 2>&1; then echo \"python3 not found, firebase.json file processing error.\" && exit 1; fi\n    _JSON_OUTPUT_BASE64=$(python3 -c 'import json,sys,base64;print(base64.b64encode(bytes(json.dumps(json.loads(open('\"'${_SEARCH_RESULT}'\"', '\"'rb'\"').read())['${_JSON_ROOT}']), '\"'utf-8'\"')).decode())' || echo \"e30=\")\n  fi\n\n  _PLIST_ENTRY_KEYS+=(\"firebase_json_raw\")\n  _PLIST_ENTRY_TYPES+=(\"string\")\n  _PLIST_ENTRY_VALUES+=(\"$_JSON_OUTPUT_BASE64\")\n\n  # config.app_data_collection_default_enabled\n  _APP_DATA_COLLECTION_ENABLED=$(getFirebaseJsonKeyValue \"$_JSON_OUTPUT_RAW\" \"app_data_collection_default_enabled\")\n  if [[ $_APP_DATA_COLLECTION_ENABLED ]]; then\n    _PLIST_ENTRY_KEYS+=(\"FirebaseDataCollectionDefaultEnabled\")\n    _PLIST_ENTRY_TYPES+=(\"bool\")\n    _PLIST_ENTRY_VALUES+=(\"$(jsonBoolToYesNo \"$_APP_DATA_COLLECTION_ENABLED\")\")\n  fi\n\n  # config.analytics_auto_collection_enabled\n  _ANALYTICS_AUTO_COLLECTION=$(getFirebaseJsonKeyValue \"$_JSON_OUTPUT_RAW\" \"analytics_auto_collection_enabled\")\n  if [[ $_ANALYTICS_AUTO_COLLECTION ]]; then\n    _PLIST_ENTRY_KEYS+=(\"FIREBASE_ANALYTICS_COLLECTION_ENABLED\")\n    _PLIST_ENTRY_TYPES+=(\"bool\")\n    _PLIST_ENTRY_VALUES+=(\"$(jsonBoolToYesNo \"$_ANALYTICS_AUTO_COLLECTION\")\")\n  fi\n\n  # config.analytics_collection_deactivated\n  _ANALYTICS_DEACTIVATED=$(getFirebaseJsonKeyValue \"$_JSON_OUTPUT_RAW\" \"analytics_collection_deactivated\")\n  if [[ $_ANALYTICS_DEACTIVATED ]]; then\n    _PLIST_ENTRY_KEYS+=(\"FIREBASE_ANALYTICS_COLLECTION_DEACTIVATED\")\n    _PLIST_ENTRY_TYPES+=(\"bool\")\n    _PLIST_ENTRY_VALUES+=(\"$(jsonBoolToYesNo \"$_ANALYTICS_DEACTIVATED\")\")\n  fi\n\n  # config.analytics_idfv_collection_enabled\n  _ANALYTICS_IDFV_COLLECTION=$(getFirebaseJsonKeyValue \"$_JSON_OUTPUT_RAW\" \"analytics_idfv_collection_enabled\")\n  if [[ $_ANALYTICS_IDFV_COLLECTION ]]; then\n    _PLIST_ENTRY_KEYS+=(\"GOOGLE_ANALYTICS_IDFV_COLLECTION_ENABLED\")\n    _PLIST_ENTRY_TYPES+=(\"bool\")\n    _PLIST_ENTRY_VALUES+=(\"$(jsonBoolToYesNo \"$_ANALYTICS_IDFV_COLLECTION\")\")\n  fi\n\n  # config.analytics_default_allow_ad_personalization_signals\n  _ANALYTICS_PERSONALIZATION=$(getFirebaseJsonKeyValue \"$_JSON_OUTPUT_RAW\" \"analytics_default_allow_ad_personalization_signals\")\n  if [[ $_ANALYTICS_PERSONALIZATION ]]; then\n    _PLIST_ENTRY_KEYS+=(\"GOOGLE_ANALYTICS_DEFAULT_ALLOW_AD_PERSONALIZATION_SIGNALS\")\n    _PLIST_ENTRY_TYPES+=(\"bool\")\n    _PLIST_ENTRY_VALUES+=(\"$(jsonBoolToYesNo \"$_ANALYTICS_PERSONALIZATION\")\")\n  fi\n\n  # config.analytics_registration_with_ad_network_enabled\n  _ANALYTICS_REGISTRATION_WITH_AD_NETWORK=$(getFirebaseJsonKeyValue \"$_JSON_OUTPUT_RAW\" \"google_analytics_registration_with_ad_network_enabled\")\n  if [[ $_ANALYTICS_REGISTRATION_WITH_AD_NETWORK ]]; then\n    _PLIST_ENTRY_KEYS+=(\"GOOGLE_ANALYTICS_REGISTRATION_WITH_AD_NETWORK_ENABLED\")\n    _PLIST_ENTRY_TYPES+=(\"bool\")\n    _PLIST_ENTRY_VALUES+=(\"$(jsonBoolToYesNo \"$_ANALYTICS_REGISTRATION_WITH_AD_NETWORK\")\")\n  fi\n\n  # config.google_analytics_automatic_screen_reporting_enabled\n  _ANALYTICS_AUTO_SCREEN_REPORTING=$(getFirebaseJsonKeyValue \"$_JSON_OUTPUT_RAW\" \"google_analytics_automatic_screen_reporting_enabled\")\n  if [[ $_ANALYTICS_AUTO_SCREEN_REPORTING ]]; then\n    _PLIST_ENTRY_KEYS+=(\"FirebaseAutomaticScreenReportingEnabled\")\n    _PLIST_ENTRY_TYPES+=(\"bool\")\n    _PLIST_ENTRY_VALUES+=(\"$(jsonBoolToYesNo \"$_ANALYTICS_AUTO_SCREEN_REPORTING\")\")\n  fi\n\n  # config.perf_auto_collection_enabled\n  _PERF_AUTO_COLLECTION=$(getFirebaseJsonKeyValue \"$_JSON_OUTPUT_RAW\" \"perf_auto_collection_enabled\")\n  if [[ $_PERF_AUTO_COLLECTION ]]; then\n    _PLIST_ENTRY_KEYS+=(\"firebase_performance_collection_enabled\")\n    _PLIST_ENTRY_TYPES+=(\"bool\")\n    _PLIST_ENTRY_VALUES+=(\"$(jsonBoolToYesNo \"$_PERF_AUTO_COLLECTION\")\")\n  fi\n\n  # config.perf_collection_deactivated\n  _PERF_DEACTIVATED=$(getFirebaseJsonKeyValue \"$_JSON_OUTPUT_RAW\" \"perf_collection_deactivated\")\n  if [[ $_PERF_DEACTIVATED ]]; then\n    _PLIST_ENTRY_KEYS+=(\"firebase_performance_collection_deactivated\")\n    _PLIST_ENTRY_TYPES+=(\"bool\")\n    _PLIST_ENTRY_VALUES+=(\"$(jsonBoolToYesNo \"$_PERF_DEACTIVATED\")\")\n  fi\n\n  # config.messaging_auto_init_enabled\n  _MESSAGING_AUTO_INIT=$(getFirebaseJsonKeyValue \"$_JSON_OUTPUT_RAW\" \"messaging_auto_init_enabled\")\n  if [[ $_MESSAGING_AUTO_INIT ]]; then\n    _PLIST_ENTRY_KEYS+=(\"FirebaseMessagingAutoInitEnabled\")\n    _PLIST_ENTRY_TYPES+=(\"bool\")\n    _PLIST_ENTRY_VALUES+=(\"$(jsonBoolToYesNo \"$_MESSAGING_AUTO_INIT\")\")\n  fi\n\n  # config.in_app_messaging_auto_colllection_enabled\n  _FIAM_AUTO_INIT=$(getFirebaseJsonKeyValue \"$_JSON_OUTPUT_RAW\" \"in_app_messaging_auto_collection_enabled\")\n  if [[ $_FIAM_AUTO_INIT ]]; then\n    _PLIST_ENTRY_KEYS+=(\"FirebaseInAppMessagingAutomaticDataCollectionEnabled\")\n    _PLIST_ENTRY_TYPES+=(\"bool\")\n    _PLIST_ENTRY_VALUES+=(\"$(jsonBoolToYesNo \"$_FIAM_AUTO_INIT\")\")\n  fi\n\n  # config.app_check_token_auto_refresh\n  _APP_CHECK_TOKEN_AUTO_REFRESH=$(getFirebaseJsonKeyValue \"$_JSON_OUTPUT_RAW\" \"app_check_token_auto_refresh\")\n  if [[ $_APP_CHECK_TOKEN_AUTO_REFRESH ]]; then\n    _PLIST_ENTRY_KEYS+=(\"FirebaseAppCheckTokenAutoRefreshEnabled\")\n    _PLIST_ENTRY_TYPES+=(\"bool\")\n    _PLIST_ENTRY_VALUES+=(\"$(jsonBoolToYesNo \"$_APP_CHECK_TOKEN_AUTO_REFRESH\")\")\n  fi\n\n  # config.crashlytics_disable_auto_disabler - undocumented for now - mainly for debugging, document if becomes useful\n  _CRASHLYTICS_AUTO_DISABLE_ENABLED=$(getFirebaseJsonKeyValue \"$_JSON_OUTPUT_RAW\" \"crashlytics_disable_auto_disabler\")\n  if [[ $_CRASHLYTICS_AUTO_DISABLE_ENABLED == \"true\" ]]; then\n    echo \"Disabled Crashlytics auto disabler.\" # do nothing\n  else\n    _PLIST_ENTRY_KEYS+=(\"FirebaseCrashlyticsCollectionEnabled\")\n    _PLIST_ENTRY_TYPES+=(\"bool\")\n    _PLIST_ENTRY_VALUES+=(\"NO\")\n  fi\nelse\n  _PLIST_ENTRY_KEYS+=(\"firebase_json_raw\")\n  _PLIST_ENTRY_TYPES+=(\"string\")\n  _PLIST_ENTRY_VALUES+=(\"$_JSON_OUTPUT_BASE64\")\n  echo \"warning:   A firebase.json file was not found, whilst this file is optional it is recommended to include it to configure firebase services in React Native Firebase.\"\nfi;\n\necho \"info: 2) Injecting Info.plist entries: \"\n\n# Log out the keys we're adding\nfor i in \"${!_PLIST_ENTRY_KEYS[@]}\"; do\n  echo \"    ->  $i) ${_PLIST_ENTRY_KEYS[$i]}\" \"${_PLIST_ENTRY_TYPES[$i]}\" \"${_PLIST_ENTRY_VALUES[$i]}\"\ndone\n\nfor plist in \"${_TARGET_PLIST}\" \"${_DSYM_PLIST}\" ; do\n  if [[ -f \"${plist}\" ]]; then\n\n    # paths with spaces break the call to setPlistValue. temporarily modify\n    # the shell internal field separator variable (IFS), which normally\n    # includes spaces, to consist only of line breaks\n    oldifs=$IFS\n    IFS=\"\n\"\n\n    for i in \"${!_PLIST_ENTRY_KEYS[@]}\"; do\n      setPlistValue \"${_PLIST_ENTRY_KEYS[$i]}\" \"${_PLIST_ENTRY_TYPES[$i]}\" \"${_PLIST_ENTRY_VALUES[$i]}\" \"${plist}\"\n    done\n\n    # restore the original internal field separator value\n    IFS=$oldifs\n  else\n    echo \"warning:   A Info.plist build output file was not found (${plist})\"\n  fi\ndone\n\necho \"info: <- RNFB build script finished\"\n";
+		};
+		233FD7861A795097F553ED3C /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-diginest-diginestTests/Pods-diginest-diginestTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
+			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-diginest-checkManifestLockResult.txt",
+				"${PODS_ROOT}/Target Support Files/Pods-diginest-diginestTests/Pods-diginest-diginestTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-diginest-diginestTests/Pods-diginest-diginestTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		245E8A25DAE255982DE566BF /* [CP] Check Pods Manifest.lock */ = {
+		2996C6E9419B4299E7D53F1A /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-diginest/Pods-diginest-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-diginest/Pods-diginest-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-diginest/Pods-diginest-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		2AC9D2BA2CDEBC16FECEADEA /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-diginest-diginestTests/Pods-diginest-diginestTests-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-diginest-diginestTests/Pods-diginest-diginestTests-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-diginest-diginestTests/Pods-diginest-diginestTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		31D7CB20F170586EBB11A62B /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-diginest/Pods-diginest-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-diginest/Pods-diginest-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-diginest/Pods-diginest-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		9341852CF494526704544A66 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -493,72 +553,26 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		3120A656CA7597FAB381FAFC /* [CP] Embed Pods Frameworks */ = {
+		A53276FB736129D552626A35 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-diginest-diginestTests/Pods-diginest-diginestTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			name = "[CP] Embed Pods Frameworks";
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-diginest-diginestTests/Pods-diginest-diginestTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-diginest-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-diginest-diginestTests/Pods-diginest-diginestTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		9212A4300E8D857F5B6AD7B3 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-diginest-diginestTests/Pods-diginest-diginestTests-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-diginest-diginestTests/Pods-diginest-diginestTests-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-diginest-diginestTests/Pods-diginest-diginestTests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		A19D3BD2EC74C319988B1AE3 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-diginest/Pods-diginest-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-diginest/Pods-diginest-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-diginest/Pods-diginest-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		D1C8D4C7AC3A244EE71D87E4 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-diginest/Pods-diginest-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-diginest/Pods-diginest-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-diginest/Pods-diginest-resources.sh\"\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FD10A7F022414F080027D42C /* Start Packager */ = {
@@ -614,7 +628,7 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 969E6E0C830C1A24CF03A35C /* Pods-diginest-diginestTests.debug.xcconfig */;
+			baseConfigurationReference = C7D53B03283D27F21789931C /* Pods-diginest-diginestTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -641,7 +655,7 @@
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C62115A8DF0F4BA30CBA0B8F /* Pods-diginest-diginestTests.release.xcconfig */;
+			baseConfigurationReference = 7B3A5A9C19CDB6A730592D84 /* Pods-diginest-diginestTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
@@ -665,7 +679,7 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5C95490252187B75CD9F7EF2 /* Pods-diginest.debug.xcconfig */;
+			baseConfigurationReference = A80ADAE59F05EA3202C922DB /* Pods-diginest.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
@@ -700,7 +714,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 18DF7A75A03B1361ADDC80DA /* Pods-diginest.release.xcconfig */;
+			baseConfigurationReference = DE4DB013A7F337B88D76385E /* Pods-diginest.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
@@ -833,7 +847,7 @@
 		};
 		46D4D7872AC9A1CA00FBF93F /* DebugGreen */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C624C30EB69B676FBEB1BEBD /* Pods-diginest.debuggreen.xcconfig */;
+			baseConfigurationReference = F11492EE6D438041D31C098A /* Pods-diginest.debuggreen.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = green;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
@@ -879,7 +893,7 @@
 		};
 		46D4D7882AC9A1CA00FBF93F /* DebugGreen */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C17E53643E20132DC9690E63 /* Pods-diginest-diginestTests.debuggreen.xcconfig */;
+			baseConfigurationReference = 77C2EE3D574988C99F6CC10C /* Pods-diginest-diginestTests.debuggreen.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -1006,7 +1020,7 @@
 		};
 		46D4D78A2AC9A1DE00FBF93F /* DebugFashion */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9B0C51CABE3D0C9389394190 /* Pods-diginest.debugfashion.xcconfig */;
+			baseConfigurationReference = 0B85A2F72F36946FC1ACF158 /* Pods-diginest.debugfashion.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = fashion;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
@@ -1052,7 +1066,7 @@
 		};
 		46D4D78B2AC9A1DE00FBF93F /* DebugFashion */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5E258182275546BC25315CD8 /* Pods-diginest-diginestTests.debugfashion.xcconfig */;
+			baseConfigurationReference = 934B6EEC21E86A904F8AB10D /* Pods-diginest-diginestTests.debugfashion.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -1179,7 +1193,7 @@
 		};
 		46D4D78D2AC9A1EA00FBF93F /* DebugPanda */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2B9B41ADD7D3579D5D6283E7 /* Pods-diginest.debugpanda.xcconfig */;
+			baseConfigurationReference = 598EBFAE0A3F127CFCFF4F4E /* Pods-diginest.debugpanda.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = panda;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
@@ -1225,7 +1239,7 @@
 		};
 		46D4D78E2AC9A1EA00FBF93F /* DebugPanda */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0E235CAC4C9AFE3ECC2BF5D7 /* Pods-diginest-diginestTests.debugpanda.xcconfig */;
+			baseConfigurationReference = 3844B38631973700345E1871 /* Pods-diginest-diginestTests.debugpanda.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -1348,7 +1362,7 @@
 		};
 		46D4D7902AC9A1F500FBF93F /* ReleaseGreen */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 10E5F260092C22DBB23146B1 /* Pods-diginest.releasegreen.xcconfig */;
+			baseConfigurationReference = D8736BE6741545CB3C7A21F2 /* Pods-diginest.releasegreen.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = green;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
@@ -1392,7 +1406,7 @@
 		};
 		46D4D7912AC9A1F500FBF93F /* ReleaseGreen */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7348421A10307F968FA6867E /* Pods-diginest-diginestTests.releasegreen.xcconfig */;
+			baseConfigurationReference = 8BFFE99619EBE92E64B6126D /* Pods-diginest-diginestTests.releasegreen.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
@@ -1512,7 +1526,7 @@
 		};
 		46D4D7932AC9A20C00FBF93F /* ReleaseFashion */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FF1B8A004CCD558A38FB8B9D /* Pods-diginest.releasefashion.xcconfig */;
+			baseConfigurationReference = 71CA9131175200B8125BD565 /* Pods-diginest.releasefashion.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = fashion;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
@@ -1556,7 +1570,7 @@
 		};
 		46D4D7942AC9A20C00FBF93F /* ReleaseFashion */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9289C27599AFD9666D6CCA2F /* Pods-diginest-diginestTests.releasefashion.xcconfig */;
+			baseConfigurationReference = D90792230BEFE614E8934A50 /* Pods-diginest-diginestTests.releasefashion.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
@@ -1676,7 +1690,7 @@
 		};
 		46D4D7962AC9A21A00FBF93F /* ReleasePanda */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8D1748F61543414D7AD28E2F /* Pods-diginest.releasepanda.xcconfig */;
+			baseConfigurationReference = 1647EE6D60F1B2E2EC9E379C /* Pods-diginest.releasepanda.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = panda;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
@@ -1720,7 +1734,7 @@
 		};
 		46D4D7972AC9A21A00FBF93F /* ReleasePanda */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 265FF7711AC891D61DB2072E /* Pods-diginest-diginestTests.releasepanda.xcconfig */;
+			baseConfigurationReference = A76D2D1812455618356BAFCF /* Pods-diginest-diginestTests.releasepanda.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;

@@ -76,11 +76,9 @@ const MyOrders = () => {
     }
 
     return (
-        <>
+        <View>
             <HeaderWithTitle title={'My Orders'} noBack />
-            <View
-                style={{ flex: 1, paddingBottom: 60, paddingTop: 10, paddingHorizontal: 10, backgroundColor: active === 'green' ? '#F4FFE9' : active === 'fashion' ? '#FFF5F7' : '#fff' }}
-            >
+           
                 <FlatList
                     
                     refreshControl={
@@ -97,15 +95,15 @@ const MyOrders = () => {
                     windowSize={10}
                     maxToRenderPerBatch={4}
                     keyExtractorCategory={keyExtractorOrder}
-                    // refreshing={isLoading}
-                    // onRefresh={getOrderList}
+                    refreshing={isLoading}
+                    onRefresh={getOrderList}
                     // style={{ marginLeft: 5 }}
                     ListEmptyComponent={ListEmptyComponents}
-                    contentContainerStyle={{ justifyContent: 'center' }}
+                    contentContainerStyle={{ justifyContent: 'center' , paddingBottom: 60, paddingTop: 10, paddingHorizontal: 10, backgroundColor: active === 'green' ? '#F4FFE9' : active === 'fashion' ? '#FFF5F7' : '#fff'}}
                     renderItem={renderOrder}
                 />
-            </View>
-        </>
+         
+        </View>
     )
 }
 

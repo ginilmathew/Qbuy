@@ -214,15 +214,10 @@ const CartItemCard = ({ item, index, refreshCart }) => {
 
 
     const renderRightActions = () => {
-
         return (
-            <View style={{height:70,display:'flex',alignItems:'center',justifyContent:'center',}}>
-
-
-                <TouchableOpacity    onPress={ deleteconfirmation }>
-                    
-                <MaterialCommunityIcons name={ "delete-forever" } size={ 20 } color={ 'red' } />
-                
+            <View style={{ height: 70, display: 'flex', alignItems: 'center', justifyContent: 'center', }}>
+                <TouchableOpacity onPress={deleteconfirmation} >
+                    <MaterialCommunityIcons name={"delete-forever"} size={25} color={'red'} />
                 </TouchableOpacity>
             </View>
         );
@@ -264,10 +259,10 @@ const CartItemCard = ({ item, index, refreshCart }) => {
                 style={ { marginLeft: 5, justifyContent: 'center', alignItems: 'center', position: 'absolute', right: 15, top: 2 } }>
                 <MaterialCommunityIcons name={ "delete-forever" } size={ 20 } color={ 'red' } />
             </TouchableOpacity> */}
-            <View style={ { display: 'flex', flexDirection: 'column', gap: 1.5 } }>
-                { item?.quantity < item?.minimum_qty && <Text style={ styles.outofStock }>{ `Min. quantity:${item?.minimum_qty}` }</Text> }
-                { !item?.availability && <Text style={ styles.outofStock }>{ "Not Available" }</Text> }
-                { (!item?.available || item?.status !== 'active') && <Text style={ styles.outofStock }>{ "Out of Stock" }</Text> }
+            <View style={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
+                {item?.quantity < item?.minimum_qty && <Text style={styles.outofStock}>{`Min. quantity:${item?.minimum_qty}`}</Text>}
+                {!item?.availability && <Text style={styles.outofStock}>{"Not Available"}</Text>}
+                {(!item?.available || item?.status !== 'active') && <Text style={styles.outofStock}>{"Out of Stock"}</Text>}
             </View>
 
         </View>
