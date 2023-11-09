@@ -240,20 +240,29 @@ const RouteTest = () => {
                     if (response?.data?.data?.length === 1) {
                         userContext.setLocation([response?.data?.data?.[0]?.area?.latitude, response?.data?.data?.[0]?.area?.longitude])
                         userContext?.setCurrentAddress(response?.data?.data?.[0]?.area?.address)
+                        setTimeout(() => {
+                            setInitialScreen('green');
+                        }, 200);
                     }
                     else {
                         let defaultAdd = response?.data?.data?.find(add => add?.default === true)
                         if (defaultAdd) {
                             userContext.setLocation([defaultAdd?.area?.latitude, defaultAdd?.area?.longitude])
                             userContext?.setCurrentAddress(defaultAdd?.area?.address)
+                            setTimeout(() => {
+                                setInitialScreen('green');
+                            }, 200);
                         }
                         else {
                             userContext.setLocation([response?.data?.data?.[0]?.area?.latitude, response?.data?.data?.[0]?.area?.longitude])
                             userContext?.setCurrentAddress(response?.data?.data?.[0]?.area?.address)
+                            setTimeout(() => {
+                                setInitialScreen('green');
+                            }, 200);
                         }
                     }
 
-                    setInitialScreen('green');
+                    
                 }
                 else {
                     let location = await AsyncStorage.getItem("location")
