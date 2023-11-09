@@ -45,14 +45,15 @@ const Header = ({ onPress, openAddress, goCart }) => {
 
     const changeAddress = useCallback(() => {
         //reactotron.log({user: userContext?.user})
-        if(userContext?.userData){
-            navigation.navigate('account', { screen: 'MyAddresses', params: { mode: 'home' } });
-        }
-        else{
-            navigation?.navigate("AddNewLocation")
-        }
+        // if(userContext?.userData){
+        //     navigation.navigate('account', { screen: 'MyAddresses', params: { mode: 'home' } });
+        // }
+        // else{
+        //     navigation?.navigate("AddNewLocation")
+        // }
+        navigation?.navigate("AddNewLocation", { mode: 'home' })
        
-    }, [navigation, userContext?.userData]);
+    });
 
     const onClickFashionCat = useCallback(() => {
         navigation.navigate('FashionCategory');

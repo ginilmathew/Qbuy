@@ -47,7 +47,7 @@ const LocationScreen = ({ route, navigation }) => {
 
     const onConfirm = useCallback(async () => {
 
-        if(mode === "newAddress"){
+        if(mode === "checkout" || mode === "MyAcc"){
             let locationData = {
                 location: addressContext?.currentAddress?.location,
                 city: addressContext?.currentAddress?.city,
@@ -56,9 +56,23 @@ const LocationScreen = ({ route, navigation }) => {
             }
 
 
-            navigation.navigate('AddDeliveryAddress', { item: { ...editAddress, ...locationData } })
+            navigation.navigate('AddDeliveryAddress', { item: { ...editAddress, ...locationData }, mode })
         }
         else{
+            cartContext.setDefaultAddress(null)
+            userContext.setLocation([
+                addressContext?.currentAddress?.latitude,
+                addressContext?.currentAddress?.longitude
+            ]);
+            userContext?.setCurrentAddress(addressContext?.currentAddress?.location);
+
+            let location = {
+                latitude: addressContext?.currentAddress?.latitude,
+                longitude: addressContext?.currentAddress?.longitude,
+                address: addressContext?.currentAddress?.location
+            }
+
+            await AsyncStorage.setItem("location", JSON.stringify(location))
             navigation.navigate('green', { screen: 'TabNavigator', params: { screen: 'home' } })
         }
 
@@ -147,7 +161,7 @@ const LocationScreen = ({ route, navigation }) => {
     return (
         <>
             <HeaderWithTitle
-                title={'Select Address'}
+                title={'Confirm Address'}
             // onPress={mode === 'header' ?}
             />
             <MapView
@@ -211,9 +225,9 @@ export default LocationScreen
 const styles = StyleSheet.create({
     selectedLocationView: {
         backgroundColor: '#fff',
-        height: 200,
+        height: 150,
         position: 'absolute',
-        bottom: 70,
+        bottom: 0,
         width: '100%',
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,

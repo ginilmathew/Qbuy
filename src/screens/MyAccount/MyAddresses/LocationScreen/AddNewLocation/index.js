@@ -13,6 +13,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import LoaderContext from '../../../../../contexts/Loader';
 import { getAddressfromLocation } from '../../../../../helper/addressHelper';
 import LoadingModal from '../../../../../Components/LoadingModal';
+import SavedAddress from './SavedAddress';
 
 const AddNewLocation = ({ route, navigation }) => {
 
@@ -21,7 +22,7 @@ const AddNewLocation = ({ route, navigation }) => {
     const addressContext = useContext(AddressContext)
     const userContext = useContext(AuthContext)
     const loadingg = useContext(LoaderContext);
-    const [mode, setMode] = useState(route?.params?.mode ? route?.params?.mode : '')
+    const [mode, setMode] = useState(route?.params?.mode ? route?.params?.mode : 'home')
 
     const { width, height } = useWindowDimensions()
 
@@ -160,7 +161,7 @@ const AddNewLocation = ({ route, navigation }) => {
 
         <>
             <HeaderWithTitle title={'Enter your area or apartment'} backarrow={backArrowhide.index} noBack={false} />
-            <ScrollView style={{ padding: 15, marginBottom: height / 6 }} keyboardShouldPersistTaps='handled'>
+            <ScrollView style={{ padding: 15, marginBottom: 20 }} keyboardShouldPersistTaps='handled'>
                 <GooglePlacesAutocomplete
                     autoFocus={false}
                     styles={{
@@ -199,6 +200,7 @@ const AddNewLocation = ({ route, navigation }) => {
                     }}
                     keyboardShouldPersistTaps='always'
                     onPress={async (data, details = null) => {
+                        
                         // 'details' is provided when fetchDetails = true
 
                         let Value = {
@@ -211,22 +213,6 @@ const AddNewLocation = ({ route, navigation }) => {
                         };
 
                         addressContext.setCurrentAddress(Value);
-
-
-
-                        userContext.setLocation([
-                            details?.geometry?.location?.lat,
-                            details?.geometry?.location?.lng,
-                        ]);
-                        userContext?.setCurrentAddress(data?.description);
-
-                        let location = {
-                            latitude: details?.geometry?.location?.lat,
-                            longitude: details?.geometry?.location?.lng,
-                            address: data?.description
-                        }
-
-                        await AsyncStorage.setItem("location", JSON.stringify(location))
 
                         navigation.navigate('LocationScreen', { mode: mode });
                     }}
@@ -252,7 +238,10 @@ const AddNewLocation = ({ route, navigation }) => {
                     <Ionicons name="location" size={20} color={"blue"} />
                     <Text style={{ color: 'orange', fontWeight: 'bold', fontSize: 15 }}> Use Current Location? </Text>
                 </TouchableOpacity>
+                {route?.params?.mode !== "checkout" && <SavedAddress />}
                 <LoadingModal isVisible={loadingg?.loading} />
+
+
             </ScrollView>
         </>
 

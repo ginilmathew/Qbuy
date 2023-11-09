@@ -198,9 +198,9 @@ const QBuyGreen = ({ navigation }) => {
                 firstTimeRef.current = false;
                 return;
             }
-            if (Homeapi.isLoading && isLoading) {
+            //if (Homeapi.isLoading && isLoading) {
                 RefetchMore();
-            }
+            //}
 
 
         }, [Homeapi.isLoading, isLoading, userContext?.location])

@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, useWindowDimensions } from 'react-native'
 import React from 'react'
 
-const CommonTexts = ({ label, mt, textAlign, color, fontSize, my, ml, mb, textTransform = "none", numberOfLines }) => {
+const CommonTexts = ({ label, mt, textAlign, color, fontSize, my, ml, mb, textTransform = "none", numberOfLines, fullLabel }) => {
 
     const {width, height, fontScale} = useWindowDimensions()
 
@@ -21,7 +21,7 @@ const CommonTexts = ({ label, mt, textAlign, color, fontSize, my, ml, mb, textTr
             
             }}
             numberOfLines={numberOfLines}
-        >{label?.length > 20 ? label?.substring(0, 20) + '...' : label}</Text>
+        >{fullLabel ? label : label?.length > 20 ? label?.substring(0, 20) + '...' : label}</Text>
     )
 }
 

@@ -213,7 +213,7 @@ const MyAddresses = ({ route, navigation }) => {
         //         navigation.navigate('AddNewLocation')
         //     }
         // }
-        navigation.navigate('AddNewLocation', { mode: route?.params?.mode === "checkout" ? 'newAddress' : '' })
+        navigation.navigate('AddNewLocation', { mode: route?.params?.mode})
     }
 
     const deleteSelect = async (id) => {
@@ -307,7 +307,7 @@ const MyAddresses = ({ route, navigation }) => {
                 </ScrollView>
                 <CustomButton
                     onPress={chooseCrntLocation}
-                    label={route?.params?.mode === "checkout" ? 'Add Address' : 'Search Address'}
+                    label={(route?.params?.mode === "checkout" || route?.params?.mode === "MyAcc") ? 'Add Address' : 'Search Address'}
                     bg={active === 'green' ? '#FF9C0C' : active === 'fashion' ? '#2D8FFF' : '#5871D3'}
                     width={'100%'}
                     alignSelf='center'

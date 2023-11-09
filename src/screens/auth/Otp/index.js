@@ -22,12 +22,14 @@ import DeviceInfo from 'react-native-device-info';
 import Geolocation from 'react-native-geolocation-service';
 import axios from 'axios';
 import CommonUpdateModal from '../../../Components/CommonUpdateModal';
+import CartContext from '../../../contexts/Cart';
 const { mode } = NativeModules.RNENVConfig;
 
 const Otp = ({ navigation }) => {
 	const DeviceVersion = DeviceInfo.getVersion();
 	const user = useContext(AuthContext);
 	const loadingg = useContext(LoaderContext);
+	const cartContext = useContext(CartContext)
 	let loader = loadingg?.loading;
 	const [location, setLocation] = useState(null);
 	let mobileNo = user?.login?.mobile;
@@ -71,7 +73,7 @@ const Otp = ({ navigation }) => {
 				user.setUserData(response?.data?.user);
 				AsyncStorage.setItem('token', response?.data?.access_token);
 				AsyncStorage.setItem('user', JSON.stringify(response?.data?.user));
-
+				getAddressList()
 				if (DeviceVersion * 1 < response?.data?.current_version * 1) {
 					if (DeviceVersion * 1 < response?.data?.current_version * 1 && response?.data?.update) {
 						setversionUpdate(true);
@@ -81,11 +83,7 @@ const Otp = ({ navigation }) => {
 						setversionUpdate(true);
 		
 					}
-				} else {
-					getAddressList()
-					
-					// setversionUpdate(true);
-				}
+				} 
 
 				//getAddressList()
 
@@ -111,14 +109,17 @@ const Otp = ({ navigation }) => {
                     if (response?.data?.data?.length === 1) {
                         user.setLocation([response?.data?.data?.[0]?.area?.latitude, response?.data?.data?.[0]?.area?.longitude])
                         user?.setCurrentAddress(response?.data?.data?.[0]?.area?.address)
+						cartContext.setDefaultAddress(response?.data?.data?.[0])
                     }
                     else {
                         let defaultAdd = response?.data?.data?.find(add => add?.default === true)
                         if (defaultAdd) {
+							cartContext.setDefaultAddress(defaultAdd)
                             user.setLocation([defaultAdd?.area?.latitude, defaultAdd?.area?.longitude])
                             user?.setCurrentAddress(defaultAdd?.area?.address)
                         }
                         else {
+							cartContext.setDefaultAddress(response?.data?.data?.[0])
                             user.setLocation([response?.data?.data?.[0]?.area?.latitude, response?.data?.data?.[0]?.area?.longitude])
                             user?.setCurrentAddress(response?.data?.data?.[0]?.area?.address)
                         }

@@ -728,6 +728,11 @@ const Checkout = ({ navigation }) => {
     }, [navigation])
 
 
+    const chooseAddress = () => {
+        navigation.navigate("account", { screen: "MyAddresses", params: { mode: 'checkout' } })
+    }
+
+
     return (
         <>
             <HeaderWithTitle title={ 'Checkout' } onPressBack={ backToCart } />
@@ -925,7 +930,7 @@ const Checkout = ({ navigation }) => {
             </ScrollView>
 
             {/* Bottom View */ }
-            <View style={ styles.addressContainer }>
+            {cartContext.defaultAddress && <View style={ styles.addressContainer }>
                 <Pressable style={ styles.addrHeader } onPress={ navigateToAddress }>
                     <View >
                         <Foundation name={ 'target-two' } color='#FF0000' size={ 20 } marginTop={ 5 } />
@@ -960,7 +965,6 @@ const Checkout = ({ navigation }) => {
                     </View>
                     <View style={ styles.charges }>
                         <View style={ { flexDirection: 'row', alignItems: 'center' } }>
-                            {/* {item?.flashIcon && <Fontisto name={'flash'} color={'#FF0000'} size={12} marginRight={4}/>} */ }
                             <Text
                                 style={ styles.textMedium }
                             >{ "Sub Total" }</Text>
@@ -974,7 +978,6 @@ const Checkout = ({ navigation }) => {
                     </View>
                     <View style={ styles.charges }>
                         <View style={ { flexDirection: 'row', alignItems: 'center' } }>
-                            {/* {item?.flashIcon && <Fontisto name={'flash'} color={'#FF0000'} size={12} marginRight={4}/>} */ }
                             <Text
                                 style={ styles.textMedium }
                             >{ "Delivery Charge" }</Text>
@@ -986,7 +989,6 @@ const Checkout = ({ navigation }) => {
                     </View>
                     <View style={ styles.charges }>
                         <View style={ { flexDirection: 'row', alignItems: 'center' } }>
-                            {/* {item?.flashIcon && <Fontisto name={'flash'} color={'#FF0000'} size={12} marginRight={4}/>} */ }
                             <Text
                                 style={ styles.textMedium }
                             >{ "Platform Charge" }</Text>
@@ -996,20 +998,6 @@ const Checkout = ({ navigation }) => {
                         >₹ { platformCharge?.platformCharge }</Text>
 
                     </View>
-                    {/* {charges.map(item => 
-                        (<View key={item?._id} style={styles.charges}>
-                            <View style={{flexDirection:'row', alignItems:'center'}}>
-                                {item?.flashIcon && <Fontisto name={'flash'} color={'#FF0000'} size={12} marginRight={4}/>}
-                                <Text
-                                    style={styles.textMedium}
-                                >{item?.name}</Text>
-                            </View>
-                            <Text
-                                style={styles.textMedium}
-                            >₹{item?.rate}</Text>
-                            
-                        </View>)
-                    )} */}
                     <View style={ styles.grandTotal }>
                         <Text
                             style={ styles.textMedium }
@@ -1050,7 +1038,29 @@ const Checkout = ({ navigation }) => {
                     </TouchableOpacity>
                 </View>
 
-            </View>
+            </View>}
+            {!cartContext?.defaultAddress && <View
+                style={ {
+                    backgroundColor: active === 'green' ? '#8ED053' : active === 'fashion' ? '#FF7190' : '#58D36E',
+                    height: 60,
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    paddingHorizontal: 20,
+                    position: 'absolute',
+                    width: '100%',
+                    bottom: 0
+                } }
+            >
+                
+                <TouchableOpacity
+                    disabled={ isLoading }
+                    style={ { alignItems: 'center', flex: 1, flexDirection:'row', justifyContent:'center' } }
+                    onPress={ chooseAddress }
+                >
+                    <Ionicons name={ 'location' } size={ 20 } color='#fff' style={{ marginHorizontal: 10 }} />
+                    <CommonTexts label={ isLoading ? "Loading..." : 'Choose Delivery Location' } color='#fff' fontSize={ 17 } fullLabel={true} />
+                </TouchableOpacity>
+            </View>}
             <Modal visible={isLoading} style={{ backgroundColor: 'transparent' }} transparent={true} >
                 <View 
                     style={ [styles.loaderStyle, { width, height }] }

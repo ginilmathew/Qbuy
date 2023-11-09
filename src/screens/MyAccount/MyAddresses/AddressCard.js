@@ -51,7 +51,7 @@ const AddressCard = memo(({ setSelected, selected, item, deleteSelect }) => {
                 <Text
                     style={styles.addressText}
                 >{item?.area?.address}</Text>
-                {!selected &&
+                {(!selected && deleteSelect) &&
                 <Pressable onPress={() => deleteAddress(item?._id)} style={{ alignSelf: 'flex-end' }}>
                     <MaterialCommunityIcons name={'delete'} color={active === 'green' ? '#8ED053' : active === 'fashion' ? '#FF7190' : '#5871D3'} size={18} marginTop={5} />
                 </Pressable> }

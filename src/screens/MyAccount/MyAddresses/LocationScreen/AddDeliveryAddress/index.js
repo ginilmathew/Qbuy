@@ -21,6 +21,8 @@ import has from "lodash"
 import AddressContext from '../../../../../contexts/Address'
 import CartContext from '../../../../../contexts/Cart'
 import reactotron from 'reactotron-react-native'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import AuthContext from '../../../../../contexts/Auth'
 
 
 const AddDeliveryAddress = ({ route, navigation }) => {
@@ -30,6 +32,8 @@ const AddDeliveryAddress = ({ route, navigation }) => {
 
     const addressContext = useContext(AddressContext)
     const cartContext = useContext(CartContext)
+    const userContext = useContext(AuthContext)
+
 
 
 
@@ -54,7 +58,7 @@ const AddDeliveryAddress = ({ route, navigation }) => {
     const schema = yup.object({
         location: yup.string().required('Area is required'),
         address: yup.string().required('Address is required'),
-        pincode: yup.number().required('Pincode is required'),
+        pincode: yup.number(),
         name: yup.string().max(30, "Name must be less than 30 characters").matches(
             /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi,
             'Name can only contain Alphabets letters.'
@@ -118,7 +122,24 @@ const AddDeliveryAddress = ({ route, navigation }) => {
             .then(async response => {
                 setAddr(response?.data)
                 loadingContext.setLoading(false)
-                navigation.navigate('MyAddresses', { mode: 'MyAcc' })
+                if(route?.params?.mode === "checkout"){
+                    cartContext.setDefaultAddress(response?.data?.data)
+                    let location = {
+                        latitude: response?.data?.data?.area?.latitude,
+                        longitude: response?.data?.data?.area?.longitude,
+                        address: response?.data?.data?.area?.address
+                    }
+        
+        
+                    AsyncStorage.setItem("location", JSON.stringify(location))
+                    userContext.setLocation([response?.data?.data?.area?.latitude, response?.data?.data?.area?.longitude]);
+                    userContext.setCurrentAddress(response?.data?.data?.area?.address)
+                    navigation.navigate("Checkout")
+                }
+                else{
+                    navigation.navigate('MyAddresses', { mode: 'MyAcc' })
+                }
+                
             })
             .catch(async error => {
                 Toast.show({

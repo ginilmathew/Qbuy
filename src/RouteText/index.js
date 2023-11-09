@@ -49,7 +49,6 @@ const RouteTest = () => {
     const userContext = useContext(AuthContext);
     const cartContext = useContext(CartContext);
     const loadingContext = useContext(LoaderContext);
-    const [location, setLocation] = useState(null);
     const { active } = useContext(PandaContext);
     const [user, setUserDetails] = useState(null);
     const [versionUpdate, setversionUpdate] = useState(false);
@@ -140,7 +139,6 @@ const RouteTest = () => {
         let user = await AsyncStorage.getItem("user");
         if (user) {
             getProfile()
-            getCartDetails()
             getAddressList()
         }
         else {
@@ -193,6 +191,7 @@ const RouteTest = () => {
                 loadingContext.setLoading(false);
                 userContext.setUserData(response?.data?.data);
                 setUserDetails(response?.data?.data)
+                getCartDetails(response?.data?.data)
 
 
                 VersionManagement(response?.data?.data)
@@ -211,34 +210,31 @@ const RouteTest = () => {
             })
     }, [])
 
-    const getCartDetails = useCallback(async () => {
-        if (user) {
-            loadingContext.setLoading(true);
-            let value = {
-                user_id: user?._id,
-                type: active,
-            }
-            await customAxios.post('customer/cart/newshow-cart', value)
-                .then(async response => {
-                    if (isObject(response?.data?.data)) {
-                        cartContext.setCart(response?.data?.data)
-                    }
-                    else {
-                        await AsyncStorage.removeItem('cartId')
-                    }
-                    loadingContext.setLoading(false);
-
-                })
-                .catch(async error => {
-                    Toast.show({
-                        type: 'error',
-                        text1: error,
-                    });
-                    loadingContext.setLoading(false);
-                })
+    const getCartDetails = async (user) => {
+        loadingContext.setLoading(true);
+        let value = {
+            user_id: user?._id,
+            type: active,
         }
+        await customAxios.post('customer/cart/newshow-cart', value)
+            .then(async response => {
+                if (isObject(response?.data?.data)) {
+                    cartContext.setCart(response?.data?.data)
+                }
+                else {
+                    await AsyncStorage.removeItem('cartId')
+                }
+                loadingContext.setLoading(false);
 
-    }, [user])
+            })
+            .catch(async error => {
+                Toast.show({
+                    type: 'error',
+                    text1: error,
+                });
+                loadingContext.setLoading(false);
+            })
+    }
 
     const getAddressList = async () => {
         loadingContext.setLoading(true)
@@ -246,6 +242,7 @@ const RouteTest = () => {
             .then(async response => {
                 if (response?.data?.data?.length > 0) {
                     if (response?.data?.data?.length === 1) {
+                        cartContext.setDefaultAddress(response?.data?.data?.[0])
                         await userContext.setLocation([response?.data?.data?.[0]?.area?.latitude, response?.data?.data?.[0]?.area?.longitude])
                         await userContext?.setCurrentAddress(response?.data?.data?.[0]?.area?.address)
                         setTimeout(() => {
@@ -255,6 +252,7 @@ const RouteTest = () => {
                     else {
                         let defaultAdd = response?.data?.data?.find(add => add?.default === true)
                         if (defaultAdd) {
+                            cartContext.setDefaultAddress(defaultAdd)
                             await userContext.setLocation([defaultAdd?.area?.latitude, defaultAdd?.area?.longitude])
                             await userContext?.setCurrentAddress(defaultAdd?.area?.address)
                             setTimeout(() => {
@@ -262,6 +260,7 @@ const RouteTest = () => {
                             }, 200);
                         }
                         else {
+                            cartContext.setDefaultAddress(response?.data?.data?.[0])
                             await userContext.setLocation([response?.data?.data?.[0]?.area?.latitude, response?.data?.data?.[0]?.area?.longitude])
                             await userContext?.setCurrentAddress(response?.data?.data?.[0]?.area?.address)
                             setTimeout(() => {
