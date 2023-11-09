@@ -78,7 +78,7 @@ const RouteTest = () => {
                     let response = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${position?.coords?.latitude},${position.coords?.longitude}&key=AIzaSyBBcghyB0FvhqML5Vjmg3uTwASFdkV8wZY`);
 
 
-            
+
                     //let address = getAddressFromCoordinates(position?.coords?.latitude, position.coords?.longitude);
                     let location = {
                         latitude: position?.coords?.latitude,
@@ -91,23 +91,23 @@ const RouteTest = () => {
                     userContext.setCurrentAddress(response?.data?.results[0]?.formatted_address)
                     setInitialScreen('green');
                 }
-                else{
+                else {
                     let user = await AsyncStorage.getItem("user");
-                    if(user){
+                    if (user) {
                         setInitialScreen('AddNewLocation')
                     }
-                    else{
+                    else {
                         setInitialScreen("Login")
                     }
-                    
+
                 }
             },
             async error => {
                 let user = await AsyncStorage.getItem("user");
-                if(user){
+                if (user) {
                     setInitialScreen('AddNewLocation')
                 }
-                else{
+                else {
                     setInitialScreen("Login")
                 }
             },
@@ -129,6 +129,14 @@ const RouteTest = () => {
 
 
     const checkUserAddress = async () => {
+        let location = await AsyncStorage.getItem("location")
+        reactotron.log({ location })
+        if (location) {
+            let locationData = JSON.parse(location)
+            reactotron.log({ locationData })
+            userContext.setLocation([locationData?.latitude, locationData?.longitude]);
+            userContext.setCurrentAddress(locationData?.address)
+        }
         let user = await AsyncStorage.getItem("user");
         if (user) {
             getProfile()
@@ -137,10 +145,10 @@ const RouteTest = () => {
         }
         else {
             let location = await AsyncStorage.getItem("location")
-            reactotron.log({location})
+            reactotron.log({ location })
             if (location) {
                 let locationData = JSON.parse(location)
-                reactotron.log({locationData})
+                reactotron.log({ locationData })
                 userContext.setLocation([locationData?.latitude, locationData?.longitude]);
                 userContext.setCurrentAddress(locationData?.address)
                 setInitialScreen('green');
@@ -155,7 +163,7 @@ const RouteTest = () => {
     }
 
 
-    
+
 
 
     const VersionManagement = (data) => {
@@ -262,7 +270,7 @@ const RouteTest = () => {
                         }
                     }
 
-                    
+
                 }
                 else {
                     let location = await AsyncStorage.getItem("location")
@@ -339,7 +347,7 @@ const RouteTest = () => {
                     {/* <Stack.Screen name="panda" component={Panda} />
                     <Stack.Screen name="fashion" component={Fashion} /> */}
                     <Stack.Screen name="green" component={Green} />
-                    <Stack.Screen name="AddDeliveryAddress" component={AddDeliveryAddress}/>
+                    <Stack.Screen name="AddDeliveryAddress" component={AddDeliveryAddress} />
                 </Stack.Navigator>
             </NavigationContainer>
             {/* <LoadingModal isVisible={true} /> */}

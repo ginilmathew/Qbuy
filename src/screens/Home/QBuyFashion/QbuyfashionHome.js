@@ -85,6 +85,7 @@ const QbuyfashionHome = () => {
         isFetching,
         isFetchingNextPage,
         status,
+        remove: infiniteQueryRemove
     } = useInfiniteQuery({
         queryKey: ['fashionHomeProducts'],
         queryFn: ({ pageParam = 1 }) => QbuyFashionProducts(datas, pageParam),
@@ -172,6 +173,12 @@ const QbuyfashionHome = () => {
     const RefetchMore = () => {
         Homeapi?.refetch(),
         infiniteQueryRefetch()
+    }
+
+    const RefetchMoreFlat = () => {
+        infiniteQueryRemove()
+        Homeapi?.refetch();
+        infiniteQueryRefetch();
     }
 
 
@@ -432,7 +439,7 @@ const QbuyfashionHome = () => {
                 keyExtractorCategory={ keyExtractorfashion }
                 numColumns={ 2 }
                 refreshing={ Homeapi?.isLoading  || isLoading}
-                onRefresh={ RefetchMore }
+                onRefresh={ RefetchMoreFlat }
                 style={ { marginLeft: 5 } }
                 contentContainerStyle={ { justifyContent: 'center', gap: 2, backgroundColor: '#FFF5F7' } }
                 renderItem={ renderProducts }

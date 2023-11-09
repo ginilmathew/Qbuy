@@ -206,9 +206,9 @@ const QBuyGreen = ({ navigation }) => {
         }, [Homeapi.isLoading, isLoading, userContext?.location])
     );
 
-    const schema = yup.object({
-        name: yup.string().required('Name is required'),
-    }).required();
+    // const schema = yup.object({
+    //     name: yup.string().required('Name is required'),
+    // }).required();
 
 
 
