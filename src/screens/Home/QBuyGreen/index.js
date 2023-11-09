@@ -52,9 +52,10 @@ import {
 import TypeSkelton from '../Grocery/TypeSkelton';
 import ShopCardSkeltion from '../Grocery/ShopCardSkeltion';
 
+
+
 const QbuyGreenHome = async (datas) => {
     const homeData = await customAxios.post('customer/home', datas);
-
     return {
         home: homeData?.data?.data,
         availablePdt: homeData?.data?.data?.find((item, index) => item?.type === 'available_products'),
@@ -62,7 +63,6 @@ const QbuyGreenHome = async (datas) => {
 
     }
 }
-
 
 const QbuyGreenProducts = async (items, pageparam) => {
     const homeDataProduct = await customAxios.post(`customer/new-product-list?page=` + pageparam, items);
@@ -72,6 +72,7 @@ const QbuyGreenProducts = async (items, pageparam) => {
     }
 
 }
+
 
 const QBuyGreen = ({ navigation }) => {
 
@@ -93,7 +94,7 @@ const QBuyGreen = ({ navigation }) => {
     }
 
 
-    const Homeapi = useQuery({ queryKey: ['greenHome'], queryFn: () => QbuyGreenHome(datas) });
+
 
 
     const {
@@ -117,7 +118,7 @@ const QBuyGreen = ({ navigation }) => {
 
     })
 
-
+    const Homeapi = useQuery({ queryKey: ['greenHome'], queryFn: () => QbuyGreenHome(datas) });
 
 
 
@@ -140,9 +141,9 @@ const QBuyGreen = ({ navigation }) => {
         )
     }, [])
 
-    const [homeData, setHomeData] = useState(null);
-    const [availablePdt, setavailablePdt] = useState(null);
-    const [slider, setSlider] = useState(null);
+    // const [homeData, setHomeData] = useState(null);
+    // const [availablePdt, setavailablePdt] = useState(null);
+    // const [slider, setSlider] = useState(null);
 
 
     // useEffect(() => {
@@ -175,13 +176,14 @@ const QBuyGreen = ({ navigation }) => {
 
     //getCurrentLocation()
     // }
-   
+
 
     const RefetchMore = () => {
-
         Homeapi?.refetch();
         infiniteQueryRefetch();
     }
+
+
     const RefetchMoreFlat = () => {
         infiniteQueryRemove()
         Homeapi?.refetch();
@@ -196,10 +198,12 @@ const QBuyGreen = ({ navigation }) => {
                 firstTimeRef.current = false;
                 return;
             }
+            if (Homeapi.isLoading && isLoading) {
+                RefetchMore();
+            }
 
-            RefetchMore()
-            // infiniteQueryRefetch({ refetchPage: (page, index) => index === 0 })
-        }, [infiniteQueryRefetch, Homeapi.refetch, userContext?.location])
+
+        }, [Homeapi.isLoading, isLoading, userContext?.location])
     );
 
     const schema = yup.object({
@@ -321,7 +325,7 @@ const QBuyGreen = ({ navigation }) => {
                 <>
                     <CategoryCard data={item?.data} />
                     <SearchBox onPress={onSearch} />
-                    {slider?.length > 0 &&
+                    {Homeapi?.slider?.length > 0 &&
                         <View>
                             <Carousel
                                 key={item?._id}
@@ -339,14 +343,13 @@ const QBuyGreen = ({ navigation }) => {
                 </>
             )
         }
+
         if (item?.type === 'stores') {
             return (
                 <>
-
                     {item?.data?.length > 0 &&
                         <AvailableStores key={item?._id} data={item?.data} />
                     }
-
 
                     <View style={styles.pickupReferContainer}>
                         <PickDropAndReferCard
@@ -437,7 +440,7 @@ const QBuyGreen = ({ navigation }) => {
         )
     }
 
-    if (Homeapi.isLoading) {
+    if (Homeapi.isLoading && isLoading) {
         return (
             <View>
                 <Header onPress={onClickDrawer} />
@@ -478,7 +481,7 @@ const QBuyGreen = ({ navigation }) => {
 
     }
 
- 
+
     const ListFooterComponents = () => {
         if (data?.pages?.[0]?.lastpage * 1 <= data?.pageParams?.length * 1) {
             return null
@@ -503,7 +506,7 @@ const QBuyGreen = ({ navigation }) => {
 
     return (
         <>
-            <Header onPress={onClickDrawer}  />
+            <Header onPress={onClickDrawer} />
             <View style={styles.container} >
                 <NameText userName={userContext?.userData?.name ? userContext?.userData?.name : userContext?.userData?.mobile} mt={8} />
                 <FlatList
@@ -526,7 +529,7 @@ const QBuyGreen = ({ navigation }) => {
                     removeClippedSubviews={true}
                     windowSize={10}
                     maxToRenderPerBatch={10}
-                    refreshing={isLoading}
+                    refreshing={isLoading || Homeapi?.isLoading}
                     onRefresh={RefetchMoreFlat}
                     numColumns={2}
                     style={{ marginLeft: 5 }}

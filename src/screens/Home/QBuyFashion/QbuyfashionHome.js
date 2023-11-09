@@ -182,7 +182,7 @@ const QbuyfashionHome = () => {
                 return;
             }
             RefetchMore()
-        }, [Homeapi.refetch,infiniteQueryRefetch, coord])
+        }, [coord])
     );
 
     const onClickDrawer = useCallback(() => {
