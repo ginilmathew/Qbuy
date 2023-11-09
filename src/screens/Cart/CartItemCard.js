@@ -219,9 +219,9 @@ const CartItemCard = ({ item, index, refreshCart }) => {
             <View style={{height:70,display:'flex',alignItems:'center',justifyContent:'center',}}>
 
 
-                <TouchableOpacity    onPress={ deleteconfirmation }>
+                <TouchableOpacity    onPress={ deleteconfirmation } >
                     
-                <MaterialCommunityIcons name={ "delete-forever" } size={ 20 } color={ 'red' } />
+                <MaterialCommunityIcons name={ "delete-forever" } size={ 25 } color={ 'red' } />
                 
                 </TouchableOpacity>
             </View>
