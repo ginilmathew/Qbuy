@@ -238,8 +238,8 @@ const RouteTest = () => {
             .then(async response => {
                 if (response?.data?.data?.length > 0) {
                     if (response?.data?.data?.length === 1) {
-                        userContext.setLocation([response?.data?.data?.[0]?.area?.latitude, response?.data?.data?.[0]?.area?.longitude])
-                        userContext?.setCurrentAddress(response?.data?.data?.[0]?.area?.address)
+                        await userContext.setLocation([response?.data?.data?.[0]?.area?.latitude, response?.data?.data?.[0]?.area?.longitude])
+                        await userContext?.setCurrentAddress(response?.data?.data?.[0]?.area?.address)
                         setTimeout(() => {
                             setInitialScreen('green');
                         }, 200);
@@ -247,15 +247,15 @@ const RouteTest = () => {
                     else {
                         let defaultAdd = response?.data?.data?.find(add => add?.default === true)
                         if (defaultAdd) {
-                            userContext.setLocation([defaultAdd?.area?.latitude, defaultAdd?.area?.longitude])
-                            userContext?.setCurrentAddress(defaultAdd?.area?.address)
+                            await userContext.setLocation([defaultAdd?.area?.latitude, defaultAdd?.area?.longitude])
+                            await userContext?.setCurrentAddress(defaultAdd?.area?.address)
                             setTimeout(() => {
                                 setInitialScreen('green');
                             }, 200);
                         }
                         else {
-                            userContext.setLocation([response?.data?.data?.[0]?.area?.latitude, response?.data?.data?.[0]?.area?.longitude])
-                            userContext?.setCurrentAddress(response?.data?.data?.[0]?.area?.address)
+                            await userContext.setLocation([response?.data?.data?.[0]?.area?.latitude, response?.data?.data?.[0]?.area?.longitude])
+                            await userContext?.setCurrentAddress(response?.data?.data?.[0]?.area?.address)
                             setTimeout(() => {
                                 setInitialScreen('green');
                             }, 200);
