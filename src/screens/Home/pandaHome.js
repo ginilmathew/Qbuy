@@ -535,7 +535,6 @@ export default function PandaHome({ navigation }) {
 
 
             <View style={styles.menuContainer}>
-
                 <FlatList
                     disableVirtualization={true}
                     ListHeaderComponent={MainHeader}

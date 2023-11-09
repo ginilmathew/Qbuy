@@ -10,7 +10,6 @@ import CustomButton from '../../../Components/CustomButton'
 import OrderWhatsapp from './OrderWhatsapp'
 import VideoPlayer from './VideoPlayer'
 import FastImage from 'react-native-fast-image'
-import { Animated } from 'react-native'
 import ScheduleDeliveryModal from './ScheduleDeliveryModal'
 import CommonSelectDropdown from '../../../Components/CommonSelectDropdown'
 import PandaContext from '../../../contexts/Panda'
@@ -29,11 +28,15 @@ import Toast from 'react-native-toast-message';
 import reactotron from 'reactotron-react-native'
 import Carousel from 'react-native-reanimated-carousel';
 import ImageViewer from 'react-native-image-zoom-viewer';
-import { CommonActions } from '@react-navigation/native'
+import { CommonActions } from '@react-navigation/native';
+import Animated, { useSharedValue, withDelay, withRepeat, withSequence, withTiming } from 'react-native-reanimated';
 import {
     useQuery,
 
 } from '@tanstack/react-query';
+import CommonItemSelectSkeltion from '../../../Components/CommonItemSelectSkeltion';
+import Header from '../../../Components/Header';
+import ShopCardSkeltion from '../Grocery/ShopCardSkeltion';
 
 
 
@@ -127,7 +130,7 @@ const SingleItemScreen = ({ route, navigation }) => {
 
 
 
-    const position = new Animated.ValueXY({ x: 0, y: 0 })
+    // const position = new Animated.ValueXY({ x: 0, y: 0 })
 
     let loader = loadingg?.loading
 
@@ -324,6 +327,21 @@ const SingleItemScreen = ({ route, navigation }) => {
     }
 
 
+    const opacity = useSharedValue(1);
+
+    useEffect(() => {
+        opacity.value = withRepeat(
+            withSequence(
+                withDelay(1000, withTiming(0.5, { duration: 1000 })),
+                withDelay(1000, withTiming(1, { duration: 1000 })),
+            ),
+            -1,
+            false
+        )
+    }, [])
+
+
+
     const renderInStock = useCallback(() => {
         if (item?.available) {
             if (item?.stock) {
@@ -442,10 +460,32 @@ const SingleItemScreen = ({ route, navigation }) => {
 
     }
 
+    const onClickDrawer = useCallback(() => {
+        navigation.openDrawer()
+    }, [navigation])
+
     if (isLoading) {
-        return <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <ActivityIndicator size="large" color="#00ff00" />
-        </View>
+        return <View>
+        <Header onPress={onClickDrawer} />
+        <ScrollView
+
+            showsHorizontalScrollIndicator={false}
+            style={{ width: width, height: height }}
+        >
+            <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                <Animated.View style={{ height:width / 1.7 , alignItems: 'center', marginTop: 10, shadowOpacity: 0.1, shadowRadius: 1, opacity, width: width }} >
+                    <Animated.View
+                        style={{ height: '100%', width: '90%', backgroundColor: '#fff', margin: 5, borderRadius: 20, opacity }}
+                    />
+                </Animated.View>
+               
+
+            </View>
+
+
+
+        </ScrollView>
+    </View>
     }
 
     return (
