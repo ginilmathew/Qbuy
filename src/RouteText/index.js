@@ -92,11 +92,24 @@ const RouteTest = () => {
                     setInitialScreen('green');
                 }
                 else{
-                    setInitialScreen("Login")
+                    let user = await AsyncStorage.getItem("user");
+                    if(user){
+                        setInitialScreen('AddNewLocation')
+                    }
+                    else{
+                        setInitialScreen("Login")
+                    }
+                    
                 }
             },
             async error => {
-                setInitialScreen("Login")
+                let user = await AsyncStorage.getItem("user");
+                if(user){
+                    setInitialScreen('AddNewLocation')
+                }
+                else{
+                    setInitialScreen("Login")
+                }
             },
             {
                 accuracy: {
