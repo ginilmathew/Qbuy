@@ -1055,7 +1055,7 @@ const Checkout = ({ navigation }) => {
                 <View 
                     style={ [styles.loaderStyle, { width, height }] }
                 >
-                    <Text>Please wait we are processing your order.</Text>
+                    <Text style={{color:'#fff'}}>Please wait we are processing your order.</Text>
                     <ActivityIndicator color={"red"} size={30} />
                 </View>
             </Modal>

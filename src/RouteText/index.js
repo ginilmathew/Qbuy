@@ -14,8 +14,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import SplashScreenF from '../screens/SplashScreen';
 import AuthContext from '../contexts/Auth';
 import CartContext from '../contexts/Cart';
-
-
+import messaging from '@react-native-firebase/messaging';
 import Geolocation from 'react-native-geolocation-service';
 import customAxios from '../CustomeAxios';
 import LoaderContext from '../contexts/Loader';
@@ -33,7 +32,7 @@ import DeviceInfo from 'react-native-device-info';
 import CommonUpdateModal from '../Components/CommonUpdateModal';
 import { NativeModules } from 'react-native'
 import AddDeliveryAddress from '../screens/MyAccount/MyAddresses/LocationScreen/AddDeliveryAddress';
-
+import notifee, { EventType } from '@notifee/react-native';
 
 const { env, mode } = NativeModules.RNENVConfig
 
@@ -53,12 +52,95 @@ const RouteTest = () => {
     const { active } = useContext(PandaContext);
     const [user, setUserDetails] = useState(null);
     const [versionUpdate, setversionUpdate] = useState(false);
-    const [forceUpdate, setForceUpdate] = useState(false)
-
-
+    const [forceUpdate, setForceUpdate] = useState(false);
     const [initialScreen, setInitialScreen] = useState(null);
 
 
+
+
+    // async function requestUserPermission() {
+    //     if(Platform.OS === 'ios'){
+    //         const authStatus = await messaging().requestPermission();
+    //         const enabled =
+    //             authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+    //             authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+    
+    //         if (enabled) {
+    //             console.log('Authorization status:', authStatus);
+    //         }
+    //     }
+    //     else{
+    //         PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
+    //     }
+
+    //     let user = JSON.parse(await AsyncStorage.getItem("user"))
+    //     //if (authorizationStatus) {
+
+    //         await messaging().registerDeviceForRemoteMessages();
+    //         const token = await messaging().getToken();
+
+
+
+    //         if (user?._id) {
+    //             let data = {
+    //                 id: user?._id,
+    //                 token
+    //             }
+    //             await axios.post(`${API_URL}auth/adddevicetoken`, data)
+    //                 .then(async response => {
+    //                 })
+    //                 .catch(async error => {
+    //                 })
+    //         }
+
+
+    // }
+
+    // async function onMessageReceived(message) {
+    //     // Request permissions (required for iOS)
+    //     await notifee.requestPermission()
+
+    //     // Create a channel (required for Android)
+    //     const channelId = await notifee.createChannel({
+    //         id: 'default',
+    //         name: 'Default Channel',
+    //     });
+
+    //     // Display a notification
+    //     await notifee.displayNotification({
+    //         title: message?.notification?.title,
+    //         body: message?.notification?.body,
+    //         data: message?.data,
+    //         android: {
+    //             channelId,
+    //             smallIcon: 'ic_launcher', // optional, defaults to 'ic_launcher'.
+    //             // pressAction is needed if you want the notification to open the app when pressed
+    //             pressAction: {
+    //                 id: 'default',
+    //             },
+    //         },
+    //     });
+    // }
+
+    // useEffect(() => {
+    //     // Assume a message-notification contains a "type" property in the data payload of the screen to open
+
+    //     messaging().onNotificationOpenedApp(remoteMessage => {
+       
+          
+
+    //     });
+
+    //     // Check whether an initial notification is available
+    //     messaging()
+    //         .getInitialNotification()
+    //         .then(remoteMessage => {
+                
+    //         });
+
+    //     messaging().onMessage(onMessageReceived);
+    //     messaging().setBackgroundMessageHandler(onMessageReceived);
+    // }, []);
 
 
     useEffect(() => {
@@ -320,6 +402,11 @@ const RouteTest = () => {
             };
         }
     }, []);
+
+
+ 
+
+
 
     if (!initialScreen) {
         SplashScreen.hide()
