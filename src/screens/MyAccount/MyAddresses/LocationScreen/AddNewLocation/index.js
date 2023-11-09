@@ -21,31 +21,11 @@ const AddNewLocation = ({ route, navigation }) => {
     const addressContext = useContext(AddressContext)
     const userContext = useContext(AuthContext)
     const loadingg = useContext(LoaderContext);
+    const [mode, setMode] = useState(route?.params?.mode ? route?.params?.mode : '')
 
     const { width, height } = useWindowDimensions()
 
 
-
-    // function getAddressFromCoordinates (lat, lon) {
-    //     axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${lat},${lon}&key=AIzaSyBBcghyB0FvhqML5Vjmg3uTwASFdkV8wZY`).then(response => {
-    //         userContext.setUserLocation(response?.data?.results[0]?.formatted_address)
-
-    //         let locality = response?.data?.results?.[0]?.address_components?.find(add => add.types.includes('locality'));
-    //         userContext.setCity(locality?.long_name)
-    //         let value = {
-    //             area: {
-    //                 location: locality?.long_name,
-    //                 address: response?.data?.results[0]?.formatted_address
-    //             }
-    //         }
-    //         //cartContext.setDefaultAddress(value)
-
-    //         // reactotron.log({ response: response?.data?.results[0]?.formatted_address }, 'LOCATION RESPONSE')
-
-    //     })
-    //         .catch(err => {
-    //         })
-    // }
 
     useEffect(() => {
         SplashScreen.hide()
@@ -79,7 +59,7 @@ const AddNewLocation = ({ route, navigation }) => {
             AsyncStorage.setItem("location", JSON.stringify(location))
             userContext.setLocation([lat, lng]);
             userContext.setCurrentAddress(Value?.location)
-            navigation.navigate('LocationScreen', { mode: '' });
+            navigation.navigate('LocationScreen', { mode: mode });
 
         } catch (error) {
             
@@ -87,19 +67,6 @@ const AddNewLocation = ({ route, navigation }) => {
         finally{
             loadingg?.setLoading(false)
         }
-        // axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${lat},${lng}&key=AIzaSyBBcghyB0FvhqML5Vjmg3uTwASFdkV8wZY`).then(async response => {
-
-        //     reactotron.log({ response })
-        //     //userContext.setCurrentAddress(response?.data?.results[0]?.formatted_address);
-
-
-            
-
-        // })
-        // .catch(err => {
-
-        // });
-       
 
     }
 
@@ -261,7 +228,7 @@ const AddNewLocation = ({ route, navigation }) => {
 
                         await AsyncStorage.setItem("location", JSON.stringify(location))
 
-                        navigation.navigate('LocationScreen', { mode: '' });
+                        navigation.navigate('LocationScreen', { mode: mode });
                     }}
                     query={{
                         key: 'AIzaSyBBcghyB0FvhqML5Vjmg3uTwASFdkV8wZY',

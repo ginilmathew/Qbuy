@@ -264,7 +264,7 @@ export default function PandaHome({ navigation }) {
                         renderItem={CarouselCardItem}
                     />
                 </View>}
-                <ScrollView
+                {/* <ScrollView
                     horizontal
                     showsHorizontalScrollIndicator={false}
                     style={styles.foodTypeView}
@@ -278,7 +278,7 @@ export default function PandaHome({ navigation }) {
                         screen={'home'}
                     />)
                     )}
-                </ScrollView>
+                </ScrollView> */}
                 <SearchBox onPress={onSearch} />
                 <View style={{ marginHorizontal: 2 }}>
                     <NameText userName={userContext?.userData?.name ? userContext?.userData?.name : userContext?.userData?.mobile} mt={8} />

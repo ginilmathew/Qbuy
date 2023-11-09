@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable prettier/prettier */
-import { StyleSheet, Text, ScrollView, Platform, SafeAreaView, ToastAndroid, TouchableOpacity, PermissionsAndroid } from 'react-native';
+import { StyleSheet, Text, ScrollView, Platform, SafeAreaView, ToastAndroid, TouchableOpacity, PermissionsAndroid, Keyboard } from 'react-native';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -55,6 +55,7 @@ const Otp = ({ navigation }) => {
 	let phoneNum = first2 + mask + last1;
 
 	const onSubmit = async (data) => {
+		Keyboard.dismiss()
 		loadingg.setLoading(true);
 		//getCurrentLocation();
 		let datas = {
@@ -138,7 +139,7 @@ const Otp = ({ navigation }) => {
                     navigation.dispatch(CommonActions.reset({
 						index: 0,
 						routes: [
-							{ name: 'AddDeliveryAddress' },
+							{ name: 'AddNewLocation' },
 						],
 					}));
                 }
@@ -177,109 +178,18 @@ const Otp = ({ navigation }) => {
 
 
 
-	function getAddressFromCoordinates (lat, lng) {
-		if (lat && lng) {
-			axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${lat},${lng}&key=AIzaSyBBcghyB0FvhqML5Vjmg3uTwASFdkV8wZY`).then(response => {
-				user.setCurrentAddress(response?.data?.results[0]?.formatted_address);
-				//setLocation
-			})
-				.catch(err => {
-				});
-		}
+	
 
-	}
-
-	useEffect(() => {
-		if (location) {
-			getAddressFromCoordinates();
-		}
-	}, [location]);
+	
 
 
 
 
-	const getCurrentLocation = useCallback(async () => {
-		if (Platform.OS === 'ios') {
-			const status = await Geolocation.requestAuthorization('whenInUse');
-			if (status === 'granted') {
-				getPosition();
-			} else {
-				Toast.show({
-					type: 'error',
-					text1: 'Location permission denied by user.',
-				});
-
-				navigation.navigate('AddNewLocation');
-			}
-
-		}
-		else {
-			const hasPermission = await PermissionsAndroid.check(
-				PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-
-			);
-
-			if ((Platform.OS === 'android' && Platform.Version < 23) || hasPermission) {
-				getPosition();
-			} else {
-				const status = await PermissionsAndroid.request(
-					PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-
-				);
-
-				if (status === PermissionsAndroid.RESULTS.GRANTED) {
-					getPosition();
-
-
-				} else if (status === PermissionsAndroid.RESULTS.DENIED || status === PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN) {
-
-
-					navigation.navigate('AddNewLocation');
-					Toast.show({
-						type: 'error',
-						text1: 'Location permission denied by user.',
-					});
-				}
-
-			}
-		}
-
-	}, []);
+	
 
 
 
-	const getPosition = async () => {
-		await Geolocation.getCurrentPosition(
-			position => {
-
-				getAddressFromCoordinates(position?.coords?.latitude, position.coords?.longitude);
-				user.setLocation([position?.coords?.latitude, position.coords?.longitude]);
-				setLocation(position?.coords);
-
-			},
-			async error => {
-				navigation.navigate('AddNewLocation');
-				Toast.show({
-					type: 'error',
-					text1: error.message,
-				});
-				// checkLogin();
-			},
-			{
-				accuracy: {
-					android: 'high',
-					ios: 'best',
-				},
-				enableHighAccuracy: true,
-				timeout: 15000,
-				maximumAge: 10000,
-				distanceFilter: 0,
-				forceRequestLocation: true,
-				forceLocationManager: false,
-				showLocationDialog: true,
-			},
-		);
-	};
+	
 
 	const NavigationToBack = useCallback(() => { navigation.goBack(); }, [navigation]);
 
@@ -317,7 +227,7 @@ const Otp = ({ navigation }) => {
 
 	return (
 		<CommonAuthBg>
-			<ScrollView style={ { flex: 1, paddingHorizontal: 40 } }>
+			<ScrollView style={ { flex: 1, paddingHorizontal: 40 } } keyboardShouldPersistTaps="always">
 				<SafeAreaView>
 					<CommonTitle goBack={ NavigationToBack } mt={ 40 } />
 					<CommonTexts

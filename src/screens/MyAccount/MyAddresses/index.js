@@ -73,55 +73,11 @@ const MyAddresses = ({ route, navigation }) => {
     }
 
 
-    const backAction = useCallback(() => {
-        navigation.navigate('MyAccountNav')
-    }, [])
-
-
-    // async function fetchData() {
-
-    //     if (Platform.OS === 'android') {
-    //         await PermissionsAndroid.request(
-    //             PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-    //         )
-    //     }
-    //     if (Platform.OS === 'ios') {
-    //         const hasPermission = await hasPermissionIOS();
-    //         return hasPermission;
-    //     }
-    // }
+    
 
 
 
-    // const hasPermissionIOS = async () => {
-    //     reactotron.log('ANDROID')
-    //     const openSetting = () => {
-    //         Linking.openSettings().catch(() => {
-    //             Alert.alert('Unable to open settings');
-    //         });
-    //     };
-    //     const status = await Geolocation.requestAuthorization('whenInUse');
-
-    //     reactotron.log({status})
-    //     if (status === 'granted') {
-    //         getPosition()
-    //         return true;
-    //     }
-    //     if (status === 'denied') {
-    //         //Alert.alert('Location permission denied');
-    //     }
-    //     if (status === 'disabled') {
-    //         Alert.alert(
-    //             `Turn on Location Services to allow  to determine your location.`,
-    //             '',
-    //             [
-    //                 { text: 'Go to Settings', onPress: openSetting },
-    //                 { text: "Don't Use Location", onPress: () => { } },
-    //             ],
-    //         );
-    //     }
-    //     return false;
-    // };
+    
     const getCurrentLocation = useCallback(async () => {
         if (Platform.OS === 'ios') {
             const status = await Geolocation.requestAuthorization('whenInUse');
@@ -241,23 +197,23 @@ const MyAddresses = ({ route, navigation }) => {
 
     }
     const chooseCrntLocation = () => {
-        addressContext.setCurrentAddress(null)
-        if (addrList?.length >= 1) {
-            let result = addrList?.filter((res) => res?.default === true)
-            const Value = {
-                location: result[0]?.area?.address,
-                city: result[0]?.area?.location,
-                latitude: result[0]?.area?.latitude,
-                longitude: result[0]?.area?.longitude
-            }
+        // addressContext.setCurrentAddress(null)
+        // if (addrList?.length >= 1) {
+        //     let result = addrList?.filter((res) => res?.default === true)
+        //     const Value = {
+        //         location: result[0]?.area?.address,
+        //         city: result[0]?.area?.location,
+        //         latitude: result[0]?.area?.latitude,
+        //         longitude: result[0]?.area?.longitude
+        //     }
 
-            // userContext.setLocation([result[0]?.area?.latitude,result[0]?.area?.longitude])
-            addressContext.setCurrentAddress(Value)
-            if (addressContext?.CucurrentAddress) {
-                navigation.navigate('AddNewLocation')
-            }
-        }
-        navigation.navigate('AddNewLocation')
+        //     // userContext.setLocation([result[0]?.area?.latitude,result[0]?.area?.longitude])
+        //     addressContext.setCurrentAddress(Value)
+        //     if (addressContext?.CucurrentAddress) {
+        //         navigation.navigate('AddNewLocation')
+        //     }
+        // }
+        navigation.navigate('AddNewLocation', { mode: route?.params?.mode === "checkout" ? 'newAddress' : '' })
     }
 
     const deleteSelect = async (id) => {
@@ -351,7 +307,7 @@ const MyAddresses = ({ route, navigation }) => {
                 </ScrollView>
                 <CustomButton
                     onPress={chooseCrntLocation}
-                    label={'Add Address'}
+                    label={route?.params?.mode === "checkout" ? 'Add Address' : 'Search Address'}
                     bg={active === 'green' ? '#FF9C0C' : active === 'fashion' ? '#2D8FFF' : '#5871D3'}
                     width={'100%'}
                     alignSelf='center'

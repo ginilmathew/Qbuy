@@ -1,7 +1,7 @@
 /* eslint-disable quotes */
 /* eslint-disable semi */
 /* eslint-disable prettier/prettier */
-import { Image, StyleSheet, Text, View, ScrollView, TouchableOpacity, Pressable, ActivityIndicator } from 'react-native'
+import { Image, StyleSheet, Text, View, ScrollView, TouchableOpacity, Pressable, ActivityIndicator, Modal, useWindowDimensions } from 'react-native'
 import React, { useRef, useState, useEffect, useContext, useCallback } from 'react'
 import HeaderWithTitle from '../../../Components/HeaderWithTitle'
 import ItemsCard from '../../MyOrders/ItemsCard'
@@ -51,6 +51,8 @@ const Checkout = ({ navigation }) => {
     const contextPanda = useContext(PandaContext)
     const cartContext = useContext(CartContext)
     const authContext = useContext(AuthContext)
+
+    const { width, height} = useWindowDimensions()
 
     let active = contextPanda.active
 
@@ -612,9 +614,12 @@ const Checkout = ({ navigation }) => {
                 setCartItems(null)
                 await AsyncStorage.removeItem("cartId");
                 if (details?.STATUS == "TXN_SUCCESS") {
-                    navigation.navigate('OrderPlaced', { item: { created_at: details?.TXNDATE, order_id: orderID } })
                     cartContext?.setCart(null)
+                    setIsLoding(false)
+                    navigation.navigate('OrderPlaced', { item: { created_at: details?.TXNDATE, order_id: orderID } })
+                    
                 } else {
+                    setIsLoding(false)
                     navigation.navigate("order")
                     Toast.show({ type: 'error', text1: details?.RESPMSG || "Something went wrong !!!" })
 
@@ -627,6 +632,7 @@ const Checkout = ({ navigation }) => {
                 cartContext?.setCart(null)
                 setCartItems(null)
                 await AsyncStorage.removeItem("cartId");
+                setIsLoding(false)
                 navigation.navigate("order")
             })
     }
@@ -634,6 +640,7 @@ const Checkout = ({ navigation }) => {
 
 
     const payWithPayTM = async (data) => {
+        
         const { paymentDetails } = data
         let orderId = paymentDetails?.orderId
         let isStaging = env === "live" ? false : true
@@ -641,7 +648,7 @@ const Checkout = ({ navigation }) => {
             true: "https://securegw-stage.paytm.in/theia/paytmCallback?ORDER_ID=",
             false: "https://securegw.paytm.in/theia/paytmCallback?ORDER_ID="
         }
-
+        setIsLoding(false)
         await AllInOneSDKManager.startTransaction(
             paymentDetails?.orderId,//orderId
             paymentDetails?.mid,//mid
@@ -652,10 +659,10 @@ const Checkout = ({ navigation }) => {
             true,//appInvokeRestricted
             `paytm${paymentDetails?.mid}`//urlScheme
         ).then((result) => {
-
+            setIsLoding(true)
             if (has(result, "STATUS")) {
                 updatePaymentResponse(result)
-                setIsLoding(false);
+                //setIsLoding(false);
             }
             else {
                 let data = {
@@ -665,7 +672,7 @@ const Checkout = ({ navigation }) => {
                 }
                 reactotron.log('CANCEL PAYMENT')
                 updatePaymentResponse(data)
-                setIsLoding(false);
+                //setIsLoding(false);
             }
             // console.log("PAYTM =>", JSON.stringify(result));
 
@@ -679,8 +686,9 @@ const Checkout = ({ navigation }) => {
             }
 
             reactotron.log('CANCEL PAYMENT 2')
+            setIsLoding(true);
             updatePaymentResponse(data)
-            setIsLoding(false);
+            
         });
 
     }
@@ -1043,6 +1051,14 @@ const Checkout = ({ navigation }) => {
                 </View>
 
             </View>
+            <Modal visible={isLoading} style={{ backgroundColor: 'transparent' }} transparent={true} >
+                <View 
+                    style={ [styles.loaderStyle, { width, height }] }
+                >
+                    <Text>Please wait we are processing your order.</Text>
+                    <ActivityIndicator color={"red"} size={30} />
+                </View>
+            </Modal>
         </>
     )
 }
@@ -1050,7 +1066,15 @@ const Checkout = ({ navigation }) => {
 export default Checkout
 
 const styles = StyleSheet.create({
-
+    loaderStyle: {
+        width: 45,
+        height: 45,
+        backgroundColor: 'rgba(0,0,0,0.4)',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 10,
+        shadowOffset: 2,
+    },
     productBox: {
         marginTop: 10,
         backgroundColor: '#fff',

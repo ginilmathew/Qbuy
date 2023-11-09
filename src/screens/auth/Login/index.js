@@ -1,7 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable prettier/prettier */
-import { StyleSheet, Text, View, Image, ScrollView, ActivityIndicator, ToastAndroid, useWindowDimensions, PermissionsAndroid, Platform } from 'react-native';
+import { StyleSheet, Text, View, Image, ScrollView, ActivityIndicator, ToastAndroid, useWindowDimensions, PermissionsAndroid, Platform, Keyboard } from 'react-native';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -60,6 +60,7 @@ const Login = ({ navigation }) => {
 	});
 
 	const onSubmit = useCallback(async (data) => {
+		Keyboard.dismiss()
 		// navigation.navigate('Otp')
 
 		loginUser.setLogin(data);
@@ -227,7 +228,7 @@ const Login = ({ navigation }) => {
 
 	return (
 		<CommonAuthBg>
-			<ScrollView style={ { flex: 1, paddingHorizontal: 20 } }>
+			<ScrollView style={ { flex: 1, paddingHorizontal: 20 } } keyboardShouldPersistTaps="always">
 				<FastImage
 					style={ styles.logo }
 					source={ imageURl[mode] }

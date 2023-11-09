@@ -16,6 +16,8 @@ import CartContext from '../../../../contexts/Cart'
 import AuthContext from '../../../../contexts/Auth'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { CommonActions } from '@react-navigation/native'
+import LoadingModal from '../../../../Components/LoadingModal'
+import LoaderContext from '../../../../contexts/Loader'
 
 const LocationScreen = ({ route, navigation }) => {
 
@@ -28,7 +30,7 @@ const LocationScreen = ({ route, navigation }) => {
 
     const cartContext = useContext(CartContext);
     const contextPanda = useContext(PandaContext);
-    // const loadingContex = useContext(LoaderContext);
+  const loadingContex = useContext(LoaderContext);
     const userContext = useContext(AuthContext);
     const addressContext = useContext(AddressContext);
 
@@ -41,152 +43,104 @@ const LocationScreen = ({ route, navigation }) => {
     const [address, setAddress] = useState(editAddress?.area?.address || '');
     const [city, setCity] = useState('');
 
-    async function fetchData() {
-        if (Platform.OS === 'android') {
-            await PermissionsAndroid.request(
-                PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-            )
-        }
-        if (Platform.OS === 'ios') {
-            const hasPermission = await hasPermissionIOS();
-            return hasPermission;
-        }
-    }
-
-    const hasPermissionIOS = async () => {
-        const openSetting = () => {
-            Linking.openSettings().catch(() => {
-                Alert.alert('Unable to open settings');
-            });
-        };
-        const status = await Geolocation.requestAuthorization('whenInUse');
-        if (status === 'granted') {
-            return true;
-        }
-        if (status === 'denied') {
-            //Alert.alert('Location permission denied');
-        }
-        if (status === 'disabled') {
-            Alert.alert(
-                `Turn on Location Services to allow  to determine your location.`,
-                '',
-                [
-                    { text: 'Go to Settings', onPress: openSetting },
-                    { text: "Don't Use Location", onPress: () => { } },
-                ],
-            );
-        }
-        return false;
-    };
-
-    useEffect(() => {
-
-        if (homeNavigationbasedIndex?.index !== 1) {
-            fetchData().then(() => {
-                Geolocation.getCurrentPosition(
-                    position => {
-                        getAddressFromCoordinates(addressContext?.currentAddress?.latitude ? addressContext?.currentAddress?.latitude : position?.coords?.latitude, addressContext?.currentAddress?.longitude ? addressContext?.currentAddress?.longitude : position?.coords?.longitude);
-                        setLocation({ latitude: addressContext?.currentAddress?.latitude ? addressContext?.currentAddress?.latitude : position.coords.latitude, longitude: addressContext?.currentAddress?.longitude ? addressContext?.currentAddress?.longitude : position.coords.longitude })
-                    },
-                    error => {
-                        console.log(error.code, error.message)
-                    },
-                    {
-                        showLocationDialog: true,
-                        enableHighAccuracy: true,
-                        timeout: 20000,
-                        maximumAge: 0
-                    }
-                )
-            })
-        }
-
-    }, [homeNavigationbasedIndex?.index])
+    
 
     const onConfirm = useCallback(async () => {
 
-        if (!userContext?.userData) {
-            navigation.dispatch(
-                CommonActions.reset({
-                    index: 0,
-                    routes: [
-                        { name: 'green' },
-                    ],
-                })
-            )
-            return false;
-        }
-        //below code for checking the location is denied condition
-        if (homeNavigationbasedIndex?.index === 1 && mode !== "currentlocation") {
-            let value = {
-                area: {
-                    location: addressContext?.currentAddress?.location,
-                    address: addressContext?.currentAddress?.city
-                }
-            }
-            //cartContext.setDefaultAddress(value);
-            userContext.setLocation([addressContext?.currentAddress?.latitude, addressContext?.currentAddress?.longitude]);
-            const token = await AsyncStorage.getItem("token");
-            if (token) {
-                navigation.navigate('green')
-            } else {
-                navigation.navigate('Login')
-            }
-
-        } else {
-
+        if(mode === "newAddress"){
             let locationData = {
-                location: addressContext?.currentAddress?.location ? addressContext?.currentAddress?.location : address,
-                city: addressContext?.currentAddress?.city ? addressContext?.currentAddress?.city : city,
-                latitude: addressContext?.currentAddress?.latitude ? addressContext?.currentAddress?.latitude : location?.latitude,
-                longitude: addressContext?.currentAddress?.longitude ? addressContext?.currentAddress?.longitude : location?.longitude,
+                location: addressContext?.currentAddress?.location,
+                city: addressContext?.currentAddress?.city,
+                latitude: addressContext?.currentAddress?.latitude,
+                longitude: addressContext?.currentAddress?.longitude,
             }
 
 
             navigation.navigate('AddDeliveryAddress', { item: { ...editAddress, ...locationData } })
         }
+        else{
+            navigation.navigate('green', { screen: 'TabNavigator', params: { screen: 'home' } })
+        }
+
+        
 
 
 
 
-    }, [location, address, city, addressContext?.currentAddress, addressContext?.location, navigation])
+    }, [addressContext?.currentAddress, editAddress])
 
     const addNewAddress = useCallback(() => {
-        navigation.navigate('AddNewLocation')
+        navigation.navigate('AddNewLocation', { mode: route?.params?.mode })
     }, [])
 
     const myApiKey = "Key Received from Google map"
 
-    function getAddressFromCoordinates(latitude, longitude) {
-        axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${latitude},${longitude}&key=AIzaSyBBcghyB0FvhqML5Vjmg3uTwASFdkV8wZY`).then(response => {
-            setAddress(response?.data?.results[0]?.formatted_address)
-            let locality = response?.data?.results?.[0]?.address_components?.find(add => add.types.includes('locality'));
-            setCity(locality?.long_name)
-            // addressContext?.setCurrentAddress(null)
-            // addressContext?.setLocation(null)
-            let value = {
-                latitude: latitude,
-                longitude: longitude,
-                location: locality?.long_name,
-                address: response?.data?.results[0]?.formatted_address
+    // function getAddressFromCoordinates(latitude, longitude) {
+    //     axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${latitude},${longitude}&key=AIzaSyBBcghyB0FvhqML5Vjmg3uTwASFdkV8wZY`).then(response => {
+    //         setAddress(response?.data?.results[0]?.formatted_address)
+    //         let locality = response?.data?.results?.[0]?.address_components?.find(add => add.types.includes('locality'));
+    //         setCity(locality?.long_name)
+    //         // addressContext?.setCurrentAddress(null)
+    //         // addressContext?.setLocation(null)
+    //         let value = {
+    //             latitude: latitude,
+    //             longitude: longitude,
+    //             location: locality?.long_name,
+    //             address: response?.data?.results[0]?.formatted_address
 
-            }
-            // addressContext.setCurrentAddress(value)
+    //         }
+    //         // addressContext.setCurrentAddress(value)
 
-        })
-            .catch(err => {
-            })
+    //     })
+    //         .catch(err => {
+    //         })
 
-    }
+    // }
 
 
-    const RegionChange = (e) => {
+    const RegionChange = async(e) => {
         let coordinates = e.nativeEvent.coordinate;
 
-        getAddressFromCoordinates(coordinates?.latitude, coordinates?.longitude)
-        setLocation({ latitude: coordinates?.latitude, longitude: coordinates?.longitude })
-        addressContext.setCurrentAddress({ latitude: coordinates?.latitude, longitude: coordinates?.longitude })
+        // getAddressFromCoordinates(coordinates?.latitude, coordinates?.longitude)
+        // setLocation({ latitude: coordinates?.latitude, longitude: coordinates?.longitude })
+        // addressContext.setCurrentAddress({ latitude: coordinates?.latitude, longitude: coordinates?.longitude })
         //setLocation(region)
+
+        loadingContex?.setLoading(true)
+        try {
+            let response = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${coordinates?.latitude},${coordinates?.longitude}&key=AIzaSyBBcghyB0FvhqML5Vjmg3uTwASFdkV8wZY`);
+
+
+            let Value = {
+                location: response?.data?.results[0]?.formatted_address,
+                city: response?.data?.results[0]?.address_components?.filter(st =>
+                    st.types?.includes('locality')
+                )[0]?.long_name,
+                latitude: coordinates?.latitude,
+                longitude: coordinates?.longitude,
+            };
+
+
+            addressContext.setCurrentAddress(Value);
+
+            let location = {
+                latitude: coordinates?.latitude,
+                longitude: coordinates?.longitude,
+                address: Value?.location
+            }
+
+
+            AsyncStorage.setItem("location", JSON.stringify(location))
+            userContext.setLocation([coordinates?.latitude, coordinates?.longitude]);
+            userContext.setCurrentAddress(Value?.location)
+            //navigation.navigate('LocationScreen', { mode: mode });
+
+        } catch (error) {
+            
+        }
+        finally{
+            loadingContex?.setLoading(false)
+        }
 
     }
 
@@ -199,8 +153,8 @@ const LocationScreen = ({ route, navigation }) => {
             <MapView
                 style={{ flex: 1 }}
                 region={{
-                    latitude: addressContext?.currentAddress ? addressContext?.currentAddress?.latitude : location?.latitude,
-                    longitude: addressContext?.currentAddress ? addressContext?.currentAddress?.longitude : location?.longitude,
+                    latitude: addressContext?.currentAddress?.latitude,
+                    longitude: addressContext?.currentAddress?.longitude,
                     latitudeDelta: 0.015,
                     longitudeDelta: 0.0121,
                 }}
@@ -214,8 +168,8 @@ const LocationScreen = ({ route, navigation }) => {
             >
                 {location && <Marker
                     coordinate={{
-                        latitude: addressContext?.currentAddress ? addressContext?.currentAddress?.latitude : location?.latitude,
-                        longitude: addressContext?.currentAddress ? addressContext?.currentAddress?.longitude : location?.longitude,
+                        latitude: addressContext?.currentAddress?.latitude,
+                        longitude: addressContext?.currentAddress?.longitude,
                     }}
                 />}
             </MapView>
@@ -223,7 +177,7 @@ const LocationScreen = ({ route, navigation }) => {
                 <View style={{ flexDirection: 'row', }}>
                     <Foundation name={'target-two'} color='#FF0000' size={23} marginTop={7} />
                     <View style={{ flex: 0.9, marginLeft: 7, }}>
-                        <CommonTexts label={addressContext?.currentAddress?.city ? addressContext?.currentAddress?.city : city} fontSize={22} />
+                        <CommonTexts label={ addressContext?.currentAddress?.city} fontSize={22} />
                         <Text
                             style={{
                                 fontFamily: 'Poppins-Regular',
@@ -231,7 +185,7 @@ const LocationScreen = ({ route, navigation }) => {
                                 fontSize: 11,
                                 marginTop: -5
                             }}
-                        >{addressContext?.currentAddress?.location ? addressContext?.currentAddress?.location : address}</Text>
+                        >{addressContext?.currentAddress?.location}</Text>
                     </View>
                     <TouchableOpacity
                         onPress={addNewAddress}
@@ -247,6 +201,7 @@ const LocationScreen = ({ route, navigation }) => {
                     mt={10}
                 />
             </View>
+            <LoadingModal isVisible={loadingContex?.loading} />
         </>
     )
 }
