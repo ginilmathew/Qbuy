@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, SafeAreaView, Platform, AppState } from 'react-native'
+import { StyleSheet, Text, View, SafeAreaView, Platform, AppState, PermissionsAndroid } from 'react-native'
 import React, { useCallback, useEffect } from 'react'
 import Navigation from './Navigations'
 import PandaProvider from './contexts/Panda/PandaContext'
@@ -19,15 +19,20 @@ import {
     focusManager
 } from '@tanstack/react-query'
 import SplashScreen from 'react-native-splash-screen'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import messaging from '@react-native-firebase/messaging';
+import reactotron from 'reactotron-react-native'
+import customAxios from './CustomeAxios'
+import notifee, { AndroidImportance } from '@notifee/react-native';
 
 
 
 
 
 if (__DEV__) {
-	import('react-query-native-devtools').then(({ addPlugin }) => {
-		addPlugin({ queryClient });
-	});
+    import('react-query-native-devtools').then(({ addPlugin }) => {
+        addPlugin({ queryClient });
+    });
 }
 
 const queryClient = new QueryClient()
@@ -38,88 +43,100 @@ const App = (props) => {
 
     function onAppStateChange(status) {
         if (Platform.OS !== 'web') {
-          focusManager.setFocused(status === 'active')
+            focusManager.setFocused(status === 'active')
         }
-      }
-      
-      useEffect(() => {
+    }
+
+    useEffect(() => {
         const subscription = AppState.addEventListener('change', onAppStateChange)
         SplashScreen.hide();
         return () => subscription.remove()
-      }, [])
+    }, [])
 
 
     if (Platform.OS === 'ios') {
         //SplashScreen.hide()
     }
 
-    // useEffect(() => {
-    //     getCurrentLocation()
+    useEffect(() => {
+        //getCurrentLocation()
+        requestUserPermission()
+        onAppBootstrap()
+    }, [])
 
-    //     onAppBootstrap()
-    // }, [])
+    async function onMessageReceived(message) {
+        const { notification } = message
 
-    // async function onMessageReceived(message) {
-    //     const { notification } = message
-
-    //     reactotron.log({message})
-    //     // Request permissions (required for iOS)
-    //     await notifee.requestPermission()
-
-    //     // Create a channel (required for Android)
-    //     const channelId = await notifee.createChannel({
-    //     id: 'default',
-    //     name: 'Default Channel',
-    //     });
-
-    //     // Display a notification
-    //     await notifee.displayNotification({
-    //     title: notification?.title,
-    //     body: notification?.body,
-    //     android: {
-    //         channelId,
-    //         //smallIcon: 'name-of-a-small-icon', // optional, defaults to 'ic_launcher'.
-    //         // pressAction is needed if you want the notification to open the app when pressed
-    //         pressAction: {
-    //         id: 'default',
-    //         },
-    //     },
-    //     });
-    // }
-
-    // async function onAppBootstrap() {
-    //     // Register the device with FCM
-    //     let userDetails = await AsyncStorage.getItem("user");
-    //     await messaging().registerDeviceForRemoteMessages();
-
-    //     if(userDetails){
-    //         let user = JSON.parse(userDetails)
-
-    //         reactotron.log({user})
-    //         // Get the token
-    //         const token = await messaging().getToken();
-
-    //         let data = {
-    //             id: user?._id,
-    //             token: token
-    //         }
-    //         customAxios.post('auth/update-devicetoken', data)
-    //         .then(response => {
-    //             reactotron.log({response})
-    //         })
-    //         .catch(err => {
-    //             reactotron.log({err})
-    //         })
-    //         reactotron.log({token})
-
-    //     }
+        reactotron.log({ message })
 
 
+        // Display a notification
+        await notifee.displayNotification({
+            title: notification?.title,
+            body: notification?.body,
+            
+            android: {
+                channelId: 'default',
+                importance: AndroidImportance.HIGH,
+                sound: 'default',
+                //smallIcon: 'name-of-a-small-icon', // optional, defaults to 'ic_launcher'.
+                // pressAction is needed if you want the notification to open the app when pressed
+                pressAction: {
+                    id: 'default',
+                },
+            },
+        });
+    }
+
+    async function onAppBootstrap() {
+        // Request permissions (required for iOS)
+        await notifee.requestPermission()
+
+        // Create a channel (required for Android)
+        const channelId = await notifee.createChannel({
+            id: 'default',
+            name: 'Default Channel',
+            sound: 'default',
+            importance: AndroidImportance.HIGH,
+            
+        });
+        // Register the device with FCM
+        let userDetails = await AsyncStorage.getItem("user");
+        await messaging().registerDeviceForRemoteMessages();
+        const token = await messaging().getToken();
+
+        //console.log({ token })
+
+        if (userDetails) {
+            let user = JSON.parse(userDetails)
+
+            reactotron.log({ user })
+            // Get the token
 
 
-    //     // Save the token
-    //     //await postToApi('/users/1234/tokens', { token });
-    // }
+            let data = {
+                id: user?._id,
+                token: token
+            }
+            customAxios.post('auth/update-devicetoken', data)
+                .then(response => {
+                    reactotron.log({ response })
+                })
+                .catch(err => {
+                    reactotron.log({ err })
+                })
+            reactotron.log({ token })
+
+        }
+
+    }
+
+
+    useEffect(() => {
+        const unsubscribe = messaging().onMessage(onMessageReceived);
+
+        return unsubscribe;
+    }, []);
 
     // useEffect(() => {
     //     const unsubscribe = messaging().onMessage(onMessageReceived);
@@ -197,23 +214,23 @@ const App = (props) => {
 
     // }, [])
 
-    // async function requestUserPermission() {
+    async function requestUserPermission() {
 
-    //     if(Platform.OS === 'android'){
-    //         PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
-    //     }
+        if (Platform.OS === 'android') {
+            PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
+        }
 
-    //     const authStatus = await messaging().requestPermission();
-    //     const enabled =
-    //       authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-    //       authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+        const authStatus = await messaging().requestPermission();
+        const enabled =
+            authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+            authStatus === messaging.AuthorizationStatus.PROVISIONAL;
 
-    //     if (enabled) {
-    //       console.log('Authorization status:', authStatus);
-    //     }
+        if (enabled) {
+            console.log('Authorization status:', authStatus);
+        }
 
-    //     //getCurrentLocation()
-    // }
+        //getCurrentLocation()
+    }
 
 
 
@@ -225,7 +242,7 @@ const App = (props) => {
                         <AddressProvider>
                             <PandaProvider>
                                 <CartProvider>
-                                {/* <AppWithTour/> */}
+                                    {/* <AppWithTour/> */}
                                     <RouteTest />
                                     <Toast
                                         position='bottom'
@@ -236,12 +253,12 @@ const App = (props) => {
                         </AddressProvider>
                     </AuthProvider>
                 </LoadProvider>
-            
+
             </Provider>
         </QueryClientProvider>
     )
 }
 
-export default  App
+export default App
 
 const styles = StyleSheet.create({})

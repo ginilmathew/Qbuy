@@ -724,7 +724,7 @@ const Checkout = ({ navigation }) => {
     }, [])
 
     const backToCart = useCallback(() => {
-        navigation.navigate('Cart')
+        navigation.navigate("green", { screen : 'TabNavigator', params: { screen : 'cart' }})
     }, [navigation])
 
 

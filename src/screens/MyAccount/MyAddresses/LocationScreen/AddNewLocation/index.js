@@ -22,7 +22,7 @@ const AddNewLocation = ({ route, navigation }) => {
     const addressContext = useContext(AddressContext)
     const userContext = useContext(AuthContext)
     const loadingg = useContext(LoaderContext);
-    const [mode, setMode] = useState(route?.params?.mode ? route?.params?.mode : 'home')
+    //const [mode, setMode] = useState(route?.params?.mode ? route?.params?.mode : 'home')
 
     const { width, height } = useWindowDimensions()
 
@@ -60,7 +60,7 @@ const AddNewLocation = ({ route, navigation }) => {
             AsyncStorage.setItem("location", JSON.stringify(location))
             userContext.setLocation([lat, lng]);
             userContext.setCurrentAddress(Value?.location)
-            navigation.navigate('LocationScreen', { mode: mode });
+            navigation.navigate('LocationScreen', { mode: route?.params?.mode });
 
         } catch (error) {
             
@@ -214,7 +214,7 @@ const AddNewLocation = ({ route, navigation }) => {
 
                         addressContext.setCurrentAddress(Value);
 
-                        navigation.navigate('LocationScreen', { mode: mode });
+                        navigation.navigate('LocationScreen', { mode: route?.params?.mode });
                     }}
                     query={{
                         key: 'AIzaSyBBcghyB0FvhqML5Vjmg3uTwASFdkV8wZY',

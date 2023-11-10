@@ -147,7 +147,7 @@ const LocationScreen = ({ route, navigation }) => {
             AsyncStorage.setItem("location", JSON.stringify(location))
             userContext.setLocation([coordinates?.latitude, coordinates?.longitude]);
             userContext.setCurrentAddress(Value?.location)
-            //navigation.navigate('LocationScreen', { mode: mode });
+            navigation.navigate('LocationScreen', { mode: mode });
 
         } catch (error) {
             

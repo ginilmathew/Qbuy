@@ -134,7 +134,7 @@ const AddDeliveryAddress = ({ route, navigation }) => {
                     AsyncStorage.setItem("location", JSON.stringify(location))
                     userContext.setLocation([response?.data?.data?.area?.latitude, response?.data?.data?.area?.longitude]);
                     userContext.setCurrentAddress(response?.data?.data?.area?.address)
-                    navigation.navigate("Checkout")
+                    navigation.navigate("green", { screen : "Checkout" })
                 }
                 else{
                     navigation.navigate('MyAddresses', { mode: 'MyAcc' })

@@ -241,6 +241,7 @@ const Login = ({ navigation }) => {
 				<CommonTexts
 					label={ 'Sign in with your mobile for an OTP' }
 					mt={ 2 }
+					fullLabel={true}
 				/>
 				<CommonInput
 					leftElement
