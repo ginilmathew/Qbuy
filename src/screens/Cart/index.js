@@ -18,7 +18,7 @@ import HeaderWithTitle from '../../Components/HeaderWithTitle';
 import CartItemCard from './CartItemCard';
 import CommonItemsList from '../../Components/CommonItemsList';
 import PandaContext from '../../contexts/Panda';
-import Lottie from 'lottie-react-native';
+import LottieView from 'lottie-react-native';
 import CommonTexts from '../../Components/CommonTexts';
 import CommonItemCard from '../../Components/CommonItemCard';
 import AuthContext from '../../contexts/Auth';
@@ -442,7 +442,8 @@ const Cart = ({ navigation }) => {
                             borderColor: '#0C256C21',
                         } }>
                         <View style={ { height: active === 'green' ? 250 : 170 } }>
-                            <Lottie
+                            <LottieView
+                               style={{ height: '100%', width: '100%' }}
                                 source={
                                     active === 'green'
                                         ? require('../../Lottie/emptyGrocery.json')
@@ -454,7 +455,7 @@ const Cart = ({ navigation }) => {
                             />
                         </View>
                         <CommonTexts
-                            label={ 'Oh! Your cart is currently empty!' }
+                            label={ 'Your cart is empty!' }
                             color="#A9A9A9"
                             textAlign={ 'center' }
                             mt={ active === 'green' ? -70 : 10 }

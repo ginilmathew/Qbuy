@@ -65,10 +65,11 @@ const QbuyGreenHome = async (datas) => {
 }
 
 const QbuyGreenProducts = async (items, pageparam) => {
-    const homeDataProduct = await customAxios.post(`customer/new-product-list?page=` + pageparam, items);
+    const homeDataProduct = await customAxios.post(`customer/new-product-list?page=` + pageparam, { ...items, page: pageparam });
     return {
-        data: homeDataProduct?.data?.data?.data,
-        lastpage: homeDataProduct?.data?.data?.last_page
+        data: homeDataProduct?.data?.data?.available_product,
+        lastPage:homeDataProduct?.data?.data
+    
     }
 
 }
@@ -119,7 +120,6 @@ const QBuyGreen = ({ navigation }) => {
     })
 
     const Homeapi = useQuery({ queryKey: ['greenHome'], queryFn: () => QbuyGreenHome(datas) });
-
 
 
     let userData = userContext?.userData
@@ -199,7 +199,7 @@ const QBuyGreen = ({ navigation }) => {
                 return;
             }
             //if (Homeapi.isLoading && isLoading) {
-                RefetchMore();
+            RefetchMore();
             //}
 
 
@@ -416,7 +416,7 @@ const QBuyGreen = ({ navigation }) => {
         return (
             <View style={styles.container}>
                 {Homeapi?.data?.home?.map(home => renderItems(home))}
-                {Homeapi?.data?.availablePdt?.data.length > 0 && <CommonTexts label={'Available Products'} ml={15} mb={10} mt={20} />}
+                {data?.pages?.[0].data.length > 0 && <CommonTexts label={'Available Products'} ml={15} mb={10} mt={20} />}
             </View>
         )
     }
@@ -473,7 +473,7 @@ const QBuyGreen = ({ navigation }) => {
         )
     }
 
-    const keyExtractorGreen = (item) => item._id;
+    const keyExtractorGreen = (item) => item?._id;
 
     const addMore = () => {
         // setInitialPage((pre) => pre + 1);
@@ -483,7 +483,7 @@ const QBuyGreen = ({ navigation }) => {
 
 
     const ListFooterComponents = () => {
-        if (data?.pages?.[0]?.lastpage * 1 <= data?.pageParams?.length * 1) {
+        if (data?.pages?.[0]?.lastPage?.last_page * 1 <= data?.pageParams?.length * 1) {
             return null
         }
         return (

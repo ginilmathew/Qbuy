@@ -12,9 +12,8 @@ import NameText from '../NameText'
 import SearchBox from '../../../Components/SearchBox'
 import { ScrollView } from 'react-native-gesture-handler'
 import CategoryCard from '../QBuyGreen/CategoryCard'
-import reactotron from 'reactotron-react-native'
+// import reactotron from 'reactotron-react-native'
 import Carousel from 'react-native-reanimated-carousel'
-import AvailableStores from '../QBuyGreen/AvailableStores'
 import ShopCard from '../Grocery/ShopCard'
 import CommonTexts from '../../../Components/CommonTexts'
 import PickDropAndReferCard from '../PickDropAndReferCard'
@@ -28,7 +27,7 @@ import {
 import TypeSkelton from '../Grocery/TypeSkelton'
 import ShopCardSkeltion from '../Grocery/ShopCardSkeltion'
 import FastImage from 'react-native-fast-image'
-import PandaSuggestions from '../QBuyGreen/PandaSuggestions'
+// import PandaSuggestions from '../QBuyGreen/PandaSuggestions'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 
 const fashHome = async (datas) => {
@@ -48,10 +47,10 @@ const fashHome = async (datas) => {
 
 
 const QbuyFashionProducts = async (items, pageparam) => {
-    const homeDataProduct = await customAxios.post(`customer/new-product-list?page=` + pageparam, items);
+    const homeDataProduct = await customAxios.post(`customer/new-product-list?page=` + pageparam, { ...items, page: pageparam });
     return {
-        data: homeDataProduct?.data?.data?.data,
-        lastpage: homeDataProduct?.data?.data?.last_page
+        data: homeDataProduct?.data?.data?.available_product,
+        lastPage:homeDataProduct?.data?.data
     }
 
 }
@@ -80,7 +79,7 @@ const QbuyfashionHome = () => {
         isLoading,
         error,
         fetchNextPage,
-        refetch:infiniteQueryRefetch,
+        refetch: infiniteQueryRefetch,
         hasNextPage,
         isFetching,
         isFetchingNextPage,
@@ -172,7 +171,7 @@ const QbuyfashionHome = () => {
 
     const RefetchMore = () => {
         Homeapi?.refetch(),
-        infiniteQueryRefetch()
+            infiniteQueryRefetch()
     }
 
     const RefetchMoreFlat = () => {
@@ -219,10 +218,10 @@ const QbuyfashionHome = () => {
 
     const CarouselCardItem = ({ item, index }) => {
         return (
-            <TouchableOpacity key={ index } onPress={ () => CarouselSelect(item) } style={ { alignItems: 'center', marginTop: 20, width: '100%', height: '85%' } } >
+            <TouchableOpacity key={index} onPress={() => CarouselSelect(item)} style={{ alignItems: 'center', marginTop: 20, width: '100%', height: '85%' }} >
                 <FastImage
-                    source={ { uri: `${IMG_URL}${item?.original_image}` } }
-                    style={ { height: '100%', width: '95%', borderRadius: 20 } }
+                    source={{ uri: `${IMG_URL}${item?.original_image}` }}
+                    style={{ height: '100%', width: '95%', borderRadius: 20 }}
                     resizeMode='cover'
                 >
                 </FastImage>
@@ -235,28 +234,28 @@ const QbuyfashionHome = () => {
         return (
             <View>
 
-                <NameText userName={ auth?.userData?.name ? auth?.userData?.name : auth?.userData?.mobile } mt={ 8 } />
-                <SearchBox onPress={ onSearch } />
+                <NameText userName={auth?.userData?.name ? auth?.userData?.name : auth?.userData?.mobile} mt={8} />
+                <SearchBox onPress={onSearch} />
 
-                <CategoryCard data={ Homeapi?.data?.category?.data } loading={ Homeapi?.isLoading } />
-                { Homeapi?.data?.slide?.data?.length > 0 &&
+                <CategoryCard data={Homeapi?.data?.category?.data} loading={Homeapi?.isLoading} />
+                {Homeapi?.data?.slide?.data?.length > 0 &&
                     <View>
                         <Carousel
                             loop
-                            width={ width }
-                            height={ height / 5 }
-                            autoPlay={ true }
-                            data={ Homeapi?.data?.slide?.data }
-                            scrollAnimationDuration={ 1000 }
-                            renderItem={ CarouselCardItem }
+                            width={width}
+                            height={height / 5}
+                            autoPlay={true}
+                            data={Homeapi?.data?.slide?.data}
+                            scrollAnimationDuration={1000}
+                            renderItem={CarouselCardItem}
                         />
                     </View>
                 }
-                <CommonTexts label={ 'Available Stores' } ml={ 15 } fontSize={ 13 } mt={ 20 } />
-                <View style={ { marginHorizontal: 5, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' } }>
-                    { Homeapi?.data?.store?.data?.map((item) => (
-                        <ShopCard key={ item?._id } item={ item } />
-                    )) }
+                <CommonTexts label={'Available Stores'} ml={15} fontSize={13} mt={20} />
+                <View style={{ marginHorizontal: 5, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' }}>
+                    {Homeapi?.data?.store?.data?.map((item) => (
+                        <ShopCard key={item?._id} item={item} />
+                    ))}
                 </View>
                 {/* <View style={styles.pickupReferContainer}>
                     <PickDropAndReferCard
@@ -273,49 +272,49 @@ const QbuyfashionHome = () => {
                         ml={8}
                     />
                 </View> */}
-                <View style={ styles.offerView }>
-                    <Text style={ styles.discountText }>{ '50% off Upto Rs 125!' }</Text>
-                    <Offer onPress={ null } shopName={ "GM" } />
-                    <Text style={ styles.offerValText }>{ 'Offer valid till period!' }</Text>
+                <View style={styles.offerView}>
+                    <Text style={styles.discountText}>{'50% off Upto Rs 125!'}</Text>
+                    <Offer onPress={null} shopName={"GM"} />
+                    <Text style={styles.offerValText}>{'Offer valid till period!'}</Text>
                 </View>
-                { Homeapi?.data?.rescent_view?.data?.length > 0 &&
+                {Homeapi?.data?.rescent_view?.data?.length > 0 &&
                     <View>
-                        <CommonTexts label={ 'Recently Viewed' } fontSize={ 13 } mt={ 5 } ml={ 15 } mb={ 5 } />
+                        <CommonTexts label={'Recently Viewed'} fontSize={13} mt={5} ml={15} mb={5} />
                         <ScrollView
                             horizontal
-                            showsHorizontalScrollIndicator={ false }
-                            style={ { flexDirection: 'row', paddingLeft: 7 } }
+                            showsHorizontalScrollIndicator={false}
+                            style={{ flexDirection: 'row', paddingLeft: 7 }}
                         >
-                            { Homeapi?.data?.rescent_view?.data?.map((item) =>
+                            {Homeapi?.data?.rescent_view?.data?.map((item) =>
                                 <CommonItemCard
-                                    key={ item?._id }
-                                    item={ item }
-                                    width={ width / 2.5 }
-                                    marginHorizontal={ 5 }
-                                    addToCart={ addToCart }
+                                    key={item?._id}
+                                    item={item}
+                                    width={width / 2.5}
+                                    marginHorizontal={5}
+                                    addToCart={addToCart}
                                 />
-                            ) }
+                            )}
                         </ScrollView>
-                    </View> }
-                { Homeapi?.data?.suggested_products?.data?.length > 0 &&
+                    </View>}
+                {Homeapi?.data?.suggested_products?.data?.length > 0 &&
                     <View>
-                        <CommonTexts label={ 'Panda Suggestions' } fontSize={ 13 } mt={ 5 } ml={ 15 } mb={ 5 } />
+                        <CommonTexts label={'Panda Suggestions'} fontSize={13} mt={5} ml={15} mb={5} />
                         <ScrollView
                             horizontal
-                            showsHorizontalScrollIndicator={ false }
-                            style={ { flexDirection: 'row', paddingLeft: 7 } }
+                            showsHorizontalScrollIndicator={false}
+                            style={{ flexDirection: 'row', paddingLeft: 7 }}
                         >
-                            { Homeapi?.data?.suggested_products?.data?.map((item) =>
+                            {Homeapi?.data?.suggested_products?.data?.map((item) =>
                                 <CommonItemCard
-                                    key={ item?._id }
-                                    item={ item }
-                                    width={ width / 2.5 }
-                                    marginHorizontal={ 5 }
-                                    addToCart={ addToCart }
+                                    key={item?._id}
+                                    item={item}
+                                    width={width / 2.5}
+                                    marginHorizontal={5}
+                                    addToCart={addToCart}
                                 />
-                            ) }
+                            )}
                         </ScrollView>
-                    </View> }
+                    </View>}
                 {/* { data?.suggested_products?.data?.length > 0 && <View>
                     <PandaSuggestions data={ data?.suggested_products?.data } /> <>
 
@@ -323,7 +322,7 @@ const QbuyfashionHome = () => {
                 </View> } */}
                 <View>
                     <View>
-                        <CommonTexts label={ 'Available Products' } fontSize={ 13 } ml={ 15 } mb={ 5 } mt={ 15 } />
+                        <CommonTexts label={'Available Products'} fontSize={13} ml={15} mb={5} mt={15} />
                     </View>
                 </View>
             </View>
@@ -332,22 +331,22 @@ const QbuyfashionHome = () => {
 
     const renderProducts = ({ item, index }) => {
         return (
-            <View key={ index } style={ { flex: 0.5, justifyContent: 'center' } }>
+            <View key={index} style={{ flex: 0.5, justifyContent: 'center' }}>
                 <CommonItemCard
-                    item={ item }
-                    key={ item?._id }
-                    width={ width / 2.2 }
-                    height={ height / 3.6 }
-                    mr={ 5 }
-                    ml={ 8 }
-                    mb={ 15 }
+                    item={item}
+                    key={item?._id}
+                    width={width / 2.2}
+                    height={height / 3.6}
+                    mr={5}
+                    ml={8}
+                    mb={15}
                 />
             </View>
         )
     }
 
 
-    const keyExtractorfashion = (item) => item._id;
+    const keyExtractorfashion = (item) => item?._id;
 
     const addMore = () => {
         // setInitialPage((pre) => pre + 1);
@@ -360,7 +359,7 @@ const QbuyfashionHome = () => {
 
 
     const ListFooterComponents = () => {
-        if ( data?.pages?.[0]?.lastpage * 1 <= data?.pageParams?.length * 1) {
+        if (data?.pages?.[0]?.lastPage?.last_page * 1 <= data?.pageParams?.length * 1) {
             return null
         }
         return (
@@ -383,42 +382,42 @@ const QbuyfashionHome = () => {
 
     if (Homeapi?.isLoading) {
         return (
-            <SafeAreaView style={ { flex: 1, height: height, width: width } } >
+            <SafeAreaView style={{ flex: 1, height: height, width: width }} >
                 <StatusBar />
-                <NameText userName={ auth?.userData?.name ? auth?.userData?.name : auth?.userData?.mobile } mt={ 8 } />
-                <SearchBox onPress={ onSearch } />
-                <View style={ { flexDirection: 'row', margin: 5, justifyContent: 'center', paddingTop: 4 } }>
-                    { [1, 2, 3, 4]?.map(arr => {
+                <NameText userName={auth?.userData?.name ? auth?.userData?.name : auth?.userData?.mobile} mt={8} />
+                <SearchBox onPress={onSearch} />
+                <View style={{ flexDirection: 'row', margin: 5, justifyContent: 'center', paddingTop: 4 }}>
+                    {[1, 2, 3, 4]?.map(arr => {
                         return (
                             <TypeSkelton />
                         )
-                    }) }
+                    })}
                 </View>
-                <CommonTexts label={ 'Available Stores' } ml={ 15 } fontSize={ 13 } mt={ 20 } />
-                <View style={ { marginHorizontal: 5, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' } }>
-                    { [1, 2, 3, 4, 5, 6, 7, 8]?.map((item) => (
+                <CommonTexts label={'Available Stores'} ml={15} fontSize={13} mt={20} />
+                <View style={{ marginHorizontal: 5, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' }}>
+                    {[1, 2, 3, 4, 5, 6, 7, 8]?.map((item) => (
                         <ShopCardSkeltion />
-                    )) }
+                    ))}
                 </View>
-                <View style={ styles.pickupReferContainer }>
+                <View style={styles.pickupReferContainer}>
                     <PickDropAndReferCard
-                        onPress={ null }
-                        lotties={ require('../../../Lottie/farmer.json') }
-                        label={ 'Test' }
-                        lottieFlex={ 0.7 }
+                        onPress={null}
+                        lotties={require('../../../Lottie/farmer.json')}
+                        label={'Test'}
+                        lottieFlex={0.7}
                     />
                     <PickDropAndReferCard
-                        onPress={ null }
-                        lotties={ require('../../../Lottie/dresses.json') }
-                        label={ 'Sell Your Items' }
-                        lottieFlex={ 0.5 }
-                        ml={ 8 }
+                        onPress={null}
+                        lotties={require('../../../Lottie/dresses.json')}
+                        label={'Sell Your Items'}
+                        lottieFlex={0.5}
+                        ml={8}
                     />
                 </View>
-                <View style={ styles.offerView }>
-                    <Text style={ styles.discountText }>{ '50% off Upto Rs 125!' }</Text>
-                    <Offer onPress={ null } shopName={ "GM" } />
-                    <Text style={ styles.offerValText }>{ 'Offer valid till period!' }</Text>
+                <View style={styles.offerView}>
+                    <Text style={styles.discountText}>{'50% off Upto Rs 125!'}</Text>
+                    <Offer onPress={null} shopName={"GM"} />
+                    <Text style={styles.offerValText}>{'Offer valid till period!'}</Text>
                 </View>
             </SafeAreaView>
         )
@@ -427,29 +426,29 @@ const QbuyfashionHome = () => {
     return (
 
         <>
-            <Header onPress={ onClickDrawer } />
+            <Header onPress={onClickDrawer} />
             <FlatList
-                ListHeaderComponent={ headerComponents }
-                data={ data?.pages?.map(page => page?.data)?.flat() }
-                showsVerticalScrollIndicator={ false }
-                initialNumToRender={ 6 }
-                removeClippedSubviews={ true }
-                windowSize={ 10 }
-                maxToRenderPerBatch={ 6 }
-                keyExtractorCategory={ keyExtractorfashion }
-                numColumns={ 2 }
-                refreshing={ Homeapi?.isLoading  || isLoading}
-                onRefresh={ RefetchMoreFlat }
-                style={ { marginLeft: 5 } }
-                contentContainerStyle={ { justifyContent: 'center', gap: 2, backgroundColor: '#FFF5F7' } }
-                renderItem={ renderProducts }
-                ListFooterComponent={ ListFooterComponents }
+                ListHeaderComponent={headerComponents}
+                data={data?.pages?.map(page => page?.data)?.flat()}
+                showsVerticalScrollIndicator={false}
+                initialNumToRender={6}
+                removeClippedSubviews={true}
+                windowSize={10}
+                maxToRenderPerBatch={6}
+                keyExtractorCategory={keyExtractorfashion}
+                numColumns={2}
+                refreshing={Homeapi?.isLoading || isLoading}
+                onRefresh={RefetchMoreFlat}
+                style={{ marginLeft: 5 }}
+                contentContainerStyle={{ justifyContent: 'center', gap: 2, backgroundColor: '#FFF5F7' }}
+                renderItem={renderProducts}
+                ListFooterComponent={ListFooterComponents}
 
             />
             <CommonWhatsappButton
                 position='absolute'
-                bottom={ 10 }
-                right={ 10 }
+                bottom={10}
+                right={10}
             />
         </>
 

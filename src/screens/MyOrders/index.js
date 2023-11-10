@@ -99,7 +99,7 @@ const MyOrders = () => {
                     onRefresh={getOrderList}
                     // style={{ marginLeft: 5 }}
                     ListEmptyComponent={ListEmptyComponents}
-                    contentContainerStyle={{ justifyContent: 'center' , paddingBottom: 60, paddingTop: 10, paddingHorizontal: 10, backgroundColor: active === 'green' ? '#F4FFE9' : active === 'fashion' ? '#FFF5F7' : '#fff'}}
+                    contentContainerStyle={{ justifyContent: 'center' , paddingBottom: 150, paddingTop: 10, paddingHorizontal: 10, backgroundColor: active === 'green' ? '#F4FFE9' : active === 'fashion' ? '#FFF5F7' : '#fff'}}
                     renderItem={renderOrder}
                 />
          
