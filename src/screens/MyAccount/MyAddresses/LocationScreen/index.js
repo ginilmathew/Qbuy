@@ -231,7 +231,8 @@ const styles = StyleSheet.create({
         width: '100%',
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,
-        padding: 20
+        padding: 20,
+        marginBottom:50
     },
     address: {
         fontFamily: 'Poppins-Regular',
