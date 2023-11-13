@@ -22,7 +22,10 @@ const SavedAddress = () => {
 
 
     useEffect(() => {
-        getAddressList()
+        if(userContext?.userData){
+            getAddressList()
+        }
+        
     }, [])
     
 

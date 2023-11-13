@@ -65,7 +65,7 @@ const AddDeliveryAddress = ({ route, navigation }) => {
         )
             // .matches(/^\s*[\S]+(\s[\S]+)+\s*$/gms, 'Please enter your full name.')
             .required('Name is Required'),
-        mobile: yup.string().matches(phoneRegExp, '10 digit phone number is required').min(10).max(10).nullable()
+        mobile: yup.string().required().matches(phoneRegExp, '10 digit phone number is required').min(10).max(10)
     }).required();
 
     const { control, handleSubmit, formState: { errors }, setValue } = useForm({
@@ -134,7 +134,7 @@ const AddDeliveryAddress = ({ route, navigation }) => {
                     AsyncStorage.setItem("location", JSON.stringify(location))
                     userContext.setLocation([response?.data?.data?.area?.latitude, response?.data?.data?.area?.longitude]);
                     userContext.setCurrentAddress(response?.data?.data?.area?.address)
-                    navigation.navigate("green", { screen : "Checkout" })
+                    navigation.navigate("Checkout")
                 }
                 else{
                     navigation.navigate('MyAddresses', { mode: 'MyAcc' })

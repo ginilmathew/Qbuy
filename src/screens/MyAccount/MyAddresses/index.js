@@ -17,6 +17,7 @@ import axios from 'axios'
 import AddressContext from '../../../contexts/Address'
 import Geolocation from 'react-native-geolocation-service';
 import reactotron from '../../../ReactotronConfig'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const MyAddresses = ({ route, navigation }) => {
 
@@ -168,32 +169,60 @@ const MyAddresses = ({ route, navigation }) => {
 
 
 
-    function getAddressFromCoordinates(latitude, longitude) {
-        axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${latitude},${longitude}&key=AIzaSyBBcghyB0FvhqML5Vjmg3uTwASFdkV8wZY`).then(response => {
+    async function getAddressFromCoordinates(latitude, longitude) {
+        let response = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${latitude},${longitude}&key=AIzaSyBBcghyB0FvhqML5Vjmg3uTwASFdkV8wZY`);
             // userContext.setLocation([latitude, longitude])
             // addressContext?.setCurrentAddress(null)
             // addressContext?.setLocation(null)
 
-            let locality = response?.data?.results?.[0]?.address_components?.find(add => add.types.includes('locality'));
 
 
-            let value = {
+            let Value = {
+                location: response?.data?.results[0]?.formatted_address,
+                city: response?.data?.results[0]?.address_components?.filter(st =>
+                    st.types?.includes('locality')
+                )[0]?.long_name,
                 latitude: latitude,
                 longitude: longitude,
-                location: response?.data?.results[0]?.formatted_address,
-                city: locality?.long_name
+            };
 
+
+            addressContext.setCurrentAddress(Value);
+
+            let location = {
+                latitude: latitude,
+                longitude: longitude,
+                address: Value?.location
             }
 
 
+            AsyncStorage.setItem("location", JSON.stringify(location))
+            userContext.setLocation([latitude, longitude]);
+            userContext.setCurrentAddress(Value?.location)
 
-            addressContext.setCurrentAddress(value)
+            reactotron.log({ Value, mode: route?.params?.mode })
+            navigation.navigate('LocationScreen', { mode: route?.params?.mode });
 
-            navigation.navigate('LocationScreen', { mode: 'currentlocation' })
+            // let locality = response?.data?.results?.[0]?.address_components?.find(add => add.types.includes('locality'));
 
-        })
-            .catch(err => {
-            })
+
+            // let value = {
+            //     latitude: latitude,
+            //     longitude: longitude,
+            //     location: response?.data?.results[0]?.formatted_address,
+            //     city: locality?.long_name
+
+            // }
+
+
+
+            // addressContext.setCurrentAddress(value)
+
+            // navigation.navigate('LocationScreen', { mode: 'currentlocation' })
+
+        // })
+        //     .catch(err => {
+        //     })
 
     }
     const chooseCrntLocation = () => {
@@ -287,7 +316,7 @@ const MyAddresses = ({ route, navigation }) => {
                         <RefreshControl refreshing={loadingg} onRefresh={getAddressList} />
                     }
                 >
-                    {((mode === 'home' || addrList?.length === 0) && userContext?.userData) && <CustomButton
+                    {mode === "checkout" && <CustomButton
                         onPress={getCurrentLocation}
                         bg={'#19B836'}
                         label='Choose Current Location'

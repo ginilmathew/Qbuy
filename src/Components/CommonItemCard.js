@@ -135,7 +135,10 @@ const CommonItemCard = memo(({ height, width, item, marginHorizontal, wishlistIc
                 setHeart(!heart)
                 if (wishlistIcon) {
                     getWishlist()
-                    refetch()
+                    if(refetch){
+                        refetch()
+                    }
+                    
                 }
                 else {
                     data.is_wishlist = false
@@ -175,7 +178,9 @@ const CommonItemCard = memo(({ height, width, item, marginHorizontal, wishlistIc
                 data.is_wishlist = true
                 setData({ ...data })
                 setHeart(!heart)
-                refetch()
+                if(refetch){
+                    refetch()
+                }
                 // if(has(response?.data, 'data')){
                 //     setHeart(!heart)
                 // }

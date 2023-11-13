@@ -18,7 +18,7 @@ const MyAccountNav = () => {
         <Stack.Navigator initialRouteName='MyAccount'  screenOptions={{ headerShown: false }}> 
             <Stack.Screen name="MyAccount" component={MyAccount}/>
             <Stack.Screen name="MyAddresses" component={MyAddresses}/>
-            <Stack.Screen name="LocationScreen" component={LocationScreen}/>
+            {/* <Stack.Screen name="LocationScreen" component={LocationScreen}/> */}
             {/* <Stack.Screen name="AddNewLocation" component={AddNewLocation}/> */}
             {/* <Stack.Screen name="AddDeliveryAddress" component={AddDeliveryAddress}/> */}
             <Stack.Screen name="PandaCoins" component={PandaCoins}/>

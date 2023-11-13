@@ -30,6 +30,7 @@ import Tooltip from 'react-native-walkthrough-tooltip';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import moment from 'moment';
 import reactotron from 'reactotron-react-native';
+import OrderPlaced from '../../screens/Cart/Checkout/Payment/OrderPlaced';
 
 
 
@@ -224,21 +225,34 @@ const TabNav = () => {
     const renderTabBar = ({ routeName, selectedTab, navigate }) => {
 
         const NavigationPage = () => {
-            reactotron.log("in")
+            reactotron.log("in", routeName, navigation.getState())
+            const state = navigation.getState()
             if(userContext?.userData){
-                navigation.dispatch(
-                    CommonActions.reset({
-                        index: 0,
-                        routes: [
-                            { name: routeName },
-                        ],
-                    })
-                )
+                if(routeName === "home" && state?.index !==0){
+                    navigation.dispatch(
+                        CommonActions.reset({
+                            index: 0,
+                            routes: [
+                                { name: routeName },
+                            ],
+                        })
+                    )
+                }
+                else{
+                    navigate(routeName)
+                }
+                
+
+               
             }
             else{
                 navigation.navigate("Login")
             }
 
+        }
+
+        if(routeName === "OrderPlaced"){
+            return null
         }
 
         return (
@@ -371,14 +385,11 @@ const TabNav = () => {
             }
             initialRouteName="title1"
             screenOptions={{
-                headerShown: false
+                headerShown: false,
+                unmountOnBlur: true
             }}
             renderCircle={({ selectedTab, navigate }) => (
-
-
                 <>
-
-
                     {pandaContext?.active === "green" &&
                         <Animated.View style={styles.btnCircleUp}>
                             {showSwitch && <View style={{ position: 'absolute', bottom: 70, flexDirection: 'row', width: 120, justifyContent: 'space-between' }}>
@@ -580,6 +591,7 @@ const TabNav = () => {
                 component={MyAccountNav}
                 position="RIGHT"
             />
+            <CurvedBottomBar.Screen name="OrderPlaced" component={OrderPlaced}/>
         </CurvedBottomBar.Navigator>
     )
 }

@@ -12,10 +12,10 @@ const Stack = createNativeStackNavigator();
 
 const CartNav = () => {
     return (
-        <Stack.Navigator initialRouteName='Cart'  screenOptions={{ headerShown: false }}> 
+        <Stack.Navigator initialRouteName='Cart'  screenOptions={{ headerShown: false, detachPreviousScreen: true }} > 
             <Stack.Screen name="Cart" component={Cart}/>
             {/* <Stack.Screen name="Cart" component={CartTest}/> */}
-            <Stack.Screen name="OrderPlaced" component={OrderPlaced}/>
+            {/* <Stack.Screen name="OrderPlaced" component={OrderPlaced}/> */}
 
 
            

@@ -33,6 +33,8 @@ import CommonUpdateModal from '../Components/CommonUpdateModal';
 import { NativeModules } from 'react-native'
 import AddDeliveryAddress from '../screens/MyAccount/MyAddresses/LocationScreen/AddDeliveryAddress';
 import notifee, { EventType } from '@notifee/react-native';
+import Checkout from '../screens/Cart/Checkout';
+// import OrderPlaced from '../screens/Cart/Checkout/Payment/OrderPlaced';
 
 const { env, mode } = NativeModules.RNENVConfig
 
@@ -430,10 +432,12 @@ const RouteTest = () => {
                     <Stack.Screen name="Otp" component={Otp} />
                     <Stack.Screen name="LocationScreen" component={LocationScreen} options={{ title: 'home' }} />
                     <Stack.Screen name="AddNewLocation" component={AddNewLocation} />
+                    {/* <Stack.Screen name="OrderPlaced" component={OrderPlaced}/> */}
                     {/* <Stack.Screen name="panda" component={Panda} />
                     <Stack.Screen name="fashion" component={Fashion} /> */}
                     <Stack.Screen name="green" component={Green} />
                     <Stack.Screen name="AddDeliveryAddress" component={AddDeliveryAddress} />
+                    <Stack.Screen name="Checkout" component={Checkout}/>
                 </Stack.Navigator>
             </NavigationContainer>
             {/* <LoadingModal isVisible={true} /> */}

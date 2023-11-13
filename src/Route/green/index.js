@@ -32,7 +32,7 @@ const Green = () => {
                 <Drawer.Screen name="ProductSearchScreen" component={ProductSearchScreen} />
 
                 <Drawer.Screen name="Chat" component={Chat} />
-                <Drawer.Screen name="Checkout" component={Checkout}/>
+                
                 <Drawer.Screen name="Payment" component={Payment}/>
 
                 <Drawer.Screen name="AddDetails" component={AddDetails}/>

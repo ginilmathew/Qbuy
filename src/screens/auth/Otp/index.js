@@ -234,6 +234,7 @@ const Otp = ({ navigation }) => {
 					<CommonTexts
 						label={ 'Enter the 4 - digit code we sent to your registered mobile number' }
 						mt={ 40 }
+						fullLabel={true}
 					/>
 					<CommonTexts
 						label={ phoneNum }

@@ -1,7 +1,7 @@
 /* eslint-disable quotes */
 /* eslint-disable semi */
 /* eslint-disable prettier/prettier */
-import { Image, StyleSheet, Text, View, ScrollView, TouchableOpacity, Pressable, ActivityIndicator, Modal, useWindowDimensions } from 'react-native'
+import { Image, StyleSheet, Text, View, ScrollView, TouchableOpacity, Pressable, ActivityIndicator, Modal, useWindowDimensions, RefreshControl } from 'react-native'
 import React, { useRef, useState, useEffect, useContext, useCallback } from 'react'
 import HeaderWithTitle from '../../../Components/HeaderWithTitle'
 import ItemsCard from '../../MyOrders/ItemsCard'
@@ -35,7 +35,7 @@ import { useFocusEffect } from '@react-navigation/core'
 import CartContext from '../../../contexts/Cart'
 import Toast from 'react-native-toast-message'
 import PaymentMethod from './PaymentMethod'
-import { RefreshControl } from 'react-native-gesture-handler'
+// import { RefreshControl } from 'react-native-gesture-handler'
 import LoaderContext from '../../../contexts/Loader'
 import { max } from 'lodash'
 import reactotron from 'reactotron-react-native'
@@ -566,12 +566,14 @@ const Checkout = ({ navigation }) => {
                         }
                         if (data?.status) {
                             if (data?.data?.payment_type == "online" && has(data?.data, "paymentDetails") && !isEmpty(data?.data?.paymentDetails)) {
+                                reactotron.log("inß")
                                 payWithPayTM(data?.data)
                             } else {
                                 cartContext?.setCart(null)
                                 setCartItems(null)
                                 await AsyncStorage.removeItem("cartId");
-                                navigation.navigate('OrderPlaced', { item: response.data?.data })
+                                navigation.navigate("green", { screen: 'TabNavigator', params: { screen: 'OrderPlaced', params: { item: response.data?.data } }  })
+                                //navigation.navigate('OrderPlaced', { item: response.data?.data })
                                 setIsLoding(false);
                             }
                         } else {
@@ -616,7 +618,9 @@ const Checkout = ({ navigation }) => {
                 if (details?.STATUS == "TXN_SUCCESS") {
                     cartContext?.setCart(null)
                     setIsLoding(false)
-                    navigation.navigate('OrderPlaced', { item: { created_at: details?.TXNDATE, order_id: orderID } })
+                    navigation.navigate("green", { screen: 'TabNavigator', params: { screen: 'OrderPlaced', params: { item: { created_at: details?.TXNDATE, order_id: orderID } } }  })
+                    //navigation.navigate("green", { screen: 'TabNavigator', params: { screen: 'cart', params: { screen: 'OrderPlaced', params: { item: { created_at: details?.TXNDATE, order_id: orderID } } } } })
+                    //navigation.navigate('OrderPlaced', { item: { created_at: details?.TXNDATE, order_id: orderID } })
                     
                 } else {
                     setIsLoding(false)
@@ -648,48 +652,58 @@ const Checkout = ({ navigation }) => {
             true: "https://securegw-stage.paytm.in/theia/paytmCallback?ORDER_ID=",
             false: "https://securegw.paytm.in/theia/paytmCallback?ORDER_ID="
         }
+        
         setIsLoding(false)
-        await AllInOneSDKManager.startTransaction(
-            paymentDetails?.orderId,//orderId
-            paymentDetails?.mid,//mid
-            paymentDetails?.txnToken,//txnToken
-            paymentDetails?.amount.toFixed(2),//amount
-            `${callbackUrl[isStaging]}${paymentDetails?.orderId}`,//callbackUrl
-            isStaging,//isStaging
-            true,//appInvokeRestricted
-            `paytm${paymentDetails?.mid}`//urlScheme
-        ).then((result) => {
-            setIsLoding(true)
-            if (has(result, "STATUS")) {
-                updatePaymentResponse(result)
-                //setIsLoding(false);
-            }
-            else {
+        reactotron.log("payment", paymentDetails)
+        try {
+            await AllInOneSDKManager.startTransaction(
+                paymentDetails?.orderId,//orderId
+                paymentDetails?.mid,//mid
+                paymentDetails?.txnToken,//txnToken
+                paymentDetails?.amount.toFixed(2),//amount
+                `${callbackUrl[isStaging]}${paymentDetails?.orderId}`,//callbackUrl
+                isStaging,//isStaging
+                true,//appInvokeRestricted
+                `paytm${paymentDetails?.mid}`//urlScheme
+            ).then((result) => {
+                reactotron.log({result})
+                setIsLoding(true)
+                if (has(result, "STATUS")) {
+                    updatePaymentResponse(result)
+                    //setIsLoding(false);
+                }
+                else {
+                    let data = {
+                        STATUS: 'TXN_FAILURE',
+                        RESPMSG: 'User Cancelled transaction',
+                        ORDERID: orderId
+                    }
+                    reactotron.log('CANCEL PAYMENT')
+                    updatePaymentResponse(data)
+                    //setIsLoding(false);
+                }
+                // console.log("PAYTM =>", JSON.stringify(result));
+    
+    
+            }).catch((err) => {
+    
+                reactotron.log({err})
+    
                 let data = {
                     STATUS: 'TXN_FAILURE',
                     RESPMSG: 'User Cancelled transaction',
                     ORDERID: orderId
                 }
-                reactotron.log('CANCEL PAYMENT')
+    
+                reactotron.log('CANCEL PAYMENT 2')
+                setIsLoding(true);
                 updatePaymentResponse(data)
-                //setIsLoding(false);
-            }
-            // console.log("PAYTM =>", JSON.stringify(result));
-
-
-        }).catch((err) => {
-
-            let data = {
-                STATUS: 'TXN_FAILURE',
-                RESPMSG: 'User Cancelled transaction',
-                ORDERID: orderId
-            }
-
-            reactotron.log('CANCEL PAYMENT 2')
-            setIsLoding(true);
-            updatePaymentResponse(data)
-            
-        });
+                
+            });
+        } catch (error) {
+            reactotron.log({error})
+        }
+       
 
     }
 
@@ -700,7 +714,8 @@ const Checkout = ({ navigation }) => {
 
 
     const navigateToAddress = () => {
-        navigation.navigate("account", { screen: "MyAddresses", params: { mode: 'checkout' } })
+        navigation.navigate("green", { screen: 'TabNavigator', params: { screen: 'account', params: { screen: 'MyAddresses', params: { mode: 'checkout' } } } })
+        //navigation.navigate("account", { screen: "MyAddresses", params: { mode: 'checkout' } })
     }
 
 
@@ -729,7 +744,8 @@ const Checkout = ({ navigation }) => {
 
 
     const chooseAddress = () => {
-        navigation.navigate("account", { screen: "MyAddresses", params: { mode: 'checkout' } })
+        navigation.navigate("green", { screen: 'TabNavigator', params: { screen: 'account', params: { screen: 'MyAddresses', params: { mode: 'checkout' } } } })
+        //navigation.navigate("account", { screen: "MyAddresses", params: { mode: 'checkout' } })
     }
 
 
