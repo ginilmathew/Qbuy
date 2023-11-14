@@ -572,7 +572,7 @@ const Checkout = ({ navigation }) => {
                                 cartContext?.setCart(null)
                                 setCartItems(null)
                                 await AsyncStorage.removeItem("cartId");
-                                navigation.navigate("green", { screen: 'TabNavigator', params: { screen: 'OrderPlaced', params: { item: response.data?.data } }  })
+                                navigation.replace("green", { screen: 'TabNavigator', params: { screen: 'OrderPlaced', params: { item: response.data?.data } }  })
                                 //navigation.navigate('OrderPlaced', { item: response.data?.data })
                                 setIsLoding(false);
                             }
@@ -618,7 +618,7 @@ const Checkout = ({ navigation }) => {
                 if (details?.STATUS == "TXN_SUCCESS") {
                     cartContext?.setCart(null)
                     setIsLoding(false)
-                    navigation.navigate("green", { screen: 'TabNavigator', params: { screen: 'OrderPlaced', params: { item: { created_at: details?.TXNDATE, order_id: orderID } } }  })
+                    navigation.replace("green", { screen: 'TabNavigator', params: { screen: 'OrderPlaced', params: { item: { created_at: details?.TXNDATE, order_id: orderID } } }  })
                     //navigation.navigate("green", { screen: 'TabNavigator', params: { screen: 'cart', params: { screen: 'OrderPlaced', params: { item: { created_at: details?.TXNDATE, order_id: orderID } } } } })
                     //navigation.navigate('OrderPlaced', { item: { created_at: details?.TXNDATE, order_id: orderID } })
                     

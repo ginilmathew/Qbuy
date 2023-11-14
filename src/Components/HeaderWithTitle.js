@@ -7,6 +7,7 @@ import PandaContext from '../contexts/Panda'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import Fontisto from 'react-native-vector-icons/Fontisto'
 import reactotron from '../ReactotronConfig'
+import AuthContext from '../contexts/Auth'
 
 
 const HeaderWithTitle = ({ title, noBack, onPressBack, mode,backarrow }) => {
@@ -15,17 +16,27 @@ const HeaderWithTitle = ({ title, noBack, onPressBack, mode,backarrow }) => {
 
 
     const contextPanda = useContext(PandaContext)
+    const userContext = useContext(AuthContext)
     let active = contextPanda.active
     const navigation = useNavigation()
 
     const backAction = useCallback(() => {
         if (mode === 'checkout') {
             navigation.navigate('Checkout')
-        } else if(backarrow * 1 === 0){
-            Alert.alert('warning', 'Please enable location or select any address', [
+        } 
+        else if(mode === "home"){
+            navigation.navigate('green')
+        }
+        else if(backarrow * 1 === 0){
+            if(!userContext?.location){
+                Alert.alert('warning', 'Please enable location or select any address', [
                 
-                {text: 'OK', onPress: () => console.log('OK Pressed')},
-              ]);
+                    {text: 'OK', onPress: () => console.log('OK Pressed')},
+                  ]);
+            }
+            else{
+                navigation.goBack()
+            }
 
         }else{
             navigation.goBack()
