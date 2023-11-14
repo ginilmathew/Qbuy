@@ -137,7 +137,8 @@ const AddDeliveryAddress = ({ route, navigation }) => {
                     navigation.navigate("Checkout")
                 }
                 else{
-                    navigation.navigate('MyAddresses', { mode: 'MyAcc' })
+                    navigation.navigate("green", { screen: 'TabNavigator', params: { screen: 'account', params: { screen: 'MyAddresses', params: { mode: 'MyAcc' } } } })
+                    //navigation.navigate('MyAddresses', { mode: 'MyAcc' })
                 }
                 
             })

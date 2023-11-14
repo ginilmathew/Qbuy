@@ -47,6 +47,8 @@ const LocationScreen = ({ route, navigation }) => {
 
     const onConfirm = useCallback(async () => {
 
+        reactotron.log({mode})
+
         if(mode === "checkout" || mode === "MyAcc"){
             let locationData = {
                 location: addressContext?.currentAddress?.location,
@@ -73,7 +75,13 @@ const LocationScreen = ({ route, navigation }) => {
             }
 
             await AsyncStorage.setItem("location", JSON.stringify(location))
-            navigation.navigate('green', { screen: 'TabNavigator', params: { screen: 'home' } })
+            navigation.dispatch(CommonActions.reset({
+                index: 0,
+                routes: [
+                    { name: 'green' },
+                ],
+            }));
+            //navigation.replace('green', { screen: 'TabNavigator', params: { screen: 'home' } })
         }
 
         
@@ -84,8 +92,9 @@ const LocationScreen = ({ route, navigation }) => {
     }, [addressContext?.currentAddress, editAddress])
 
     const addNewAddress = useCallback(() => {
-        navigation.navigate('AddNewLocation', { mode: route?.params?.mode })
-    }, [])
+        //reactotron.log({mode: route?.params?.mode})
+        navigation.push('AddNewLocation', { mode: route?.params?.mode })
+    }, [route?.params])
 
     const myApiKey = "Key Received from Google map"
 

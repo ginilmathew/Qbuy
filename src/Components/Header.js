@@ -51,7 +51,7 @@ const Header = ({ onPress, openAddress, goCart }) => {
         // else{
         //     navigation?.navigate("AddNewLocation")
         // }
-        navigation?.navigate("AddNewLocation", { mode: 'home' })
+        navigation?.push("AddNewLocation", { mode: 'home' })
        
     });
 

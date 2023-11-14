@@ -242,7 +242,7 @@ const MyAddresses = ({ route, navigation }) => {
         //         navigation.navigate('AddNewLocation')
         //     }
         // }
-        navigation.navigate('AddNewLocation', { mode: route?.params?.mode})
+        navigation.push('AddNewLocation', { mode: route?.params?.mode})
     }
 
     const deleteSelect = async (id) => {
