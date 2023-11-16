@@ -238,7 +238,7 @@ const AddNewLocation = ({ route, navigation }) => {
                     <Ionicons name="location" size={20} color={"blue"} />
                     <Text style={{ color: 'orange', fontWeight: 'bold', fontSize: 15 }}> Use Current Location? </Text>
                 </TouchableOpacity>
-                {route?.params?.mode !== "checkout" && <SavedAddress />}
+                {route?.params?.mode === "home" && <SavedAddress />}
                 <LoadingModal isVisible={loadingg?.loading} />
 
 
