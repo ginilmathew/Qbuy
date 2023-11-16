@@ -714,8 +714,9 @@ const Checkout = ({ navigation }) => {
 
 
     const navigateToAddress = () => {
-        navigation.navigate("green", { screen: 'TabNavigator', params: { screen: 'account', params: { screen: 'MyAddresses', params: { mode: 'checkout' } } } })
+        //navigation.navigate("green", { screen: 'TabNavigator', params: { screen: 'account', params: { screen: 'MyAddresses', params: { mode: 'checkout' } } } })
         //navigation.navigate("account", { screen: "MyAddresses", params: { mode: 'checkout' } })
+        navigation.push("MyAddresses", { mode: 'checkout' })
     }
 
 
@@ -744,7 +745,8 @@ const Checkout = ({ navigation }) => {
 
 
     const chooseAddress = () => {
-        navigation.navigate("green", { screen: 'TabNavigator', params: { screen: 'account', params: { screen: 'MyAddresses', params: { mode: 'checkout' } } } })
+        //navigation.navigate("green", { screen: 'TabNavigator', params: { screen: 'account', params: { screen: 'MyAddresses', params: { mode: 'checkout' } } } })
+        navigation.push("MyAddresses", { mode: 'checkout' })
         //navigation.navigate("account", { screen: "MyAddresses", params: { mode: 'checkout' } })
     }
 

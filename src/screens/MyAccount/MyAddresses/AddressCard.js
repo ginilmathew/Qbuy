@@ -9,7 +9,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { useNavigation } from '@react-navigation/native'
 import reactotron from 'reactotron-react-native'
 
-const AddressCard = memo(({ setSelected, selected, item, deleteSelect }) => {
+const AddressCard = memo(({ setSelected, selected, item, deleteSelect, mode }) => {
 
 
 
@@ -17,7 +17,7 @@ const AddressCard = memo(({ setSelected, selected, item, deleteSelect }) => {
     const contextPanda = useContext(PandaContext)
     const userContext = useContext(AuthContext)
     let active = contextPanda.active
-  
+
 
 
     const onClick = useCallback((id) => {
@@ -36,39 +36,83 @@ const AddressCard = memo(({ setSelected, selected, item, deleteSelect }) => {
         // navigation.navigate('AddDeliveryAddress', { item: { ...data } })
     }
 
-    return (
-        <TouchableOpacity
-            // disabled={selected}
-            onPress={() => onClick(item?._id)}
-            style={styles.container}
-        >
-            <View style={{ marginHorizontal: 5 }}>
-                <Ionicons name={selected ? 'checkmark-circle' : 'ellipse-outline'} color={active === 'green' ? '#8ED053' : active === 'fashion' ? '#FF7190' : '#58D36E'} size={20} />
-            </View>
-            <View style={{ flex: 0.9 }}>
-                <View style={styles.rowStyle}><CommonTexts label={item?.address_type} fontSize={13} textTransform={'uppercase'} />{!selected ? <Pressable style={styles.borderStyle}><Text style={styles.textStyle}>Set Default</Text></Pressable> : ''}</View>
-                <Text   style={styles.addressText}>{item?.name}</Text>
-                <Text
-                    style={styles.addressText}
-                >{item?.area?.address}</Text>
-                {(!selected && deleteSelect) &&
-                <Pressable onPress={() => deleteAddress(item?._id)} style={{ alignSelf: 'flex-end' }}>
-                    <MaterialCommunityIcons name={'delete'} color={active === 'green' ? '#8ED053' : active === 'fashion' ? '#FF7190' : '#5871D3'} size={18} marginTop={5} />
-                </Pressable> }
-            </View>
+    //const renderAddress = () => {
+        //if (mode === "checkout") {
+            return (
+                <TouchableOpacity onPress={() => onClick(item?._id)} style={styles.container}>
+                    <View style={{ marginHorizontal: 5 }}>
+                        <Ionicons name={selected ? 'checkmark-circle' : 'ellipse-outline'} color={active === 'green' ? '#8ED053' : active === 'fashion' ? '#FF7190' : '#58D36E'} size={20} />
+                    </View>
+                    <View style={{ flex: 0.9 }}>
+                        {/* <View style={styles.rowStyle}>
+                        <CommonTexts label={item?.address_type} fontSize={13} textTransform={'uppercase'} />{!selected ? <TouchableOpacity style={styles.borderStyle}>
+                            <Text style={styles.textStyle}>{ mode === "checkout" ? "Select" : "Set Default" } </Text>
+                        </TouchableOpacity> : <Text style={styles.textStyle}>Default</Text>}
+                    </View> */}
+                        <Text style={styles.addressText}>{item?.name}</Text>
+                        <Text
+                            style={styles.addressText}
+                        >{item?.area?.address}</Text>
+                        {(!selected && deleteSelect) &&
+                            <Pressable onPress={() => deleteAddress(item?._id)} style={{ alignSelf: 'flex-end' }}>
+                                <MaterialCommunityIcons name={'delete'} color={"red"} size={18} marginTop={5} />
+                            </Pressable>}
+                    </View>
 
-            <Text
-                style={{
-                    fontFamily: 'Poppins-Bold',
-                    color: active === 'green' ? '#8ED053' : active === 'fashion' ? '#FF7190' : '#31AF48',
-                    fontSize: 11,
-                    marginTop: 5,
-                    position: 'absolute',
-                    right: 10
-                }}
-            >{item?.default ? 'DEFAULT' : null}</Text>
-        </TouchableOpacity>
-    )
+                    <Text
+                        style={{
+                            fontFamily: 'Poppins-Bold',
+                            color: active === 'green' ? '#8ED053' : active === 'fashion' ? '#FF7190' : '#31AF48',
+                            fontSize: 11,
+                            marginTop: 5,
+                            position: 'absolute',
+                            right: 10
+                        }}
+                    >{item?.default ? 'DEFAULT' : null}</Text>
+                </TouchableOpacity>
+            )
+        // }
+        // else {
+        //     return (
+        //         <View
+        //             // disabled={selected}
+        //             //onPress={() => onClick(item?._id)}
+        //             style={styles.container}
+        //         >
+        //             {renderAddress()}
+        //             <View style={{ marginHorizontal: 5 }}>
+        //                 <Ionicons name={selected ? 'checkmark-circle' : 'ellipse-outline'} color={active === 'green' ? '#8ED053' : active === 'fashion' ? '#FF7190' : '#58D36E'} size={20} />
+        //             </View>
+        //             <View style={{ flex: 0.9 }}>
+        //                 {/* <View style={styles.rowStyle}>
+        //             <CommonTexts label={item?.address_type} fontSize={13} textTransform={'uppercase'} />{!selected ? <TouchableOpacity style={styles.borderStyle}>
+        //                 <Text style={styles.textStyle}>{ mode === "checkout" ? "Select" : "Set Default" } </Text>
+        //             </TouchableOpacity> : <Text style={styles.textStyle}>Default</Text>}
+        //         </View> */}
+        //                 <Text style={styles.addressText}>{item?.name}</Text>
+        //                 <Text
+        //                     style={styles.addressText}
+        //                 >{item?.area?.address}</Text>
+        //                 {(!selected && deleteSelect) &&
+        //                     <Pressable onPress={() => deleteAddress(item?._id)} style={{ alignSelf: 'flex-end' }}>
+        //                         <MaterialCommunityIcons name={'delete'} color={active === 'green' ? '#8ED053' : active === 'fashion' ? '#FF7190' : '#5871D3'} size={18} marginTop={5} />
+        //                     </Pressable>}
+        //             </View>
+
+        //             <Text
+        //                 style={{
+        //                     fontFamily: 'Poppins-Bold',
+        //                     color: active === 'green' ? '#8ED053' : active === 'fashion' ? '#FF7190' : '#31AF48',
+        //                     fontSize: 11,
+        //                     marginTop: 5,
+        //                     position: 'absolute',
+        //                     right: 10
+        //                 }}
+        //             >{item?.default ? 'DEFAULT' : null}</Text>
+        //         </View>
+        //     )
+        // }
+    //}
 })
 
 export default AddressCard
