@@ -21,6 +21,7 @@ import CartContext from '../../contexts/Cart';
 import { IMG_URL } from '../../config/constants';
 import reactotron from '../../ReactotronConfig';
 import DeleteUserModal from '../../Components/CustomDeleteModal';
+import AddressContext from '../../contexts/Address';
 
 
 
@@ -31,6 +32,7 @@ const MyAccount = ({ navigation }) => {
     const contextPanda = useContext(PandaContext);
     const cartContext = useContext(CartContext);
     const userContext = useContext(AuthContext);
+    const addressContext = useContext(AddressContext)
     let active = contextPanda.active;
 
     const user = useContext(AuthContext);
@@ -128,6 +130,7 @@ const MyAccount = ({ navigation }) => {
         userContext.setCurrentAddress(null);
         userContext.setUserLocation(null);
         userContext.setCity(null);
+        addressContext.setCurrentAddress(null)
         await AsyncStorage.clear();
         setShowModal(false);
         Toast.show({

@@ -61,9 +61,7 @@ const MyOrders = () => {
 
     const renderOrder = ({ item, index }) => {
         return (
-            <View>
                 <OrderCard key={index} item={item} refreshOrder={getOrderList} />
-            </View>
         )
     }
 
@@ -87,7 +85,7 @@ const MyOrders = () => {
                           onRefresh={getOrderList}
                    
                         />
-                      }
+                    }
                     data={orderList}
                     showsVerticalScrollIndicator={false}
                     initialNumToRender={4}
@@ -99,7 +97,7 @@ const MyOrders = () => {
                     onRefresh={getOrderList}
                     // style={{ marginLeft: 5 }}
                     ListEmptyComponent={ListEmptyComponents}
-                    contentContainerStyle={{ justifyContent: 'center' , paddingBottom: 150, paddingTop: 10, paddingHorizontal: 10, backgroundColor: active === 'green' ? '#F4FFE9' : active === 'fashion' ? '#FFF5F7' : '#fff'}}
+                    contentContainerStyle={{ paddingBottom: 150, paddingTop: 10, paddingHorizontal: 10, backgroundColor: active === 'green' ? '#F4FFE9' : active === 'fashion' ? '#FFF5F7' : '#fff', minHeight: height-160}}
                     renderItem={renderOrder}
                 />
          

@@ -137,13 +137,14 @@ const Otp = ({ navigation }) => {
                     //setInitialScreen('green');
                 }
                 else {
-                    // navigation.dispatch(CommonActions.reset({
-					// 	index: 0,
-					// 	routes: [
-					// 		{ name: 'AddNewLocation' },
-					// 	],
-					// }));
-					navigation.push('AddNewLocation', { mode: 'home' })
+                    navigation.dispatch(CommonActions.reset({
+						index: 0,
+						routes: [
+							//{ name: 'green'},
+							{ name: 'AddNewLocation' },
+						],
+					}));
+					//navigation.push('AddNewLocation', { mode: 'home' })
                 }
 
             })

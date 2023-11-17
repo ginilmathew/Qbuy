@@ -259,7 +259,12 @@ const RouteTest = () => {
                 setversionUpdate(true);
             }
         } else {
-            setInitialScreen('green');
+            if(userContext?.location){
+                setInitialScreen('green');
+            }
+            else{
+                setInitialScreen('AddNewLocation')
+            }
         }
     }
 

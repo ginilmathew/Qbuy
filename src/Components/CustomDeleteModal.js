@@ -26,7 +26,7 @@ const DeleteUserModal = ({ visible, onDismiss, onPress,label }) => {
                 >
                     <Ionicons name='close-circle' color='#000' size={25} />
                 </TouchableOpacity>
-                <CommonTexts label={label} fontSize={16} textAlign='center' mt={20} />
+                <CommonTexts label={label} fontSize={16} fullLabel={true} textAlign='center' mt={20} />
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: 20 }}>
                     <CustomButton
                         onPress={onDismiss}
