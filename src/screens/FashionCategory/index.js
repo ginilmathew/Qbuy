@@ -85,5 +85,6 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap',
         gap: 10,
         marginTop:5,
+        marginBottom:50
     },
 })

@@ -87,7 +87,7 @@ export default function PandaHome({ navigation }) {
 
 
 
-
+reactotron.log({data:data?.sliders?.data},'DATA HOMEE pada')
 
 
 
@@ -253,7 +253,7 @@ export default function PandaHome({ navigation }) {
     const ListMainHeader = () => {
         return (
             <View>
-                {data?.sliders?.data > 0 && <View>
+                {data?.sliders?.data?.length > 0 && <View>
                     <Carousel
                         loop
                         width={width}

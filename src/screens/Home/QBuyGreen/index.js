@@ -122,6 +122,8 @@ const QBuyGreen = ({ navigation }) => {
     const Homeapi = useQuery({ queryKey: ['greenHome'], queryFn: () => QbuyGreenHome(datas) });
 
 
+    reactotron.log({Homeapi},'HOME API')
+
     let userData = userContext?.userData
 
     let loader = loadingg?.loading;
@@ -325,7 +327,7 @@ const QBuyGreen = ({ navigation }) => {
                 <>
                     <CategoryCard data={item?.data} />
                     <SearchBox onPress={onSearch} />
-                    {Homeapi?.slider?.length > 0 &&
+                    {Homeapi?.data?.slider?.data?.length > 0 &&
                         <View>
                             <Carousel
                                 key={item?._id}
@@ -333,7 +335,7 @@ const QBuyGreen = ({ navigation }) => {
                                 width={width}
                                 height={height / 5}
                                 autoPlay={true}
-                                data={slider}
+                                data={Homeapi?.data?.slider?.data}
                                 scrollAnimationDuration={1000}
                                 renderItem={CarouselCardItem}
                             />

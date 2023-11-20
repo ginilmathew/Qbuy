@@ -409,8 +409,6 @@ const OrderCard = memo(({ item, refreshOrder }) => {
                     <Text style={{ fontWeight: 'bold', fontSize: 12, color: '#000', fontFamily: 'Poppins-Medium' }}>{'Refund'}</Text>
                         <Text style={{ fontWeight: 'bold', fontSize: 12, color: 'blue', fontFamily: 'Poppins-Medium' }}>{item?.refund_details?.refund_amount}</Text>
                         <Text style={{ fontWeight: 'bold', fontSize: 12, color: '#8ED053', fontFamily: 'Poppins-Medium' }}>{'Completed'}</Text>
-
-
                     </View>
                 </View>}
 
