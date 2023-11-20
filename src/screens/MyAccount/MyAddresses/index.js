@@ -201,7 +201,7 @@ const MyAddresses = ({ route, navigation }) => {
             userContext.setCurrentAddress(Value?.location)
 
             reactotron.log({ Value, mode: route?.params?.mode })
-            navigation.navigate('LocationScreen', { mode: route?.params?.mode });
+            navigation.push('LocationScreen', { mode: route?.params?.mode });
 
             // let locality = response?.data?.results?.[0]?.address_components?.find(add => add.types.includes('locality'));
 
@@ -265,38 +265,38 @@ const MyAddresses = ({ route, navigation }) => {
 
     const selectAddress = async (id) => {
         let address = addrList.find(addr => addr?._id === id);
-        //  await customAxios.post(`customer/get-cart-product`,{cart_id:cartContext?.cart?._id,address_id:address})
-
-        userContext.setLocation([address?.area?.latitude, address?.area?.longitude])
-        userContext.setCurrentAddress(address?.area?.address)
-
-
-        // if (!address?.default) {
-        address.default_status = true;
-        address.id = address?._id
-
-        loadingContex.setLoading(true)
-        await customAxios.post(`customer/address/update`, address).then((response) => {
-            setAddrList(response?.data?.data)
-            const find = addrList.find(addr => addr?._id === id)
-            cartContext.setDefaultAddress(find);
-            loadingContex.setLoading(false)
-        }
-        ).catch(async error => {
-            Toast.show({
-                type: 'error',
-                text1: error
-            });
-            loadingContex.setLoading(false)
-        })
-        // }
-
-        if (mode === "home") {
-            navigation.goBack()
-        }
-        else if (mode === "checkout") {
-
+        if (mode === "checkout") {
+            cartContext.setDefaultAddress(address);
             navigation.navigate("Checkout")
+        }
+        else{
+            userContext.setLocation([address?.area?.latitude, address?.area?.longitude])
+            userContext.setCurrentAddress(address?.area?.address)
+
+
+            // if (!address?.default) {
+            address.default_status = true;
+            address.id = address?._id
+
+            loadingContex.setLoading(true)
+            await customAxios.post(`customer/address/update`, address).then((response) => {
+                setAddrList(response?.data?.data)
+                const find = addrList?.find(addr => addr?._id === id)
+                cartContext.setDefaultAddress(find);
+                loadingContex.setLoading(false)
+                if(mode === "home"){
+                    navigation.goBack()
+                }
+                //navigation.goBack()
+            }
+            ).catch(async error => {
+                Toast.show({
+                    type: 'error',
+                    text1: error
+                });
+                loadingContex.setLoading(false)
+            })
+            
         }
     }
 
@@ -306,7 +306,7 @@ const MyAddresses = ({ route, navigation }) => {
             <HeaderWithTitle
                 title={mode === 'home' ? 'Select Address' : mode === 'MyAcc' ? 'My Addresses' : "My Addresses"}
                 // goback={backAction}
-                mode={mode}
+                mode={route?.params.mode}
             />
 
             <View style={{ backgroundColor: active === 'green' ? '#F4FFE9' : active === 'fashion' ? '#FFF5F7' : '#fff', paddingHorizontal: 15, flex: 1 }}>
@@ -326,6 +326,7 @@ const MyAddresses = ({ route, navigation }) => {
 
                     {addrList?.map((item, index) =>
                         <AddressCard
+                            mode={route?.params?.mode}
                             item={item}
                             key={index}
                             selected={item?.default}

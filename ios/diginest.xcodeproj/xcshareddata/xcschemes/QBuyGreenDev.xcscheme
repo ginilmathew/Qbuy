@@ -51,7 +51,7 @@
       </BuildableProductRunnable>
    </LaunchAction>
    <ProfileAction
-      buildConfiguration = "ReleaseGreen"
+      buildConfiguration = "DebugGreen"
       shouldUseLaunchSchemeArgsEnv = "YES"
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
@@ -71,7 +71,7 @@
       buildConfiguration = "DebugGreen">
    </AnalyzeAction>
    <ArchiveAction
-      buildConfiguration = "ReleaseGreen"
+      buildConfiguration = "DebugGreen"
       revealArchiveInOrganizer = "YES">
    </ArchiveAction>
 </Scheme>

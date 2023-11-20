@@ -571,10 +571,11 @@ const Checkout = ({ navigation }) => {
                             } else {
                                 cartContext?.setCart(null)
                                 setCartItems(null)
+                                setIsLoding(false);
                                 await AsyncStorage.removeItem("cartId");
                                 navigation.replace("green", { screen: 'TabNavigator', params: { screen: 'OrderPlaced', params: { item: response.data?.data } }  })
                                 //navigation.navigate('OrderPlaced', { item: response.data?.data })
-                                setIsLoding(false);
+                                
                             }
                         } else {
                             cartContext?.setCart(null)
@@ -655,7 +656,9 @@ const Checkout = ({ navigation }) => {
         
         setIsLoding(false)
         reactotron.log("payment", paymentDetails)
+        let paymentStarted = true;
         try {
+
             await AllInOneSDKManager.startTransaction(
                 paymentDetails?.orderId,//orderId
                 paymentDetails?.mid,//mid
@@ -666,6 +669,7 @@ const Checkout = ({ navigation }) => {
                 true,//appInvokeRestricted
                 `paytm${paymentDetails?.mid}`//urlScheme
             ).then((result) => {
+                paymentStarted = false
                 reactotron.log({result})
                 setIsLoding(true)
                 if (has(result, "STATUS")) {
@@ -686,7 +690,7 @@ const Checkout = ({ navigation }) => {
     
     
             }).catch((err) => {
-    
+                paymentStarted = false
                 reactotron.log({err})
     
                 let data = {
@@ -704,6 +708,9 @@ const Checkout = ({ navigation }) => {
             reactotron.log({error})
         }
        
+        if(paymentStarted){
+            console.log("payment not completed")
+        }
 
     }
 
@@ -714,8 +721,9 @@ const Checkout = ({ navigation }) => {
 
 
     const navigateToAddress = () => {
-        navigation.navigate("green", { screen: 'TabNavigator', params: { screen: 'account', params: { screen: 'MyAddresses', params: { mode: 'checkout' } } } })
+        //navigation.navigate("green", { screen: 'TabNavigator', params: { screen: 'account', params: { screen: 'MyAddresses', params: { mode: 'checkout' } } } })
         //navigation.navigate("account", { screen: "MyAddresses", params: { mode: 'checkout' } })
+        navigation.push("MyAddresses", { mode: 'checkout' })
     }
 
 
@@ -744,7 +752,8 @@ const Checkout = ({ navigation }) => {
 
 
     const chooseAddress = () => {
-        navigation.navigate("green", { screen: 'TabNavigator', params: { screen: 'account', params: { screen: 'MyAddresses', params: { mode: 'checkout' } } } })
+        //navigation.navigate("green", { screen: 'TabNavigator', params: { screen: 'account', params: { screen: 'MyAddresses', params: { mode: 'checkout' } } } })
+        navigation.push("MyAddresses", { mode: 'checkout' })
         //navigation.navigate("account", { screen: "MyAddresses", params: { mode: 'checkout' } })
     }
 

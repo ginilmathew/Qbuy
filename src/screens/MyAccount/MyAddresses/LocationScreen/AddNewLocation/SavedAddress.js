@@ -59,7 +59,9 @@ const SavedAddress = () => {
         userContext.setCurrentAddress(item?.area?.address)
         addressContext.setCurrentAddress(item);
         cartContext.setDefaultAddress(item)
-        navigation.navigate("green", { screen: "TabNavigator", params: { screen: 'home' } })
+        if(mode === "home"){
+            navigation.navigate("green", { screen: "TabNavigator", params: { screen: 'home' } })
+        }
     }
 
 

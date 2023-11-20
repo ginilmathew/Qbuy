@@ -87,7 +87,7 @@ const OrderCard = memo(({ item, refreshOrder }) => {
         ).then((result) => {
 
 
-            if (has(result, "STATUS")) {
+            if (has(result, "STATUS") && result?.STATUS == "TXN_SUCCESS") {
                 updatepaymentdata(result)
                 refreshOrder();
             }
@@ -97,7 +97,7 @@ const OrderCard = memo(({ item, refreshOrder }) => {
                     RESPMSG: 'User Cancelled transaction',
                     ORDERID: newpaymentDetails?.orderId
                 }
-                updatepaymentdata(data)
+                //updatepaymentdata(data)
                 refreshOrder();
             }
             // console.log("PAYTM =>", JSON.stringify(result));
@@ -246,7 +246,7 @@ const OrderCard = memo(({ item, refreshOrder }) => {
                     <CommonTexts label={item?.order_id} />
                 </View>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Text style={styles.dateText}>{moment(item?.created_at).format("DD-MM-YYYY")}</Text>
+                    <Text style={styles.dateText}>{moment(item?.created_at).format("DD-MM-YYYY hh:mm A")}</Text>
                 </View>
             </View>
             <View style={styles.itemsContainer}>

@@ -34,6 +34,7 @@ import { NativeModules } from 'react-native'
 import AddDeliveryAddress from '../screens/MyAccount/MyAddresses/LocationScreen/AddDeliveryAddress';
 import notifee, { EventType } from '@notifee/react-native';
 import Checkout from '../screens/Cart/Checkout';
+import MyAddresses from '../screens/MyAccount/MyAddresses';
 // import OrderPlaced from '../screens/Cart/Checkout/Payment/OrderPlaced';
 
 const { env, mode } = NativeModules.RNENVConfig
@@ -258,7 +259,12 @@ const RouteTest = () => {
                 setversionUpdate(true);
             }
         } else {
-            setInitialScreen('green');
+            if(userContext?.location){
+                setInitialScreen('green');
+            }
+            else{
+                setInitialScreen('AddNewLocation')
+            }
         }
     }
 
@@ -438,6 +444,7 @@ const RouteTest = () => {
                     <Stack.Screen name="green" component={Green} />
                     <Stack.Screen name="AddDeliveryAddress" component={AddDeliveryAddress} />
                     <Stack.Screen name="Checkout" component={Checkout}/>
+                    <Stack.Screen name="MyAddresses" component={MyAddresses}/>
                 </Stack.Navigator>
             </NavigationContainer>
             {/* <LoadingModal isVisible={true} /> */}

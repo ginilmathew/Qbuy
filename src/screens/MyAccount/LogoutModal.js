@@ -24,7 +24,7 @@ const LogoutModal = ({ visible, onDismiss, onPress,label }) => {
                 >
                     <Ionicons name='close-circle' color='#000' size={25} />
                 </TouchableOpacity>
-                <CommonTexts label={label} fontSize={18} textAlign='center' mt={10} />
+                <CommonTexts label={label} fontSize={18} fullLabel={true} textAlign='center' mt={10} />
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: 20 }}>
                     <CustomButton
                         onPress={onDismiss}
