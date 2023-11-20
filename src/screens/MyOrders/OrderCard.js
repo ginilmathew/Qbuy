@@ -401,6 +401,18 @@ const OrderCard = memo(({ item, refreshOrder }) => {
 
                     </View>
                 </View>}
+                {item?.refund_completed_status === "completed" &&
+                <View
+                    style={{ backgroundColor: '#fff', paddingBottom: 10, borderTopWidth: showItems ? 0 : 1, borderColor: '#00000029', height: 35, alignItems: 'center', justifyContent: 'center', marginHorizontal: 10 }}
+                >
+                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', display: 'flex', width: '100%' }}>
+                    <Text style={{ fontWeight: 'bold', fontSize: 12, color: '#000', fontFamily: 'Poppins-Medium' }}>{'Refund'}</Text>
+                        <Text style={{ fontWeight: 'bold', fontSize: 12, color: 'blue', fontFamily: 'Poppins-Medium' }}>{item?.refund_details?.refund_amount}</Text>
+                        <Text style={{ fontWeight: 'bold', fontSize: 12, color: '#8ED053', fontFamily: 'Poppins-Medium' }}>{'Completed'}</Text>
+
+
+                    </View>
+                </View>}
 
         </View>
     )
