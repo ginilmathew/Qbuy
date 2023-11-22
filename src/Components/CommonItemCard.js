@@ -104,7 +104,7 @@ const CommonItemCard = memo(({ height, width, item, marginHorizontal, wishlistIc
         }
 
 
-        if (!data?.variant) {
+        if (!data?.variant && data?.attributes?.length === 0) {
             cartContext?.addToCart(data)
         }
         else {

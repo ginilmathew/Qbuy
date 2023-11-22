@@ -167,7 +167,8 @@ const Checkout = ({ navigation }) => {
                             store: pro?.productdata?.store,
                             variant_id: null,
                             franchisee: pro?.productdata?.franchisee,
-                            cartId: response?.data?.data?._id
+                            cartId: response?.data?.data?._id,
+                            attributes: pro?.attributes
                         }
                     }
                     else {
@@ -509,6 +510,9 @@ const Checkout = ({ navigation }) => {
             let amount = 0;
             let stores = []
 
+            reactotron.log({cartItems})
+            //return false;
+
             cartItems?.map(cart => {
                 stores.push(cart?.store?._id)
                 products.push({
@@ -520,7 +524,8 @@ const Checkout = ({ navigation }) => {
                     quantity: cart?.quantity,
                     price: cart?.price,
                     unitPrice: cart?.unitPrice,
-                    deliveryPrice: cart?.delivery
+                    deliveryPrice: cart?.delivery,
+                    attributes: cart?.attributes
                 })
             })
 

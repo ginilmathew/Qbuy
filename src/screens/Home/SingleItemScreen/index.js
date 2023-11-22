@@ -67,6 +67,9 @@ const SingleItemScreen = ({ route, navigation }) => {
     const courasol = useRef(null);
 
 
+    reactotron.log({attributes})
+
+
 
     const [courasolArray, setCourasolArray] = useState([])
 
@@ -106,12 +109,12 @@ const SingleItemScreen = ({ route, navigation }) => {
             setItem(route?.params?.item);
             setImages(route?.params?.item?.image ? [route?.params?.item?.product_image, ...route?.params?.item?.image] : [route?.params?.item?.product_image])
             addViewCount(route?.params?.item);
-            if (!item?.variant) {
-                if (item?.variant) {
+            // if (!item?.variant) {
+            //     if (item?.variant) {
 
-                    setAttributes([]);
-                }
-            }
+            //         setAttributes([]);
+            //     }
+            // }
 
         }
 
@@ -165,7 +168,25 @@ const SingleItemScreen = ({ route, navigation }) => {
 
                 setAttributes(attributes)
             }
+            else{
+                let attributes = item?.attributes?.map(att => {
+                    let selected;
+                    att?.options?.map((opt, index) => {
+                        if(index === 0){
+                            selected = opt;
+                        }
+
+                    })
+                    return {
+                        ...att,
+                        selected
+                    }
+                })
+                setAttributes(attributes)
+            }
             // getSingleProductList()
+        }else{
+            setAttributes(item?.attributes)
         }
     }, [item]);
 
@@ -266,9 +287,10 @@ const SingleItemScreen = ({ route, navigation }) => {
                 text1: 'Price Should be more than 1'
             });
         } else {
-            cartContext.addToCart(item, selectedVariant)
+            reactotron.log({attributes})
+            cartContext.addToCart(item, selectedVariant, attributes)
         }
-    }, [selectedVariant, cart?.cart, item?.variant, cart?.products, item])
+    }, [selectedVariant, cart?.cart, item?.variant, cart?.products, item, attributes])
 
 
 

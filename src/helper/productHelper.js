@@ -13,6 +13,8 @@ export function getProduct (product) {
     let minQty = minimum_qty ? parseFloat(minimum_qty) : 1
     let vendorCommission = product?.vendors?.additional_details?.commission ? parseFloat(product?.vendors?.additional_details?.commission) : 0
 
+    let attri = attributes?.length > 0 ? true : false
+
 
 
     let newProduct = {
@@ -221,6 +223,9 @@ export function getProduct (product) {
 
     }
     else {
+        if(attri){
+            newProduct['attributes'] = attributes
+        }
         let offer = product?.offer_price ? parseFloat(product?.offer_price) : 0;
         let offerFromDate = moment(product?.offer_date_from).isValid() ? moment(product?.offer_date_from, "YYYY-MM-DD") : null
         let offerToDate = moment(product?.offer_date_to).isValid() ? moment(product?.offer_date_to, "YYYY-MM-DD") : null

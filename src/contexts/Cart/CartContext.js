@@ -29,8 +29,8 @@ const CartProvider = (props) => {
     }, [address])
 
 
-    const addToCart = async (item, selectedVariant) => {
-        //reactotron.log({cart})
+    const addToCart = async (item, selectedVariant, attributes) => {
+        reactotron.log({attributes}, "cart")
         let cartItems, url;
         let productDetails;
         let minimumQty = item?.minQty ? item?.minQty : 1
@@ -41,6 +41,19 @@ const CartProvider = (props) => {
             let existing;
             if (item?.variant) {
                 existing = cart?.product_details?.find(prod => prod.product_id === item?._id && prod?.variants?.[0]?.variant_id === selectedVariant?.id)
+            }
+            else if(attributes){
+                let filterProducts = cart?.product_details?.filter(prod => prod.product_id === item?._id)
+                filterProducts && filterProducts?.map(prod => {
+                    let att = [];
+                    attributes?.map(attr => {
+                        att.push(attr?.selected)
+                    })
+
+                    if(prod?.attributes?.every(v => att.includes(v))){
+                        existing = prod;
+                    }
+                })
             }
             else {
                 existing = cart?.product_details?.find(prod => prod.product_id === item?._id)
@@ -54,11 +67,13 @@ const CartProvider = (props) => {
                 }
             }
             else {
+                reactotron.log("in", attributes)
                 productDetails = {
                     product_id: item?._id,
                     name: item?.name,
                     image: item?.product_image,
                     type: item?.variant ? 'variant' : 'single',
+                    attributes: attributes?.map(att => att.selected),
                     variants: item?.variant ? [
                         {
                             variant_id: selectedVariant?.id,
@@ -81,6 +96,7 @@ const CartProvider = (props) => {
                 name: item?.name,
                 image: item?.product_image,
                 type: item?.variant ? 'variant' : 'single',
+                attributes: attributes?.map(att => att.selected),
                 variants: item?.variant ? [
                     {
                         variant_id: selectedVariant?.id,

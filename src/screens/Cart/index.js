@@ -119,6 +119,7 @@ const Cart = ({ navigation }) => {
                                 store: pro?.productdata?.store,
                                 status: pro?.productdata?.status,
                                 availability: pro?.availability,
+                                attributes: pro?.attributes
                             };
                         } else {
                             (store_address = pro?.productdata?.vendors.store_address),

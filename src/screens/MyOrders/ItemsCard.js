@@ -16,7 +16,7 @@ const ItemsCard = memo(({item, date}) => {
     return (
         <View style={styles.container}>
             <View style={{ flex: 0.5 }}>
-                <Text style={[styles.text1, { textAlign: 'left' }]}>{`${item?.name} ${item?.variants ? `(${item?.variants?.title})` : ''}`}</Text>
+                <Text style={[styles.text1, { textAlign: 'left' }]}>{`${item?.name} ${item?.variants ? `(${item?.variants?.title})` : item?.attributes ? `(${item?.attributes?.join(', ')})` : ''}`}</Text>
                 {/* <TouchableOpacity 
                 //onPress={goToShop}
                 >

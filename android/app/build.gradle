@@ -94,20 +94,20 @@ android {
         panda {
             resValue "string", "app_name", "QBuyPanda"
             applicationId "com.qbuypanda.app"
-            versionCode 13
-            versionName "2.5"
+            versionCode 14
+            versionName "2.6"
         }
         green {
             resValue "string", "app_name", "QBuyGreen"
             applicationId "com.diginest.qbuygreen"
-            versionCode 8
-            versionName "1.5"
+            versionCode 9
+            versionName "1.6"
         }
         fashion {
             resValue "string", "app_name", "QBuyFashion"
             applicationId "com.diginest.qbuyfashion"
-            versionCode 3
-            versionName "1.02"
+            versionCode 4
+            versionName "1.03"
         }
     }
     defaultConfig {
