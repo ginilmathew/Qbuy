@@ -267,7 +267,9 @@ const CheckoutItemCard = ({ item, index, refreshCart, view }) => {
 
 
     const gotoStore = useCallback(() => {
-        navigation.navigate('home', { screen: 'store', params: { name: item?.store?.name, mode: 'checkoutItem', storeId: item?.store?._id, item: { store_address: item?.store_address } } })
+        navigation.push("green", { screen: "TabNavigator", params: { screen: 'home', params: { screen: 'store', params: { name: item?.store?.name, mode: 'checkoutItem', storeId: item?.store?._id, item: { store_address: item?.store_address } } } } })
+        //navigation.push('home', { screen: 'store', params: { name: item?.store?.name, mode: 'checkoutItem', storeId: item?.store?._id, item: { store_address: item?.store_address } } })
+        //navigation.push("store", { name: item?.store?.name, mode: 'checkoutItem', storeId: item?.store?._id, item: { store_address: item?.store_address } })
     }, [navigation])
 
 

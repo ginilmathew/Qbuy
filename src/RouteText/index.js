@@ -3,10 +3,10 @@
 /* eslint-disable prettier/prettier */
 import { AppState, PermissionsAndroid, Platform, StyleSheet, ToastAndroid } from 'react-native'
 import React, { useState, useEffect, useContext, useCallback } from 'react'
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, TabActions, useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 // import { useDispatch, useSelector } from 'react-redux';
-import { navigationRef } from '../Navigations/RootNavigation';
+import * as RootNavigation from '../Navigations/RootNavigation';
 import Login from '../screens/auth/Login';
 import Otp from '../screens/auth/Otp';
 //import Menu from './Menu';
@@ -35,6 +35,12 @@ import AddDeliveryAddress from '../screens/MyAccount/MyAddresses/LocationScreen/
 import notifee, { EventType } from '@notifee/react-native';
 import Checkout from '../screens/Cart/Checkout';
 import MyAddresses from '../screens/MyAccount/MyAddresses';
+import Location from '../screens/Location';
+import ManualLocation from '../screens/Location/ManualLocation';
+import { BASE_URL } from '../config/constants';
+import VersionUpgrade from '../screens/auth/VersionUpgrade';
+import { useQuery } from '@tanstack/react-query';
+import { getProduct } from '../helper/productHelper';
 // import OrderPlaced from '../screens/Cart/Checkout/Payment/OrderPlaced';
 
 const { env, mode } = NativeModules.RNENVConfig
@@ -56,189 +62,84 @@ const RouteTest = () => {
     const [versionUpdate, setversionUpdate] = useState(false);
     const [forceUpdate, setForceUpdate] = useState(false);
     const [initialScreen, setInitialScreen] = useState(null);
+    const navigation = useNavigation()
 
 
 
 
-    // async function requestUserPermission() {
-    //     if(Platform.OS === 'ios'){
-    //         const authStatus = await messaging().requestPermission();
-    //         const enabled =
-    //             authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-    //             authStatus === messaging.AuthorizationStatus.PROVISIONAL;
-    
-    //         if (enabled) {
-    //             console.log('Authorization status:', authStatus);
-    //         }
-    //     }
-    //     else{
-    //         PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
-    //     }
 
-    //     let user = JSON.parse(await AsyncStorage.getItem("user"))
-    //     //if (authorizationStatus) {
-
-    //         await messaging().registerDeviceForRemoteMessages();
-    //         const token = await messaging().getToken();
-
-
-
-    //         if (user?._id) {
-    //             let data = {
-    //                 id: user?._id,
-    //                 token
-    //             }
-    //             await axios.post(`${API_URL}auth/adddevicetoken`, data)
-    //                 .then(async response => {
-    //                 })
-    //                 .catch(async error => {
-    //                 })
-    //         }
-
-
-    // }
-
-    // async function onMessageReceived(message) {
-    //     // Request permissions (required for iOS)
-    //     await notifee.requestPermission()
-
-    //     // Create a channel (required for Android)
-    //     const channelId = await notifee.createChannel({
-    //         id: 'default',
-    //         name: 'Default Channel',
-    //     });
-
-    //     // Display a notification
-    //     await notifee.displayNotification({
-    //         title: message?.notification?.title,
-    //         body: message?.notification?.body,
-    //         data: message?.data,
-    //         android: {
-    //             channelId,
-    //             smallIcon: 'ic_launcher', // optional, defaults to 'ic_launcher'.
-    //             // pressAction is needed if you want the notification to open the app when pressed
-    //             pressAction: {
-    //                 id: 'default',
-    //             },
-    //         },
-    //     });
-    // }
-
-    // useEffect(() => {
-    //     // Assume a message-notification contains a "type" property in the data payload of the screen to open
-
-    //     messaging().onNotificationOpenedApp(remoteMessage => {
-       
-          
-
-    //     });
-
-    //     // Check whether an initial notification is available
-    //     messaging()
-    //         .getInitialNotification()
-    //         .then(remoteMessage => {
-                
-    //         });
-
-    //     messaging().onMessage(onMessageReceived);
-    //     messaging().setBackgroundMessageHandler(onMessageReceived);
-    // }, []);
 
 
     useEffect(() => {
 
-        checkUserAddress()
+        async function checkVersion() {
+            let versions = await axios.get(`${BASE_URL}common/version`)
 
-        //getCurrentLocation();
+            if (versions?.data?.message === "Success") {
+                const versionInfo = versions?.data?.data
+
+                const DeviceVersion = await DeviceInfo.getVersion();
+
+                if (versionInfo?.update === true) {
+                    if (parseFloat(DeviceVersion) < parseFloat(versionInfo?.current_version)) {
+                        setInitialScreen("version")
+                    }
+                    else {
+                        checkUserAddress()
+                    }
+                }
+                else {
+                    checkUserAddress()
+                }
+
+                reactotron.log({ DeviceVersion, versionInfo })
+
+            }
+            else {
+                checkUserAddress()
+            }
+
+
+
+            reactotron.log({ versions })
+        }
+
+        checkVersion()
+        //checkUserAddress()
 
     }, []);
 
 
-    const getCureentDeviceLocation = async () => {
-        await Geolocation.getCurrentPosition(
-            async position => {
-                if (position) {
-
-                    let response = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${position?.coords?.latitude},${position.coords?.longitude}&key=AIzaSyBBcghyB0FvhqML5Vjmg3uTwASFdkV8wZY`);
 
 
-
-                    //let address = getAddressFromCoordinates(position?.coords?.latitude, position.coords?.longitude);
-                    let location = {
-                        latitude: position?.coords?.latitude,
-                        longitude: position.coords?.longitude,
-                        address: response?.data?.results[0]?.formatted_address
-                    }
-
-                    await AsyncStorage.setItem("location", JSON.stringify(location))
-                    userContext.setLocation([position?.latitude, position?.longitude]);
-                    userContext.setCurrentAddress(response?.data?.results[0]?.formatted_address)
-                    setInitialScreen('green');
-                }
-                else {
-                    let user = await AsyncStorage.getItem("user");
-                    if (user) {
-                        setInitialScreen('AddNewLocation')
-                    }
-                    else {
-                        setInitialScreen("Login")
-                    }
-
-                }
-            },
-            async error => {
-                let user = await AsyncStorage.getItem("user");
-                if (user) {
-                    setInitialScreen('AddNewLocation')
-                }
-                else {
-                    setInitialScreen("Login")
-                }
-            },
-            {
-                accuracy: {
-                    android: 'high',
-                    ios: 'best',
-                },
-                enableHighAccuracy: true,
-                timeout: 15000,
-                maximumAge: 10000,
-                distanceFilter: 0,
-                forceRequestLocation: true,
-                forceLocationManager: false,
-                showLocationDialog: true,
-            },
-        )
-    }
 
 
     const checkUserAddress = async () => {
         let location = await AsyncStorage.getItem("location")
         reactotron.log({ location })
+        //return false;
         if (location) {
             let locationData = JSON.parse(location)
-            reactotron.log({ locationData })
             userContext.setLocation([locationData?.latitude, locationData?.longitude]);
             userContext.setCurrentAddress(locationData?.address)
         }
         let user = await AsyncStorage.getItem("user");
         if (user) {
+            setInitialScreen('green');
             getProfile()
-            getAddressList()
+            if (!location) {
+                getAddressList()
+            }
         }
         else {
             let location = await AsyncStorage.getItem("location")
             reactotron.log({ location })
             if (location) {
-                let locationData = JSON.parse(location)
-                reactotron.log({ locationData })
-                userContext.setLocation([locationData?.latitude, locationData?.longitude]);
-                userContext.setCurrentAddress(locationData?.address)
                 setInitialScreen('green');
             }
             else {
-                reactotron.log("get current user location")
-                getCureentDeviceLocation()
+                //reactotron.log("get current user location")
+                setInitialScreen("Login")
             }
         }
 
@@ -247,32 +148,6 @@ const RouteTest = () => {
 
 
 
-
-
-    const VersionManagement = (data) => {
-        SplashScreen.hide();
-        if (DeviceVersion * 1 < data?.current_version * 1) {
-            if (DeviceVersion * 1 < data?.current_version * 1 && data?.update) {
-                setversionUpdate(true);
-                setForceUpdate(true);
-            } else if (DeviceVersion * 1 < data?.current_version * 1 && !data?.update) {
-                setversionUpdate(true);
-            }
-        } else {
-            if(userContext?.location){
-                setInitialScreen('green');
-            }
-            else{
-                setInitialScreen('AddNewLocation')
-            }
-        }
-    }
-
-
-    const ColoseUpdateModal = useCallback(() => {
-        setversionUpdate(false);
-        setInitialScreen('green');
-    }, [versionUpdate]);
 
     const getProfile = useCallback(async () => {
         loadingContext.setLoading(true);
@@ -283,8 +158,6 @@ const RouteTest = () => {
                 setUserDetails(response?.data?.data)
                 getCartDetails(response?.data?.data)
 
-
-                VersionManagement(response?.data?.data)
 
                 // setInitialScreen('green');
                 //setInitialScreen('green')
@@ -335,6 +208,12 @@ const RouteTest = () => {
                         cartContext.setDefaultAddress(response?.data?.data?.[0])
                         await userContext.setLocation([response?.data?.data?.[0]?.area?.latitude, response?.data?.data?.[0]?.area?.longitude])
                         await userContext?.setCurrentAddress(response?.data?.data?.[0]?.area?.address)
+                        let location = {
+                            latitude: response?.data?.data?.[0]?.area?.latitude,
+                            longitude: response?.data?.data?.[0]?.area?.longitude,
+                            address: response?.data?.data?.[0]?.area?.address
+                        }
+                        await AsyncStorage.setItem("location", JSON.stringify(location))
                         setTimeout(() => {
                             setInitialScreen('green');
                         }, 200);
@@ -345,6 +224,12 @@ const RouteTest = () => {
                             cartContext.setDefaultAddress(defaultAdd)
                             await userContext.setLocation([defaultAdd?.area?.latitude, defaultAdd?.area?.longitude])
                             await userContext?.setCurrentAddress(defaultAdd?.area?.address)
+                            let location = {
+                                latitude: defaultAdd?.area?.latitude,
+                                longitude: defaultAdd?.area?.longitude,
+                                address: defaultAdd?.area?.address
+                            }
+                            await AsyncStorage.setItem("location", JSON.stringify(location))
                             setTimeout(() => {
                                 setInitialScreen('green');
                             }, 200);
@@ -353,6 +238,12 @@ const RouteTest = () => {
                             cartContext.setDefaultAddress(response?.data?.data?.[0])
                             await userContext.setLocation([response?.data?.data?.[0]?.area?.latitude, response?.data?.data?.[0]?.area?.longitude])
                             await userContext?.setCurrentAddress(response?.data?.data?.[0]?.area?.address)
+                            let location = {
+                                latitude: response?.data?.data?.[0]?.area?.latitude,
+                                longitude: response?.data?.data?.[0]?.area?.longitude,
+                                address: response?.data?.data?.[0]?.area?.address
+                            }
+                            await AsyncStorage.setItem("location", JSON.stringify(location))
                             setTimeout(() => {
                                 setInitialScreen('green');
                             }, 200);
@@ -360,18 +251,6 @@ const RouteTest = () => {
                     }
 
 
-                }
-                else {
-                    let location = await AsyncStorage.getItem("location")
-                    if (location) {
-                        let locationData = JSON.parse(location)
-                        userContext.setLocation([locationData?.latitude, locationData?.longitude]);
-                        userContext.setCurrentAddress(locationData?.address)
-                        setInitialScreen('green');
-                    }
-                    else {
-                        getCureentDeviceLocation()
-                    }
                 }
 
             })
@@ -411,7 +290,40 @@ const RouteTest = () => {
     }, []);
 
 
- 
+    useEffect(() => {
+        return notifee.onForegroundEvent(({ type, detail }) => {
+            reactotron.log({ detail })
+            switch (type) {
+                case EventType.DISMISSED:
+                    console.log('User dismissed notification', detail.notification);
+                    break;
+                case EventType.PRESS:
+
+                    if (detail?.notification?.data?.type === "admin" && detail?.notification?.data?.product_url) {
+                        getProductDetails(detail?.notification?.data?.product_url)
+                    }
+                    else if(detail?.notification?.data?.mode === "order"){
+                        const jumpToAction = TabActions.jumpTo('order');
+                        navigation.dispatch(jumpToAction);
+                        //RootNavigation.navigate("green", { screen: 'order' })
+                    }
+                    reactotron.log('User pressed notification', detail.notification);
+                    break;
+            }
+        });
+    }, []);
+
+
+    const getProductDetails = async (id) => {
+        let products = await customAxios.get(`customer/product/${id}`);
+        let product = getProduct(products?.data?.data);
+
+        //reactotron.log({product})
+        RootNavigation.navigate("green", { screen: 'TabNavigator', params: { screen: 'home', params: { screen: 'SingleItemScreen', params: { item: product } } } })
+    }
+
+
+
 
 
 
@@ -420,7 +332,6 @@ const RouteTest = () => {
         return (
             <>
                 <SplashScreenF />
-                {versionUpdate && <CommonUpdateModal isopen={versionUpdate} CloseModal={ColoseUpdateModal} ForceUpdate={forceUpdate} />}
             </>
 
         )
@@ -429,28 +340,24 @@ const RouteTest = () => {
 
 
     return (
-        <>
-            <NavigationContainer ref={navigationRef}>
-                <Stack.Navigator initialRouteName={initialScreen} screenOptions={{ headerShown: false }}>
+        <Stack.Navigator initialRouteName={initialScreen} screenOptions={{ headerShown: false }}>
 
-                    {/* <Stack.Screen name="SplashScreen" component={SplashScreenF} /> */}
-                    <Stack.Screen name="Login" component={Login} />
-                    <Stack.Screen name="Otp" component={Otp} />
-                    <Stack.Screen name="LocationScreen" component={LocationScreen} options={{ title: 'home' }} />
-                    <Stack.Screen name="AddNewLocation" component={AddNewLocation} />
-                    {/* <Stack.Screen name="OrderPlaced" component={OrderPlaced}/> */}
-                    {/* <Stack.Screen name="panda" component={Panda} />
-                    <Stack.Screen name="fashion" component={Fashion} /> */}
-                    <Stack.Screen name="green" component={Green} />
-                    <Stack.Screen name="AddDeliveryAddress" component={AddDeliveryAddress} />
-                    <Stack.Screen name="Checkout" component={Checkout}/>
-                    <Stack.Screen name="MyAddresses" component={MyAddresses}/>
-                </Stack.Navigator>
-            </NavigationContainer>
-            {/* <LoadingModal isVisible={true} /> */}
-
-            {versionUpdate && <CommonUpdateModal isopen={versionUpdate} CloseModal={ColoseUpdateModal} />}
-        </>
+            {/* <Stack.Screen name="SplashScreen" component={SplashScreenF} /> */}
+            <Stack.Screen name="Location" component={Location} />
+            <Stack.Screen name="manual" component={ManualLocation} />
+            <Stack.Screen name="Login" component={Login} />
+            <Stack.Screen name="Otp" component={Otp} />
+            <Stack.Screen name="LocationScreen" component={LocationScreen} options={{ title: 'home' }} />
+            <Stack.Screen name="AddNewLocation" component={AddNewLocation} />
+            {/* <Stack.Screen name="OrderPlaced" component={OrderPlaced}/> */}
+            {/* <Stack.Screen name="panda" component={Panda} />
+            <Stack.Screen name="fashion" component={Fashion} /> */}
+            <Stack.Screen name="green" component={Green} />
+            <Stack.Screen name="AddDeliveryAddress" component={AddDeliveryAddress} />
+            <Stack.Screen name="Checkout" component={Checkout} />
+            <Stack.Screen name="MyAddresses" component={MyAddresses} />
+            <Stack.Screen name="version" component={VersionUpgrade} />
+        </Stack.Navigator>
     )
 }
 

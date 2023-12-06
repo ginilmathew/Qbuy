@@ -14,6 +14,10 @@ import ProductSearchScreen from '../../screens/Home/ProductSearchScreen';
 const Drawer = createDrawerNavigator();
 
 const Green = () => {
+
+
+    
+
     return (
 
         <>
@@ -40,6 +44,7 @@ const Green = () => {
 
 
                 <Drawer.Screen name="Notifications" component={Notifications}/>
+
 
 
 

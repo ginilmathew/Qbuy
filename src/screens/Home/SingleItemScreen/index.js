@@ -66,11 +66,6 @@ const SingleItemScreen = ({ route, navigation }) => {
 
     const courasol = useRef(null);
 
-
-    reactotron.log({attributes})
-
-
-
     const [courasolArray, setCourasolArray] = useState([])
 
     const [images, setImages] = useState(null)
@@ -79,8 +74,7 @@ const SingleItemScreen = ({ route, navigation }) => {
 
     const [item, setItem] = useState(null)
 
-    const { data, isLoading, refetch } = useQuery({ queryKey: ['singleProduct'], queryFn: () => getSingleProductListQuery(route?.params?.item?._id) });
-    reactotron.log({ data })
+    const { data, isLoading, refetch } = useQuery({ queryKey: 'singleProduct', queryFn: () => getSingleProductListQuery(route?.params?.item?._id) });
 
     useEffect(() => {
         if (route?.params?.item) {
@@ -109,12 +103,6 @@ const SingleItemScreen = ({ route, navigation }) => {
             setItem(route?.params?.item);
             setImages(route?.params?.item?.image ? [route?.params?.item?.product_image, ...route?.params?.item?.image] : [route?.params?.item?.product_image])
             addViewCount(route?.params?.item);
-            // if (!item?.variant) {
-            //     if (item?.variant) {
-
-            //         setAttributes([]);
-            //     }
-            // }
 
         }
 
@@ -195,23 +183,6 @@ const SingleItemScreen = ({ route, navigation }) => {
 
 
     const { width, height } = useWindowDimensions()
-
-    // const getSingleProductList = async () => {
-    //     setLoading(true);
-    //     await customAxios.get(`customer/product/${item?._id}`)
-    //         .then((res) => {
-    //             setSingleProduct(res?.data?.data)
-    //             setLoading(false)
-    //         }).catch(err => {
-    //             Toast.show({
-    //                 type: 'error',
-    //                 text1: err
-    //             });
-    //             setLoading(false)
-
-    //         })
-
-    // }
 
 
 
@@ -500,12 +471,7 @@ const SingleItemScreen = ({ route, navigation }) => {
                         style={{ height: '100%', width: '90%', backgroundColor: '#fff', margin: 5, borderRadius: 20, opacity }}
                     />
                 </Animated.View>
-               
-
             </View>
-
-
-
         </ScrollView>
     </View>
     }
@@ -626,20 +592,9 @@ const SingleItemScreen = ({ route, navigation }) => {
                             />
                         ))}
                     </View>
-
-                    {/* {contextPanda?.active === "panda" && <CommonSelectDropdown
-                        mb={20}
-                        placeholder='Portion Size'
-                        data={data}
-                        value={value}
-                        setValue={setValue}
-                    />} */}
                 </View>
 
                 <View style={{ flexDirection: 'row', width: width, justifyContent: contextPanda?.active === "panda" ? 'center' : 'center', marginTop: 10, paddingHorizontal: 10, gap: 5 }}>
-                    {/* {contextPanda?.active === "panda" && <CustomButton
-                        label={'Pre-Order'} bg='#D3D358' width={width / 2.2} onPress={showModals}
-                    />} */}
                     {item?.available && <CustomButton
                         onPress={addToCart}
                         label={'Add to Cart'} bg={active === 'green' ? '#8ED053' : active === 'fashion' ? '#FF7190' : '#58D36E'} width={width / 2.2}
@@ -709,18 +664,6 @@ const SingleItemScreen = ({ route, navigation }) => {
                         />
 
                     </Modal>}
-                    {/* {images &&
-
-                            <FastImage
-                                source={{ uri: `${IMG_URL}${images[selectedImage]}` }}
-                                style={{ width: width - 15, height: 400, borderRadius: 10, padding: 10 }}
-                                resizeMode='cover'
-                            >
-                                <TouchableOpacity onPress={closeSingleImg} style={{ alignSelf: 'flex-end', backgroundColor: '#000', borderRadius: 10, width: 20, height: 20, alignItems: 'center', justifyContent: 'center' }}>
-                                    <AntDesign name='close' color='#fff' size={15} marginLeft={1} />
-                                </TouchableOpacity>
-                            </FastImage>
-                        } */}
                 </Modal>
 
 

@@ -10,7 +10,7 @@ import { useNavigation } from '@react-navigation/native'
 import AddressContext from '../../../../../contexts/Address'
 import CartContext from '../../../../../contexts/Cart'
 
-const SavedAddress = () => {
+const SavedAddress = ({mode}) => {
 
     const [loading, setLoading] = useState(false)
     const [addressList, setAddressList] = useState([])

@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Modal, useWindowDimensions, Image, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, Modal, useWindowDimensions, Image, TouchableOpacity, NativeModules, Linking, Platform } from 'react-native'
 import React, { useCallback } from 'react'
 import Animated, {
     Easing,
@@ -9,6 +9,8 @@ import Animated, {
     withTiming,
 } from 'react-native-reanimated';
 import CommonAddButton from './CommonAddButton';
+
+const { env, mode } = NativeModules.RNENVConfig
 
 
 
@@ -37,7 +39,18 @@ const CommonUpdateModal = ({ isopen, url,CloseModal,ForceUpdate }) => {
 
 
     const UpdateUrl = useCallback(()=>{
-
+        if(Platform.OS === "android"){
+            if(mode === "green"){
+                Linking.openURL("https://play.google.com/store/apps/details?id=com.diginest.qbuygreen")
+            }
+            else if(mode === "panda"){
+                Linking.openURL("https://play.google.com/store/apps/details?id=com.qbuypanda.app")
+            }
+            else{
+                Linking.openURL("https://play.google.com/store/apps/details?id=com.diginest.qbuyfashion")
+            }
+        }
+        
     },[])
   
 

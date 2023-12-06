@@ -26,18 +26,32 @@ import { useSelector } from 'react-redux';
 import Geolocation from 'react-native-geolocation-service';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import AddressContext from '../../../contexts/Address';
+import LoadingModal from '../../../Components/LoadingModal';
 
 const { env, mode } = NativeModules.RNENVConfig;
 
 const Login = ({ navigation }) => {
 	const userContext = useContext(AuthContext);
+    const addressContext = useContext(AddressContext)
 
 	const { width } = useWindowDimensions();
 
 	useEffect(() => {
 		//reactotron.log("in")
-		SplashScreen.hide();
+		getPermissions()
+		//SplashScreen.hide();
 	}, []);
+
+	const getPermissions = async() => {
+		const status = await PermissionsAndroid.requestMultiple([PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION]);
+
+		reactotron.log({status})
+
+		// if(status?.['android.permission.ACCESS_FINE_LOCATION'] === "granted"){
+		// 	getPosition()
+		// }
+	}
 
 	const [location, setLocation] = useState(null);
 
@@ -86,100 +100,61 @@ const Login = ({ navigation }) => {
 		fashion: require('../../../Images/FashionloginLogo.png'),
 	};
 
-	function getAddressFromCoordinates (lat, lng) {
-		if (lat && lng) {
-			axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${lat},${lng}&key=AIzaSyBBcghyB0FvhqML5Vjmg3uTwASFdkV8wZY`).then(response => {
-				userContext.setCurrentAddress(response?.data?.results[0]?.formatted_address);
-
-				//setLocation
-			})
-				.catch(err => {
-				});
-		}
-
-	}
-
-	useEffect(() => {
-		if (location) {
-			getAddressFromCoordinates();
-		}
-	}, [location]);
+	async function getAddressFromCoordinates(latitude, longitude) {
+        let response = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${latitude},${longitude}&key=AIzaSyBBcghyB0FvhqML5Vjmg3uTwASFdkV8wZY`);
 
 
 
-
-	const getCurrentLocation = useCallback(async () => {
-		if (Platform.OS === 'ios') {
-			const status = await Geolocation.requestAuthorization('whenInUse');
-			if (status === 'granted') {
-				getPosition();
-			} else {
-				Toast.show({
-					type: 'error',
-					text1: 'Location permission denied by user.',
-				});
-
-				navigation.navigate('AddNewLocation');
-			}
-
-		}
-		else {
-			const hasPermission = await PermissionsAndroid.check(
-				PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-
-			);
-
-			if ((Platform.OS === 'android' && Platform.Version < 23) || hasPermission) {
-				getPosition();
-			} else {
-				const status = await PermissionsAndroid.request(
-					PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-
-				);
-
-				if (status === PermissionsAndroid.RESULTS.GRANTED) {
-					getPosition();
+            let Value = {
+                location: response?.data?.results[0]?.formatted_address,
+                city: response?.data?.results[0]?.address_components?.filter(st =>
+                    st.types?.includes('locality')
+                )[0]?.long_name,
+                latitude: latitude,
+                longitude: longitude,
+            };
 
 
-				} else if (status === PermissionsAndroid.RESULTS.DENIED || status === PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN) {
+            addressContext.setCurrentAddress(Value);
+
+            let location = {
+                latitude: latitude,
+                longitude: longitude,
+                address: Value?.location
+            }
 
 
-					navigation.navigate('AddNewLocation');
-					Toast.show({
-						type: 'error',
-						text1: 'Location permission denied by user.',
-					});
-				}
+            AsyncStorage.setItem("location", JSON.stringify(location))
+            userContext.setLocation([latitude, longitude]);
+            userContext.setCurrentAddress(Value?.location)
+			loadingg.setLoading(false);
+			navigation.navigate('green')
+            //navigation.navigate('LocationScreen', { mode: 'home' });
 
-			}
-		}
+    }
 
-	}, []);
+	
 
 
 
-	const getPosition = async () => {
+
+	
+
+
+
+	
+
+	const NaviagteToGuest = useCallback(async() => {
+		loadingg.setLoading(true);
 		await Geolocation.getCurrentPosition(
 			position => {
 
-				getAddressFromCoordinates(position?.coords?.latitude, position.coords?.longitude);
-				userContext.setLocation([position?.coords?.latitude, position.coords?.longitude]);
-				setLocation(position?.coords);
-				SplashScreen.hide();
-				navigation.dispatch(CommonActions.reset({
-					index: 0,
-					routes: [
-						{ name: 'green' },
-					],
-				}));
+				getAddressFromCoordinates(position?.coords?.latitude, position?.coords?.longitude);
 			},
-			async error => {
-				navigation.navigate('AddNewLocation');
-				Toast.show({
-					type: 'error',
-					text1: error.message,
-				});
-				// checkLogin();
+			error => {
+				loadingg.setLoading(false);
+				navigation.navigate('Location')
+
 			},
 			{
 				accuracy: {
@@ -195,17 +170,14 @@ const Login = ({ navigation }) => {
 				showLocationDialog: true,
 			},
 		);
-	};
+		// let location = await AsyncStorage.getItem("location");
 
-	const NaviagteToGuest = useCallback(async() => {
-		let location = await AsyncStorage.getItem("location");
-
-		if(location){
-			navigation.navigate('green')
-		}
-		else{
-			navigation.navigate('AddNewLocation')
-		}
+		// if(location){
+		// 	navigation.navigate('green')
+		// }
+		// else{
+		// 	navigation.navigate('AddNewLocation')
+		// }
 
 		// userContext.setLocation([position?.latitude, position?.longitude]);
 		// userContext.setCurrentAddress(address)
@@ -264,7 +236,7 @@ const Login = ({ navigation }) => {
 						bg={ mode === 'fashion' ? '#FF7190' : '#58D36E' }
 						label={ 'Sign In' }
 						mt={ 20 }
-						loading={ loader }
+						//loading={ loader }
 					/>
 					<CustomButton
 						width={ width / 2.5 }
@@ -280,8 +252,9 @@ const Login = ({ navigation }) => {
 
 				<Text style={ styles.textStyle }>{ 'Need Support to Login?' }</Text>
 				<HelpAndSupportText />
-			</ScrollView>
 
+			</ScrollView>
+			<LoadingModal isVisible={loader} />
 		</CommonAuthBg>
 	);
 };

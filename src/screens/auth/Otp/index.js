@@ -30,6 +30,7 @@ const Otp = ({ navigation }) => {
 	const user = useContext(AuthContext);
 	const loadingg = useContext(LoaderContext);
 	const cartContext = useContext(CartContext)
+
 	let loader = loadingg?.loading;
 	const [location, setLocation] = useState(null);
 	let mobileNo = user?.login?.mobile;
@@ -73,7 +74,20 @@ const Otp = ({ navigation }) => {
 				user.setUserData(response?.data?.user);
 				AsyncStorage.setItem('token', response?.data?.access_token);
 				AsyncStorage.setItem('user', JSON.stringify(response?.data?.user));
-				getAddressList()
+				const location = await AsyncStorage.getItem("location");
+				if(!location){
+					getAddressList()
+				}
+				else{
+					loadingg.setLoading(false);
+					navigation.dispatch(CommonActions.reset({
+						index: 0,
+						routes: [
+							{ name: 'green' },
+						],
+					}));
+				}
+				
 				if (DeviceVersion * 1 < response?.data?.current_version * 1) {
 					if (DeviceVersion * 1 < response?.data?.current_version * 1 && response?.data?.update) {
 						setversionUpdate(true);
@@ -88,7 +102,7 @@ const Otp = ({ navigation }) => {
 				//getAddressList()
 
 				//VersionManagement(response?.data);
-				loadingg.setLoading(false);
+				// loadingg.setLoading(false);
 				// navigation.navigate(mode)
 				// navigation.navigate('NewUserDetails')
 			})
@@ -110,6 +124,12 @@ const Otp = ({ navigation }) => {
                         user.setLocation([response?.data?.data?.[0]?.area?.latitude, response?.data?.data?.[0]?.area?.longitude])
                         user?.setCurrentAddress(response?.data?.data?.[0]?.area?.address)
 						cartContext.setDefaultAddress(response?.data?.data?.[0])
+						let location = {
+                            latitude: response?.data?.data?.[0]?.area?.latitude,
+                            longitude: response?.data?.data?.[0]?.area?.longitude,
+                            address: response?.data?.data?.[0]?.area?.address
+                        }
+                        await AsyncStorage.setItem("location", JSON.stringify(location))
                     }
                     else {
                         let defaultAdd = response?.data?.data?.find(add => add?.default === true)
@@ -117,14 +137,26 @@ const Otp = ({ navigation }) => {
 							cartContext.setDefaultAddress(defaultAdd)
                             user.setLocation([defaultAdd?.area?.latitude, defaultAdd?.area?.longitude])
                             user?.setCurrentAddress(defaultAdd?.area?.address)
+							let location = {
+								latitude: defaultAdd?.area?.latitude,
+								longitude: defaultAdd?.area?.longitude,
+								address: defaultAdd?.area?.address
+							}
+							await AsyncStorage.setItem("location", JSON.stringify(location))
                         }
                         else {
 							cartContext.setDefaultAddress(response?.data?.data?.[0])
                             user.setLocation([response?.data?.data?.[0]?.area?.latitude, response?.data?.data?.[0]?.area?.longitude])
                             user?.setCurrentAddress(response?.data?.data?.[0]?.area?.address)
+							let location = {
+								latitude: response?.data?.data?.[0]?.area?.latitude,
+								longitude: response?.data?.data?.[0]?.area?.longitude,
+								address: response?.data?.data?.[0]?.area?.address
+							}
+							await AsyncStorage.setItem("location", JSON.stringify(location))
                         }
                     }
-
+					loadingg.setLoading(false);
 					navigation.dispatch(CommonActions.reset({
 						index: 0,
 						routes: [
@@ -137,13 +169,40 @@ const Otp = ({ navigation }) => {
                     //setInitialScreen('green');
                 }
                 else {
-                    navigation.dispatch(CommonActions.reset({
-						index: 0,
-						routes: [
-							//{ name: 'green'},
-							{ name: 'AddNewLocation' },
-						],
-					}));
+					await Geolocation.getCurrentPosition(
+						position => {
+			
+							//getAddressFromCoordinates(position?.coords?.latitude, position.coords?.longitude)
+			
+							getAddressFromCoordinates(position?.coords?.latitude, position?.coords?.longitude);
+							// userContext.setLocation([position?.coords?.latitude, position.coords?.longitude])
+						},
+						error => {
+							loadingg.setLoading(false);
+							navigation.dispatch(CommonActions.reset({
+								index: 0,
+								routes: [
+									//{ name: 'green'},
+									{ name: 'Location' },
+								],
+							}));
+			
+						},
+						{
+							accuracy: {
+								android: 'high',
+								ios: 'best',
+							},
+							enableHighAccuracy: true,
+							timeout: 15000,
+							maximumAge: 10000,
+							distanceFilter: 0,
+							forceRequestLocation: true,
+							forceLocationManager: false,
+							showLocationDialog: true,
+						},
+					);
+                    
 					//navigation.push('AddNewLocation', { mode: 'home' })
                 }
 
@@ -156,6 +215,43 @@ const Otp = ({ navigation }) => {
                 });
 
             })
+    }
+
+	async function getAddressFromCoordinates(latitude, longitude) {
+        let response = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${latitude},${longitude}&key=AIzaSyBBcghyB0FvhqML5Vjmg3uTwASFdkV8wZY`);
+
+
+
+            let Value = {
+                location: response?.data?.results[0]?.formatted_address,
+                city: response?.data?.results[0]?.address_components?.filter(st =>
+                    st.types?.includes('locality')
+                )[0]?.long_name,
+                latitude: latitude,
+                longitude: longitude,
+            };
+
+
+            //addressContext.setCurrentAddress(Value);
+
+            let location = {
+                latitude: latitude,
+                longitude: longitude,
+                address: Value?.location
+            }
+
+
+            await AsyncStorage.setItem("location", JSON.stringify(location))
+            user.setLocation([latitude, longitude]);
+            user.setCurrentAddress(Value?.location)
+			loadingg.setLoading(false);
+            navigation.dispatch(CommonActions.reset({
+				index: 0,
+				routes: [
+					{ name: 'green' },
+				],
+			}));
+
     }
 
 	const onClickResendOtp = async () => {
@@ -265,7 +361,7 @@ const Otp = ({ navigation }) => {
 						my={ 20 }
 						width={ 100 }
 						alignSelf="center"
-						loading={ loader }
+						//loading={ loader }
 					/>
 				</SafeAreaView>
 			</ScrollView>

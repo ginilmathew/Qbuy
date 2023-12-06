@@ -8,3 +8,9 @@ export function navigate(name, params) {
   }
 }
 
+export function push(name, params) {
+  if (navigationRef.isReady()) {
+    navigationRef.push(name, params);
+  }
+}
+

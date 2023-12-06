@@ -73,8 +73,6 @@ const CommonItemCard = memo(({ height, width, item, marginHorizontal, wishlistIc
 
 
     const handleClick = useCallback(() => {
-
-
         if (item?.status === "active") {
             startTransition(() => {
                 navigation.navigate('SingleItemScreen', { item: data })
@@ -84,17 +82,6 @@ const CommonItemCard = memo(({ height, width, item, marginHorizontal, wishlistIc
     }, [data, data?.status])
 
     const openBottomSheet = useCallback(() => {
-
-
-        // refRBSheet.current.open()
-        // if(data?.variant){
-        //     setVariant(true)
-        // }
-        // else{
-        //     setVariant(false)
-        //     cartContext?.addToCart(data)
-
-        // }
         if (parseInt(data?.price) < 1) {
             Toast.show({
                 type: 'info',
@@ -145,16 +132,6 @@ const CommonItemCard = memo(({ height, width, item, marginHorizontal, wishlistIc
                     setData({ ...data })
                 }
 
-                // if(has(response?.data, 'data')){
-
-                // }
-                // else if(has(response?.data, 'message')){
-                //     Toast.show({
-                //         type: 'info',
-                //         text1: response?.data?.message
-                //     })
-                // }
-                // setAvailabelPdts(response?.data?.data)
             })
             .catch(async error => {
                 Toast.show({

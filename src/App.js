@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, SafeAreaView, Platform, AppState, PermissionsAndroid } from 'react-native'
+import { StyleSheet, Text, View, SafeAreaView, Platform, AppState, PermissionsAndroid, NativeModules } from 'react-native'
 import React, { useCallback, useEffect } from 'react'
 import Navigation from './Navigations'
 import PandaProvider from './contexts/Panda/PandaContext'
@@ -10,7 +10,7 @@ import Route from './Route'
 import CartProvider from './contexts/Cart/CartContext'
 import Toast from 'react-native-toast-message';
 import AddressProvider from './contexts/Address/AddressContext'
-
+import Geolocation from 'react-native-geolocation-service';
 import RouteTest from './RouteText'
 
 import {
@@ -23,10 +23,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import messaging from '@react-native-firebase/messaging';
 import reactotron from 'reactotron-react-native'
 import customAxios from './CustomeAxios'
-import notifee, { AndroidImportance } from '@notifee/react-native';
+import notifee, { AndroidImportance, AndroidStyle, EventType } from '@notifee/react-native';
+import { NavigationContainer } from '@react-navigation/native'
+import { navigationRef } from './Navigations/RootNavigation'
+import Routes from './Routes'
 
 
-
+const { mode, env } = NativeModules.RNENVConfig
 
 
 if (__DEV__) {
@@ -65,6 +68,7 @@ const App = (props) => {
     }, [])
 
     async function onMessageReceived(message) {
+
         const { notification } = message
 
         reactotron.log({ message })
@@ -74,8 +78,18 @@ const App = (props) => {
         await notifee.displayNotification({
             title: notification?.title,
             body: notification?.body,
-            
-            android: {
+            data: message?.data,
+            android: message?.data?.image_link ? {
+                channelId: 'default',
+                importance: AndroidImportance.HIGH,
+                style: { type: AndroidStyle.BIGPICTURE, picture: message?.data?.image_link },
+                sound: 'default',
+                //smallIcon: 'name-of-a-small-icon', // optional, defaults to 'ic_launcher'.
+                // pressAction is needed if you want the notification to open the app when pressed
+                pressAction: {
+                    id: 'default',
+                },
+            } : {
                 channelId: 'default',
                 importance: AndroidImportance.HIGH,
                 sound: 'default',
@@ -93,13 +107,25 @@ const App = (props) => {
         await notifee.requestPermission()
 
         // Create a channel (required for Android)
-        const channelId = await notifee.createChannel({
+        await notifee.createChannel({
             id: 'default',
             name: 'Default Channel',
             sound: 'default',
             importance: AndroidImportance.HIGH,
             
         });
+
+        await notifee.createChannel({
+            id: 'general',
+            name: 'General Notifications',
+            sound: 'default',
+            importance: AndroidImportance.HIGH,
+            
+        });
+
+        messaging()
+        .subscribeToTopic(`${mode}_${env}_customer_general`)
+        .then(() => console.log('Subscribed to topic!'));
         // Register the device with FCM
         let userDetails = await AsyncStorage.getItem("user");
         await messaging().registerDeviceForRemoteMessages();
@@ -138,99 +164,32 @@ const App = (props) => {
         return unsubscribe;
     }, []);
 
-    // useEffect(() => {
-    //     const unsubscribe = messaging().onMessage(onMessageReceived);
-
-    //     messaging().onNotificationOpenedApp(remoteMessage => {
-    //         console.log(
-    //           'Notification caused app to open from background state:',
-    //           remoteMessage.notification,
-    //         );
-    //         //navigation.navigate(remoteMessage.data.type);
-    //     });
-
-    //     messaging()
-    //     .getInitialNotification()
-    //     .then(remoteMessage => {
-    //         if (remoteMessage) {
-    //         console.log(
-    //             'Notification caused app to open from quit state:',
-    //             remoteMessage.notification,
-    //         );
-    //         //setInitialRoute(remoteMessage.data.type); // e.g. "Settings"
-    //         }
-    //   });
-
-    //     return unsubscribe;
-    // }, []);
-
-    // const getCurrentLocation = useCallback(async () => {
-    //     if (Platform.OS === 'ios') {
-    //         const status = await Geolocation.requestAuthorization('whenInUse');
-    //         if (status === "granted") {
-    //             //getPosition()
-    //             requestUserPermission()
-    //         }
-    //     }
-    //     else {
-    //         if (Platform.OS === 'android' && Platform.Version < 23) {
-    //            // getPosition()
-    //            requestUserPermission()
-    //         }
-
-    //         const hasPermission = await PermissionsAndroid.check(
-    //             PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-    //         );
-
-    //         if (hasPermission) {
-    //             //getPosition()
-    //             requestUserPermission()
-    //         }
-
-    //         const status = await PermissionsAndroid.request(
-    //             PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-    //         );
-
-    //         if (status === PermissionsAndroid.RESULTS.GRANTED) {
-    //             //getPosition()
-    //             requestUserPermission()
-    //         }
-
-    //         if (status === PermissionsAndroid.RESULTS.DENIED) {
-    //             Toast.show({
-    //                 type: 'error',
-    //                 text1: 'Location permission denied by user.'
-    //             });
-    //             requestUserPermission()
-    //         }
-    //         else if (status === PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN) {
-    //             Toast.show({
-    //                 type: 'error',
-    //                 text1: 'Location permission revoked by user.',
-    //             });
-    //             requestUserPermission()
-    //         }
-    //     }
-
-    // }, [])
+    
 
     async function requestUserPermission() {
 
         if (Platform.OS === 'android') {
-            PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
+            const status = await PermissionsAndroid.requestMultiple([PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION]);
         }
-
-        const authStatus = await messaging().requestPermission();
-        const enabled =
-            authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-            authStatus === messaging.AuthorizationStatus.PROVISIONAL;
-
-        if (enabled) {
-            console.log('Authorization status:', authStatus);
+        else{
+            const authStatus = await messaging().requestPermission();
+            const enabled =
+                authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+                authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+    
+            if (enabled) {
+                console.log('Authorization status:', authStatus);
+            }
+            const status = await Geolocation.requestAuthorization('whenInUse');
         }
-
+       
         //getCurrentLocation()
     }
+
+    
+
+
+     
 
 
 
@@ -243,7 +202,11 @@ const App = (props) => {
                             <PandaProvider>
                                 <CartProvider>
                                     {/* <AppWithTour/> */}
-                                    <RouteTest />
+                                    <NavigationContainer ref={navigationRef}>
+                                        <RouteTest />
+                                        {/* <Routes /> */}
+                                    </NavigationContainer>
+                                    
                                     <Toast
                                         position='bottom'
                                         bottomOffset={20}

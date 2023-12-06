@@ -1,4 +1,4 @@
-import { Alert, PermissionsAndroid, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View, useWindowDimensions } from 'react-native'
+import { Alert, PermissionsAndroid, Platform, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View, useWindowDimensions } from 'react-native'
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react'
 import HeaderWithTitle from '../../../../../Components/HeaderWithTitle'
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
@@ -14,14 +14,16 @@ import LoaderContext from '../../../../../contexts/Loader';
 import { getAddressfromLocation } from '../../../../../helper/addressHelper';
 import LoadingModal from '../../../../../Components/LoadingModal';
 import SavedAddress from './SavedAddress';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+
 
 const AddNewLocation = ({ route, navigation }) => {
 
-    const backArrowhide = navigation.getState();
-    const googlePlacesRef = React.createRef();
     const addressContext = useContext(AddressContext)
     const userContext = useContext(AuthContext)
     const loadingg = useContext(LoaderContext);
+
+    const locationRef = useRef(null)
     //const [mode, setMode] = useState(route?.params?.mode ? route?.params?.mode : 'home')
 
     const { width, height } = useWindowDimensions()
@@ -29,8 +31,13 @@ const AddNewLocation = ({ route, navigation }) => {
 
 
     useEffect(() => {
-        SplashScreen.hide()
-    })
+      
+    
+      return () => {
+        locationRef?.current?.setAddressText('')
+      }
+    }, [])
+    
 
     const getAddressFromCoordinates = async (lat, lng) => {
         loadingg?.setLoading(true)
@@ -63,9 +70,9 @@ const AddNewLocation = ({ route, navigation }) => {
             navigation.navigate('LocationScreen', { mode: route?.params?.mode });
 
         } catch (error) {
-            
+
         }
-        finally{
+        finally {
             loadingg?.setLoading(false)
         }
 
@@ -157,93 +164,108 @@ const AddNewLocation = ({ route, navigation }) => {
     }
 
 
+    const goBack = () => {
+        navigation.goBack()
+    }
+
+
     return (
 
-        <>
-            <HeaderWithTitle title={'Enter your area or apartment'} backarrow={backArrowhide.index} noBack={false} />
-            <ScrollView style={{ padding: 15, marginBottom: 20 }} keyboardShouldPersistTaps='handled'>
-                <GooglePlacesAutocomplete
-                    autoFocus={false}
-                    styles={{
-                        container: {
-                            // Custom container styles
-                            backgroundColor: 'white',
-                            borderBottomWidth: 1,
-                            borderColor: 'lightgray',
-                            borderRadius: 5,
-                            marginTop: 10,
-                        },
-                        textInputContainer: {
-                            // Custom styles for the container containing the input field
-                            backgroundColor: 'white',
-                            borderTopWidth: 0, // Remove top border
-                            borderBottomWidth: 0, // Remove bottom border
-                            paddingLeft: 10, // Add left padding
-                        },
-                        textInput: {
-                            // Custom input field styles
-                            height: 40,
-                            fontSize: 16,
-                        },
-                        listView: {
-                            // Custom styles for the suggestion list
-                            backgroundColor: 'white', // Background color of the suggestion list
-                        },
-                    }}
-                    returnKeyType={'default'}
-                    fetchDetails={true}
-                    placeholder='Try Ramachandranagar, Kazhakootam,...'
-                    keyboardAppearance={'light'}
-                    textInputProps={{
-                        placeholderTextColor: 'gray',
-                        returnKeyType: 'search',
-                    }}
-                    keyboardShouldPersistTaps='always'
-                    onPress={async (data, details = null) => {
-                        
-                        // 'details' is provided when fetchDetails = true
-
-                        let Value = {
-                            location: data?.description,
-                            city: details?.address_components?.filter(st =>
-                                st.types?.includes('locality')
-                            )[0]?.long_name,
-                            latitude: details?.geometry?.location?.lat,
-                            longitude: details?.geometry?.location?.lng,
-                        };
-
-                        addressContext.setCurrentAddress(Value);
-
-                        navigation.navigate('LocationScreen', { mode: route?.params?.mode });
-                    }}
-                    query={{
-                        key: 'AIzaSyBBcghyB0FvhqML5Vjmg3uTwASFdkV8wZY',
-                        language: 'en',
-                        components: 'country:in'
-
-                    }}
-                    renderRow={(rowData) => {
-                        const title = rowData.structured_formatting.main_text;
-                        const address = rowData.structured_formatting.secondary_text;
-
-                        return (
-                            <View>
-                                <Text style={{ fontSize: 14 }}>{title}</Text>
-                                <Text style={{ fontSize: 14 }}>{address}</Text>
-                            </View>
-                        );
-                    }}
-                />
-                <TouchableOpacity onPress={getCureentPosition} style={{ marginTop: 5, flexDirection: 'row', alignItems: 'center' }}>
-                    <Ionicons name="location" size={20} color={"blue"} />
-                    <Text style={{ color: 'orange', fontWeight: 'bold', fontSize: 15 }}> Use Current Location? </Text>
+        <SafeAreaView>
+            <View style={{ flexDirection: 'row', alignItems: 'center', padding: 5, marginHorizontal: 10, marginTop: 10 }}>
+                <TouchableOpacity onPress={goBack}>
+                    <FontAwesome5 name="arrow-left" style={{ marginRight: 10, fontSize: 20 }} />
                 </TouchableOpacity>
-                {route?.params?.mode === "home" && <SavedAddress />}
-                <LoadingModal isVisible={loadingg?.loading} />
+
+                <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Enter your name or apartment name</Text>
+            </View>
+            {/* <HeaderWithTitle title={'Enter your area or apartment'} backarrow={backArrowhide.index} noBack={false} /> */}
+            <ScrollView style={{ padding: 15, marginBottom: 20 }} keyboardShouldPersistTaps='handled'> 
+            <View>
+            <GooglePlacesAutocomplete
+                autoFocus={false}
+                ref={locationRef}
+                styles={{
+                    container: {
+                        // Custom container styles
+                        backgroundColor: 'white',
+                        borderBottomWidth: 1,
+                        borderColor: 'lightgray',
+                        borderRadius: 5,
+                        marginTop: 10,
+                    },
+                    textInputContainer: {
+                        // Custom styles for the container containing the input field
+                        backgroundColor: 'white',
+                        borderTopWidth: 0, // Remove top border
+                        borderBottomWidth: 0, // Remove bottom border
+                        paddingLeft: 10, // Add left padding
+                    },
+                    textInput: {
+                        // Custom input field styles
+                        height: 40,
+                        fontSize: 16,
+                    },
+                    listView: {
+                        // Custom styles for the suggestion list
+                        backgroundColor: 'white', // Background color of the suggestion list
+                    },
+                }}
+                returnKeyType={'default'}
+                fetchDetails={true}
+                placeholder='Try Ramachandranagar, Kazhakootam,...'
+                keyboardAppearance={'light'}
+                textInputProps={{
+                    placeholderTextColor: 'gray',
+                    returnKeyType: 'search',
+                }}
+                keyboardShouldPersistTaps='always'
+                onPress={async (data, details = null) => {
+
+                    // 'details' is provided when fetchDetails = true
+
+                    let Value = {
+                        location: data?.description,
+                        city: details?.address_components?.filter(st =>
+                            st.types?.includes('locality')
+                        )[0]?.long_name,
+                        latitude: details?.geometry?.location?.lat,
+                        longitude: details?.geometry?.location?.lng,
+                    };
+
+                    addressContext.setCurrentAddress(Value);
+                    locationRef?.current?.clear()
+                    navigation.navigate('LocationScreen', { mode: route?.params?.mode });
+                }}
+                query={{
+                    key: 'AIzaSyBBcghyB0FvhqML5Vjmg3uTwASFdkV8wZY',
+                    language: 'en',
+                    components: 'country:in'
+
+                }}
+                renderRow={(rowData) => {
+                    const title = rowData.structured_formatting.main_text;
+                    const address = rowData.structured_formatting.secondary_text;
+
+                    return (
+                        <View>
+                            <Text style={{ fontSize: 14 }}>{title}</Text>
+                            <Text style={{ fontSize: 14 }}>{address}</Text>
+                        </View>
+                    );
+                }}
+            />
+            </View>
+            <TouchableOpacity onPress={getCureentPosition} style={{ marginTop: 5, flexDirection: 'row', alignItems: 'center' }}>
+                <Ionicons name="location" size={20} color={"blue"} />
+                <Text style={{ color: 'orange', fontWeight: 'bold', fontSize: 15 }}> Use Current Location? </Text>
+            </TouchableOpacity>
+            {route?.params?.mode === "home" && <SavedAddress mode={route?.params?.mode}  />}
+            <LoadingModal isVisible={loadingg?.loading} />
 
 
             </ScrollView>
-        </>
+        </SafeAreaView>
 
 
     )

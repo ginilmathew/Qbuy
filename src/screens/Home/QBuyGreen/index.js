@@ -83,6 +83,8 @@ const QBuyGreen = ({ navigation }) => {
     const firstTimeRef = React.useRef(true);
     const loadingg = useContext(LoaderContext);
     const userContext = useContext(AuthContext);
+    const [enable, setEnable] = useState(false)
+    
 
 
 
@@ -93,6 +95,10 @@ const QBuyGreen = ({ navigation }) => {
         // coordinates: env === "dev" ? location : userContext?.location
         coordinates: userContext?.location,
     }
+
+
+    
+    
 
 
 
@@ -115,9 +121,15 @@ const QBuyGreen = ({ navigation }) => {
         getNextPageParam: (lastPage, pages) => {
             return pages?.length + 1
         },
-
+        enabled: false
 
     })
+
+    useEffect(() => {
+        if(userContext?.location){
+            infiniteQueryRefetch()
+        }
+    }, [userContext?.location])
 
     const Homeapi = useQuery({ queryKey: ['greenHome'], queryFn: () => QbuyGreenHome(datas) });
 
