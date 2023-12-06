@@ -1,5 +1,5 @@
 import { FlatList, ScrollView, SectionList, StyleSheet, Text, TouchableOpacity, View, useWindowDimensions } from 'react-native'
-import React, { useCallback, useContext, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import Header from '../Components/Header'
 import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import customAxios from '../CustomeAxios'
@@ -41,11 +41,48 @@ const PandaHome = () => {
     const userContext = useContext(AuthContext)
     const { height, width } = useWindowDimensions();
     const [filter, setFilter] = useState('all')
+    const [data, setData] = useState([])
 
-    const { data, isLoading, refetch } = useQuery(['pandaHome', datas], homeData)
+    const { data: homeDatas, isLoading, refetch } = useQuery(['pandaHome', datas], homeData)
 
 
-    reactotron.log({ data })
+    useEffect(() => {
+        setData(homeDatas)
+    }, [homeDatas])
+
+
+    useEffect(() => {
+        if(filter !== "all"){
+            let recentlyviewed = homeDatas?.items?.[1]?.data?.filter(prod => prod?.category_type === filter)
+            let recents = {
+                ...homeDatas?.items?.[1],
+                data: recentlyviewed
+            }
+
+            let suggestions = homeDatas?.items?.[2]?.data?.filter(prod => prod?.category_type === filter)
+            let pandaSuggestions = {
+                ...homeDatas?.items?.[2],
+                data: suggestions
+            }
+
+
+            let products = homeDatas?.items?.[3]?.data?.filter(prod => prod?.category_type === filter)
+            let finalProducts = {
+                ...homeDatas?.items?.[3],
+                data: products
+            }
+
+            let datas = [homeDatas?.items?.[0], recents, pandaSuggestions, finalProducts]
+
+            reactotron.log({datas}, filter)
+            setData({
+                items: datas,
+                sliders: homeDatas?.sliders
+            })
+        }
+    }, [filter])
+    
+    
 
 
     useFocusEffect(
@@ -142,6 +179,9 @@ const PandaHome = () => {
                 if (i >= section.data.length) {
                     break;
                 }
+                else if(filter !== "all" && section?.data?.[i]?.category_type !== filter){
+                    break;
+                }
     
                 items.push(<CommonItemCard
                     item={section.data[i]}
@@ -167,14 +207,16 @@ const PandaHome = () => {
             );
         }
         else if(section?.type === "recentlyviewed" || section?.type === "suggested_products"){
-            if(index > 0) return null;
+            if(index > 0) {
+                return;
+            } 
             return (
                 <ScrollView
                     horizontal
                     showsHorizontalScrollIndicator={false}
                     style={{ backgroundColor:'#fff', padding: 10 }}
                 >
-                    {section.data?.map(item => {
+                    {filter === "all" ? section.data?.map(item => {
                         return(
                             <CommonItemCard
                                 //key={`${index}${section?.type?.trim()}${section?.type}`}
@@ -183,7 +225,16 @@ const PandaHome = () => {
                                 marginHorizontal={5}
                             />
                         )
-                    }) }
+                    }) :  section.data?.filter(prod => prod?.category_type === filter).map(item => {
+                        return(
+                            <CommonItemCard
+                                //key={`${index}${section?.type?.trim()}${section?.type}`}
+                                item={item}
+                                width={width / 3.5}
+                                marginHorizontal={5}
+                            />
+                        )
+                    })}
                 </ScrollView>
             );
         }
@@ -259,14 +310,15 @@ const PandaHome = () => {
     return (
         <View>
             <Header onPress={onClickDrawer} />
-            {data && <SectionList
-                sections={data?.items}
+            <SectionList
+                sections={data?.items ? data?.items : []}
                 keyExtractor={(item, index) => `${item?._id}${index}`}
                 renderItem={_renderItem}
                 renderSectionHeader={sectionHeader}
                 ListHeaderComponent={listHeader}
                 style={{ backgroundColor: '#fff' }}
-            />}
+                extraData={filter}
+            />
         </View>
     )
 }

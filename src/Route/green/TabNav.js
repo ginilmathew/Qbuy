@@ -19,7 +19,7 @@ import Entypo from 'react-native-vector-icons/Entypo'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import PandaContext from '../../contexts/Panda';
-import { CommonActions, useNavigation } from '@react-navigation/native';
+import { CommonActions, StackActions, useNavigation } from '@react-navigation/native';
 import HomeNav from './Home';
 import CartContext from '../../contexts/Cart';
 import CustomAnimated from './CustomAnimated';
@@ -31,6 +31,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import moment from 'moment';
 import reactotron from 'reactotron-react-native';
 import OrderPlaced from '../../screens/Cart/Checkout/Payment/OrderPlaced';
+import { navigationRef } from '../../Navigations/RootNavigation';
 
 
 
@@ -225,28 +226,65 @@ const TabNav = () => {
     const renderTabBar = ({ routeName, selectedTab, navigate }) => {
 
         const NavigationPage = () => {
-            reactotron.log("in", routeName, navigation.getState())
+
+            const route = navigationRef.current?.getCurrentRoute()
+            
+            reactotron.log("in", routeName, navigation.getState(), route)
             const state = navigation.getState()
             if(userContext?.userData){
-                if(routeName === "home" && state?.index !==0){
-                    navigation.dispatch(
-                        CommonActions.reset({
-                            index: 0,
-                            routes: [
-                                { name: routeName },
-                            ],
-                        })
-                    )
-                }
-                else{
+                // if(routeName === "home" && state?.index > 0){
+                //     // navigation.dispatch(
+                //     //     CommonActions.reset({
+                //     //         index: 0,
+                //     //         routes: [
+                //     //             { name: routeName },
+                //     //         ],
+                //     //     })
+                //     // )
+                //     navigation.popToTop()
+                // }
+                // else{
+                //     navigate(routeName)
+                // }
+                //navigate(routeName)
+                try {
+                    if(routeName === "home"){
+                        if(route?.name === "Cart" || route?.name === "MyOrders" || route?.name === "MyAccount" || route?.name === "Home"){
+                            navigate(routeName)
+                        }
+                        else{
+                            //navigation.dispatch(StackActions.popToTop());
+                            navigation.popToTop()
+                        }
+                       
+                        // if(navigation.canGoBack()){
+                        //     navigation.dispatch(StackActions.popToTop());
+                        // }
+                        // else{
+                        //     navigate(routeName)
+                        // }
+                        
+                        //navigation.popToTop()
+                    }
+                    else{
+                        navigate(routeName)
+                    }
+                    
+                } catch (error) {
                     navigate(routeName)
                 }
-                
+                //navigation.popToTop()
 
                
             }
             else{
-                navigation.navigate("Login")
+                if(routeName === "home"){
+                    navigate(routeName)
+                }
+                else{
+                    navigation.navigate("Login")
+                }
+                
             }
 
         }
@@ -364,6 +402,8 @@ const TabNav = () => {
         setEnableSub(false)
         setEnableThird(true)
     }
+
+    
 
 
     return (
@@ -569,12 +609,33 @@ const TabNav = () => {
 
                 </>
             )}
+            // screenListeners={({ navigation, route }) => ({
+            //     tabPress: (e) => {
+            //         e.preventDefault()
+            //         if(route?.state?.index > 0){
+            //             navigation.popToTop()
+            //         }
+            //         else{
+
+            //         }
+            //     },
+                
+            // })}
             tabBar={renderTabBar}
         >
             <CurvedBottomBar.Screen
                 name="home"
                 position="LEFT"
                 component={HomeNav}
+                // listeners={({ navigation, route }) => ({
+                //     tabPress: (e) => {
+                //         e.preventDefault()
+                //         if(route?.state?.index > 0){
+                //             navigation.popToTop()
+                //         }
+                //     },
+                    
+                // })}
             />
             <CurvedBottomBar.Screen
                 name="cart"
