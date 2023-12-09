@@ -37,6 +37,7 @@ import {
 import CommonItemSelectSkeltion from '../../../Components/CommonItemSelectSkeltion';
 import Header from '../../../Components/Header';
 import ShopCardSkeltion from '../Grocery/ShopCardSkeltion';
+import { isEqual } from 'lodash'
 
 
 
@@ -74,7 +75,16 @@ const SingleItemScreen = ({ route, navigation }) => {
 
     const [item, setItem] = useState(null)
 
-    const { data, isLoading, refetch } = useQuery({ queryKey: 'singleProduct', queryFn: () => getSingleProductListQuery(route?.params?.item?._id) });
+    const { data, isLoading, refetch } = useQuery({ 
+        queryKey: ['singleProduct'], 
+        queryFn: () => getSingleProductListQuery(route?.params?.item?._id) 
+    });
+
+
+    useEffect(() => {
+        refetch()
+    }, [route?.params?.item?._id])
+    
 
     useEffect(() => {
         if (route?.params?.item) {
@@ -258,8 +268,41 @@ const SingleItemScreen = ({ route, navigation }) => {
                 text1: 'Price Should be more than 1'
             });
         } else {
-            reactotron.log({attributes})
-            cartContext.addToCart(item, selectedVariant, attributes)
+            reactotron.log({attributes, selectedVariant})
+            let filter = attributes?.filter(attr => attr?.variant === true || attr?.variant === null)
+
+            let attri = filter?.map(attr => attr?.selected)
+            let selectedVari;
+            item?.variants?.map(vari => {
+                reactotron.log({ a: attri.sort(), b: vari?.attributs.sort(), attributes, equal: isEqual(attri?.sort(), vari?.attributs.sort()), vari })
+                if(isEqual(attri?.sort(), vari?.attributs.sort())){
+                    selectedVari = vari;
+                }
+                // let variAttributes = vari?.attributs?.sort()
+                // if(vari?.attributs?.sort().toString() == attributes.sort().toString()){
+                //     selectedVari = vari;
+                //     //cartContext.addToCart(item, vari, attributes);
+                //     //break;
+                // }
+            })
+
+            reactotron.log({length: item, selectedVari})
+            if(item?.variants?.length > 0 && selectedVari){
+                cartContext.addToCart(item, selectedVari, attributes);
+            }
+            else if(!item?.variants){
+                cartContext.addToCart(item, selectedVari, attributes);
+            }
+            else{
+                Toast.show({
+                    type: 'info',
+                    text1: 'Please select attributes to continue'
+                });
+            }
+            //reactotron.log({selectedVari})
+
+            
+            
         }
     }, [selectedVariant, cart?.cart, item?.variant, cart?.products, item, attributes])
 
@@ -267,6 +310,7 @@ const SingleItemScreen = ({ route, navigation }) => {
 
 
     const selectAttributes = (value) => {
+        reactotron.log({value})
         let attri = [];
         let attr = attributes?.map(att => {
             if (att?.options.includes(value)) {
@@ -294,28 +338,33 @@ const SingleItemScreen = ({ route, navigation }) => {
         })
 
 
-        item?.variants?.map(sin => {
-            let attributes = []
-            sin?.attributs?.map(att => {
-                attributes.push(att)
-            })
-            const containsAll = attri.every(elem => attributes?.includes(elem));
+        reactotron.log({attr})
 
-            if (containsAll) {
 
-                if (item?.stock) {
-                    if (!sin?.available) {
-                        item.available = false
-                    }
-                    else {
-                        item.available = true
-                    }
-                }
-                setSelectedVariant(sin)
-                setPrice(sin?.price)
-                return false;
-            }
-        })
+        // item?.variants?.map(sin => {
+        //     let attributes = []
+        //     sin?.attributs?.map(att => {
+        //         attributes.push(att)
+        //     })
+        //     const containsAll = attri.every(elem => attributes?.includes(elem?.selected));
+
+        //     //reactotron.log({sin, containsAll})
+
+        //     if (containsAll) {
+
+        //         if (item?.stock) {
+        //             if (!sin?.available) {
+        //                 item.available = false
+        //             }
+        //             else {
+        //                 item.available = true
+        //             }
+        //         }
+        //         setSelectedVariant({...sin})
+        //         setPrice(sin?.price)
+        //         return false;
+        //     }
+        // })
         setAttributes([...attr])
     }
 

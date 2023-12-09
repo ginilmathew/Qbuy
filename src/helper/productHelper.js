@@ -6,7 +6,7 @@ export function getProduct (product) {
 
 
 
-    let { _id, product_id, name, description, store, franchisee, weight, type, image, stock, minimum_qty, product_image, order_count, is_wishlist, viewCount, attributes, video_link, status } = product
+    let { _id, product_id, name, description, store, franchisee, weight, type, image, stock, minimum_qty, product_image, order_count, is_wishlist, viewCount, attributes, video_link, status, category_type } = product
 
     // reactotron.log({ is_wishlist })
     let variant = product?.variants?.length > 0 ? true : false
@@ -36,7 +36,8 @@ export function getProduct (product) {
         viewCount,
         attributes: attributes,
         video_link,
-        status: status
+        status: status,
+        category_type
 
     }
 

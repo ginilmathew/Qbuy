@@ -168,7 +168,8 @@ const Checkout = ({ navigation }) => {
                             variant_id: null,
                             franchisee: pro?.productdata?.franchisee,
                             cartId: response?.data?.data?._id,
-                            attributes: pro?.attributes
+                            attributes: pro?.attributes,
+
                         }
                     }
                     else {
@@ -193,12 +194,13 @@ const Checkout = ({ navigation }) => {
                             delivery,
                             commission: comm,
                             minimum_qty: minQty,
-                            attributes: pro?.variants?.attributs,
+                            //attributes: pro?.variants?.attributs,
                             stock_value,
                             store: pro?.productdata?.store,
                             variant_id: pro?.variants?._id,
                             franchisee: pro?.productdata?.franchisee,
-                            cartId: response?.data?.data?._id
+                            cartId: response?.data?.data?._id,
+                            attributes: pro?.attributes
                         }
                     }
 
@@ -483,8 +485,9 @@ const Checkout = ({ navigation }) => {
     //const checkProductAvailability = () => {}
 
     const placeOrder = async () => {
+        reactotron.log({adress: cartContext?.defaultAddress})
         setIsLoding(true);
-        let franchise = await customAxios.post('customer/get-franchise', { coordinates: authContext.location })
+        let franchise = await customAxios.post('customer/get-franchise', { coordinates: [cartContext?.defaultAddress?.area?.latitude, cartContext?.defaultAddress?.area?.longitude] })
 
         if (!franchise) {
             setIsLoding(false);
@@ -553,7 +556,7 @@ const Checkout = ({ navigation }) => {
                 }, 0)?.toFixed(2),
                 delivery_charge: cartItems?.reduce((a, b) => a.delivery > b.delivery ? a : b).delivery?.toFixed(2),
                 delivery_type: "Slot based",
-                franchise: cartItems?.[0]?.franchisee?._id,
+                franchise: franchise?.data?.data?._id,
                 cart_id: cartItems?.[0]?.cartId,
                 store: uniqueStore,
                 delivery_date: moment().format("YYYY-MM-DD HH:mm:ss"),

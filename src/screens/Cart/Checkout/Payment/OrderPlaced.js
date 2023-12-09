@@ -80,7 +80,7 @@ const OrderPlaced = ({ route, navigation }) => {
                     <Text style={{fontFamily:'Poppins-Regular', fontSize:11, color:'#23233C'}}>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</Text>
                 </View> */}
                 <View style={{ marginTop: 20, alignItems: 'center' }}>
-                    <CommonTexts label={'Please let us know if you need any help'} color='#23233C' fontSize={13} />
+                    <CommonTexts label={'Please let us know if you need any help'} fullLabel={true} color='#23233C' fontSize={13} />
                 </View>
 
 

@@ -16,6 +16,8 @@ import SearchBox from '../Components/SearchBox'
 import NameText from './Home/NameText'
 import CommonTexts from '../Components/CommonTexts'
 import CommonFiltration from '../Components/CommonFiltration'
+import { getHomeProduct } from '../helper/homeHelper'
+import ProductCard from '../Components/Home/ProductCard'
 
 
 const homeData = async ({ queryKey }) => {
@@ -47,40 +49,43 @@ const PandaHome = () => {
 
 
     useEffect(() => {
-        setData(homeDatas)
-    }, [homeDatas])
+        setData({
+            items: getHomeProduct(homeDatas?.items, filter),
+            sliders: homeDatas?.sliders
+        })
+    }, [homeDatas, filter])
 
 
-    useEffect(() => {
-        if(filter !== "all"){
-            let recentlyviewed = homeDatas?.items?.[1]?.data?.filter(prod => prod?.category_type === filter)
-            let recents = {
-                ...homeDatas?.items?.[1],
-                data: recentlyviewed
-            }
+    // useEffect(() => {
+    //     if(filter !== "all"){
+    //         let recentlyviewed = homeDatas?.items?.[1]?.data?.filter(prod => prod?.category_type === filter)
+    //         let recents = {
+    //             ...homeDatas?.items?.[1],
+    //             data: recentlyviewed
+    //         }
 
-            let suggestions = homeDatas?.items?.[2]?.data?.filter(prod => prod?.category_type === filter)
-            let pandaSuggestions = {
-                ...homeDatas?.items?.[2],
-                data: suggestions
-            }
+    //         let suggestions = homeDatas?.items?.[2]?.data?.filter(prod => prod?.category_type === filter)
+    //         let pandaSuggestions = {
+    //             ...homeDatas?.items?.[2],
+    //             data: suggestions
+    //         }
 
 
-            let products = homeDatas?.items?.[3]?.data?.filter(prod => prod?.category_type === filter)
-            let finalProducts = {
-                ...homeDatas?.items?.[3],
-                data: products
-            }
+    //         let products = homeDatas?.items?.[3]?.data?.filter(prod => prod?.category_type === filter)
+    //         let finalProducts = {
+    //             ...homeDatas?.items?.[3],
+    //             data: products
+    //         }
 
-            let datas = [homeDatas?.items?.[0], recents, pandaSuggestions, finalProducts]
+    //         let datas = [homeDatas?.items?.[0], recents, pandaSuggestions, finalProducts]
 
-            reactotron.log({datas}, filter)
-            setData({
-                items: datas,
-                sliders: homeDatas?.sliders
-            })
-        }
-    }, [filter])
+    //         reactotron.log({datas}, filter)
+    //         setData({
+    //             items: datas,
+    //             sliders: homeDatas?.sliders
+    //         })
+    //     }
+    // }, [filter])
     
     
 
@@ -128,17 +133,7 @@ const PandaHome = () => {
     }
 
 
-    const renderItems = ({item, index}) => {
-
-        return(
-            <CommonItemCard
-                    //key={`${index}${section?.type?.trim()}${section?.type}`}
-                    item={item}
-                    width={width / 3.5}
-                    marginHorizontal={5}
-                />
-        )
-    }
+    
 
 
     const _renderItem = ({ section, index }) => {
@@ -182,16 +177,21 @@ const PandaHome = () => {
                 else if(filter !== "all" && section?.data?.[i]?.category_type !== filter){
                     break;
                 }
+
+                items.push(
+                <ProductCard 
+                    data={section.data[i]}
+                />)
     
-                items.push(<CommonItemCard
-                    item={section.data[i]}
-                    key={`${i}${section.data[i]?.product_id}${section?.type}`}
-                    width={width / 2.3}
-                    height={height / 3.6}
-                    mr={10}
-                    ml={10}
-                    mb={5}
-                />);
+                // items.push(<CommonItemCard
+                //     item={section.data[i]}
+                //     key={`${i}${section.data[i]?.product_id}${section?.type}`}
+                //     width={width / 2.3}
+                //     height={height / 3.6}
+                //     mr={10}
+                //     ml={10}
+                //     mb={5}
+                // />);
             }
 
             return (

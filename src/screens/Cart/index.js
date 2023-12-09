@@ -167,7 +167,7 @@ const Cart = ({ navigation }) => {
                                 delivery,
                                 commission: comm,
                                 minimum_qty: minQty,
-                                attributes: pro?.variants?.attributs,
+                                attributes: pro?.attributes,
                                 stock_value,
                                 store: pro?.productdata?.store,
                                 status: pro?.productdata?.status,

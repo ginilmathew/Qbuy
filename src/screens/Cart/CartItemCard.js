@@ -237,7 +237,7 @@ const CartItemCard = ({ item, index, refreshCart }) => {
                         source={{ uri: `${IMG_URL}${item?.image}` }}
                     />
                     <View style={{ marginLeft: 5, flex: 0.95 }}>
-                        {item?.attributes?.length > 0 ? <Text style={styles.nameText}>{`${item?.name}${'('}${item?.attributes.join(', ')}${')'} `}</Text> : <Text style={styles.nameText}>{item?.name}</Text>}
+                        {item?.attributes?.length > 0 ? <Text style={styles.nameText}>{`${item?.name}(${item?.attributes.join(', ')})`}</Text> : <Text style={styles.nameText}>{item?.name}</Text>}
                         <TouchableOpacity onPress={gotoStore}>
                             <Text style={styles.shopText}>{item?.store?.name}</Text>
                         </TouchableOpacity>

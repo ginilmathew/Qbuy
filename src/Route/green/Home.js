@@ -27,7 +27,7 @@ import TagScreen from '../../screens/Home/TagScreen';
 import PandaHome from '../../screens/Home/pandaHome';
 import QbuyfashionHome from '../../screens/Home/QBuyFashion/QbuyfashionHome';
 import About from '../../screens/Drawer/About';
-//import PandaHome from '../../screens/PandaHome';
+// import PandaHome from '../../screens/PandaHome';
 
 
 

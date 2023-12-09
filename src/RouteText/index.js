@@ -85,18 +85,18 @@ const RouteTest = () => {
                         setInitialScreen("version")
                     }
                     else {
-                        checkUserAddress()
+                        currentPosition()
                     }
                 }
                 else {
-                    checkUserAddress()
+                    currentPosition()
                 }
 
                 reactotron.log({ DeviceVersion, versionInfo })
 
             }
             else {
-                checkUserAddress()
+                currentPosition()
             }
 
 
@@ -110,11 +110,81 @@ const RouteTest = () => {
     }, []);
 
 
+    async function getAddressFromCoordinates(latitude, longitude) {
+        let response = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${latitude},${longitude}&key=AIzaSyBBcghyB0FvhqML5Vjmg3uTwASFdkV8wZY`);
 
 
+
+            let Value = {
+                location: response?.data?.results[0]?.formatted_address,
+                city: response?.data?.results[0]?.address_components?.filter(st =>
+                    st.types?.includes('locality')
+                )[0]?.long_name,
+                latitude: latitude,
+                longitude: longitude,
+            };
+
+
+            //addressContext.setCurrentAddress(Value);
+
+            let location = {
+                latitude: latitude,
+                longitude: longitude,
+                address: Value?.location
+            }
+
+
+            await AsyncStorage.setItem("location", JSON.stringify(location))
+            userContext.setLocation([latitude, longitude]);
+            userContext.setCurrentAddress(response?.data?.results[0]?.formatted_address)
+            let user = await AsyncStorage.getItem("user");
+            if (user) {
+                setInitialScreen('green');
+                getProfile()
+            }
+            else {
+                setInitialScreen('green');
+            }
+
+    }
+
+
+
+
+    const currentPosition = async() => {
+        await Geolocation.getCurrentPosition(
+            position => {
+
+                //getAddressFromCoordinates(position?.coords?.latitude, position.coords?.longitude)
+
+                getAddressFromCoordinates(position?.coords?.latitude, position?.coords?.longitude);
+                // userContext.setLocation([position?.coords?.latitude, position.coords?.longitude])
+            },
+            error => {
+                checkUserAddress()
+
+            },
+            {
+                accuracy: {
+                    android: 'high',
+                    ios: 'best',
+                },
+                enableHighAccuracy: true,
+                timeout: 15000,
+                maximumAge: 10000,
+                distanceFilter: 0,
+                forceRequestLocation: true,
+                forceLocationManager: false,
+                showLocationDialog: true,
+            },
+        );
+    }
 
 
     const checkUserAddress = async () => {
+
+        
+        
         let location = await AsyncStorage.getItem("location")
         reactotron.log({ location })
         //return false;

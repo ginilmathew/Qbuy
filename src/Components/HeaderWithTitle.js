@@ -2,7 +2,7 @@ import { StyleSheet, View, SafeAreaView, StatusBar, Image, Text, TouchableOpacit
 import React, { useCallback, useContext, useEffect } from 'react'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import CommonTexts from './CommonTexts'
-import { useNavigation } from '@react-navigation/native'
+import { TabActions, useNavigation } from '@react-navigation/native'
 import PandaContext from '../contexts/Panda'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import Fontisto from 'react-native-vector-icons/Fontisto'
@@ -44,6 +44,8 @@ const HeaderWithTitle = ({ title, noBack, onPressBack, mode,backarrow }) => {
     }, [navigation, mode])
 
     const onClickFashionCat = useCallback(() => {
+        //const jumpToAction = TabActions.jumpTo('home', { screen: 'FashionCategory' })
+        //navigation.dispatch(jumpToAction);
         navigation.navigate('FashionCategory')
     }, [navigation])
 

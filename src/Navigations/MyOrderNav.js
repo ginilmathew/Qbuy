@@ -7,6 +7,10 @@ import ViewDetails from '../screens/MyOrders/ViewDetails';
 import RateOrder from '../screens/MyOrders/RateOrder';
 import Wishlist from '../screens/Wishlist';
 import FashionCategory from '../screens/FashionCategory';
+import CategoryScreen from '../screens/Home/CategoryScreen';
+import SingleItemScreen from '../screens/Home/SingleItemScreen';
+import SingleHotel from '../screens/Home/SingleHotel';
+import StoreScreen from '../screens/Home/StoreScreen';
 
 
 const Stack = createNativeStackNavigator();
@@ -19,6 +23,11 @@ const MyOrderNav = () => {
             <Stack.Screen name="RateOrder" component={RateOrder}/>
             <Stack.Screen name="Wishlist" component={Wishlist}/>
             <Stack.Screen name="FashionCategory" component={FashionCategory}/>
+            <Stack.Screen name="Category" component={CategoryScreen} />
+            <Stack.Screen name="SingleItemScreen" component={SingleItemScreen} />
+            <Stack.Screen name="SingleHotel" component={SingleHotel} />
+            <Stack.Screen name="store" component={StoreScreen} />
+            
 
         </Stack.Navigator>
     )

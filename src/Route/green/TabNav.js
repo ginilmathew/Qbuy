@@ -19,7 +19,7 @@ import Entypo from 'react-native-vector-icons/Entypo'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import PandaContext from '../../contexts/Panda';
-import { CommonActions, StackActions, useNavigation } from '@react-navigation/native';
+import { CommonActions, StackActions, TabActions, useNavigation } from '@react-navigation/native';
 import HomeNav from './Home';
 import CartContext from '../../contexts/Cart';
 import CustomAnimated from './CustomAnimated';
@@ -253,8 +253,9 @@ const TabNav = () => {
                             navigate(routeName)
                         }
                         else{
-                            //navigation.dispatch(StackActions.popToTop());
-                            navigation.popToTop()
+                            navigation.dispatch(StackActions.popToTop());
+                            const jumpToAction = TabActions.jumpTo('home')
+                            navigation.dispatch(jumpToAction);
                         }
                        
                         // if(navigation.canGoBack()){

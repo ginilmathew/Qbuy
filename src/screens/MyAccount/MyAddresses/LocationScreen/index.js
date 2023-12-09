@@ -234,9 +234,9 @@ export default LocationScreen
 const styles = StyleSheet.create({
     selectedLocationView: {
         backgroundColor: '#fff',
-        height: 150,
+        //height: 150,
         position: 'absolute',
-        bottom: 20,
+        bottom: 30,
         width: '100%',
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,

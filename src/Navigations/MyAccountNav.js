@@ -9,6 +9,12 @@ import PandaCoins from '../screens/MyAccount/PandaCoins';
 import AffiliateBonus from '../screens/MyAccount/AffiliateBonus';
 import AddNewLocation from '../screens/MyAccount/MyAddresses/LocationScreen/AddNewLocation';
 import EditProfile from '../screens/MyAccount/EditProfile';
+import FashionCategory from '../screens/FashionCategory';
+import CategoryScreen from '../screens/Home/CategoryScreen';
+import SingleItemScreen from '../screens/Home/SingleItemScreen';
+import SingleHotel from '../screens/Home/SingleHotel';
+import StoreScreen from '../screens/Home/StoreScreen';
+import Wishlist from '../screens/Wishlist';
 
 
 const Stack = createNativeStackNavigator();
@@ -24,6 +30,12 @@ const MyAccountNav = () => {
             <Stack.Screen name="PandaCoins" component={PandaCoins}/>
             <Stack.Screen name="AffiliateBonus" component={AffiliateBonus}/>
             <Stack.Screen name="EditProfile" component={EditProfile}/>
+            <Stack.Screen name="FashionCategory" component={FashionCategory}/>
+            <Stack.Screen name="Category" component={CategoryScreen} />
+            <Stack.Screen name="SingleItemScreen" component={SingleItemScreen} />
+            <Stack.Screen name="SingleHotel" component={SingleHotel} />
+            <Stack.Screen name="store" component={StoreScreen} />
+            <Stack.Screen name="Wishlist" component={Wishlist} />
 
         </Stack.Navigator>
     )
