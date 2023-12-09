@@ -2,44 +2,28 @@
 /* eslint-disable semi */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable prettier/prettier */
-import { FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View, Switch, Platform, useWindowDimensions, SafeAreaView, RefreshControl, PermissionsAndroid, Pressable, ActivityIndicator } from 'react-native'
-import React, { useCallback, useContext, useEffect, useLayoutEffect, useState } from 'react'
-import ImageSlider from '../../../Components/ImageSlider';
-import CustomSearch from '../../../Components/CustomSearch';
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
-import OfferText from '../OfferText';
+import { FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View, useWindowDimensions,  ActivityIndicator } from 'react-native'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import PickDropAndReferCard from '../PickDropAndReferCard';
 import Header from '../../../Components/Header';
 import Carousel from 'react-native-reanimated-carousel';
-import CommonSquareButton from '../../../Components/CommonSquareButton';
 import CommonTexts from '../../../Components/CommonTexts';
-import TypeCard from '../Grocery/TypeCard';
 import CommonItemCard from '../../../Components/CommonItemCard';
 import NameText from '../NameText';
-import ShopCard from '../Grocery/ShopCard';
-import CountDownComponent from '../../../Components/CountDown';
 import Offer from './Offer';
 import LoaderContext from '../../../contexts/Loader';
 import customAxios from '../../../CustomeAxios';
 import SearchBox from '../../../Components/SearchBox';
 import { useFocusEffect } from '@react-navigation/native';
-import Toast from 'react-native-toast-message';
 import AuthContext from '../../../contexts/Auth';
-import { IMG_URL, env, location } from '../../../config/constants';
-import CartContext from '../../../contexts/Cart';
+import { IMG_URL } from '../../../config/constants';
 import CategoryCard from './CategoryCard';
 import AvailableStores from './AvailableStores';
 import RecentlyViewed from './RecentlyViewed';
-import AvailableProducts from './AvailableProducts';
 import PandaSuggestions from './PandaSuggestions';
-import { isEmpty } from 'lodash'
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getProduct } from '../../../helper/productHelper';
 import FastImage from 'react-native-fast-image';
 import reactotron from 'reactotron-react-native';
-import SplashScreen from 'react-native-splash-screen'
 import CommonWhatsappButton from '../../../Components/CommonWhatsappButton';
 import Ionicons from 'react-native-vector-icons/Ionicons'
 
@@ -51,13 +35,24 @@ import {
 } from '@tanstack/react-query';
 import TypeSkelton from '../Grocery/TypeSkelton';
 import ShopCardSkeltion from '../Grocery/ShopCardSkeltion';
+import ProductCard from '../../../Components/Home/ProductCard';
+import CartContext from '../../../contexts/Cart';
+import Toast from 'react-native-toast-message';
 
 
 
 const QbuyGreenHome = async (datas) => {
     const homeData = await customAxios.post('customer/home', datas);
+    let recents = await homeData?.data?.data?.find((item, index) => item?.type === 'recentlyviewed').data?.map(recent => getProduct(recent))
+    let suggestions = await homeData?.data?.data?.find((item, index) => item?.type === 'suggested_products').data?.map(recent => getProduct(recent))
+
+    let available = homeData?.data?.data?.find((item, index) => item?.type === 'available_products').data?.slice(0, 25).map(avail => getProduct(avail))
+    //reactotron.log({recents })
     return {
         home: homeData?.data?.data,
+        recents: recents,
+        suggestions,
+        //availablePdt: available,
         availablePdt: homeData?.data?.data?.find((item, index) => item?.type === 'available_products'),
         slider: homeData?.data?.data?.find((item, index) => item?.type === 'sliders'),
 
@@ -66,7 +61,10 @@ const QbuyGreenHome = async (datas) => {
 
 const QbuyGreenProducts = async (items, pageparam) => {
     const homeDataProduct = await customAxios.post(`customer/new-product-list?page=` + pageparam, { ...items, page: pageparam });
+
+    let products = homeDataProduct?.data?.data?.available_product?.map(prod => getProduct(prod))
     return {
+        //data: products,
         data: homeDataProduct?.data?.data?.available_product,
         lastPage:homeDataProduct?.data?.data
     
@@ -80,12 +78,10 @@ const QBuyGreen = ({ navigation }) => {
 
 
     const { width, height } = useWindowDimensions();
-    const firstTimeRef = React.useRef(true);
-    const loadingg = useContext(LoaderContext);
     const userContext = useContext(AuthContext);
-    const [enable, setEnable] = useState(false)
+    const cartContext = useContext(CartContext);
     
-
+    const styles1 = makeStyles(height);
 
 
 
@@ -125,20 +121,17 @@ const QBuyGreen = ({ navigation }) => {
 
     })
 
-    useEffect(() => {
-        if(userContext?.location){
-            infiniteQueryRefetch()
-        }
-    }, [userContext?.location])
 
-    const Homeapi = useQuery({ queryKey: ['greenHome'], queryFn: () => QbuyGreenHome(datas) });
+    const Homeapi = useQuery({ 
+        queryKey: ['greenHome'], 
+        queryFn: () => QbuyGreenHome(datas),
+        enabled: false
+    });
 
 
-    reactotron.log({Homeapi},'HOME API')
+    reactotron.log({Homeapi})
 
-    let userData = userContext?.userData
 
-    let loader = loadingg?.loading;
 
 
     const opacity = useSharedValue(1);
@@ -155,41 +148,7 @@ const QBuyGreen = ({ navigation }) => {
         )
     }, [])
 
-    // const [homeData, setHomeData] = useState(null);
-    // const [availablePdt, setavailablePdt] = useState(null);
-    // const [slider, setSlider] = useState(null);
-
-
-    // useEffect(() => {
-    //     let availPdt = homeData?.find((item, index) => item?.type === 'available_products')
-    //     setavailablePdt(availPdt?.data)
-    //     let slider = homeData?.find((item, index) => item?.type === 'sliders')
-    //     setSlider(slider?.data)
-
-    // }, [homeData])
-
-    // useEffect(() => {
-    //     //requestUserPermission()
-    // }, [])
-
-
-    // async function requestUserPermission() {
-
-    //     if(Platform.OS === 'android'){
-    //         PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
-    //     }
-
-    //     const authStatus = await messaging().requestPermission();
-    //     const enabled =
-    //       authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-    //       authStatus === messaging.AuthorizationStatus.PROVISIONAL;
-
-    //     if (enabled) {
-    //       console.log('Authorization status:', authStatus);
-    //     }
-
-    //getCurrentLocation()
-    // }
+    
 
 
     const RefetchMore = () => {
@@ -208,21 +167,12 @@ const QBuyGreen = ({ navigation }) => {
 
     useFocusEffect(
         React.useCallback(() => {
-            if (firstTimeRef.current) {
-                firstTimeRef.current = false;
-                return;
-            }
-            //if (Homeapi.isLoading && isLoading) {
-            RefetchMore();
-            //}
 
+            RefetchMore()
 
-        }, [Homeapi.isLoading, isLoading, userContext?.location])
+        }, [userContext?.location])
     );
 
-    // const schema = yup.object({
-    //     name: yup.string().required('Name is required'),
-    // }).required();
 
 
 
@@ -254,47 +204,6 @@ const QBuyGreen = ({ navigation }) => {
 
 
 
-    // useFocusEffect(
-    //     React.useCallback(() => {
-    //         getHomedata()
-    //     }, [userContext?.location])
-    // );
-
-    // useEffect(() => {
-
-    // }, [])
-
-
-    // const getHomedata = async () => {
-
-    //     loadingg.setLoading(true)
-
-    //     let datas = {
-    //         type: 'green',
-    //         // coordinates: env === "dev" ? location : userContext?.location
-    //         coordinates: userContext?.location,
-    //     }
-    //     await customAxios.post('customer/home', datas)
-    //         .then(async response => {
-    //             setHomeData(response?.data?.data)
-    //             loadingg.setLoading(false)
-    //             // setTimeout(() => {
-    //             //     SplashScreen.hide()
-    //             // }, 500);
-    //             loadingg.setLoading(false)
-    //         })
-    //         .catch(async error => {
-    //             loadingg.setLoading(false)
-    //             if (error.includes('Unauthenticated')) {
-    //                 navigation.navigate('Login')
-    //             }
-    //             Toast.show({
-    //                 type: 'error',
-    //                 text1: error,
-    //             });
-
-    //         })
-    // }
 
     const onSearch = useCallback(() => {
         navigation.navigate('ProductSearchScreen', { mode: 'fashion' })
@@ -400,17 +309,30 @@ const QBuyGreen = ({ navigation }) => {
                 </>
             )
         }
-        if (item?.type === 'recentlyviewed') {
+        if (item?.type === 'recentlyviewed' && Homeapi?.data?.recents) {
+            //reactotron.log({recentData: Homeapi?.data?.recents})
             return (
                 <>
-                    <RecentlyViewed key={item?._id} data={item?.data} />
+                    <RecentlyViewed 
+                        key={item?._id} 
+                        //data={Homeapi?.data?.recents}
+                        data={item?.data}
+                        loggedIn={userContext?.userData ? true : false} 
+                        styles={styles1}
+                    />
                 </>
             )
         }
         if (item?.type === 'suggested_products') {
             return (
                 <>
-                    <PandaSuggestions key={item?._id} data={item?.data} />
+                    <PandaSuggestions 
+                        key={item?._id} 
+                        //data={Homeapi?.data?.suggestions} 
+                        data={item?.data}
+                        loggedIn={userContext?.userData ? true : false} 
+                        styles={styles1}
+                    />
                 </>
             )
         }
@@ -435,11 +357,45 @@ const QBuyGreen = ({ navigation }) => {
         )
     }
 
+    const addToCart = useCallback((item) => {
+        if (parseInt(item?.price) < 1) {
+            Toast.show({
+                type: 'info',
+                text1: 'Price should be more than 1'
+            });
+            return false
+        }
+
+
+        if (!item?.variant && item?.attributes?.length === 0) {
+            cartContext?.addToCart(item)
+        }
+        else {
+            navigation.navigate('SingleItemScreen', { item })
+        }
+    })
+
+    const viewProduct = useCallback((item) => {
+        navigation.navigate('SingleItemScreen', { item })
+    })
+
 
 
     const renderProducts = ({ item, index }) => {
         return (
-            <View key={index} style={{ flex: 0.5, justifyContent: 'center' }}>
+            <View key={index} style={{ flex: 0.5, justifyContent: 'center'}}>
+                {/* <ProductCard
+                        data={item}
+                        loggedIn={userContext?.userData ? true : false}
+                        addToCart={()=> addToCart(item)}
+                        // wishlistIcon={wishlistIcon}
+                        // removeWishList={removeWishList}
+                        // addWishList={addWishList}
+                        viewProduct={() => viewProduct(item)}
+                        width={width / 2.2}
+                        styles={styles1}
+                        height={height / 3.6}
+                    /> */}
                 <CommonItemCard
                     refetch={Homeapi?.refetch}
                     item={item}
@@ -524,18 +480,10 @@ const QBuyGreen = ({ navigation }) => {
             <View style={styles.container} >
                 <NameText userName={userContext?.userData?.name ? userContext?.userData?.name : userContext?.userData?.mobile} mt={8} />
                 <FlatList
-                    // refreshControl={
-                    //     <RefreshControl
-                    //         isRefreshing={loadingg?.loading}
-                    //         onRefresh={getHomedata}
-                    //     // colors={[Colors.GreenLight]} // for android
-                    //     // tintColor={Colors.GreenLight} // for ios
-                    //     />
-                    // }
                     disableVirtualization={true}
                     ListHeaderComponent={RenderMainComponets}
                     data={data?.pages?.map(page => page?.data)?.flat()}
-                    // data={[]}
+                    //data={Homeapi?.data?.availablePdt}
                     keyExtractor={keyExtractorGreen}
                     renderItem={renderProducts}
                     showsVerticalScrollIndicator={false}
@@ -547,120 +495,10 @@ const QBuyGreen = ({ navigation }) => {
                     onRefresh={RefetchMoreFlat}
                     numColumns={2}
                     style={{ marginLeft: 5 }}
-                    contentContainerStyle={{ justifyContent: 'center' }}
+                    contentContainerStyle={{ justifyContent: 'center', gap: 10 }}
                     ListFooterComponent={ListFooterComponents}
                 />
-
-
-
-
-                {/* <NameText userName={userContext?.userData?.name ? userContext?.userData?.name : userContext?.userData?.mobile} mt={8} /> */}
-
-                {/* {categories?.length > 0 && <ScrollView
-                    horizontal
-                    showsHorizontalScrollIndicator={false}
-                    style={{ flexDirection: 'row', marginTop: 20, marginLeft: 10, marginRight: 10 }}
-                >
-                    {categories?.map((item, index) =>
-                        (<TypeCard item={item} key={index} />)
-                    )}
-                </ScrollView>}
-                <SearchBox onPress={onSearch}/>
-                <ImageSlider datas={groceImg} mt={20} />
-                {storeList?.length > 0 && <>
-                    <CommonTexts label={'Available Stores'} ml={15} fontSize={13} mt={25} />
-                    <View style={styles.grossCatView}>
-                        {storeList?.map((item, index) => (
-                            <ShopCard key={index} item={item} />
-                        ))}
-                    </View>
-                </>} */}
-
-                {/* <View style={styles.pickupReferContainer}>
-                    <PickDropAndReferCard
-                        onPress={ourFarm}
-                        lotties={require('../../../Lottie/farmer.json')}
-                        label={'Our Farms'}
-                        lottieFlex={1}
-                    />
-                    <PickDropAndReferCard
-                        onPress={referRestClick}
-                        lotties={require('../../../Lottie/farm.json')}
-                        label={"Let's Farm Together"}
-                        lottieFlex={0.4}
-                    />
-                </View> */}
-
-                {/* <View style={styles.offerView}>
-                    <Text style={styles.discountText}>{'50% off Upto Rs 125!'}</Text>
-                    <Offer onPress={goToShop} shopName={offer?.hotel} />
-                    <CountDownComponent/>
-                    <Text style={styles.offerValText}>{'Offer valid till period!'}</Text>
-                </View> */}
-
-                {/* {recentViewList?.length > 0 && <>
-                    <CommonTexts label={'Recently Viewed'} fontSize={13} mt={5} ml={15} mb={15} />
-                    <ScrollView
-                        horizontal
-                        showsHorizontalScrollIndicator={false}
-                        style={{ flexDirection: 'row', paddingLeft: 7, }}
-                    >
-                        {recentViewList.map((item) =>
-                            <CommonItemCard
-                                key={item?._id}
-                                item={item}
-                                width={width / 2.5}
-                                marginHorizontal={5}
-                            />
-                        )}
-                    </ScrollView>
-                </>} */}
-
-                {/* <CommonTexts label={'Trending Sales'} fontSize={13} ml={15} mb={5} mt={15} />
-                <ScrollView
-                    horizontal
-                    showsHorizontalScrollIndicator={false}
-                    style={{ flexDirection: 'row', paddingLeft: 7, }}
-                >
-                    {trend.map((item) =>
-                        <CommonItemCard
-                            key={item?._id}
-                            item={item}
-                            width={width / 2.5}
-                            marginHorizontal={5}
-                        />
-                    )}
-                </ScrollView> */}
-
-                {/* <CommonItemMenuList
-                    list={grozz}
-                    label={'Available Products'}
-                    mb={80}
-                /> */}
-
-                {/* {availablePdts?.length > 0 && <>
-                    <CommonTexts label={'Available Products'} fontSize={13} ml={15} mb={15} mt={15} />
-                    <View style={styles.productContainer}>
-                        {availablePdts?.map((item) => (
-                            <CommonItemCard
-                                item={item}
-                                key={item?._id}
-                                width={width / 2.25}
-                                height={220}
-                                wishlistIcon
-                            />
-                        ))}
-                    </View>
-                </>} */}
-
             </View>
-            {/*
-            <CommonSquareButton
-                onPress={gotoChat}
-                position='absolute'
-                bottom={10}
-                right={10}
-            /> */}
             <CommonWhatsappButton
                 position="absolute"
                 bottom={10}
@@ -671,6 +509,83 @@ const QBuyGreen = ({ navigation }) => {
 }
 
 export default QBuyGreen
+
+const makeStyles = fontScale => StyleSheet.create({
+
+
+    bottomCountText: {
+        fontFamily: 'Poppins-medium',
+        color: '#fff',
+        fontSize: 0.01 * fontScale,
+    },
+    bottomRateText: {
+        fontFamily: 'Poppins-ExtraBold',
+        color: '#fff',
+        fontSize: 0.012 * fontScale,
+    },
+    textSemi: {
+        fontFamily: 'Poppins-SemiBold',
+        color: '#fff',
+        fontSize: 0.014 * fontScale,
+        paddingBottom: 2
+    },
+    textSemiError: {
+        fontFamily: 'Poppins-SemiBold',
+        color: 'red',
+        fontSize: 10 / fontScale,
+        paddingBottom: 2
+    },
+    lightText: {
+        fontFamily: 'Poppins-SemiBold',
+        color: '#fff',
+        fontSize: 0.011 * fontScale,
+        marginBottom: 3
+    },
+    addContainer: {
+        position: 'absolute',
+        right: 5,
+        bottom: 10
+    },
+    tagText: {
+        fontFamily: 'Poppins-SemiBold',
+        color: '#fff',
+        fontSize: 12 / fontScale,
+        padding: 5
+    },
+    hearIcon: {
+        position: 'absolute',
+        top: 8,
+        right: 8,
+        zIndex: 1,
+        width: 24,
+        height: 24,
+        borderRadius: 12,
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        alignItems: 'center',
+        justifyContent: 'center'
+
+    },
+    RBsheetHeader: {
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        flexDirection: 'row',
+        marginTop: 10
+    },
+    totalCount: {
+        borderRightWidth: 3,
+        borderColor: '#fff',
+        flex: 0.4
+    },
+    outofstock: {
+        borderRightWidth: 3,
+        borderColor: '#fff',
+        flex: 0.4
+    },
+    viewCartBox: {
+        alignItems: 'flex-end',
+        flex: 0.5
+    }
+})
 
 const styles = StyleSheet.create({
 

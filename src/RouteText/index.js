@@ -197,9 +197,9 @@ const RouteTest = () => {
         if (user) {
             setInitialScreen('green');
             getProfile()
-            if (!location) {
+            //if (!location) {
                 getAddressList()
-            }
+            //}
         }
         else {
             let location = await AsyncStorage.getItem("location")
@@ -276,47 +276,47 @@ const RouteTest = () => {
                 if (response?.data?.data?.length > 0) {
                     if (response?.data?.data?.length === 1) {
                         cartContext.setDefaultAddress(response?.data?.data?.[0])
-                        await userContext.setLocation([response?.data?.data?.[0]?.area?.latitude, response?.data?.data?.[0]?.area?.longitude])
-                        await userContext?.setCurrentAddress(response?.data?.data?.[0]?.area?.address)
-                        let location = {
-                            latitude: response?.data?.data?.[0]?.area?.latitude,
-                            longitude: response?.data?.data?.[0]?.area?.longitude,
-                            address: response?.data?.data?.[0]?.area?.address
-                        }
-                        await AsyncStorage.setItem("location", JSON.stringify(location))
-                        setTimeout(() => {
-                            setInitialScreen('green');
-                        }, 200);
+                        //await userContext.setLocation([response?.data?.data?.[0]?.area?.latitude, response?.data?.data?.[0]?.area?.longitude])
+                       // await userContext?.setCurrentAddress(response?.data?.data?.[0]?.area?.address)
+                        // let location = {
+                        //     latitude: response?.data?.data?.[0]?.area?.latitude,
+                        //     longitude: response?.data?.data?.[0]?.area?.longitude,
+                        //     address: response?.data?.data?.[0]?.area?.address
+                        // }
+                        // await AsyncStorage.setItem("location", JSON.stringify(location))
+                        // setTimeout(() => {
+                        //     setInitialScreen('green');
+                        // }, 200);
                     }
                     else {
                         let defaultAdd = response?.data?.data?.find(add => add?.default === true)
                         if (defaultAdd) {
                             cartContext.setDefaultAddress(defaultAdd)
-                            await userContext.setLocation([defaultAdd?.area?.latitude, defaultAdd?.area?.longitude])
-                            await userContext?.setCurrentAddress(defaultAdd?.area?.address)
-                            let location = {
-                                latitude: defaultAdd?.area?.latitude,
-                                longitude: defaultAdd?.area?.longitude,
-                                address: defaultAdd?.area?.address
-                            }
-                            await AsyncStorage.setItem("location", JSON.stringify(location))
-                            setTimeout(() => {
-                                setInitialScreen('green');
-                            }, 200);
+                            // await userContext.setLocation([defaultAdd?.area?.latitude, defaultAdd?.area?.longitude])
+                            // await userContext?.setCurrentAddress(defaultAdd?.area?.address)
+                            // let location = {
+                            //     latitude: defaultAdd?.area?.latitude,
+                            //     longitude: defaultAdd?.area?.longitude,
+                            //     address: defaultAdd?.area?.address
+                            // }
+                            // await AsyncStorage.setItem("location", JSON.stringify(location))
+                            // setTimeout(() => {
+                            //     setInitialScreen('green');
+                            // }, 200);
                         }
                         else {
                             cartContext.setDefaultAddress(response?.data?.data?.[0])
-                            await userContext.setLocation([response?.data?.data?.[0]?.area?.latitude, response?.data?.data?.[0]?.area?.longitude])
-                            await userContext?.setCurrentAddress(response?.data?.data?.[0]?.area?.address)
-                            let location = {
-                                latitude: response?.data?.data?.[0]?.area?.latitude,
-                                longitude: response?.data?.data?.[0]?.area?.longitude,
-                                address: response?.data?.data?.[0]?.area?.address
-                            }
-                            await AsyncStorage.setItem("location", JSON.stringify(location))
-                            setTimeout(() => {
-                                setInitialScreen('green');
-                            }, 200);
+                            // await userContext.setLocation([response?.data?.data?.[0]?.area?.latitude, response?.data?.data?.[0]?.area?.longitude])
+                            // await userContext?.setCurrentAddress(response?.data?.data?.[0]?.area?.address)
+                            // let location = {
+                            //     latitude: response?.data?.data?.[0]?.area?.latitude,
+                            //     longitude: response?.data?.data?.[0]?.area?.longitude,
+                            //     address: response?.data?.data?.[0]?.area?.address
+                            // }
+                            // await AsyncStorage.setItem("location", JSON.stringify(location))
+                            // setTimeout(() => {
+                            //     setInitialScreen('green');
+                            // }, 200);
                         }
                     }
 

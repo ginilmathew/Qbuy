@@ -1,20 +1,23 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React from 'react'
+import React, { memo } from 'react'
 import FastImage from 'react-native-fast-image'
 import { IMG_URL } from '../../config/constants'
 import LinearGradient from 'react-native-linear-gradient'
 import CommonAddButton from '../CommonAddButton'
 import Fontisto from 'react-native-vector-icons/Fontisto'
+import Animated from 'react-native-reanimated'
+
+const AnimatedFastImage = Animated.createAnimatedComponent(FastImage)
 
 
-const ProductCard = ({onClick, data}) => {
+const ProductCard = ({data, loggedIn, addToCart, wishlistIcon, removeWishList, addWishList, viewProduct, width, styles, height}) => {
     return (
         <TouchableOpacity
-            onPress={onClick}
-            //style={{ marginHorizontal: marginHorizontal, marginRight: mr, marginLeft: ml, marginBottom: mb }}
+            onPress={viewProduct}
         >
-            <FastImage
+            <AnimatedFastImage
                 source={{ uri: `${IMG_URL}${data?.product_image}` }}
+                sharedTransitionTag={`images${data?._id}`}
                 style={{ height: height ? height : 110, width: width, justifyContent: 'flex-end', borderRadius: 16 }}
                 progressiveRenderingEnabled={true}
             >
@@ -31,7 +34,7 @@ const ProductCard = ({onClick, data}) => {
                     </View>
 
                 </View>}
-                {item?.status === "inactive" && <View style={{ position: 'absolute', top: '32%', width: '100%' }}>
+                {data?.status === "inactive" && <View style={{ position: 'absolute', top: '32%', width: '100%' }}>
                     <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                         <View style={{ padding: 5, borderWidth: 1, borderColor: '#fff', margin: 8, borderRadius: 8 }}>
                             <Text style={{ color: 'red', textAlign: 'center', fontWeight: 'bold', alignSelf: 'center' }}>Product Not Available</Text>
@@ -40,33 +43,26 @@ const ProductCard = ({onClick, data}) => {
 
                 </View>}
 
-                {(data?.available && item?.status === "active" && userContext?.userData) && <View style={styles.addContainer}>
+                {(data?.available && data?.status === "active" && loggedIn) && <View style={styles.addContainer}>
                     <CommonAddButton
-                        onPress={openBottomSheet}
+                        onPress={addToCart}
                     />
                 </View>}
 
-                {/* {!fashion && item?.openCloseTag && <View
-                        style={{ position: 'absolute', right: 7, top: 7, backgroundColor: item?.openCloseTag === 'Closes Soon' ? '#FF0000' : '#58D36E', borderRadius: 8 }}
-                    >
-                        <Text style={styles.tagText}>{item?.openCloseTag}</Text>
-                    </View>} */}
 
-                {userContext?.userData &&
+                {/* {loggedIn &&
                     <TouchableOpacity
-                        onPress={(data?.is_wishlist || wishlistIcon) ? RemoveAction : AddAction}
+                        onPress={(data?.is_wishlist || wishlistIcon) ? removeWishList : addWishList}
                         style={styles.hearIcon}
                     >
 
-                        <Fontisto name={"heart"} color={(data?.is_wishlist || wishlistIcon) ? "#FF6464" : '#EDEDED'} size={12 / fontScale} />
-                    </TouchableOpacity>}
+                        <Fontisto name={"heart"} color={(data?.is_wishlist || wishlistIcon) ? "#FF6464" : '#EDEDED'} size={12} />
+                    </TouchableOpacity>} */}
 
-            </FastImage>
+            </AnimatedFastImage>
 
         </TouchableOpacity>
     )
 }
 
-export default ProductCard
-
-const styles = StyleSheet.create({})
+export default memo(ProductCard) 

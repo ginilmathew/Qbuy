@@ -41,15 +41,23 @@ import Animated, { useSharedValue, withDelay, withRepeat, withSequence, withTimi
 import ShopCardSkeltion from './Grocery/ShopCardSkeltion';
 import Toast from 'react-native-toast-message';
 import Ionicons from 'react-native-vector-icons/Ionicons'
+import ProductCard from '../../Components/Home/ProductCard';
+import CartContext from '../../contexts/Cart';
 const pandHome = async (datas) => {
     const homeData = await customAxios.post('customer/home', datas);
+    let recents = homeData?.data?.data?.find(home => home?.type === 'recentlyviewed')?.data?.map(item => getProduct(item))
+    let suggestions = homeData?.data?.data?.find(home => home?.type === 'suggested_products')?.data?.map(item => getProduct(item))
+    let products = homeData?.data?.data?.find(home => home?.type === 'available_products')?.data?.map(item => getProduct(item))
     return {
         home: homeData?.data?.data,
         tags: homeData?.data?.data?.find(home => home?.type === 'tags'),
         categories: homeData?.data?.data?.find(home => home?.type === 'categories'),
         recents: homeData?.data?.data?.find(home => home?.type === 'recentlyviewed'),
+        //recents,
         pandaSuggestions: homeData?.data?.data?.find(home => home?.type === 'suggested_products'),
+        //pandaSuggestions: suggestions,
         products: homeData?.data?.data?.find(home => home?.type === 'available_products'),
+        //products,
         sliders: homeData?.data?.data?.find(home => home?.type === 'sliders'),
     }
 }
@@ -60,6 +68,7 @@ export default function PandaHome({ navigation }) {
     const firstTimeRef = React.useRef(true)
 
     const { height, width } = useWindowDimensions();
+    const cartContext = useContext(CartContext);
 
 
     const [homeData, setHomeData] = useState([])
@@ -73,6 +82,7 @@ export default function PandaHome({ navigation }) {
     const [isloading, setisLoading] = useState(false);
 
     const [selected, setSelected] = useState('')
+    const styles1 = makeStyles(height);
 
     const userContext = useContext(AuthContext)
     const loadingg = useContext(LoaderContext)
@@ -83,11 +93,13 @@ export default function PandaHome({ navigation }) {
         coordinates: userContext?.location,
     }
 
-    const { data, isLoading, refetch } = useQuery({ queryKey: ['pandaHome'], queryFn: () => pandHome(datas) })
+    const { data, isLoading, refetch } = useQuery({ 
+        queryKey: ['pandaHome'], 
+        queryFn: () => pandHome(datas),
+        enabled: false
+    })
 
 
-
-reactotron.log({data:data?.sliders?.data},'DATA HOMEE pada')
 
 
 
@@ -126,12 +138,12 @@ reactotron.log({data:data?.sliders?.data},'DATA HOMEE pada')
 
     useFocusEffect(
         React.useCallback(() => {
-            if (firstTimeRef.current) {
-                firstTimeRef.current = false;
-                return;
-            }
+            // if (firstTimeRef.current) {
+            //     firstTimeRef.current = false;
+            //     return;
+            // }
             refetch()
-        }, [refetch, userContext?.location])
+        }, [userContext?.location])
     );
 
     useEffect(() => {
@@ -210,14 +222,49 @@ reactotron.log({data:data?.sliders?.data},'DATA HOMEE pada')
     }
 
 
+    const addToCart = useCallback((item) => {
+        if (parseInt(item?.price) < 1) {
+            Toast.show({
+                type: 'info',
+                text1: 'Price should be more than 1'
+            });
+            return false
+        }
+
+
+        if (!item?.variant && item?.attributes?.length === 0) {
+            cartContext?.addToCart(item)
+        }
+        else {
+            navigation.navigate('SingleItemScreen', { item })
+        }
+    })
+
+    const viewProduct = useCallback((item) => {
+        navigation.navigate('SingleItemScreen', { item })
+    })
 
 
 
     const renderRecentLists = () => {
         let datamy = (filter === 'all' ? data?.recents?.data : data?.recents?.data?.filter((res, index) => res?.category_type === filter))
 
+        //let datamy = (filter === 'all' ? data?.recents : data?.recents?.filter((res, index) => res?.category_type === filter))
+
         return (
             datamy?.map((item, index) => (
+                // <ProductCard
+                //     data={item}
+                //     loggedIn={userContext?.userData ? true : false}
+                //     addToCart={()=> addToCart(item)}
+                //     //wishlistIcon={wishlistIcon}
+                //     //removeWishList={removeWishList}
+                //     //addWishList={addWishList}
+                //     viewProduct={() => viewProduct(item)}
+                //     width={width / 2.5}
+                //     styles={styles1}
+                //     //height={height}
+                // />
                 <CommonItemCard
                     key={index}
                     item={item}
@@ -233,9 +280,21 @@ reactotron.log({data:data?.sliders?.data},'DATA HOMEE pada')
 
     const rendePandaSuggestion = () => {
         let datamy = (filter === 'all' ? data?.pandaSuggestions?.data : data?.pandaSuggestions?.data?.filter((res, index) => res?.category_type === filter))
-
+        //let datamy = (filter === 'all' ? data?.pandaSuggestions : data?.pandaSuggestions?.filter((res, index) => res?.category_type === filter))
         return (
             datamy.map((item, index) => (
+                // <ProductCard
+                //     data={item}
+                //     loggedIn={userContext?.userData ? true : false}
+                //     addToCart={()=> addToCart(item)}
+                //     //wishlistIcon={wishlistIcon}
+                //     //removeWishList={removeWishList}
+                //     //addWishList={addWishList}
+                //     viewProduct={() => viewProduct(item)}
+                //     width={width / 2.5}
+                //     styles={styles1}
+                //     //height={height}
+                // />
                 <CommonItemCard
                     key={index}
                     item={item}
@@ -315,7 +374,7 @@ reactotron.log({data:data?.sliders?.data},'DATA HOMEE pada')
                 <ScrollView
                     horizontal
                     showsHorizontalScrollIndicator={false}
-                    style={{ flexDirection: 'row', paddingLeft: 7 }}
+                    contentContainerStyle={{ flexDirection: 'row', paddingLeft: 7, gap: 5 }}
                 >
                     {renderRecentLists()}
 
@@ -337,7 +396,7 @@ reactotron.log({data:data?.sliders?.data},'DATA HOMEE pada')
                 <ScrollView
                     horizontal
                     showsHorizontalScrollIndicator={false}
-                    style={{ flexDirection: 'row', paddingLeft: 7 }}
+                    contentContainerStyle={{ flexDirection: 'row', paddingLeft: 7, gap: 5 }}
                 >
                     {/* {filter === "all" ? data?.pandaSuggestions?.data?.map((item, index)) : pandaSuggestions.map((item, index) =>
                         <CommonItemCard
@@ -416,7 +475,18 @@ reactotron.log({data:data?.sliders?.data},'DATA HOMEE pada')
     const renderProducts = ({ item, index }) => {
         return (
             <View key={index} style={{ flex: 0.5, justifyContent: 'center' }}>
-
+                {/* <ProductCard
+                    data={item}
+                    loggedIn={userContext?.userData ? true : false}
+                    addToCart={()=> addToCart(item)}
+                    //wishlistIcon={wishlistIcon}
+                    //removeWishList={removeWishList}
+                    //addWishList={addWishList}
+                    viewProduct={() => viewProduct(item)}
+                    width={width / 2.2}
+                    styles={styles1}
+                    height={height / 3.6}
+                /> */}
                 <CommonItemCard
                     item={item}
                     key={index}
@@ -539,9 +609,10 @@ reactotron.log({data:data?.sliders?.data},'DATA HOMEE pada')
                     disableVirtualization={true}
                     ListHeaderComponent={MainHeader}
                     data={filter === 'all' ? data?.products?.data : data?.products?.data?.filter((res) => res?.category_type === filter)}
+                    //data={filter === 'all' ? data?.products : data?.products?.filter((res) => res?.category_type === filter)}
                     showsVerticalScrollIndicator={false}
                     initialNumToRender={10}
-                    // removeClippedSubviews={true}
+                    //removeClippedSubviews={true}
                     windowSize={10}
                     // refreshControl={
                     //     <RefreshControl
@@ -558,7 +629,7 @@ reactotron.log({data:data?.sliders?.data},'DATA HOMEE pada')
                     keyExtractor={keyExtractorProduct}
                     numColumns={2}
                     ListEmptyComponents={ListEmptyComponents}
-                    contentContainerStyle={{ justifyContent: 'center', gap: 2 }}
+                    contentContainerStyle={{ justifyContent: 'center', gap: 5 }}
                     renderItem={renderProducts}
                     ListFooterComponent={FooterComponent}
                 />
@@ -575,6 +646,83 @@ reactotron.log({data:data?.sliders?.data},'DATA HOMEE pada')
         </View>
     )
 }
+
+const makeStyles = fontScale => StyleSheet.create({
+
+
+    bottomCountText: {
+        fontFamily: 'Poppins-medium',
+        color: '#fff',
+        fontSize: 0.01 * fontScale,
+    },
+    bottomRateText: {
+        fontFamily: 'Poppins-ExtraBold',
+        color: '#fff',
+        fontSize: 0.012 * fontScale,
+    },
+    textSemi: {
+        fontFamily: 'Poppins-SemiBold',
+        color: '#fff',
+        fontSize: 0.014 * fontScale,
+        paddingBottom: 2
+    },
+    textSemiError: {
+        fontFamily: 'Poppins-SemiBold',
+        color: 'red',
+        fontSize: 10 / fontScale,
+        paddingBottom: 2
+    },
+    lightText: {
+        fontFamily: 'Poppins-SemiBold',
+        color: '#fff',
+        fontSize: 0.011 * fontScale,
+        marginBottom: 3
+    },
+    addContainer: {
+        position: 'absolute',
+        right: 5,
+        bottom: 10
+    },
+    tagText: {
+        fontFamily: 'Poppins-SemiBold',
+        color: '#fff',
+        fontSize: 12 / fontScale,
+        padding: 5
+    },
+    hearIcon: {
+        position: 'absolute',
+        top: 8,
+        right: 8,
+        zIndex: 1,
+        width: 24,
+        height: 24,
+        borderRadius: 12,
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        alignItems: 'center',
+        justifyContent: 'center'
+
+    },
+    RBsheetHeader: {
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        flexDirection: 'row',
+        marginTop: 10
+    },
+    totalCount: {
+        borderRightWidth: 3,
+        borderColor: '#fff',
+        flex: 0.4
+    },
+    outofstock: {
+        borderRightWidth: 3,
+        borderColor: '#fff',
+        flex: 0.4
+    },
+    viewCartBox: {
+        alignItems: 'flex-end',
+        flex: 0.5
+    }
+})
 
 const styles = StyleSheet.create({
 

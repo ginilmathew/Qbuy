@@ -6,12 +6,40 @@ import {
     View,
     useWindowDimensions,
 } from "react-native";
-import React, { memo } from "react";
+import React, { memo, useCallback, useContext } from "react";
 import CommonItemCard from "../../../Components/CommonItemCard";
 import CommonTexts from "../../../Components/CommonTexts";
+import CartContext from "../../../contexts/Cart";
+import { useNavigation } from "@react-navigation/native";
+import ProductCard from "../../../Components/Home/ProductCard";
 
-const PandaSuggestions = memo(({ data }) => {
-    const { width, height } = useWindowDimensions();
+const PandaSuggestions = memo(({ data, loggedIn, wishlistIcon, removeWishList, addWishList, styles }) => {
+    const {width, height} = useWindowDimensions()
+    const cartContext = useContext(CartContext);
+    const navigation = useNavigation()
+
+
+    const addToCart = useCallback((item) => {
+        if (parseInt(item?.price) < 1) {
+            Toast.show({
+                type: 'info',
+                text1: 'Price should be more than 1'
+            });
+            return false
+        }
+
+
+        if (!item?.variant && item?.attributes?.length === 0) {
+            cartContext?.addToCart(item)
+        }
+        else {
+            navigation.navigate('SingleItemScreen', { item })
+        }
+    })
+
+    const viewProduct = useCallback((item) => {
+        navigation.navigate('SingleItemScreen', { item })
+    })
 
     return (
         <>
@@ -21,9 +49,21 @@ const PandaSuggestions = memo(({ data }) => {
             <ScrollView
                 horizontal
                 showsHorizontalScrollIndicator={ false }
-                style={ { flexDirection: "row", paddingLeft: 7 } }
+                contentContainerStyle={ { flexDirection: 'row', padding: 5, gap: 5, overflow: 'scroll' } }
             >
                 { data.map(item => (
+                    // <ProductCard
+                    //     data={item}
+                    //     loggedIn={loggedIn}
+                    //     addToCart={()=> addToCart(item)}
+                    //     wishlistIcon={wishlistIcon}
+                    //     removeWishList={removeWishList}
+                    //     addWishList={addWishList}
+                    //     viewProduct={() => viewProduct(item)}
+                    //     width={width / 2.5}
+                    //     styles={styles}
+                    //     //height={height}
+                    // />
                     <CommonItemCard
                         key={ item?._id }
                         item={ item }

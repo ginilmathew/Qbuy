@@ -46,6 +46,8 @@ const getSingleProductListQuery = async (id) => {
     return response?.data?.data
 }
 
+const AnimatedFastImage = Animated.createAnimatedComponent(FastImage)
+
 
 
 const SingleItemScreen = ({ route, navigation }) => {
@@ -544,13 +546,14 @@ const SingleItemScreen = ({ route, navigation }) => {
                             renderItem={renderImageAnimation}
                             onSnapToItem={(index) => setSelectedImage(index)}
                             scrollAnimationDuration={10}
-                        /> : <FastImage
+                        /> : <AnimatedFastImage
                             // source={data?.image[selectedImage]?.name} 
+                            sharedTransitionTag={`images${item?._id}`}
                             source={{ uri: `${IMG_URL}${images?.[0]}` }}
                             style={{ width: width - 30, height: 180, borderRadius: 15, }}
                             resizeMode='cover'
                         >
-                        </FastImage>
+                        </AnimatedFastImage>
                     }
                     {renderInStock()}
 

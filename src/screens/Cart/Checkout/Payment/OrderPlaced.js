@@ -73,7 +73,7 @@ const OrderPlaced = ({ route, navigation }) => {
                         autoPlay loop
                     />
                 </View>
-                <CommonTexts label={'Order Placed Successfully !'} color='#089321' fontSize={20} textAlign='center' />
+                <CommonTexts label={'Order Placed Successfully !'} color='#089321' fullLabel={true} fontSize={20} textAlign='center' />
                 <Text style={{ fontFamily: 'Poppins-Bold', fontSize: 16, color: '#23233C', textAlign: 'center' }}>Order ID : #{item?.order_id}</Text>
                 <Text style={{ fontFamily: 'Poppins-Medium', fontSize: 9, color: '#A5A5A5', textAlign: 'center', marginTop: 5 }}>{moment(item?.created_at).format('DD-MM-YYYY hh:mm A')}</Text>
                 {/* <View style={{borderRadius:15, backgroundColor:'#F3FFF5', padding:10, marginVertical:15}}>
