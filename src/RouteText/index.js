@@ -141,6 +141,7 @@ const RouteTest = () => {
             if (user) {
                 setInitialScreen('green');
                 getProfile()
+                getAddressList()
             }
             else {
                 setInitialScreen('green');
@@ -159,6 +160,7 @@ const RouteTest = () => {
 
                 getAddressFromCoordinates(position?.coords?.latitude, position?.coords?.longitude);
                 // userContext.setLocation([position?.coords?.latitude, position.coords?.longitude])
+                
             },
             error => {
                 checkUserAddress()
