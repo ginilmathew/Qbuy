@@ -90,7 +90,9 @@ const ProductSearchScreen = ({ route }) => {
     return (
         <>
             <HeaderWithTitle title={'Search Items...'} />
-            <ScrollView style={{
+            <ScrollView 
+            keyboardShouldPersistTaps="always"
+            style={{
                 flex: 1,
                 backgroundColor: active === 'green' ? '#F4FFE9' : active === 'fashion' ? '#FFF5F7' : '#fff',
             }}

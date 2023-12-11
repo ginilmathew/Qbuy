@@ -22,16 +22,16 @@ const SearchResultsCard = memo(({ item, setValue }) => {
     const [data, setData] = useState([])
 
 
-    useEffect(() => {
-        if (item) {
-            let data = getProduct(item);
-            // reactotron.log({ data })
-            setData(data)
-        }
-        else {
-            setData(null)
-        }
-    }, [])
+    // useEffect(() => {
+    //     if (item) {
+    //         let data = getProduct(item);
+    //         // reactotron.log({ data })
+    //         setData(data)
+    //     }
+    //     else {
+    //         setData(null)
+    //     }
+    // }, [])
 
 
 
@@ -52,6 +52,8 @@ const SearchResultsCard = memo(({ item, setValue }) => {
     const handleClick = useCallback((value) => {
         pandaContext.setActive(item?.type)
         handleswitch(item?.type)
+        let data = getProduct(item);
+        reactotron.log({data})
         navigation.navigate('SingleItemScreen', { item: data })
         setValue('name', '')
     }, [data, pandaContext?.active]);

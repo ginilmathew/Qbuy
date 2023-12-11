@@ -156,6 +156,8 @@ const RouteTest = () => {
         await Geolocation.getCurrentPosition(
             position => {
 
+                reactotron.log({position})
+
                 //getAddressFromCoordinates(position?.coords?.latitude, position.coords?.longitude)
 
                 getAddressFromCoordinates(position?.coords?.latitude, position?.coords?.longitude);

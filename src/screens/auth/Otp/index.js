@@ -57,6 +57,39 @@ const Otp = ({ navigation }) => {
 	let mask = cardnumber?.substring(2, cardnumber.length - 1).replace(/\d/g, '*');
 	let phoneNum = first2 + mask + last1;
 
+
+	const currentPosition = async() => {
+        await Geolocation.getCurrentPosition(
+            position => {
+
+                reactotron.log({position})
+
+                //getAddressFromCoordinates(position?.coords?.latitude, position.coords?.longitude)
+
+                getAddressFromCoordinates(position?.coords?.latitude, position?.coords?.longitude);
+                // userContext.setLocation([position?.coords?.latitude, position.coords?.longitude])
+                
+            },
+            error => {
+                getAddressList()
+
+            },
+            {
+                accuracy: {
+                    android: 'high',
+                    ios: 'best',
+                },
+                enableHighAccuracy: true,
+                timeout: 15000,
+                maximumAge: 10000,
+                distanceFilter: 0,
+                forceRequestLocation: true,
+                forceLocationManager: false,
+                showLocationDialog: true,
+            },
+        );
+    }
+
 	const onSubmit = async (data) => {
 		Keyboard.dismiss()
 		loadingg.setLoading(true);
@@ -75,8 +108,8 @@ const Otp = ({ navigation }) => {
 				AsyncStorage.setItem('token', response?.data?.access_token);
 				AsyncStorage.setItem('user', JSON.stringify(response?.data?.user));
 				const location = await AsyncStorage.getItem("location");
-				if(!location){
-					getAddressList()
+				if(!user?.location){
+					currentPosition()
 				}
 				else{
 					loadingg.setLoading(false);
