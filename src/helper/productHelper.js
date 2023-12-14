@@ -7,8 +7,6 @@ export function getProduct (product) {
 
 
     let { _id, product_id, name, description, store, franchisee, weight, type, image, stock, minimum_qty, product_image, order_count, is_wishlist, viewCount, attributes, video_link, status, category_type } = product
-
-    // reactotron.log({ is_wishlist })
     let variant = product?.variants?.length > 0 ? true : false
     let minQty = minimum_qty ? parseFloat(minimum_qty) : 1
     let vendorCommission = product?.vendors?.additional_details?.commission ? parseFloat(product?.vendors?.additional_details?.commission) : 0
@@ -54,6 +52,7 @@ export function getProduct (product) {
             let delivery = vari?.fixed_delivery_price ? parseFloat(vari?.fixed_delivery_price) : 0
             let stockValue = vari?.stock_value ? parseFloat(vari?.stock_value) : 0
             let price;
+            let regularPrice;
 
             if (stock) {
                 //if product requires stock
@@ -63,6 +62,14 @@ export function getProduct (product) {
                         if (offerFromDate && offerToDate) {
                             if (moment(moment().format("YYYY-MM-DD"), "YYYY-MM-DD") >= offerFromDate && moment(moment().format("YYYY-MM-DD"), "YYYY-MM-DD") <= offerToDate) {
                                 price = offer;
+                                if(regular > 0){
+                                    regularPrice = regular
+                                }
+                                else{
+                                    let comm = (seller / 100) * commission
+                                    let amount = seller + comm;
+                                    regularPrice = amount
+                                }
                             }
                             else if (regular > 0) {
                                 price = regular
@@ -76,6 +83,14 @@ export function getProduct (product) {
                         else if (offerFromDate && !offerToDate) {
                             if (moment(moment().format("YYYY-MM-DD"), "YYYY-MM-DD") >= offerFromDate) {
                                 price = offer
+                                if(regular > 0){
+                                    regularPrice = regular
+                                }
+                                else{
+                                    let comm = (seller / 100) * commission
+                                    let amount = seller + comm;
+                                    regularPrice = amount
+                                }
                             }
                             else if (regular > 0) {
                                 price = regular
@@ -88,6 +103,14 @@ export function getProduct (product) {
                         }
                         else if (!offerFromDate && !offerToDate) {
                             price = offer
+                            if(regular > 0){
+                                regularPrice = regular
+                            }
+                            else{
+                                let comm = (seller / 100) * commission
+                                let amount = seller + comm;
+                                regularPrice = amount
+                            }
                         }
                         else {
                             if (regular > 0) {
@@ -116,7 +139,8 @@ export function getProduct (product) {
                         minQty,
                         stockValue,
                         delivery,
-                        available: true
+                        available: true,
+                        regularPrice: regularPrice
                     })
                 }
                 else {
@@ -140,6 +164,14 @@ export function getProduct (product) {
                     if (offerFromDate && offerToDate) {
                         if (moment(moment().format("YYYY-MM-DD"), "YYYY-MM-DD") >= offerFromDate && moment(moment().format("YYYY-MM-DD"), "YYYY-MM-DD") <= offerToDate) {
                             price = offer;
+                            if(regular > 0){
+                                regularPrice = regular
+                            }
+                            else{
+                                let comm = (seller / 100) * commission
+                                let amount = seller + comm;
+                                regularPrice = amount
+                            }
                         }
                         else if (regular > 0) {
                             price = regular
@@ -153,6 +185,14 @@ export function getProduct (product) {
                     else if (offerFromDate && !offerToDate) {
                         if (moment(moment().format("YYYY-MM-DD"), "YYYY-MM-DD") >= offerFromDate) {
                             price = offer
+                            if(regular > 0){
+                                regularPrice = regular
+                            }
+                            else{
+                                let comm = (seller / 100) * commission
+                                let amount = seller + comm;
+                                regularPrice = amount
+                            }
                         }
                         else if (regular > 0) {
                             price = regular
@@ -165,6 +205,14 @@ export function getProduct (product) {
                     }
                     else if (!offerFromDate && !offerToDate) {
                         price = offer
+                        if(regular > 0){
+                            regularPrice = regular
+                        }
+                        else{
+                            let comm = (seller / 100) * commission
+                            let amount = seller + comm;
+                            regularPrice = amount
+                        }
                     }
                     else {
                         if (regular > 0) {
@@ -193,7 +241,8 @@ export function getProduct (product) {
                     minQty,
                     stockValue,
                     delivery,
-                    available: true
+                    available: true,
+                    regularPrice: regularPrice
                 })
             }
         })
@@ -224,6 +273,7 @@ export function getProduct (product) {
 
     }
     else {
+        
         if(attri){
             newProduct['attributes'] = attributes
         }
@@ -236,13 +286,24 @@ export function getProduct (product) {
         let delivery = product?.fixed_delivery_price ? parseFloat(product?.fixed_delivery_price) : 0
         let stockValue = product?.stock_value ? parseFloat(product?.stock_value) : 0
         let price;
+        let regularPrice;
         if (stock) {
             if (stockValue >= minQty) {
                 if (offer > 0) {
+                    
                     //products have offer price , check offer price in valid range
                     if (offerFromDate && offerToDate) {
+                        
                         if (moment(moment().format("YYYY-MM-DD"), "YYYY-MM-DD") >= offerFromDate && moment(moment().format("YYYY-MM-DD"), "YYYY-MM-DD") <= offerToDate) {
                             price = offer;
+                            if(regular > 0){
+                                regularPrice = regular
+                            }
+                            else{
+                                let comm = (seller / 100) * commission
+                                let amount = seller + comm;
+                                regularPrice = amount;
+                            }
                         }
                         else if (regular > 0) {
                             price = regular
@@ -256,6 +317,14 @@ export function getProduct (product) {
                     else if (offerFromDate && !offerToDate) {
                         if (moment(moment().format("YYYY-MM-DD"), "YYYY-MM-DD") >= offerFromDate) {
                             price = offer
+                            if(regular > 0){
+                                regularPrice = regular
+                            }
+                            else{
+                                let comm = (seller / 100) * commission
+                                let amount = seller + comm;
+                                regularPrice = amount;
+                            }
                         }
                         else if (regular > 0) {
                             price = regular
@@ -268,6 +337,14 @@ export function getProduct (product) {
                     }
                     else if (!offerFromDate && !offerToDate) {
                         price = offer
+                        if(regular > 0){
+                            regularPrice = regular
+                        }
+                        else{
+                            let comm = (seller / 100) * commission
+                            let amount = seller + comm;
+                            regularPrice = amount;
+                        }
                     }
                     else {
                         if (regular > 0) {
@@ -290,6 +367,7 @@ export function getProduct (product) {
                 }
                 newProduct['available'] = true
                 newProduct['price'] = parseFloat(price).toFixed(2);
+                newProduct['regularPrice'] = regularPrice ? parseFloat(regularPrice).toFixed(2) : null;
             }
             else {
                 //OUT OF STOCK
@@ -303,6 +381,14 @@ export function getProduct (product) {
                 if (offerFromDate && offerToDate) {
                     if (moment(moment().format("YYYY-MM-DD"), "YYYY-MM-DD") >= offerFromDate && moment(moment().format("YYYY-MM-DD"), "YYYY-MM-DD") <= offerToDate) {
                         price = offer;
+                        if(regular > 0){
+                            regularPrice = regular
+                        }
+                        else{
+                            let comm = (seller / 100) * commission
+                            let amount = seller + comm;
+                            regularPrice = amount;
+                        }
                     }
                     else if (regular > 0) {
                         price = regular
@@ -316,6 +402,14 @@ export function getProduct (product) {
                 else if (offerFromDate && !offerToDate) {
                     if (moment(moment().format("YYYY-MM-DD"), "YYYY-MM-DD") >= offerFromDate) {
                         price = offer
+                        if(regular > 0){
+                            regularPrice = regular
+                        }
+                        else{
+                            let comm = (seller / 100) * commission
+                            let amount = seller + comm;
+                            regularPrice = amount;
+                        }
                     }
                     else if (regular > 0) {
                         price = regular
@@ -328,6 +422,14 @@ export function getProduct (product) {
                 }
                 else if (!offerFromDate && !offerToDate) {
                     price = offer
+                    if(regular > 0){
+                        regularPrice = regular
+                    }
+                    else{
+                        let comm = (seller / 100) * commission
+                        let amount = seller + comm;
+                        regularPrice = amount;
+                    }
                 }
                 else {
                     if (regular > 0) {
@@ -351,6 +453,7 @@ export function getProduct (product) {
             }
 
             newProduct['price'] = parseFloat(price).toFixed(2);
+            newProduct['regularPrice'] = regularPrice ? parseFloat(regularPrice).toFixed(2) : null;
             newProduct['available'] = true;
         }
         newProduct['stockValue'] = stockValue;
