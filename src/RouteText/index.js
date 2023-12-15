@@ -144,7 +144,7 @@ const RouteTest = () => {
                 getAddressList()
             }
             else {
-                setInitialScreen('green');
+                setInitialScreen('Login');
             }
 
     }
@@ -190,7 +190,7 @@ const RouteTest = () => {
         
         
         let location = await AsyncStorage.getItem("location")
-        reactotron.log({ location })
+     
         //return false;
         if (location) {
             let locationData = JSON.parse(location)
