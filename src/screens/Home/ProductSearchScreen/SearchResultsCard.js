@@ -49,14 +49,14 @@ const SearchResultsCard = memo(({ item, setValue }) => {
     };
 
 
-    const handleClick = useCallback((value) => {
+    const handleClick = async() => {
         pandaContext.setActive(item?.type)
         handleswitch(item?.type)
-        let data = getProduct(item);
+        let data = await getProduct(item);
         reactotron.log({data})
         navigation.navigate('SingleItemScreen', { item: data })
         setValue('name', '')
-    }, [data, pandaContext?.active]);
+    };
 
     return (
         <TouchableOpacity
