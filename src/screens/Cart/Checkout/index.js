@@ -79,6 +79,7 @@ const Checkout = ({ navigation }) => {
     const [price, setPrice] = useState('')
     const [showList, setShowList] = useState(false)
     const [platformCharge, setPlatformCharge] = useState('')
+    const [paymentInitiated, setPaymentInitiated] = useState(false)
     const [payment, setPayment] = useState([
         {
             _id: 'online',
@@ -115,8 +116,16 @@ const Checkout = ({ navigation }) => {
                 getCartItems();
                 getplatformCharge();
             }
+            // else{
+            //     setTimeout(() => {
+            //         if(paymentInitiated){
+            //             navigation.goBack()
+            //         }
+            //     }, 1000);
+                
+            // }
 
-        }, [cartContext?.cart?._id])
+        }, [cartContext?.cart?._id, paymentInitiated])
 
     );
 
@@ -574,7 +583,8 @@ const Checkout = ({ navigation }) => {
                         }
                         if (data?.status) {
                             if (data?.data?.payment_type == "online" && has(data?.data, "paymentDetails") && !isEmpty(data?.data?.paymentDetails)) {
-                                reactotron.log("inß")
+                                cartContext?.setCart(null)
+                                setPaymentInitiated(true)
                                 payWithPayTM(data?.data)
                             } else {
                                 cartContext?.setCart(null)
@@ -711,6 +721,9 @@ const Checkout = ({ navigation }) => {
                 setIsLoding(true);
                 updatePaymentResponse(data)
                 
+            })
+            .finally(() => {
+                setPaymentInitiated(false)
             });
         } catch (error) {
             reactotron.log({error})
