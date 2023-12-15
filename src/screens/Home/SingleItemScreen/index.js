@@ -67,6 +67,9 @@ const SingleItemScreen = ({ route, navigation }) => {
     const [loading, setLoading] = useState(false)
     let active = contextPanda.active
 
+
+    console.log({selectedVariant})
+
     const courasol = useRef(null);
 
     const [courasolArray, setCourasolArray] = useState([])
@@ -264,6 +267,7 @@ const SingleItemScreen = ({ route, navigation }) => {
         }
 
         let price = item?.variant ? selectedVariant?.price : item?.price;
+        reactotron.log({price})
         if (parseInt(price) < 1) {
             Toast.show({
                 type: 'info',
