@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableOpacity, useWindowDimensions, View } from 'react-native'
+import { Alert, StyleSheet, Text, TouchableOpacity, useWindowDimensions, View } from 'react-native'
 import React, { memo, useCallback, useContext, useEffect, useState } from 'react'
 import CommonTexts from '../../Components/CommonTexts'
 import Ionicons from 'react-native-vector-icons/Ionicons'
@@ -224,17 +224,27 @@ const OrderCard = memo(({ item, refreshOrder }) => {
 
 
     const OrderCancel = async () => {
-        try {
-            await customAxios.post(`customer/customer-order-cancelled`, { id: item?._id })
-            Toast.show({ type: 'success', text1: 'Order cancelled successfully' })
-            refreshOrder();
-        } catch (err) {
-            Toast.show({
-                type: 'error',
-                text1: err
-            });
-
-        }
+        Alert.alert('Warning', 'Are you sure want to cancel order?', [
+            {
+              text: 'Cancel',
+              //onPress: () => console.log('Cancel Pressed'),
+              style: 'cancel',
+            },
+            {text: 'OK', onPress: async() => {
+                try {
+                    await customAxios.post(`customer/customer-order-cancelled`, { id: item?._id })
+                    Toast.show({ type: 'success', text1: 'Order cancelled successfully' })
+                    refreshOrder();
+                } catch (err) {
+                    Toast.show({
+                        type: 'error',
+                        text1: err
+                    });
+        
+                }
+            }},
+          ]);
+        
     }
 
 

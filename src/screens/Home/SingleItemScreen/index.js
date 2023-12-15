@@ -297,6 +297,7 @@ const SingleItemScreen = ({ route, navigation }) => {
                 cartContext.addToCart(item, selectedVari, attributes);
             }
             else if(!item?.variants){
+                let attributes = attributes?.length > 0 ? attributes : null
                 cartContext.addToCart(item, selectedVari, attributes);
             }
             else{
@@ -343,8 +344,30 @@ const SingleItemScreen = ({ route, navigation }) => {
             }
         })
 
+        let selected = []
+        attr?.map(att => {
+            if(att?.selected){
+                selected.push(att?.selected)
+            }
+        })
 
-        reactotron.log({attr})
+
+        reactotron.log({attr, variants: item?.variants, selected})
+
+        let selectedVariant;
+
+        item?.variants?.map(vari => {
+            if(vari?.attributs?.length === selected?.length){
+                if(isEqual(vari?.attributs?.sort(), selected.sort())){
+                    selectedVariant = vari;
+                }
+            }
+        })
+
+        if(selectedVariant){
+            setSelectedVariant({...selectedVariant})
+            setPrice(selectedVariant?.price)
+        }
 
 
         // item?.variants?.map(sin => {
@@ -583,6 +606,7 @@ const SingleItemScreen = ({ route, navigation }) => {
                     sold={item?.order_count}
                     minQty={item?.minQty}
                     price={item?.variant ? selectedVariant?.price : item?.price}
+                    regularPrice={item?.variant ? selectedVariant?.regularPrice : item?.regularPrice}
                     available={item?.available}
                 />
                 {item?.weight !== ('' || null) &&

@@ -38,8 +38,8 @@ const CommonItemCard = memo(({ height, width, item, marginHorizontal, wishlistIc
     const [variant, setVariant] = useState(false)
     const calculation = useMemo(() => getProduct(item), [item]);
 
-    reactotron.log({ data }, 'in PRODUCT DATA')
-    // reactotron.log({ data })
+
+    //reactotron.log({ data })
 
     const { fontScale, height: height1 } = useWindowDimensions()
 
@@ -192,7 +192,14 @@ const CommonItemCard = memo(({ height, width, item, marginHorizontal, wishlistIc
                 >
                     <LinearGradient colors={ data?.available ? ['rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, 0.7)'] : ['rgba(0, 0, 0, 0.4)', 'rgba(0, 0, 0, 0.9)'] } style={ { height: '100%', justifyContent: 'flex-end', padding: 10 } }>
                         <Text style={ styles.textSemi }>{ data?.name }</Text>
-                        { data?.available && <Text style={ !data?.available ? styles.textSemiError : styles.bottomRateText }>{ `₹ ${data?.price}` }</Text> }
+                        { data?.available && 
+                        <Text style={ !data?.available ? styles.textSemiError : styles.bottomRateText }>
+                            { `₹ ${data?.price}` }
+                            {data?.regularPrice && <Text style={[styles.bottomRateText, {textDecorationLine: 'line-through', textDecorationStyle: 'solid', fontSize: 8}]}>
+                        { ` ₹ ${data?.regularPrice}` }
+                        </Text>}
+                        </Text> }
+                        
                         <Text style={ styles.lightText }>{ data?.store?.name }</Text>
                     </LinearGradient>
                     { !data?.available && <View style={ { position: 'absolute', top: '32%', width: '100%' } }>

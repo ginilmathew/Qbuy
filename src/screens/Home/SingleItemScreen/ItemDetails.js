@@ -8,7 +8,7 @@ import Tooltip from 'react-native-walkthrough-tooltip';
 import reactotron from '../../../ReactotronConfig';
 
 
-const ItemDetails = ({ itemName, hotelName, views, sold, minQty, price, onPress, available }) => {
+const ItemDetails = ({ itemName, hotelName, views, sold, minQty, price, onPress, available, regularPrice }) => {
 
 
     const [tooltip, setTooltip] = useState(true)
@@ -145,10 +145,19 @@ const ItemDetails = ({ itemName, hotelName, views, sold, minQty, price, onPress,
                     style={ {
                         fontFamily: 'Poppins-ExtraBold',
                         color: '#089321',
-                        fontSize: 12,
+                        fontSize: 14,
 
                     } }
                 >₹{ price }</Text>
+                {regularPrice && <Text
+                    style={ {
+                        fontFamily: 'Poppins-ExtraBold',
+                        color: '#089321',
+                        fontSize: 10,
+                        textDecorationLine: 'line-through', 
+                        textDecorationStyle: 'solid'
+                    } }
+                >₹{ regularPrice }</Text>}
             </View> }
         </View>
     )
