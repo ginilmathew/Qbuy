@@ -92,7 +92,7 @@ const RouteTest = () => {
                     currentPosition()
                 }
 
-                reactotron.log({ DeviceVersion, versionInfo })
+               
 
             }
             else {
@@ -112,8 +112,6 @@ const RouteTest = () => {
 
     async function getAddressFromCoordinates(latitude, longitude) {
         let response = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${latitude},${longitude}&key=AIzaSyBBcghyB0FvhqML5Vjmg3uTwASFdkV8wZY`);
-
-
 
             let Value = {
                 location: response?.data?.results[0]?.formatted_address,
@@ -156,7 +154,7 @@ const RouteTest = () => {
         await Geolocation.getCurrentPosition(
             position => {
 
-                reactotron.log({position})
+              
 
                 //getAddressFromCoordinates(position?.coords?.latitude, position.coords?.longitude)
 
@@ -381,7 +379,7 @@ const RouteTest = () => {
                         navigation.dispatch(jumpToAction);
                         //RootNavigation.navigate("green", { screen: 'order' })
                     }
-                    reactotron.log('User pressed notification', detail.notification);
+                   
                     break;
             }
         });

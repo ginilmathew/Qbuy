@@ -19,6 +19,8 @@ import Animated from 'react-native-reanimated'
 const CartItemCard = ({ item, index, refreshCart }) => {
 
 
+
+
     const contextPanda = useContext(PandaContext)
     const cartContext = useContext(CartContext)
     const userContext = useContext(AuthContext)
@@ -92,16 +94,22 @@ const CartItemCard = ({ item, index, refreshCart }) => {
     }
 
     const removeItem = async () => {
-        let minimumQty = data?.minimum_qty ? data?.minimum_qty * 1 : 1
+
+      
+        let minimumQty = data?.minimum_qty ? data?.minimum_qty * 1 : 1;
+
+   
+
+      
         //return false
         let allProducts = cartContext?.cart?.product_details;
         let cartItems;
-        if (data?.quantity > 1) {
+        if (data?.quantity > 1 * 1 ) {
             let quantity = data?.quantity * 1
 
-            if (quantity - 1 >= minimumQty) {
+            if (quantity - 1 * 1 >= minimumQty) {
                 data.quantity = quantity - 1
-                allProducts[index].quantity = allProducts[index].quantity - 1;
+                allProducts[index].quantity = allProducts[index].quantity - 1 * 1;
                 cartItems = {
                     cart_id: cartContext?.cart?._id,
                     product_details: allProducts,
@@ -146,6 +154,8 @@ const CartItemCard = ({ item, index, refreshCart }) => {
             }
         }
         else {
+
+          
             let allProducts = cartContext?.cart?.product_details?.filter((prod, i) => i !== index);
             let cartItems = {
                 cart_id: cartContext?.cart?._id,

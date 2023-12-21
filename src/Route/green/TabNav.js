@@ -225,11 +225,13 @@ const TabNav = () => {
 
     const renderTabBar = ({ routeName, selectedTab, navigate }) => {
 
+   
+
         const NavigationPage = () => {
 
             const route = navigationRef.current?.getCurrentRoute()
             
-            reactotron.log("in", routeName, navigation.getState(), route)
+            // reactotron.log("in", routeName, navigation.getState(), route)
             const state = navigation.getState()
             if(userContext?.userData){
                 // if(routeName === "home" && state?.index > 0){
@@ -249,10 +251,11 @@ const TabNav = () => {
                 //navigate(routeName)
                 try {
                     if(routeName === "home"){
-                        if(route?.name === "Cart" || route?.name === "MyOrders" || route?.name === "MyAccount" || route?.name === "Home"){
+                        if(route?.name === "Cart" || route?.name === "MyOrders" || route?.name === "MyAccount" || route?.name === "Home" ){
                             navigate(routeName)
                         }
                         else{
+                            console.log('navigation called')
                             navigation.dispatch(StackActions.popToTop());
                             const jumpToAction = TabActions.jumpTo('home')
                             navigation.dispatch(jumpToAction);
@@ -268,6 +271,7 @@ const TabNav = () => {
                         //navigation.popToTop()
                     }
                     else{
+                  
                         navigate(routeName)
                     }
                     
@@ -280,9 +284,21 @@ const TabNav = () => {
             }
             else{
                 if(routeName === "home"){
-                    navigate(routeName)
+                  
+                    // navigation.navigate(routeName)
+                    startTransition(() => {
+                        navigation.dispatch(
+                            CommonActions.reset({
+                                index: 0,
+                                routes: [
+                                    { name: 'green' },
+                                ],
+                            })
+                        );
+                    })
                 }
                 else{
+                    
                     navigation.navigate("Login")
                 }
                 

@@ -52,7 +52,7 @@ const Checkout = ({ navigation }) => {
     const cartContext = useContext(CartContext)
     const authContext = useContext(AuthContext)
 
-    const { width, height} = useWindowDimensions()
+    const { width, height } = useWindowDimensions()
 
     let active = contextPanda.active
 
@@ -122,7 +122,7 @@ const Checkout = ({ navigation }) => {
             //             navigation.goBack()
             //         }
             //     }, 1000);
-                
+
             // }
 
         }, [cartContext?.cart?._id, paymentInitiated])
@@ -144,42 +144,54 @@ const Checkout = ({ navigation }) => {
         await customAxios.get(`customer/cart/show/${cartContext?.cart?._id}`)
             .then(async response => {
                 let products = response?.data?.data?.product_details;
+                reactotron.log({ products }, 'PRODUCTS')
+
                 let finalProducts = [];
                 //let quantity = pro?.quantity ? parseFloat(pro?.quantity) : 0
                 products?.map((pro) => {
+
+
                     let quantity = pro?.quantity ? parseFloat(pro?.quantity) : 0
                     let type = pro?.type;
                     let offer, regular, comm, seller, delivery, minQty, stock, fromDate, toDate, stock_value, product;
                     if (type === "single") {
                         offer = pro?.productdata?.offer_price ? parseFloat(pro?.productdata?.offer_price) : 0
                         regular = pro?.productdata?.regular_price ? parseFloat(pro?.productdata?.regular_price) : 0
-                        comm = pro?.productdata?.commission ? pro?.productdata?.commission : pro?.productdata?.vendors?.additional_details?.commission ? pro?.productdata?.vendors?.additional_details?.commission : 0
-                        seller = pro?.productdata?.seller_price ? parseFloat(pro?.productdata?.seller_price) : 0
+                        comm = pro?.productdata?.commission ? pro?.productdata?.commission : pro?.productdata?.vendors?.additional_details?.commission ? pro?.productdata?.vendors?.additional_details?.commission : 0,
+                            seller = pro?.productdata?.seller_price ? parseFloat(pro?.productdata?.seller_price) : 0
                         delivery = pro?.productdata?.fixed_delivery_price ? parseFloat(pro?.productdata?.fixed_delivery_price) : 0
                         minQty = pro?.productdata?.minimum_qty ? parseFloat(pro?.productdata?.minimum_qty) : 0
                         stock = pro?.productdata?.stock
                         fromDate = moment(pro?.productdata?.offer_date_from).isValid() ? moment(pro?.productdata?.offer_date_from, "YYYY-MM-DD") : null
                         toDate = moment(pro?.productdata?.offer_date_to).isValid() ? moment(pro?.productdata?.offer_date_to, "YYYY-MM-DD") : null
-                        stock_value = pro?.productdata?.stock_value ? parseFloat(pro?.productdata?.stock_value) : 0
-                        product = {
-                            store_address: pro?.productdata?.vendors.store_address,
-                            product_id: pro?.product_id,
-                            name: pro?.name,
-                            image: pro?.image,
-                            type: pro?.type,
-                            quantity: quantity,
-                            stock: stock,
-                            delivery,
-                            commission: comm,
-                            minimum_qty: minQty,
-                            stock_value,
-                            store: pro?.productdata?.store,
-                            variant_id: null,
-                            franchisee: pro?.productdata?.franchisee,
-                            cartId: response?.data?.data?._id,
-                            attributes: pro?.attributes,
+                        stock_value = pro?.productdata?.stock_value ? parseFloat(pro?.productdata?.stock_value) : 0,
 
-                        }
+                            product = {
+                                store_address: pro?.productdata?.vendors.store_address,
+                                product_id: pro?.product_id,
+                                name: pro?.name,
+                                image: pro?.image,
+                                type: pro?.type,
+                                quantity: quantity,
+                                stock: stock,
+                                delivery,
+                                commission: comm,
+                                minimum_qty: minQty,
+                                stock_value,
+                                store: pro?.productdata?.store,
+                                variant_id: null,
+                                franchisee: pro?.productdata?.franchisee,
+                                cartId: response?.data?.data?._id,
+                                attributes: pro?.attributes,
+                                offer_date_from: pro?.productdata?.offer_date_from,
+                                offer_date_to: pro?.productdata?.offer_date_to,
+                                offer_price: pro?.productdata?.offer_price,
+                                store_commission: pro?.productdata?.vendors?.additional_details?.commission,
+                                product_commission: pro?.productdata?.commission,
+                                seller_price: pro?.productdata?.seller_price ,
+                                regular_price: pro?.productdata?.regular_price
+
+                            }
                     }
                     else {
                         offer = pro?.variants?.offer_price ? parseFloat(pro?.variants?.offer_price) : 0
@@ -209,7 +221,14 @@ const Checkout = ({ navigation }) => {
                             variant_id: pro?.variants?._id,
                             franchisee: pro?.productdata?.franchisee,
                             cartId: response?.data?.data?._id,
-                            attributes: pro?.attributes
+                            attributes: pro?.attributes,
+                            offer_date_from: pro?.productdata?.offer_date_from,
+                            offer_date_to: pro?.productdata?.offer_date_to,
+                            offer_price: pro?.productdata?.offer_price,
+                            store_commission: pro?.productdata?.vendors?.additional_details?.commission,
+                            product_commission: pro?.productdata?.commission,
+                            seller_price: pro?.variants?.seller_price ,
+                            regular_price: pro?.variants?.regular_price
                         }
                     }
 
@@ -377,7 +396,6 @@ const Checkout = ({ navigation }) => {
 
 
 
-
     datas = [
         {
             _id: '1',
@@ -494,7 +512,7 @@ const Checkout = ({ navigation }) => {
     //const checkProductAvailability = () => {}
 
     const placeOrder = async () => {
-        reactotron.log({adress: cartContext?.defaultAddress})
+        // reactotron.log({adress: cartContext?.defaultAddress})
         setIsLoding(true);
         let franchise = await customAxios.post('customer/get-franchise', { coordinates: [cartContext?.defaultAddress?.area?.latitude, cartContext?.defaultAddress?.area?.longitude] })
 
@@ -522,7 +540,6 @@ const Checkout = ({ navigation }) => {
             let amount = 0;
             let stores = []
 
-            reactotron.log({cartItems})
             //return false;
 
             cartItems?.map(cart => {
@@ -537,7 +554,16 @@ const Checkout = ({ navigation }) => {
                     price: cart?.price,
                     unitPrice: cart?.unitPrice,
                     deliveryPrice: cart?.delivery,
-                    attributes: cart?.attributes
+                    attributes: cart?.attributes,
+                    // commission:cart?.commission,
+                    offer_date_from: cart?.offer_date_from,
+                    offer_date_to: cart?.offer_date_to,
+                    offer_price: cart?.offer_price,
+                    store_commission: cart?.store_commission,
+                    product_commission: cart?.product_commission,
+                    seller_price: cart?.seller_price,
+                    regular_price: cart?.regular_price
+
                 })
             })
 
@@ -560,7 +586,7 @@ const Checkout = ({ navigation }) => {
                 payment_status: pay._id === "online" ? "pending" : "created",
                 payment_type: pay._id,
                 type: active,
-                total_amount:cartItems.reduce(function (previousVal, currentVal) {
+                total_amount: cartItems.reduce(function (previousVal, currentVal) {
                     return previousVal + currentVal?.price;
                 }, 0)?.toFixed(2),
                 delivery_charge: cartItems?.reduce((a, b) => a.delivery > b.delivery ? a : b).delivery?.toFixed(2),
@@ -591,9 +617,9 @@ const Checkout = ({ navigation }) => {
                                 setCartItems(null)
                                 setIsLoding(false);
                                 await AsyncStorage.removeItem("cartId");
-                                navigation.replace("green", { screen: 'TabNavigator', params: { screen: 'OrderPlaced', params: { item: response.data?.data } }  })
+                                navigation.replace("green", { screen: 'TabNavigator', params: { screen: 'OrderPlaced', params: { item: response.data?.data } } })
                                 //navigation.navigate('OrderPlaced', { item: response.data?.data })
-                                
+
                             }
                         } else {
                             cartContext?.setCart(null)
@@ -637,10 +663,10 @@ const Checkout = ({ navigation }) => {
                 if (details?.STATUS == "TXN_SUCCESS") {
                     cartContext?.setCart(null)
                     setIsLoding(false)
-                    navigation.replace("green", { screen: 'TabNavigator', params: { screen: 'OrderPlaced', params: { item: { created_at: details?.TXNDATE, order_id: orderID } } }  })
+                    navigation.replace("green", { screen: 'TabNavigator', params: { screen: 'OrderPlaced', params: { item: { created_at: details?.TXNDATE, order_id: orderID } } } })
                     //navigation.navigate("green", { screen: 'TabNavigator', params: { screen: 'cart', params: { screen: 'OrderPlaced', params: { item: { created_at: details?.TXNDATE, order_id: orderID } } } } })
                     //navigation.navigate('OrderPlaced', { item: { created_at: details?.TXNDATE, order_id: orderID } })
-                    
+
                 } else {
                     setIsLoding(false)
                     navigation.navigate("order")
@@ -662,8 +688,9 @@ const Checkout = ({ navigation }) => {
 
 
 
+
     const payWithPayTM = async (data) => {
-        
+
         const { paymentDetails } = data
         let orderId = paymentDetails?.orderId
         let isStaging = env === "live" ? false : true
@@ -671,9 +698,9 @@ const Checkout = ({ navigation }) => {
             true: "https://securegw-stage.paytm.in/theia/paytmCallback?ORDER_ID=",
             false: "https://securegw.paytm.in/theia/paytmCallback?ORDER_ID="
         }
-        
+
         setIsLoding(false)
-        reactotron.log("payment", paymentDetails)
+
         let paymentStarted = true;
         try {
 
@@ -688,7 +715,7 @@ const Checkout = ({ navigation }) => {
                 `paytm${paymentDetails?.mid}`//urlScheme
             ).then((result) => {
                 paymentStarted = false
-                reactotron.log({result})
+
                 setIsLoding(true)
                 if (has(result, "STATUS")) {
                     updatePaymentResponse(result)
@@ -700,37 +727,36 @@ const Checkout = ({ navigation }) => {
                         RESPMSG: 'User Cancelled transaction',
                         ORDERID: orderId
                     }
-                    reactotron.log('CANCEL PAYMENT')
+
                     updatePaymentResponse(data)
                     //setIsLoding(false);
                 }
                 // console.log("PAYTM =>", JSON.stringify(result));
-    
-    
+
+
             }).catch((err) => {
                 paymentStarted = false
-                reactotron.log({err})
-    
+
+
                 let data = {
                     STATUS: 'TXN_FAILURE',
                     RESPMSG: 'User Cancelled transaction',
                     ORDERID: orderId
                 }
-    
-                reactotron.log('CANCEL PAYMENT 2')
+
                 setIsLoding(true);
                 updatePaymentResponse(data)
-                
+
             })
-            .finally(() => {
-                setPaymentInitiated(false)
-            });
+                .finally(() => {
+                    setPaymentInitiated(false)
+                });
         } catch (error) {
-            reactotron.log({error})
+            reactotron.log({ error })
         }
-       
-        if(paymentStarted){
-            console.log("payment not completed")
+
+        if (paymentStarted) {
+            // console.log("payment not completed")
         }
 
     }
@@ -768,7 +794,7 @@ const Checkout = ({ navigation }) => {
     }, [])
 
     const backToCart = useCallback(() => {
-        navigation.navigate("green", { screen : 'TabNavigator', params: { screen : 'cart' }})
+        navigation.navigate("green", { screen: 'TabNavigator', params: { screen: 'cart' } })
     }, [navigation])
 
 
@@ -781,32 +807,32 @@ const Checkout = ({ navigation }) => {
 
     return (
         <>
-            <HeaderWithTitle title={ 'Checkout' } onPressBack={ backToCart } />
+            <HeaderWithTitle title={'Checkout'} onPressBack={backToCart} />
             <ScrollView
                 refreshControl={
-                    <RefreshControl refreshing={ loader } onRefresh={ getCartItems } />
+                    <RefreshControl refreshing={loader} onRefresh={getCartItems} />
                 }
-                style={ { flex: 1, backgroundColor: active === 'green' ? '#F4FFE9' : active === 'fashion' ? '#FFF5F7' : '#F3F3F3', } }>
+                style={{ flex: 1, backgroundColor: active === 'green' ? '#F4FFE9' : active === 'fashion' ? '#FFF5F7' : '#F3F3F3', }}>
 
-                {/* products */ }
-                <View style={ styles.productBox }>
-                    <View style={ styles.productHeader }>
-                        <View style={ { flex: 0.42 } }>
-                            <Text style={ styles.boldText }>{ 'Product' }</Text>
+                {/* products */}
+                <View style={styles.productBox}>
+                    <View style={styles.productHeader}>
+                        <View style={{ flex: 0.42 }}>
+                            <Text style={styles.boldText}>{'Product'}</Text>
                         </View>
-                        <Text style={ styles.unitPrice }>{ 'Price' }</Text>
-                        <Text style={ styles.quantity }>{ 'Qty' }</Text>
-                        <Text style={ styles.total }>{ 'Total' }</Text>
+                        <Text style={styles.unitPrice}>{'Price'}</Text>
+                        <Text style={styles.quantity}>{'Qty'}</Text>
+                        <Text style={styles.total}>{'Total'}</Text>
                     </View>
-                    <View style={ styles.itemUnderProduct }>
-                        { cartItems?.map((item, index) =>
+                    <View style={styles.itemUnderProduct}>
+                        {cartItems?.map((item, index) =>
                             <CheckoutItemCard
-                                item={ item }
-                                key={ index }
-                                index={ index }
-                                refreshCart={ refreshCart }
+                                item={item}
+                                key={index}
+                                index={index}
+                                refreshCart={refreshCart}
                             />
-                        ) }
+                        )}
                     </View>
                     {/* <AddMoreItem />
                     <Text style={styles.regularText}>{'Add Cooking Instructions'}</Text>
@@ -824,7 +850,7 @@ const Checkout = ({ navigation }) => {
                     </View> */}
                 </View>
 
-                {/* Order for Others */ }
+                {/* Order for Others */}
                 {/* <View style={styles.commonContainer}>
                     <Text style={styles.boldText}>{'Order for Others'}</Text>
                     <Text style={styles.mediumGrayText}>{'Order food for your friends, family etc...'}</Text>
@@ -836,19 +862,19 @@ const Checkout = ({ navigation }) => {
                     />
                 </View> */}
 
-                {/*Delivery Speed */ }
-                <View style={ styles.commonContainer }>
-                    <Text style={ styles.boldText }>{ 'Payment Methods' }</Text>
-                    { payment.map((item, index) =>
+                {/*Delivery Speed */}
+                <View style={styles.commonContainer}>
+                    <Text style={styles.boldText}>{'Payment Methods'}</Text>
+                    {payment.map((item, index) =>
                         <PaymentMethod
-                            item={ item }
-                            key={ index }
-                            setSelected={ setPaymentMethod }
+                            item={item}
+                            key={index}
+                            setSelected={setPaymentMethod}
                         />
-                    ) }
+                    )}
                 </View>
 
-                {/* Add Coupon */ }
+                {/* Add Coupon */}
                 {/* <View style={styles.commonContainer}>
                     <View style={{flexDirection:'row', alignItems:'center',justifyContent:'space-between'}}>
                         <Text style={styles.boldText}>{'Add Coupon'}</Text>
@@ -888,7 +914,7 @@ const Checkout = ({ navigation }) => {
                     </View>
                 </View> */}
 
-                {/* Give a Tip */ }
+                {/* Give a Tip */}
                 {/* <View style={styles.commonContainer}>
                     <Text style={styles.boldText}>{'Give a Tip!'}</Text>
                     <Text style={styles.mediumGrayText}>{'Leave your delivery partner with a tip so that you could show an appreciation for his efforts!'}</Text>
@@ -904,7 +930,7 @@ const Checkout = ({ navigation }) => {
                     </View>
                 </View> */}
 
-                {/* Add Delivery Instructions */ }
+                {/* Add Delivery Instructions */}
                 {/* <View style={styles.commonContainer}>
                     <Text style={styles.boldText}>{'Add Delivery Instructions'}</Text>
                     <Text style={styles.mediumGrayText}>{'Add necessary instruction for your delivery partner'}</Text>
@@ -920,7 +946,7 @@ const Checkout = ({ navigation }) => {
                     </View>
                 </View> */}
 
-                {/* panda coins */ }
+                {/* panda coins */}
                 {/* <View 
                     style={{
                         backgroundColor: active === 'green' ? '#fae8d4' : '#cae2fa',
@@ -940,8 +966,8 @@ const Checkout = ({ navigation }) => {
                     <CustomButton label={'Apply'} bg={ active === 'green' ? '#FF9C0C' : active === 'fashion' ? '#2D8FFF' :  '#586DD3'} width={100} />
                 </View> */}
 
-                {/* grand total */ }
-                <View style={ styles.grandTotalBox }>
+                {/* grand total */}
+                <View style={styles.grandTotalBox}>
                     {/* <View style={styles.grandTotalTop}>
                         <Text style={styles.textMedium}>{'Delivery Tip'}</Text>
                         <Text
@@ -956,108 +982,108 @@ const Checkout = ({ navigation }) => {
                         <Text style={styles.textMedium}>{'Govt Taxes & Other Charges'}</Text>
                         <Text style={styles.textMedium}>₹ {'10'}</Text>
                     </View> */}
-                    { cartItems?.length > 0 && <View style={ styles.grandTotalMid }>
-                        <Text style={ styles.textMedium }>{ 'Delivery Fee' }</Text>
-                        <Text style={ styles.textMedium }>₹ { cartItems?.length > 0 ? parseFloat(cartItems?.reduce((a, b) => a.delivery > b.delivery ? a : b).delivery).toFixed(2) : null } </Text>
-                    </View> }
-                    { cartItems?.length > 0 && <View style={ styles.grandTotalMid }>
-                        <Text style={ styles.textMedium }>{ 'Platform Charge' }</Text>
-                        <Text style={ styles.textMedium }>₹ { cartItems?.length > 0 ? parseFloat(platformCharge?.platformCharge).toFixed(2) : null } </Text>
-                    </View> }
+                    {cartItems?.length > 0 && <View style={styles.grandTotalMid}>
+                        <Text style={styles.textMedium}>{'Delivery Fee'}</Text>
+                        <Text style={styles.textMedium}>₹ {cartItems?.length > 0 ? parseFloat(cartItems?.reduce((a, b) => a.delivery > b.delivery ? a : b).delivery).toFixed(2) : null} </Text>
+                    </View>}
+                    {cartItems?.length > 0 && <View style={styles.grandTotalMid}>
+                        <Text style={styles.textMedium}>{'Platform Charge'}</Text>
+                        <Text style={styles.textMedium}>₹ {cartItems?.length > 0 ? parseFloat(platformCharge?.platformCharge).toFixed(2) : null} </Text>
+                    </View>}
 
-                    { cartItems?.length > 0 && <View style={ styles.grandTotalBottom }>
-                        <Text style={ styles.boldText }>{ 'Grand Total' }</Text>
-                        <Text style={ styles.boldText }>₹ { parseFloat(cartItems?.reduce(function (previousVal, currentVal) {
+                    {cartItems?.length > 0 && <View style={styles.grandTotalBottom}>
+                        <Text style={styles.boldText}>{'Grand Total'}</Text>
+                        <Text style={styles.boldText}>₹ {parseFloat(cartItems?.reduce(function (previousVal, currentVal) {
                             return previousVal + currentVal?.price;
-                        }, 0) + cartItems?.reduce((a, b) => a.delivery > b.delivery ? a : b).delivery + platformCharge?.platformCharge).toFixed(2) }</Text>
-                    </View> }
+                        }, 0) + cartItems?.reduce((a, b) => a.delivery > b.delivery ? a : b).delivery + platformCharge?.platformCharge).toFixed(2)}</Text>
+                    </View>}
                 </View>
 
             </ScrollView>
 
-            {/* Bottom View */ }
-            {cartContext.defaultAddress && <View style={ styles.addressContainer }>
-                <Pressable style={ styles.addrHeader } onPress={ navigateToAddress }>
+            {/* Bottom View */}
+            {cartContext.defaultAddress && <View style={styles.addressContainer}>
+                <Pressable style={styles.addrHeader} onPress={navigateToAddress}>
                     <View >
-                        <Foundation name={ 'target-two' } color='#FF0000' size={ 20 } marginTop={ 5 } />
+                        <Foundation name={'target-two'} color='#FF0000' size={20} marginTop={5} />
                     </View>
-                    <View style={ { flex: 0.8, marginLeft: 10 } }>
-                        { cartContext.defaultAddress?.area?.location ? <CommonTexts label={ cartContext.defaultAddress?.area?.location } fontSize={ 16 } /> : <CommonTexts label={ 'Please Add Address !!!' } fontSize={ 14 } color={ '#FF5757' } /> }
+                    <View style={{ flex: 0.8, marginLeft: 10 }}>
+                        {cartContext.defaultAddress?.area?.location ? <CommonTexts label={cartContext.defaultAddress?.area?.location} fontSize={16} /> : <CommonTexts label={'Please Add Address !!!'} fontSize={14} color={'#FF5757'} />}
                         <Text
-                            style={ styles.address }
-                        >{ cartContext.defaultAddress?.area?.address && cartContext.defaultAddress?.area?.address }</Text>
+                            style={styles.address}
+                        >{cartContext.defaultAddress?.area?.address && cartContext.defaultAddress?.area?.address}</Text>
                     </View>
 
-                    <TouchableOpacity style={ { position: 'absolute', right: 20, top: 10 } } onPress={ navigateToAddress }>
-                        <MaterialCommunityIcons name={ 'lead-pencil' } color={ active === 'green' ? '#8ED053' : active === 'fashion' ? '#FF7190' : '#5871D3' } size={ 18 } marginTop={ 5 } />
+                    <TouchableOpacity style={{ position: 'absolute', right: 20, top: 10 }} onPress={navigateToAddress}>
+                        <MaterialCommunityIcons name={'lead-pencil'} color={active === 'green' ? '#8ED053' : active === 'fashion' ? '#FF7190' : '#5871D3'} size={18} marginTop={5} />
                     </TouchableOpacity>
                 </Pressable>
-                { (!showList && cartItems?.length > 0) && <View style={ { flexDirection: 'row', paddingHorizontal: 40, paddingVertical: 5 } }>
+                {(!showList && cartItems?.length > 0) && <View style={{ flexDirection: 'row', paddingHorizontal: 40, paddingVertical: 5 }}>
                     <Text
-                        style={ styles.textMedium }
-                    >{ 'Grand Total  ' }</Text>
+                        style={styles.textMedium}
+                    >{'Grand Total  '}</Text>
                     <Text
-                        style={ styles.boldText }
-                    >₹ { parseFloat(cartItems?.reduce(function (previousVal, currentVal) {
+                        style={styles.boldText}
+                    >₹ {parseFloat(cartItems?.reduce(function (previousVal, currentVal) {
                         return previousVal + currentVal?.price;
-                    }, 0) + cartItems?.reduce((a, b) => a.delivery > b.delivery ? a : b).delivery + platformCharge?.platformCharge).toFixed(2) }</Text>
-                </View> }
+                    }, 0) + cartItems?.reduce((a, b) => a.delivery > b.delivery ? a : b).delivery + platformCharge?.platformCharge).toFixed(2)}</Text>
+                </View>}
 
-                { (showList && cartItems?.length > 0) && <>
-                    <View style={ styles.totalBill }>
+                {(showList && cartItems?.length > 0) && <>
+                    <View style={styles.totalBill}>
                         <Text
-                            style={ styles.boldText }
+                            style={styles.boldText}
                         >Total Bill</Text>
                     </View>
-                    <View style={ styles.charges }>
-                        <View style={ { flexDirection: 'row', alignItems: 'center' } }>
+                    <View style={styles.charges}>
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                             <Text
-                                style={ styles.textMedium }
-                            >{ "Sub Total" }</Text>
+                                style={styles.textMedium}
+                            >{"Sub Total"}</Text>
                         </View>
                         <Text
-                            style={ styles.textMedium }
-                        >₹ { parseFloat(cartItems?.reduce(function (previousVal, currentVal) {
+                            style={styles.textMedium}
+                        >₹ {parseFloat(cartItems?.reduce(function (previousVal, currentVal) {
                             return previousVal + currentVal?.price;
-                        }, 0)).toFixed(2) }</Text>
+                        }, 0)).toFixed(2)}</Text>
 
                     </View>
-                    <View style={ styles.charges }>
-                        <View style={ { flexDirection: 'row', alignItems: 'center' } }>
+                    <View style={styles.charges}>
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                             <Text
-                                style={ styles.textMedium }
-                            >{ "Delivery Charge" }</Text>
+                                style={styles.textMedium}
+                            >{"Delivery Charge"}</Text>
                         </View>
                         <Text
-                            style={ styles.textMedium }
-                        >₹ { parseFloat(cartItems?.reduce((a, b) => a.delivery > b.delivery ? a : b).delivery).toFixed(2) }</Text>
+                            style={styles.textMedium}
+                        >₹ {parseFloat(cartItems?.reduce((a, b) => a.delivery > b.delivery ? a : b).delivery).toFixed(2)}</Text>
 
                     </View>
-                    <View style={ styles.charges }>
-                        <View style={ { flexDirection: 'row', alignItems: 'center' } }>
+                    <View style={styles.charges}>
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                             <Text
-                                style={ styles.textMedium }
-                            >{ "Platform Charge" }</Text>
+                                style={styles.textMedium}
+                            >{"Platform Charge"}</Text>
                         </View>
                         <Text
-                            style={ styles.textMedium }
-                        >₹ { platformCharge?.platformCharge }</Text>
+                            style={styles.textMedium}
+                        >₹ {platformCharge?.platformCharge}</Text>
 
                     </View>
-                    <View style={ styles.grandTotal }>
+                    <View style={styles.grandTotal}>
                         <Text
-                            style={ styles.textMedium }
-                        >{ 'Grand Total  ' }</Text>
+                            style={styles.textMedium}
+                        >{'Grand Total  '}</Text>
                         <Text
-                            style={ styles.boldText }
-                        >₹ { parseFloat(cartItems?.reduce(function (previousVal, currentVal) {
+                            style={styles.boldText}
+                        >₹ {parseFloat(cartItems?.reduce(function (previousVal, currentVal) {
                             return previousVal + currentVal?.price;
-                        }, 0) + cartItems?.reduce((a, b) => a.delivery > b.delivery ? a : b).delivery + platformCharge?.platformCharge).toFixed(2) }</Text>
+                        }, 0) + cartItems?.reduce((a, b) => a.delivery > b.delivery ? a : b).delivery + platformCharge?.platformCharge).toFixed(2)}</Text>
                     </View>
-                </> }
+                </>}
 
                 <View
-                    style={ {
+                    style={{
                         backgroundColor: active === 'green' ? '#8ED053' : active === 'fashion' ? '#FF7190' : '#58D36E',
                         height: 60,
                         flexDirection: 'row',
@@ -1066,27 +1092,27 @@ const Checkout = ({ navigation }) => {
                         position: 'absolute',
                         width: '100%',
                         bottom: 0
-                    } }
+                    }}
                 >
                     <TouchableOpacity
-                        onPress={ clickBillDetails }
-                        style={ styles.viewDetails }
+                        onPress={clickBillDetails}
+                        style={styles.viewDetails}
                     >
-                        <CommonTexts label={ 'View Detailed Bill' } color='#fff' fontSize={ 12 } />
-                        <Ionicons name={ showList ? 'chevron-down' : 'chevron-up' } size={ 20 } color='#fff' marginLeft={ 2 } />
+                        <CommonTexts label={'View Detailed Bill'} color='#fff' fontSize={12} />
+                        <Ionicons name={showList ? 'chevron-down' : 'chevron-up'} size={20} color='#fff' marginLeft={2} />
                     </TouchableOpacity>
                     <TouchableOpacity
-                        disabled={ isLoading }
-                        style={ { alignItems: 'flex-end', flex: 0.5 } }
-                        onPress={ isLoading ? null : placeOrder }
+                        disabled={isLoading}
+                        style={{ alignItems: 'flex-end', flex: 0.5 }}
+                        onPress={isLoading ? null : placeOrder}
                     >
-                        <CommonTexts label={ isLoading ? "Loading..." : 'Place Order' } color='#fff' fontSize={ 17 } />
+                        <CommonTexts label={isLoading ? "Loading..." : 'Place Order'} color='#fff' fontSize={17} />
                     </TouchableOpacity>
                 </View>
 
             </View>}
             {!cartContext?.defaultAddress && <View
-                style={ {
+                style={{
                     backgroundColor: active === 'green' ? '#8ED053' : active === 'fashion' ? '#FF7190' : '#58D36E',
                     height: 60,
                     flexDirection: 'row',
@@ -1095,23 +1121,23 @@ const Checkout = ({ navigation }) => {
                     position: 'absolute',
                     width: '100%',
                     bottom: 0
-                } }
+                }}
             >
-                
+
                 <TouchableOpacity
-                    disabled={ isLoading }
-                    style={ { alignItems: 'center', flex: 1, flexDirection:'row', justifyContent:'center' } }
-                    onPress={ chooseAddress }
+                    disabled={isLoading}
+                    style={{ alignItems: 'center', flex: 1, flexDirection: 'row', justifyContent: 'center' }}
+                    onPress={chooseAddress}
                 >
-                    <Ionicons name={ 'location' } size={ 20 } color='#fff' style={{ marginHorizontal: 10 }} />
-                    <CommonTexts label={ isLoading ? "Loading..." : 'Choose Delivery Location' } color='#fff' fontSize={ 17 } fullLabel={true} />
+                    <Ionicons name={'location'} size={20} color='#fff' style={{ marginHorizontal: 10 }} />
+                    <CommonTexts label={isLoading ? "Loading..." : 'Choose Delivery Location'} color='#fff' fontSize={17} fullLabel={true} />
                 </TouchableOpacity>
             </View>}
             <Modal visible={isLoading} style={{ backgroundColor: 'transparent' }} transparent={true} >
-                <View 
-                    style={ [styles.loaderStyle, { width, height }] }
+                <View
+                    style={[styles.loaderStyle, { width, height }]}
                 >
-                    <Text style={{color:'#fff'}}>Please wait we are processing your order.</Text>
+                    <Text style={{ color: '#fff' }}>Please wait we are processing your order.</Text>
                     <ActivityIndicator color={"red"} size={30} />
                 </View>
             </Modal>

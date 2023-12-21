@@ -276,7 +276,7 @@ const Route = () => {
             getProfile()
             getCartDetails()
             getAddressList()
-            reactotron.log('API CALLED IN ADDDRESS')
+ 
         }
         else {
             setInitialScreen('Login');

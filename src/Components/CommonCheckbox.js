@@ -6,7 +6,7 @@ const CommonCheckbox = ({ }) => {
     
     const [toggleCheckBox, setToggleCheckBox] = useState(false)
 
-    console.log({toggleCheckBox})
+
     return (
         <View style={styles.container}>
             <TouchableOpacity onPress={()=>setToggleCheckBox(!toggleCheckBox)}>

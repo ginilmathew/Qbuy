@@ -68,7 +68,6 @@ const SingleItemScreen = ({ route, navigation }) => {
     let active = contextPanda.active
 
 
-    console.log({selectedVariant})
 
     const courasol = useRef(null);
 
@@ -267,14 +266,14 @@ const SingleItemScreen = ({ route, navigation }) => {
         }
 
         let price = item?.variant ? selectedVariant?.price : item?.price;
-        reactotron.log({price})
+    
         if (parseInt(price) < 1) {
             Toast.show({
                 type: 'info',
                 text1: 'Price Should be more than 1'
             });
         } else {
-            reactotron.log({attributes, selectedVariant})
+          
             let filter = attributes?.filter(attr => attr?.variant === true || attr?.variant === null)
 
             let attri = filter?.map(attr => attr?.selected)
@@ -292,7 +291,6 @@ const SingleItemScreen = ({ route, navigation }) => {
                 // }
             })
 
-            reactotron.log({length: item, selectedVari})
             if(item?.variants?.length > 0 && selectedVari){
                 cartContext.addToCart(item, selectedVari, attributes);
             }

@@ -66,7 +66,7 @@ const CartProvider = (props) => {
                 }
             }
             else {
-                reactotron.log("in", attributes)
+          
                 productDetails = {
                     product_id: item?._id,
                     name: item?.name,

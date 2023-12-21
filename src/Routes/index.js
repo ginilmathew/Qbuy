@@ -58,7 +58,7 @@ const Routes = () => {
 
 
 
-            reactotron.log({ versions })
+   
         }
 
         checkVersion()
@@ -69,7 +69,7 @@ const Routes = () => {
 
     const checkUserAddress = async () => {
         let location = await AsyncStorage.getItem("location")
-        reactotron.log({ location })
+      
         //return false;
         if (location) {
             let locationData = JSON.parse(location)
@@ -86,7 +86,7 @@ const Routes = () => {
         }
         else {
             let location = await AsyncStorage.getItem("location")
-            reactotron.log({ location })
+       
             if (location) {
                 setInitialScreen('home');
             }

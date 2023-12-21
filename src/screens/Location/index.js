@@ -26,7 +26,7 @@ const Location = ({navigation}) => {
         setLoading(true)
         if (Platform.OS === 'ios') {
             const status = await Geolocation.requestAuthorization('whenInUse');
-            reactotron.log({status})
+     
             if (status === "granted") {
                 getPosition()
             } else {

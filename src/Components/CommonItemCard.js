@@ -32,7 +32,7 @@ import reactotron from 'reactotron-react-native';
 
 const CommonItemCard = memo(({ height, width, item, marginHorizontal, wishlistIcon, mr, ml, mb, getWishlist, refetch }) => {
 
-    reactotron.log({ item }, 'in PRODUCT')
+  
 
     const [data, setData] = useState([])
     const [variant, setVariant] = useState(false)

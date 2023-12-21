@@ -23,6 +23,8 @@ const ProductSearchScreen = ({ route }) => {
     const userContext = useContext(AuthContext)
     let active = contextPanda.active
 
+    const [isloading,setisLoading]=useState(false)
+
 
 
 
@@ -58,11 +60,13 @@ const ProductSearchScreen = ({ route }) => {
             search: value,
             type: active
         }
-        loadingg.setLoading(true)
+     
 
-        if (text) {
+
+
+        if (value !== "") {
+            loadingg.setLoading(true)
             await customAxios.post(`customer/product-search`, datas)
-
                 .then(async response => {
                     setFilterResult(response?.data?.data)
                     loadingg.setLoading(false)
@@ -73,10 +77,13 @@ const ProductSearchScreen = ({ route }) => {
                     //     text1: error
                     // });
                     loadingg.setLoading(false)
-                })
+                }).finally(
+          
+                    loadingg.setLoading(false)
+                )
         }
 
-    }, [filterResult,text])
+    }, [filterResult, text])
 
 
 
@@ -90,12 +97,12 @@ const ProductSearchScreen = ({ route }) => {
     return (
         <>
             <HeaderWithTitle title={'Search Items...'} />
-            <ScrollView 
-            keyboardShouldPersistTaps="always"
-            style={{
-                flex: 1,
-                backgroundColor: active === 'green' ? '#F4FFE9' : active === 'fashion' ? '#FFF5F7' : '#fff',
-            }}
+            <ScrollView
+                keyboardShouldPersistTaps="always"
+                style={{
+                    flex: 1,
+                    backgroundColor: active === 'green' ? '#F4FFE9' : active === 'fashion' ? '#FFF5F7' : '#fff',
+                }}
             >
                 <CustomSearch
                     values={text}

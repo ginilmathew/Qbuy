@@ -47,7 +47,7 @@ const LocationScreen = ({ route, navigation }) => {
 
     const onConfirm = useCallback(async () => {
 
-        reactotron.log({mode})
+        
 
         if(mode === "checkout" || mode === "MyAcc"){
             let locationData = {

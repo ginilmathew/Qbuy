@@ -129,8 +129,7 @@ const QBuyGreen = ({ navigation }) => {
     });
 
 
-    reactotron.log({Homeapi})
-
+   
 
 
 

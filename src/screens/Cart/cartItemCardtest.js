@@ -114,12 +114,14 @@ const CartItemCardtest = ({ item, index, refreshCart }) => {
     }
 
     const removeItem = async () => {
+
+
         let minimumQty = data?.minimum_qty ? data?.minimum_qty : 1
         //return false
         let allProducts = cartContext?.cart?.product_details;
 
         let cartItems;
-        if (data?.quantity > 1) {
+        if (data?.quantity > 1 * 1) {
             let quantity = data?.quantity
 
             if (quantity - 1 >= minimumQty) {

@@ -34,7 +34,7 @@ const TabNav = () => {
     const cartContext = useContext(CartContext)
     const pandaContext = useContext(PandaContext)
 
-    reactotron.log({cart: cartContext?.cart})
+    
 
 
     const navigation = useNavigation()

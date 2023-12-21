@@ -5,8 +5,6 @@ import reactotron from 'reactotron-react-native';
 
 const VideoPlayer = ({ videoId, selected, index, item }) => {
 
-    reactotron.log({ selected })
-    reactotron.log({ index })
 
     const { width } = useWindowDimensions()
 
@@ -28,7 +26,7 @@ const VideoPlayer = ({ videoId, selected, index, item }) => {
 
 
         if (state === "ended") {
-            reactotron.log('Endeen')
+      
             videoRef?.current?.seekTo(0)
             setTimeout(() => {
                 setPlaying(false);

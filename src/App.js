@@ -136,7 +136,7 @@ const App = (props) => {
         if (userDetails) {
             let user = JSON.parse(userDetails)
 
-            reactotron.log({ user })
+            // reactotron.log({ user })
             // Get the token
 
 
@@ -146,12 +146,12 @@ const App = (props) => {
             }
             customAxios.post('auth/update-devicetoken', data)
                 .then(response => {
-                    reactotron.log({ response })
+                    // reactotron.log({ response })
                 })
                 .catch(err => {
-                    reactotron.log({ err })
+                    // reactotron.log({ err })
                 })
-            reactotron.log({ token })
+            // reactotron.log({ token })
 
         }
 
@@ -178,7 +178,7 @@ const App = (props) => {
                 authStatus === messaging.AuthorizationStatus.PROVISIONAL;
     
             if (enabled) {
-                console.log('Authorization status:', authStatus);
+                // console.log('Authorization status:', authStatus);
             }
             const status = await Geolocation.requestAuthorization('whenInUse');
         }
