@@ -82,14 +82,17 @@ android {
         pandatest {
             resValue "string", "app_name", "QBuyPanda Dev"
             applicationId "com.diginest.qbuypanda.dev"
+            versionName "1.03"
         }
         greentest {
             resValue "string", "app_name", "QBuyGreen Dev"
             applicationId "com.diginest.qbuygreen.dev"
+            versionName "1.03"
         }
         fashiontest {
             resValue "string", "app_name", "Shopqbuy Dev"
             applicationId "com.diginest.qbuyfashion.dev"
+            versionName "1.03"
         }
         panda {
             resValue "string", "app_name", "QBuyPanda"

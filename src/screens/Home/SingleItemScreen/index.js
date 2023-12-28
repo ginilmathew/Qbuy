@@ -276,6 +276,8 @@ const SingleItemScreen = ({ route, navigation }) => {
           
             let filter = attributes?.filter(attr => attr?.variant === true || attr?.variant === null)
 
+            reactotron.log({filter})
+
             let attri = filter?.map(attr => attr?.selected)
             let selectedVari;
             item?.variants?.map(vari => {

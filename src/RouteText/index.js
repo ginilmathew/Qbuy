@@ -69,16 +69,21 @@ const RouteTest = () => {
 
 
 
-
     useEffect(() => {
 
         async function checkVersion() {
-            let versions = await axios.get(`${BASE_URL}common/version`)
+            let data = {
+                os: Platform.OS,
+                type: mode
+            }
+            let versions = await axios.post(`${BASE_URL}common/versionnew`, data)
 
             if (versions?.data?.message === "Success") {
                 const versionInfo = versions?.data?.data
 
                 const DeviceVersion = await DeviceInfo.getVersion();
+
+                reactotron.log(DeviceVersion, versionInfo?.current_version)
 
                 if (versionInfo?.update === true) {
                     if (parseFloat(DeviceVersion) < parseFloat(versionInfo?.current_version)) {
