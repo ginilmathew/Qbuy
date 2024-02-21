@@ -10,6 +10,13 @@ import Chat from '../../screens/Home/Chat';
 import DrawerContent from '../../Components/Common/DrawerContent';
 import TabNav from './TabNav';
 import ProductSearchScreen from '../../screens/Home/ProductSearchScreen';
+import StoreScreen from '../../screens/_Home/StoreScreen';
+import SingleProductScreen from '../../screens/_Home/SingleProductScreen';
+import RestaurantScreen from '../../screens/_Home/RestaurantScreen';
+import CategoryScreen from '../../screens/_Home/CategoryScreen';
+import CheckoutScreen from '../../screens/_Home/CheckoutScreen';
+import HomeNav from './HomeNav';
+//import Coupons from '../../screens/_Home/Coupons';
 
 const Drawer = createDrawerNavigator();
 
@@ -22,7 +29,7 @@ const Green = () => {
 
         <>
             <Drawer.Navigator
-                initialRouteName='TabNavigator'
+                initialRouteName='homepage'
                 // swipeEnabled={true}
                 swipeEdgeWidth={true}
                 screenOptions={{
@@ -32,18 +39,24 @@ const Green = () => {
                 
                 drawerContent={(props) => <DrawerContent {...props} />}
             >
-                <Drawer.Screen name="TabNavigator" component={TabNav} />
+                <Drawer.Screen name="homepage" component={HomeNav} />
                 <Drawer.Screen name="ProductSearchScreen" component={ProductSearchScreen} />
+                {/* <Drawer.Screen name="restaurant" component={RestaurantScreen} /> */}
+                {/* <Drawer.Screen name="Category" component={CategoryScreen} />
+                <Drawer.Screen name="checkout" component={CheckoutScreen} /> */}
 
                 <Drawer.Screen name="Chat" component={Chat} />
                 
                 <Drawer.Screen name="Payment" component={Payment}/>
 
                 <Drawer.Screen name="AddDetails" component={AddDetails}/>
-                <Drawer.Screen name="Coupons" component={Coupons}/>
+                {/* <Drawer.Screen name="Coupons" component={Coupons}/> */}
 
 
                 <Drawer.Screen name="Notifications" component={Notifications}/>
+                {/* <Drawer.Screen name="store" component={StoreScreen} /> */}
+                {/* <Drawer.Screen name="SingleItemScreen" component={SingleProductScreen} /> */}
+
 
 
 

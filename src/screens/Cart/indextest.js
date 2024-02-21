@@ -3,7 +3,6 @@ import React, { useCallback, useContext, useEffect, useState } from 'react'
 import CustomButton from '../../Components/CustomButton';
 import HeaderWithTitle from '../../Components/HeaderWithTitle';
 import CartItemCard from './CartItemCard';
-import CommonItemsList from '../../Components/CommonItemsList';
 import PandaContext from '../../contexts/Panda';
 import Lottie from 'lottie-react-native';
 import CommonTexts from '../../Components/CommonTexts';
@@ -338,7 +337,7 @@ const CartTest = ({ navigation }) => {
                 }
             })
             if (!stockcheck) {
-                navigation.navigate('Checkout')
+                navigation.navigate('checkout')
             } else {
                 getCartItems()
             }

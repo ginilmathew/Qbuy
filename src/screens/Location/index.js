@@ -33,7 +33,8 @@ const Location = ({navigation}) => {
                 setLoading(false)
                 Toast.show({
                     type: 'error',
-                    text1: 'Location permission denied by user.'
+                    text1: 'Location permission denied by user.',
+                    text2: "Please Enable location permission and try again"
                 });
 
             }
@@ -149,7 +150,7 @@ const Location = ({navigation}) => {
 
 
     const manualLocation = () => {
-        navigation.navigate("AddNewLocation", { mode: 'home' })
+        navigation.navigate("AddNewLocation")
     }
 
 

@@ -5,8 +5,8 @@ import React, { memo, useCallback, useContext, useRef, useState } from 'react'
 import FastImage from 'react-native-fast-image'
 import { useNavigation } from '@react-navigation/native'
 import { IMG_URL } from '../../../config/constants'
-import PandaContext from '../../../contexts/Panda'
 import reactotron from 'reactotron-react-native'
+import PandaContext from '../../../contexts/Panda'
 
 
 const PandaShopCard = memo(({ item, mode, onCategoryPress, storeId, mymode, name }) => {
@@ -18,7 +18,7 @@ const PandaShopCard = memo(({ item, mode, onCategoryPress, storeId, mymode, name
     const { width, fontScale, height } = useWindowDimensions()
 
     let imageWidth = width / 6
-    let restauranWidth = width / 4.5
+    let restauranWidth = width / 4
 
     const styles = makeStyles(fontScale, height);
     const navigation = useNavigation()
@@ -32,16 +32,17 @@ const PandaShopCard = memo(({ item, mode, onCategoryPress, storeId, mymode, name
 
     }, [item, active, item?._id])
     return (
-        <View style={ { flexDirection: 'column', justifyContent: 'center', alignItems: 'center', margin: 5, padding: 5 } }>
+        <View style={ { flexDirection: 'column', justifyContent: 'center', alignItems: 'center', margin: 5, padding: 0 } }>
             <TouchableOpacity
                 onPress={ onClick }
                 key={ item?._id }
-                style={ { alignItems: 'center', width: name === "restaurants" ? width / 2.3 : imageWidth, height: name === "restaurants" ? 120 : imageWidth } }
+                style={ { alignItems: 'center', width: name === "restaurants" ? width / 2.2 : imageWidth, height: name === "restaurants" ? 140 : imageWidth } }
             >
                 <FastImage
                     style={ { width: '100%', height: '100%', borderRadius: Platform.OS === 'android' ? name === "restaurants" ? 8 : imageWidth / 2 : 0 } }
                     source={ { uri: `${IMG_URL}${active === "panda" ? (item?.store_logo || item?.image) : item?.image}` } }
                     borderRadius={ name === "restaurants" ? 8 : imageWidth / 2 }
+                    resizeMode='cover'
                 />
 
             </TouchableOpacity>

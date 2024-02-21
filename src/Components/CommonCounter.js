@@ -3,13 +3,9 @@ import React, { memo, useContext, useState } from 'react'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import PandaContext from '../contexts/Panda'
 
-const CommonCounter = memo(({count, addItem, removeItem, disabled}) => {
+const CommonCounter = memo(({count, addItem, removeItem, disabled, width, active}) => {
 
-    const contextPanda = useContext(PandaContext)
-    let active = contextPanda.active
-
-
-    const {width} = useWindowDimensions()
+    
 
     return (
         <View 

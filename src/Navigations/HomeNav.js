@@ -1,7 +1,6 @@
 import { SafeAreaView, StyleSheet } from 'react-native'
 import React from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import Home from '../screens/Home';
 import Category from '../screens/Home/Category';
 import SingleHotel from '../screens/Home/SingleHotel';
 import PickupAndDropoff from '../screens/Home/PickupAndDropoff';
@@ -17,12 +16,14 @@ import Wishlist from '../screens/Wishlist';
 import FashionCategory from '../screens/FashionCategory';
 import SwitchHome from './SwitchHome';
 import CategoryScreen from '../screens/Home/CategoryScreen';
-import StoreScreen from '../screens/Home/StoreScreen';
+// import StoreScreen from '../screens/Home/StoreScreen';
 import ViewAllStore from '../screens/Home/QBuyGreen/ViewAllStore';
 import QbuyPanda from '../screens/Home';
 import QBuyGreen from '../screens/Home/QBuyGreen';
 import QBuyFashion from '../screens/Home/QBuyFashion';
 import QbuyfashionHome from '../screens/Home/QBuyFashion/QbuyfashionHome';
+import StoreScreen from '../screens/_Home/StoreScreen';
+// import Coupons from '../screens/_Home/Coupons';
 
 
 
@@ -43,6 +44,7 @@ const HomeNav = ({mode, route}) => {
             <Stack.Screen name="Category" component={Category}/>
             <Stack.Screen name="CategoryScreen" component={CategoryScreen}/>
             <Stack.Screen name="StoreScreen" component={StoreScreen}/>
+            {/* <Stack.Screen name="Coupons" component={Coupons}/> */}
 
 
             <Stack.Screen name="PickupAndDropoff" component={PickupAndDropoff}/>

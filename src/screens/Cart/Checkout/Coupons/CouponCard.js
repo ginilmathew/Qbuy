@@ -6,20 +6,11 @@ import PandaContext from '../../../../contexts/Panda'
 import { useNavigation } from '@react-navigation/native'
 
 
-const CouponCard = memo(() => {
+const CouponCard = memo(({item, active, width, onApply}) => {
 
-    const{width} = useWindowDimensions()
-
-    const contextPanda = useContext(PandaContext)
-    let active = contextPanda.active
-
-    const navigation = useNavigation()
-
-
-    const onApply = useCallback(() => {
-        navigation.navigate('Checkout')
-    })
-
+    const applyCoupon = useCallback(() => {
+        onApply(item)
+    },[item?._id])
 
     return (
         <View
@@ -32,18 +23,18 @@ const CouponCard = memo(() => {
             </View>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                 <View >
-                    <CommonTexts label={'50% off for new users'} fontSize={18} />
-                    <Text style={styles.mediumText}>{'QBUYNEW50'}</Text>
+                    <CommonTexts label={item?.coupon_title} fontSize={18} />
+                    <Text style={styles.mediumText}>{item?.coupon_code}</Text>
                 </View>
-                <TouchableOpacity onPress={onApply}>
+                <TouchableOpacity onPress={applyCoupon}>
                     <CommonTexts label={'APPLY'} color= {active === 'green' ? '#8ED053' : active === 'fashion' ? '#FF7190' : '#58D36E'} fontSize={13} />
                 </TouchableOpacity>
             </View>
             <View style={{ paddingVertical: 5, marginVertical: 10, borderTopWidth: 0.5, borderBottomWidth: 0.5, borderColor: '#F3F3F3', }}>
-                <Text style={{ fontFamily: 'Poppins-LightItalic', color: '#23233C', fontSize: 13 }}>Minimum Cart Value 50</Text>
-                <Text style={{ fontFamily: 'Poppins-LightItalic', color: '#23233C', fontSize: 13 }}>Valid till 20th March 2023</Text>
+                <Text style={{ fontFamily: 'Poppins-LightItalic', color: '#23233C', fontSize: 13 }}>Minimum Cart Value {item?.minimum_cart_value}</Text>
+                <Text style={{ fontFamily: 'Poppins-LightItalic', color: '#23233C', fontSize: 13 }}>Valid till {item?.expiry_date}</Text>
             </View>
-            <Text style={{ fontFamily: 'Poppins-LightItalic', color: '#23233C', fontSize: 13 }}>Get 50% off for new users for all store applicable in Qbuy panda.</Text>
+            <Text style={{ fontFamily: 'Poppins-LightItalic', color: '#23233C', fontSize: 13 }}>{item?.coupon_description}</Text>
 
         </View>
     )

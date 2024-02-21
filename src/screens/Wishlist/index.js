@@ -2,7 +2,6 @@ import { StyleSheet, Text, View, ScrollView, useWindowDimensions, TouchableOpaci
 import React, { useContext, useEffect, useState } from 'react'
 import FastImage from 'react-native-fast-image'
 import HeaderWithTitle from '../../Components/HeaderWithTitle'
-import CommonItemMenuList from '../../Components/CommonItemMenuList'
 import CommonItemCard from '../../Components/CommonItemCard'
 import LoaderContext from '../../contexts/Loader'
 import customAxios from '../../CustomeAxios'

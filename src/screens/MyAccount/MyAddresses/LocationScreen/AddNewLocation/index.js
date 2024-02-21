@@ -28,6 +28,7 @@ const AddNewLocation = ({ route, navigation }) => {
 
     const { width, height } = useWindowDimensions()
 
+    reactotron.log({params: route?.params})
 
 
     useEffect(() => {

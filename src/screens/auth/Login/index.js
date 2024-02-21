@@ -39,7 +39,10 @@ const Login = ({ navigation }) => {
 
 	useEffect(() => {
 		//reactotron.log("in")
-		getPermissions()
+		if(Platform.OS === 'android'){
+			getPermissions()
+		}
+		
 		//SplashScreen.hide();
 	}, []);
 
@@ -128,7 +131,7 @@ const Login = ({ navigation }) => {
             userContext.setLocation([latitude, longitude]);
             userContext.setCurrentAddress(Value?.location)
 			loadingg.setLoading(false);
-			navigation.navigate('green')
+			navigation.navigate('home')
             //navigation.navigate('LocationScreen', { mode: 'home' });
 
     }
@@ -170,30 +173,6 @@ const Login = ({ navigation }) => {
 				showLocationDialog: true,
 			},
 		);
-		// let location = await AsyncStorage.getItem("location");
-
-		// if(location){
-		// 	navigation.navigate('green')
-		// }
-		// else{
-		// 	navigation.navigate('AddNewLocation')
-		// }
-
-		// userContext.setLocation([position?.latitude, position?.longitude]);
-		// userContext.setCurrentAddress(address)
-		// setInitialScreen('green');
-		// if (userContext?.location) {
-		// 	navigation.dispatch(
-		// 		CommonActions.reset({
-		// 			index: 0,
-		// 			routes: [
-		// 				{ name: 'green' },
-		// 			],
-		// 		})
-		// 	);
-		// } else {
-		// 	getCurrentLocation();
-		// }
 
 
 	}, [navigation]);

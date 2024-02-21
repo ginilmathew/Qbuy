@@ -227,7 +227,7 @@ const SingleItemScreen = ({ route, navigation }) => {
     }, [item, navigation])
 
     const proceedCheckout = useCallback(() => {
-        navigation.navigate('Checkout')
+        navigation.navigate('checkout')
         setShowModal(false)
     }, [navigation])
 

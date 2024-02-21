@@ -16,11 +16,9 @@ import CommonTexts from '../../../Components/CommonTexts';
 import HotelCard from './HotelCard';
 import HeaderWithTitle from '../../../Components/HeaderWithTitle';
 import FastImage from 'react-native-fast-image';
-import CommonItemsList from '../../../Components/CommonItemsList';
 import PandaContext from '../../../contexts/Panda';
 import CommonItemSelect from '../../../Components/CommonItemSelect';
 import CommonItemCard from '../../../Components/CommonItemCard';
-import CommonItemMenuList from '../../../Components/CommonItemMenuList';
 import StoreAddressCard from './StoreAddressCard';
 import HotelItemList from './HotelItemList';
 import TypeCard from '../Grocery/TypeCard';
@@ -37,11 +35,17 @@ import { useFocusEffect } from '@react-navigation/native';
 import PandaShopCard from '../Grocery/PandaShopCard';
 import SubcategoryCard from './subcategoryCard';
 import { RefreshControl } from 'react-native-gesture-handler';
+import { getProducts } from '../../../helper/homeProductsHelper';
+import ProductCard from '../../../Components/Home/ProductCard';
 
 const Category = ({ route }) => {
     const { name, mode, item } = route?.params;
 
-    const { width } = useWindowDimensions();
+    
+
+    const { width, height } = useWindowDimensions();
+
+    const styles1 = makeStyles(height);
 
     const contextPanda = useContext(PandaContext);
     const userContext = useContext(AuthContext);
@@ -91,7 +95,8 @@ const Category = ({ route }) => {
                 let categories = response?.data?.data?.find(
                     home => home?.type === 'categories',
                 );
-                Current(categories?.data);
+                let products = await getProducts(categories?.data)
+                Current(products);
                 let stores = response?.data?.data?.find(
                     home => home?.type === 'stores',
                 );
@@ -125,31 +130,31 @@ const Category = ({ route }) => {
             });
     };
 
-    useEffect(() => {
-        getCategories();
-    }, []);
+    // useEffect(() => {
+    //     getCategories();
+    // }, []);
 
-    const getCategories = async () => {
-        loadingContex.setLoading(true);
+    // const getCategories = async () => {
+    //     loadingContex.setLoading(true);
 
-        let datas = {
-            type: contextPanda?.active,
-        };
+    //     let datas = {
+    //         type: contextPanda?.active,
+    //     };
 
-        await customAxios
-            .post('customer/categories', datas)
-            .then(async response => {
-                setCategories(response?.data?.data);
-                loadingContex.setLoading(false);
-            })
-            .catch(async error => {
-                Toast.show({
-                    type: 'error',
-                    text1: error,
-                });
-                loadingContex.setLoading(false);
-            });
-    };
+    //     await customAxios
+    //         .post('customer/categories', datas)
+    //         .then(async response => {
+    //             setCategories(response?.data?.data);
+    //             loadingContex.setLoading(false);
+    //         })
+    //         .catch(async error => {
+    //             Toast.show({
+    //                 type: 'error',
+    //                 text1: error,
+    //             });
+    //             loadingContex.setLoading(false);
+    //         });
+    // };
 
     let lowercse = item.name.toLowerCase();
 
@@ -322,15 +327,32 @@ const Category = ({ route }) => {
                         />
                     ) }
                     <View style={ styles.itemContainer }>
-                        { availablePdts?.map(item => (
-                            <CommonItemCard
-                                item={ item }
-                                key={ item?._id }
-                                width={ width / 2.2 }
-                                height={ 250 }
-                                wishlistIcon={ fashion ? true : false }
+                        <FlatList 
+                            data={availablePdts}
+                            keyExtractor={(item) => item?._id}
+                            renderItem={({item}) => 
+                            <View style={{ marginRight: 5, marginVertical: 5 }}>
+                            <ProductCard
+                            key={`${item?._id}`}
+                            data={item}
+                            styles={styles1}
+                            width={width / 2.2}
+                            loggedIn={userContext?.userData ? true : false}
+                            height={height/4}
+                        />
+                        </View>}
+                        numColumns={2}
+                        />
+                        {/* { availablePdts?.map(item => (
+                            <ProductCard
+                                key={`${item?._id}`}
+                                data={item}
+                                styles={styles1}
+                                width={width / 2.5}
+                                loggedIn={userContext?.userData ? true : false}
+                                height={height/4}
                             />
-                        )) }
+                        )) } */}
                     </View>
                 </>
                 {/*
@@ -365,12 +387,22 @@ const Category = ({ route }) => {
                             style={ { flexDirection: 'row', paddingLeft: 7 } }
                         >
                             { recentView.map(item => (
-                                <CommonItemCard
-                                    key={ item?._id }
-                                    item={ item }
-                                    width={ width / 2.5 }
-                                    marginHorizontal={ 5 }
-                                />
+                                <View style={{ marginRight: 5 }}>
+                                    <ProductCard
+                                        key={`${item?._id}`}
+                                        data={item}
+                                        styles={styles1}
+                                        width={width / 2.2}
+                                        loggedIn={userContext?.userData ? true : false}
+                                        height={height/4}
+                                    />
+                                </View>
+                                // <CommonItemCard
+                                //     key={ item?._id }
+                                //     item={ item }
+                                //     width={ width / 2.5 }
+                                //     marginHorizontal={ 5 }
+                                // />
                             )) }
                         </ScrollView>
                     </View>
@@ -412,6 +444,98 @@ const Category = ({ route }) => {
 };
 
 export default Category;
+
+const makeStyles = fontScale => StyleSheet.create({
+
+
+    bottomCountText: {
+        fontFamily: 'Poppins-medium',
+        color: '#fff',
+        fontSize: 0.01 * fontScale,
+    },
+    bottomRateText: {
+        fontFamily: 'Poppins-ExtraBold',
+        color: '#fff',
+        fontSize: 0.015 * fontScale,
+    },
+    textSemi: {
+        fontFamily: 'Poppins-SemiBold',
+        color: '#fff',
+        fontSize: 0.014 * fontScale,
+        paddingBottom: 2
+    },
+    textSemiError: {
+        fontFamily: 'Poppins-SemiBold',
+        color: 'red',
+        fontSize: 10 / fontScale,
+        paddingBottom: 2
+    },
+    lightText: {
+        fontFamily: 'Poppins-SemiBold',
+        color: '#fff',
+        fontSize: 0.011 * fontScale,
+        marginBottom: 3
+    },
+    addContainer: {
+        position: 'absolute',
+        right: 5,
+        bottom: 10
+    },
+    tagText: {
+        fontFamily: 'Poppins-SemiBold',
+        color: '#fff',
+        fontSize: 12 / fontScale,
+        padding: 5
+    },
+    hearIcon: {
+        position: 'absolute',
+        top: 8,
+        right: 8,
+        zIndex: 1,
+        width: 24,
+        height: 24,
+        borderRadius: 12,
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        alignItems: 'center',
+        justifyContent: 'center'
+
+    },
+    RBsheetHeader: {
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        flexDirection: 'row',
+        marginTop: 10
+    },
+    totalCount: {
+        borderRightWidth: 3,
+        borderColor: '#fff',
+        flex: 0.4
+    },
+    outofstock: {
+        borderRightWidth: 3,
+        borderColor: '#fff',
+        flex: 0.4
+    },
+    viewCartBox: {
+        alignItems: 'flex-end',
+        flex: 0.5
+    },
+    discountViewer: {
+        position: 'absolute',
+        top: 5,
+        left: 5
+    },
+    priceTag: {
+        backgroundColor:"red",
+        alignItems:"center",
+        justifyContent:"center",
+        width:30,
+        borderTopLeftRadius:10,
+        borderBottomRightRadius:10,
+        height:20,
+        margin: 1,
+    }
+})
 
 const styles = StyleSheet.create({
     mainImage: {

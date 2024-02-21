@@ -1,5 +1,5 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React, { memo } from 'react'
+import React, { memo, useCallback } from 'react'
 import FastImage from 'react-native-fast-image'
 import { IMG_URL } from '../../config/constants'
 import LinearGradient from 'react-native-linear-gradient'
@@ -10,21 +10,33 @@ import Animated from 'react-native-reanimated'
 const AnimatedFastImage = Animated.createAnimatedComponent(FastImage)
 
 
-const ProductCard = ({data, loggedIn, addToCart, wishlistIcon, removeWishList, addWishList, viewProduct, width, styles, height}) => {
+const ProductCard = ({data, loggedIn, addToCart, viewProduct, width, styles, height, ...props}) => {
+
+    const openProduct = () => {
+        viewProduct(data)
+    }
+
+    const addCart = useCallback(() => {
+        addToCart(data)
+    },[data?._id])
+
     return (
         <TouchableOpacity
-            onPress={viewProduct}
+            onPress={openProduct}
+            style={{ marginRight: 2 }}
         >
             <AnimatedFastImage
                 source={{ uri: `${IMG_URL}${data?.product_image}` }}
-                sharedTransitionTag={`images${data?._id}`}
+                //sharedTransitionTag={`images${data?._id}`}
                 style={{ height: height ? height : 110, width: width, justifyContent: 'flex-end', borderRadius: 16 }}
                 progressiveRenderingEnabled={true}
+                //{...props}
             >
                 <LinearGradient colors={data?.available ? ['rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, 0.7)'] : ['rgba(0, 0, 0, 0.4)', 'rgba(0, 0, 0, 0.9)']} style={{ height: '100%', justifyContent: 'flex-end', padding: 10 }}>
-                    <Text style={styles.textSemi}>{data?.name}</Text>
-                    {data?.available && <Text style={!data?.available ? styles.textSemiError : styles.bottomRateText}>{`₹ ${data?.price}`}</Text>}
-                    <Text style={styles.lightText}>{data?.store?.name}</Text>
+                    <Text style={styles.textSemi}>{data?.attributesName ? `${data?.name}  (${data?.attributesName})` : data?.name}</Text>
+                    {data?.available && <Text style={styles.bottomRateText}>{`₹ ${data?.price}`}
+                    {parseInt(data?.discount_percentage) > 0 && <Text style={{ color:'#fff',textDecorationLine: 'line-through', textDecorationStyle: 'solid', fontSize: 10, textDecorationColor:'#000' }}>{` ₹ ${data?.regular_price}`}</Text>}</Text>}
+                    <Text style={styles.lightText}>{data?.store_name}</Text>
                 </LinearGradient>
                 {!data?.available && <View style={{ position: 'absolute', top: '32%', width: '100%' }}>
                     <View style={{ justifyContent: 'center', alignItems: 'center' }}>
@@ -34,21 +46,18 @@ const ProductCard = ({data, loggedIn, addToCart, wishlistIcon, removeWishList, a
                     </View>
 
                 </View>}
-                {data?.status === "inactive" && <View style={{ position: 'absolute', top: '32%', width: '100%' }}>
-                    <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                        <View style={{ padding: 5, borderWidth: 1, borderColor: '#fff', margin: 8, borderRadius: 8 }}>
-                            <Text style={{ color: 'red', textAlign: 'center', fontWeight: 'bold', alignSelf: 'center' }}>Product Not Available</Text>
-                        </View>
-                    </View>
 
-                </View>}
-
-                {(data?.available && data?.status === "active" && loggedIn) && <View style={styles.addContainer}>
+                {(data?.available &&  loggedIn) && <View style={styles.addContainer}>
                     <CommonAddButton
-                        onPress={addToCart}
+                        onPress={addCart}
                     />
                 </View>}
-
+                {parseInt(data?.discount_percentage) > 0 && <View style={styles.discountViewer}>
+                    <View style={styles?.priceTag}>
+                    <Text style={{ color: '#fff', textAlign: 'center', fontWeight: 'bold', alignSelf: 'center', fontSize: 8 }}>{`${parseInt(data?.discount_percentage)}%`}</Text>
+                    </View>
+                    
+                </View>}
 
                 {/* {loggedIn &&
                     <TouchableOpacity

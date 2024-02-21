@@ -22,7 +22,7 @@ const HeaderWithTitle = ({ title, noBack, onPressBack, mode,backarrow }) => {
 
     const backAction = useCallback(() => {
         if (mode === 'checkout') {
-            navigation.navigate('Checkout')
+            navigation.navigate('checkout')
         } 
         else if(mode === "home"){
             navigation.navigate('green')

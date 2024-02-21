@@ -34,7 +34,7 @@ const Menu = () => {
                 <Drawer.Screen name="Payment" component={Payment}/>
 
                 <Drawer.Screen name="AddDetails" component={AddDetails}/>
-                <Drawer.Screen name="Coupons" component={Coupons}/>
+                {/* <Drawer.Screen name="Coupons" component={Coupons}/> */}
 
 
                 <Drawer.Screen name="Notifications" component={Notifications}/>

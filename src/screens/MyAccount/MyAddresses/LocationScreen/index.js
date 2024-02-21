@@ -78,7 +78,7 @@ const LocationScreen = ({ route, navigation }) => {
             navigation.dispatch(CommonActions.reset({
                 index: 0,
                 routes: [
-                    { name: 'green' },
+                    { name: 'home' },
                 ],
             }));
             //navigation.replace('green', { screen: 'TabNavigator', params: { screen: 'home' } })

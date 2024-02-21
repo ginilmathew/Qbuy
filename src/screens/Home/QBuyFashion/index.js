@@ -7,7 +7,6 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
 import CommonSquareButton from '../../../Components/CommonSquareButton';
-import CommonItemMenuList from '../../../Components/CommonItemMenuList';
 import CommonItemCard from '../../../Components/CommonItemCard';
 import CommonTexts from '../../../Components/CommonTexts';
 import NameText from '../NameText';

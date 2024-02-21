@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, SafeAreaView, Platform, AppState, PermissionsAndroid, NativeModules } from 'react-native'
+import { StyleSheet, Text, View, SafeAreaView, Platform, AppState, PermissionsAndroid, NativeModules, Linking } from 'react-native'
 import React, { useCallback, useEffect } from 'react'
 import Navigation from './Navigations'
 import PandaProvider from './contexts/Panda/PandaContext'
@@ -27,6 +27,10 @@ import notifee, { AndroidImportance, AndroidStyle, EventType } from '@notifee/re
 import { NavigationContainer } from '@react-navigation/native'
 import { navigationRef } from './Navigations/RootNavigation'
 import Routes from './Routes'
+import NetInfo from '@react-native-community/netinfo'
+import { onlineManager } from '@tanstack/react-query'
+import {requestMultiple, PERMISSIONS, requestNotifications, request} from 'react-native-permissions';
+
 
 
 const { mode, env } = NativeModules.RNENVConfig
@@ -43,23 +47,32 @@ const queryClient = new QueryClient()
 
 const App = (props) => {
 
+    
+
 
     function onAppStateChange(status) {
         if (Platform.OS !== 'web') {
             focusManager.setFocused(status === 'active')
         }
+
+        
     }
 
+    
+
     useEffect(() => {
+        onlineManager.setEventListener(setOnline => {
+            return NetInfo.addEventListener(state => {
+              setOnline(!!state.isConnected)
+            })
+        })
         const subscription = AppState.addEventListener('change', onAppStateChange)
         SplashScreen.hide();
         return () => subscription.remove()
     }, [])
 
 
-    if (Platform.OS === 'ios') {
-        //SplashScreen.hide()
-    }
+    
 
     useEffect(() => {
         //getCurrentLocation()
@@ -168,19 +181,30 @@ const App = (props) => {
 
     async function requestUserPermission() {
 
+        
+
+
+
         if (Platform.OS === 'android') {
-            const status = await PermissionsAndroid.requestMultiple([PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION]);
+            let permissions = await requestMultiple([PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION, PERMISSIONS.ANDROID.POST_NOTIFICATIONS])
+            reactotron.log({permissions})
+            // const status = await PermissionsAndroid.requestMultiple([PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION]);
+            
         }
         else{
+            let location = await request(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE);
+
+            reactotron.log({location})
+
             const authStatus = await messaging().requestPermission();
             const enabled =
                 authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
                 authStatus === messaging.AuthorizationStatus.PROVISIONAL;
     
             if (enabled) {
-                // console.log('Authorization status:', authStatus);
+                reactotron.log('Authorization status:', authStatus);
             }
-            const status = await Geolocation.requestAuthorization('whenInUse');
+            //const status = await Geolocation.requestAuthorization('whenInUse');
         }
        
         //getCurrentLocation()
@@ -188,7 +212,9 @@ const App = (props) => {
 
     
 
-
+    const linking = {
+        prefixes: ['qbuypanda://', 'referBy://']
+    };
      
 
 
@@ -202,9 +228,9 @@ const App = (props) => {
                             <PandaProvider>
                                 <CartProvider>
                                     {/* <AppWithTour/> */}
-                                    <NavigationContainer ref={navigationRef}>
-                                        <RouteTest />
-                                        {/* <Routes /> */}
+                                    <NavigationContainer ref={navigationRef} linking={linking}>
+                                        {/* <RouteTest /> */}
+                                        <Routes />
                                     </NavigationContainer>
                                     
                                     <Toast

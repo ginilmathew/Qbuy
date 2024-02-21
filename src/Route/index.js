@@ -286,25 +286,25 @@ const Route = () => {
 
 
 
-    useEffect(async () => {
-        const token = await AsyncStorage.getItem("token");
-        if (token) {
-            const subscription = AppState.addEventListener('change', async nextAppState => {
+    // useEffect(async () => {
+    //     const token = await AsyncStorage.getItem("token");
+    //     if (token) {
+    //         const subscription = AppState.addEventListener('change', async nextAppState => {
 
-                if (nextAppState === 'active') {
+    //             if (nextAppState === 'active') {
 
-                    await customAxios.post('customer/login-status-update', { login_status: true })
+    //                 await customAxios.post('customer/login-status-update', { login_status: true })
 
-                } else {
-                    await customAxios.post('customer/login-status-update', { login_status: false })
+    //             } else {
+    //                 await customAxios.post('customer/login-status-update', { login_status: false })
 
-                }
-            });
-            return () => {
-                subscription.remove();
-            };
-        }
-    }, []);
+    //             }
+    //         });
+    //         return () => {
+    //             subscription.remove();
+    //         };
+    //     }
+    // }, []);
 
     if (!initialScreen) {
         return (

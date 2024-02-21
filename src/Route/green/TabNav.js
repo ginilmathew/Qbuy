@@ -32,6 +32,7 @@ import moment from 'moment';
 import reactotron from 'reactotron-react-native';
 import OrderPlaced from '../../screens/Cart/Checkout/Payment/OrderPlaced';
 import { navigationRef } from '../../Navigations/RootNavigation';
+import CartScreen from '../../screens/_Home/CartScreen';
 
 
 
@@ -248,58 +249,66 @@ const TabNav = () => {
                 // else{
                 //     navigate(routeName)
                 // }
-                //navigate(routeName)
-                try {
-                    if(routeName === "home"){
-                        if(route?.name === "Cart" || route?.name === "MyOrders" || route?.name === "MyAccount" || route?.name === "Home" ){
-                            navigate(routeName)
-                        }
-                        else{
-                            console.log('navigation called')
-                            navigation.dispatch(StackActions.popToTop());
-                            const jumpToAction = TabActions.jumpTo('home')
-                            navigation.dispatch(jumpToAction);
-                        }
+                navigate(routeName)
+                //return false;
+                // try {
+                //     if(routeName === "home"){
+                //         if(route?.name === "Cart" || route?.name === "MyOrders" || route?.name === "MyAccount" || route?.name === "Home" ){
+                //             navigate(routeName)
+                //         }
+                //         else{
+                //             console.log('navigation called')
+                //             navigation.dispatch(StackActions.popToTop());
+                //             const jumpToAction = TabActions.jumpTo('home')
+                //             navigation.dispatch(jumpToAction);
+                //         }
                        
-                        // if(navigation.canGoBack()){
-                        //     navigation.dispatch(StackActions.popToTop());
-                        // }
-                        // else{
-                        //     navigate(routeName)
-                        // }
+                //         // if(navigation.canGoBack()){
+                //         //     navigation.dispatch(StackActions.popToTop());
+                //         // }
+                //         // else{
+                //         //     navigate(routeName)
+                //         // }
                         
-                        //navigation.popToTop()
-                    }
-                    else{
+                //         //navigation.popToTop()
+                //     }
+                //     else{
                   
-                        navigate(routeName)
-                    }
+                //         navigate(routeName)
+                //     }
                     
-                } catch (error) {
-                    navigate(routeName)
-                }
+                // } catch (error) {
+                //     navigate(routeName)
+                // }
                 //navigation.popToTop()
 
                
             }
             else{
                 if(routeName === "home"){
-                  
+                    navigate(routeName)
                     // navigation.navigate(routeName)
-                    startTransition(() => {
-                        navigation.dispatch(
-                            CommonActions.reset({
-                                index: 0,
-                                routes: [
-                                    { name: 'green' },
-                                ],
-                            })
-                        );
-                    })
+                    // startTransition(() => {
+                    //     navigation.dispatch(
+                    //         CommonActions.reset({
+                    //             index: 0,
+                    //             routes: [
+                    //                 { name: 'green' },
+                    //             ],
+                    //         })
+                    //     );
+                    // })
                 }
                 else{
+                    Alert.alert('Warning', 'This page not available for guest user. Click Ok to proceed with login', [
+                        {
+                          text: 'Cancel',
+                          onPress: () => console.log('Cancel Pressed'),
+                          style: 'cancel',
+                        },
+                        {text: 'OK', onPress: () => navigation.navigate("Login")},
+                      ]);
                     
-                    navigation.navigate("Login")
                 }
                 
             }
@@ -328,7 +337,7 @@ const TabNav = () => {
                 CommonActions.reset({
                     index: 0,
                     routes: [
-                        { name: 'green' },
+                        { name: 'home' },
                     ],
                 })
             );
@@ -355,7 +364,7 @@ const TabNav = () => {
                 CommonActions.reset({
                     index: 0,
                     routes: [
-                        { name: 'green' },
+                        { name: 'home' },
                     ],
                 })
             );
@@ -394,7 +403,7 @@ const TabNav = () => {
                 CommonActions.reset({
                     index: 0,
                     routes: [
-                        { name: 'green' },
+                        { name: 'home' },
                     ],
                 })
             );
@@ -657,7 +666,7 @@ const TabNav = () => {
             <CurvedBottomBar.Screen
                 name="cart"
                 position="LEFT"
-                component={CartNav}
+                component={CartScreen}
             />
             <CurvedBottomBar.Screen
                 name="order"

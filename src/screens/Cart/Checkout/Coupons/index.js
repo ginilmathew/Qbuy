@@ -1,4 +1,4 @@
-import { Image, StyleSheet, Text, View, ScrollView, TouchableOpacity, useWindowDimensions } from 'react-native'
+import { Image, StyleSheet, Text, View, ScrollView, TouchableOpacity, useWindowDimensions, FlatList } from 'react-native'
 import React, { useCallback, useContext } from 'react'
 import Lottie from 'lottie-react-native';
 import { useForm } from "react-hook-form";
@@ -10,57 +10,71 @@ import CustomButton from '../../../../Components/CustomButton';
 import PandaContext from '../../../../contexts/Panda';
 import CommonTexts from '../../../../Components/CommonTexts';
 import CouponCard from './CouponCard';
+import customAxios from '../../../../CustomeAxios';
+import reactotron from 'reactotron-react-native';
 
 
-const Coupons = ({navigation}) => {
+const Coupons = ({navigation, route}) => {
 
     const contextPanda = useContext(PandaContext)
     let active = contextPanda.active
+    const { width } = useWindowDimensions()
 
 
-    let datas = [
-        {
-            _id: '1',
-            name: 'Biriyani'
-        },
-        {
-            _id: '2',
-            name: 'Fresh Meat'
-        },
-        {
-            _id: '3',
-            name: 'Lunch Box'
-        },
-        {
-            _id: '4',
-            name: 'Veggies'
-        },
-        {
-            _id: '5',
-            name: 'Farm Pick'
-        },
+    
 
-    ]
+    const backAction = () => {
+        navigation.goBack()
+    }
 
-    const backAction = useCallback(() => {
-        navigation.navigate('Checkout')
-    })
+
+    const applyCoupon = async(item) => {
+        try {
+            let data = {
+                coupon_id: item?._id,
+                type: active
+            }
+            let response = await customAxios.post(`customer/coupons/check`, data);
+            if(response?.data?.message === "Store offerd"){
+                Alert.alert('Warning', 'Some Products already have offer. If you want to use this offer existing offer applied in cart will be removed. Do you want to continue?', [
+                    {
+                      text: 'Cancel',
+                      onPress: null,
+                      style: 'cancel',
+                    },
+                    {text: 'OK', onPress: () => console.log('OK Pressed')},
+                  ]);
+            }
+
+            reactotron.log({response})
+
+            
+        } catch (error) {
+            
+        }
+    }
+
+    const renderCoupon = ({item, index}) => {
+        return(
+            <CouponCard item={item} key={item?._id} active={active} width={width} onApply={applyCoupon} />
+        )
+    }
 
 
     return (
         <>
             <HeaderWithTitle title={'Coupons'} goback={backAction}/>
-            <ScrollView 
+            <FlatList 
+                data={route?.params?.data}
+                keyExtractor={({item}) => item?._id}
+                renderItem={renderCoupon}
                 style={{ 
                     flex:1, 
                     backgroundColor: active === 'green' ? '#F4FFE9' : active === 'fashion' ? '#FFF5F7' : '#F3F3F3', 
                     paddingTop:20
                 }}
-            >
-                {datas?.map((item, index)=>( <CouponCard item={item} key={index}/> ))}
-                
-
-            </ScrollView>
+            />
+            
         </>
     )
 }

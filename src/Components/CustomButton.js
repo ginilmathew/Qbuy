@@ -22,7 +22,7 @@ const CustomButton = ({ onPress, label, mt, ml, bg, width, alignSelf, disabled, 
                 marginVertical: my,
                 marginBottom: mb,
                 marginHorizontal: mx,
-                flexDirection:'row'
+                flexDirection:'row',
             }}
             disabled={disabled}
         >

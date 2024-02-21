@@ -96,6 +96,21 @@ const AddDeliveryAddress = ({ route, navigation }) => {
         },
     ]
 
+
+    const saveDeliveryAddress = async(address_id) => {
+        let data = {
+            type: active,
+            address_id: address_id
+        }
+        let saveDeliveryADdress = await customAxios.post(`customer/checkout/set-address`, data)
+
+        if(saveDeliveryADdress?.data?.message === "Success"){
+            navigation.navigate("checkout")
+        }
+
+        //reactotron.log({saveDeliveryADdress})
+    }
+
     const onSave = useCallback(async (data) => {
 
         loadingContext.setLoading(true)
@@ -123,18 +138,21 @@ const AddDeliveryAddress = ({ route, navigation }) => {
                 setAddr(response?.data)
                 loadingContext.setLoading(false)
                 if(route?.params?.mode === "checkout"){
-                    cartContext.setDefaultAddress(response?.data?.data)
-                    let location = {
-                        latitude: response?.data?.data?.area?.latitude,
-                        longitude: response?.data?.data?.area?.longitude,
-                        address: response?.data?.data?.area?.address
-                    }
+                    saveDeliveryAddress(response?.data?.data?._id)
+                    
+
+                    // cartContext.setDefaultAddress(response?.data?.data)
+                    // let location = {
+                    //     latitude: response?.data?.data?.area?.latitude,
+                    //     longitude: response?.data?.data?.area?.longitude,
+                    //     address: response?.data?.data?.area?.address
+                    // }
         
         
-                    AsyncStorage.setItem("location", JSON.stringify(location))
-                    userContext.setLocation([response?.data?.data?.area?.latitude, response?.data?.data?.area?.longitude]);
-                    userContext.setCurrentAddress(response?.data?.data?.area?.address)
-                    navigation.navigate("Checkout")
+                    //AsyncStorage.setItem("location", JSON.stringify(location))
+                    //userContext.setLocation([response?.data?.data?.area?.latitude, response?.data?.data?.area?.longitude]);
+                    //userContext.setCurrentAddress(response?.data?.data?.area?.address)
+                    //navigation.navigate("checkout")
                 }
                 else{
                     navigation.navigate("green", { screen: 'TabNavigator', params: { screen: 'account', params: { screen: 'MyAddresses', params: { mode: 'MyAcc' } } } })
