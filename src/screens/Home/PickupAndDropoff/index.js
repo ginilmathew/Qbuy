@@ -186,7 +186,6 @@ const PickupAndDropoff = ({ navigation, route }) => {
     }, [])
 
 
-    console.log(moment(date).format('DD-MM-YYYY'));
     const onSubmit = ({ name, description, vehicle, weight, date, time, pickup, dropoff }) => {
 
         setLoading(true)

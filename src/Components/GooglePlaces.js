@@ -34,7 +34,7 @@ const GooglePlaces = ({ fieldName, control, topLabel, setValue, setError, bottom
     }
 
     const renderRow = (data) => (
-        <View style={{ pointerEvents: 'none' }}>
+        <View style={{ pointerEvents: 'none'}}>
             <TouchableOpacity>
                 <Text>{data?.structured_formatting?.main_text}</Text>
                 <Text>{data?.structured_formatting?.secondary_text}</Text>
