@@ -18,6 +18,7 @@ import OrderPlaced from '../../screens/Cart/Checkout/Payment/OrderPlaced';
 import RefferRestaurant from '../../screens/Home/RefferRestaurant';
 import FeedbackRes from '../../screens/Drawer/CustomerFeedback/FeedbackResponse';
 import ResponseReceived from '../../screens/Drawer/CustomerFeedback/ResponseReceived';
+import SuccessPage from '../../Components/SuccessPage';
 
 const Stack = createNativeStackNavigator();
 
@@ -41,6 +42,7 @@ const HomeNav = () => {
             <Stack.Screen name="RefferRestaurant" component={RefferRestaurant}/>
             <Stack.Screen  name='FeedbackResp' component={FeedbackRes} />
             <Stack.Screen  name='Respo' component={ResponseReceived} />
+            <Stack.Screen name='SuccessPage' component={SuccessPage} />
         </Stack.Navigator>
     )
 }
