@@ -135,7 +135,7 @@ const SuccessPage = ({ navigation, route }) => {
     }, [])
 
 
-    if(success) {
+    if (success) {
         setTimeout(goHome, 3000)
 
 

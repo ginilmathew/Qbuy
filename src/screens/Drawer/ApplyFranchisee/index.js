@@ -25,7 +25,7 @@ const ApplyFranchisee = ({ navigation }) => {
 
     const schema = yup.object({
         name: yup.string().required('Name is required'),
-        mobile: yup.number().required('Mobile is required'),
+        mobile: yup.string().required('Mobile is required').typeError('Mobile type must be number'),
         location: yup.string().required('Location is required'),
         comments: yup.string().required('Comments is required'),
     }).required();

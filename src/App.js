@@ -203,7 +203,7 @@ const App = (props) => {
     
 
     const linking = {
-        prefixes: ['qbuypanda://', 'referBy://']
+        prefixes: ['qbuypanda://', 'referBy://'],
     };
      
 
@@ -218,7 +218,7 @@ const App = (props) => {
                             <PandaProvider>
                                 <CartProvider>
                                     {/* <AppWithTour/> */}
-                                    <NavigationContainer ref={navigationRef} linking={linking}>
+                                    <NavigationContainer ref={navigationRef} linking={linking} fallback={<Text>Loading...</Text>}>
                                         {/* <RouteTest /> */}
                                         <Routes />
                                     </NavigationContainer>

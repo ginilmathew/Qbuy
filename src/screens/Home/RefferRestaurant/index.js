@@ -38,7 +38,9 @@ const RefferRestaurant = ({ navigation }) => {
         restaurant_name: yup.string().required('Restaurant name is required'),
         city: yup.string().required('City is required'),
         address: yup.string().required('Address is required'),
-        mobile: yup.string().min(10).required('Mobile is required')
+        mobile: yup.string().min(10).required('Mobile is required'),
+        location: yup.string().required('Location is required'),
+        comments: yup.string().required('Comments is required'),
     }).required();
 
     const onSubmit = useCallback((data) => {
@@ -158,6 +160,7 @@ const RefferRestaurant = ({ navigation }) => {
                             placeholder='Complete Address e.g. store number, street name, etc'
                             placeholderTextColor='#0C256C21'
                         />
+
                         <CommonInput
                             control={control}
                             error={errors.mobile}
@@ -167,6 +170,23 @@ const RefferRestaurant = ({ navigation }) => {
                             placeholder='Mobile Number e.g. Mobile of the owner'
                             placeholderTextColor='#0C256C21'
                             top={20}
+                        />
+
+                        <CommonInput
+                            control={control}
+                            error={errors.location}
+                            fieldName="location"
+                            topLabel={'Location'}
+                            top={20}
+                            multi
+                        />
+                        
+                        <CommonInput
+                            control={control}
+                            error={errors.comments}
+                            fieldName="comments"
+                            topLabel={'Comments'}
+                            multi
                         />
                     </>}
 
