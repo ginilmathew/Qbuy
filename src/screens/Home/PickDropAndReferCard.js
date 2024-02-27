@@ -32,7 +32,7 @@ const PickDropAndReferCard = ({label,lotties, onPress, lottieFlex, ml}) => {
                 />
             </View>
             <View style={{flex:1 }}>
-                <CommonTexts label={label}/>
+                <CommonTexts fontSize={12} fullLabel={true} label={label}/>
             </View>
         </TouchableOpacity>
     )

@@ -1,4 +1,4 @@
-import { NativeModules, ScrollView, SectionList, StyleSheet, Text, TouchableOpacity, View, useWindowDimensions } from 'react-native'
+import { NativeModules, RefreshControl, ScrollView, SectionList, StyleSheet, Text, TouchableOpacity, View, useWindowDimensions } from 'react-native'
 import React, { useCallback, useContext } from 'react'
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query'
 import AuthContext from '../../contexts/Auth'
@@ -28,11 +28,11 @@ const pandHome = async (datas) => {
     const homeData = await customAxios.post('customer/home', datas);
     let sliders = homeData?.data?.data?.[5];
     let recent = [];
-    
+
     recent = await getProducts(homeData?.data?.data?.[2]?.data)
     let messagesBanner = homeData?.data?.data?.[7]?.data
     let sugges = [];
-    //sugges = await getProducts(homeData?.data?.data?.[4]?.data)
+    sugges = await getProducts(homeData?.data?.data?.[4]?.data)
     return {
         //items: newArray,
         sliders,
@@ -74,13 +74,13 @@ const PandaHome = ({ navigation }) => {
 
     useFocusEffect(
         React.useCallback(() => {
-          if (firstTimeRef.current) {
-             firstTimeRef.current = false;
-             return;
-          }
+            if (firstTimeRef.current) {
+                firstTimeRef.current = false;
+                return;
+            }
 
-          refetch()
-          //infiniteQueryRefetch()
+            refetch()
+            //infiniteQueryRefetch()
         }, [refetch])
     )
 
@@ -379,9 +379,11 @@ const PandaHome = ({ navigation }) => {
                 datas={datas}
                 viewProduct={viewProduct}
                 addToCart={addToCart}
-                //cart={cartContext?.cart}
+            //cart={cartContext?.cart}
             >
-                <ScrollView style={{ backgroundColor: '#fff' }}>
+                <ScrollView style={{ backgroundColor: '#fff' }} refreshControl={
+                    <RefreshControl refreshing={isLoading} onRefresh={refetch} />
+                }>
                     <View style={{ backgroundColor: '#fff' }}>
                         {data?.sliders?.data?.length > 0 && <Carousel
                             loop
@@ -403,12 +405,29 @@ const PandaHome = ({ navigation }) => {
                             flexDirection: "row",
                             justifyContent: "space-between",
                             backgroundColor: '#fff',
-                            marginTop: 5
+                            marginTop: 5,
+                            flex: 1,
+                            flexWrap: 'wrap',
+                            paddingHorizontal: 5
                         }}
                     >
                         {data?.category?.map((cat, index) => (
                             <CategoriesCard item={cat} key={`${index}${cat?._id}`} onCategoryClick={onCategoryClick} width={width} />
                         ))}
+                    </View>
+                    <View style={{ width: width, flexDirection: 'row', justifyContent: 'center', gap: 5, marginTop: 5, padding: 2, backgroundColor: '#76867314' }}>
+                        <PickDropAndReferCard
+                            onPress={pickupDropClick}
+                            lotties={require('../../Lottie/deliveryBike.json')}
+                            label={'Pick Up & Drop Off'}
+                            lottieFlex={0.5}
+                        />
+                        <PickDropAndReferCard
+                            onPress={pickupDropClick}
+                            lotties={require('../../Lottie/deliveryBike.json')}
+                            label={'Refer a Restaurant'}
+                            lottieFlex={0.5}
+                        />
                     </View>
                     {data?.messagesBanner?.length > 0 && <View style={{ height: 200 }}>
                         <Carousel
@@ -422,41 +441,55 @@ const PandaHome = ({ navigation }) => {
 
                         />
                     </View>}
-                    {data?.recent?.length > 0 && 
+                    {data?.recent?.length > 0 &&
+                        <View style={{ paddingLeft: 10 }}>
+                            <View
+                                style={{
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
+                                    marginBottom: 5,
+                                    justifyContent: 'space-between',
+                                    marginRight: 5,
+                                    paddingTop: 20
+                                }}
+                            >
+                                <CommonTexts label={'Recently Viewed'} fontSize={13} />
+                            </View>
+                            <ScrollView
+                                horizontal
+                                showsHorizontalScrollIndicator={false}
+                                style={{ backgroundColor: '#fff', paddingVertical: 10, marginRight: 10 }}
+                            >
+                                {data?.recent?.map(item => {
+                                    return (
+                                        <ProductCard
+                                            key={`${item?._id}`}
+                                            data={item}
+                                            styles={styles1}
+                                            width={width / 2.5}
+                                            loggedIn={userContext?.userData ? true : false}
+                                            viewProduct={viewProduct}
+                                            addToCart={addToCart}
+                                        />
+                                    )
+                                })}
+                            </ScrollView>
+                        </View>}
+                    {data?.suggestions?.length > 0 && 
                     <View style={{ paddingLeft: 10 }}>
-                    <View
-                        style={{ 
-                            flexDirection: 'row', 
-                            alignItems: 'center',
-                            marginBottom: 5, 
-                            justifyContent: 'space-between', 
-                            marginRight: 5,
-                            paddingTop: 20 
-                        }}
-                    >
-                        <CommonTexts label={'Recently Viewed'} fontSize={13} />
-                    </View>
+                        <View
+                                style={{
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
+                                    marginBottom: 5,
+                                    justifyContent: 'space-between',
+                                    marginRight: 5,
+                                    paddingTop: 20
+                                }}
+                            >
+                                <CommonTexts label={'Panda Suggestions'} fontSize={13} />
+                            </View>
                     <ScrollView
-                        horizontal
-                        showsHorizontalScrollIndicator={false}
-                        style={{ backgroundColor: '#fff', paddingVertical: 10, marginRight: 10 }}
-                    >
-                        {data?.recent?.map(item => {
-                            return (
-                                <ProductCard
-                                    key={`${item?._id}`}
-                                    data={item}
-                                    styles={styles1}
-                                    width={width / 2.5}
-                                    loggedIn={userContext?.userData ? true : false}
-                                    viewProduct={viewProduct}
-                                    addToCart={addToCart}
-                                />
-                            )
-                        })}
-                    </ScrollView>
-                    </View>}
-                    {data?.suggestions?.length > 0 && <ScrollView
                         horizontal
                         showsHorizontalScrollIndicator={false}
                         style={{ backgroundColor: '#fff', paddingVertical: 10, marginRight: 10, paddingLeft: 5 }}
@@ -475,7 +508,9 @@ const PandaHome = ({ navigation }) => {
                                 />
                             )
                         })}
-                    </ScrollView>}
+                    </ScrollView>
+                    
+                    </View>}
                 </ScrollView>
             </AvailableProducts>
             <CartButton bottom={0} />

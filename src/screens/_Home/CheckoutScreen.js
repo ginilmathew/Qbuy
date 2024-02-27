@@ -544,7 +544,7 @@ const CheckoutScreen = () => {
                     <View style={styles.grandTotalBox}>
                         <View style={styles.grandTotalMid}>
                             <Text style={styles.textMedium}>{'Govt Taxes & Other Charges'}</Text>
-                            <Text style={styles.textMedium}>₹ {parseFloat(data?.other_charges) + parseFloat(data?.selected_delivery_charge?.charge_value)}</Text>
+                            <Text style={styles.textMedium}>₹ { data?.selected_delivery_charge?.charge_value ? parseFloat(data?.other_charges) + parseFloat(data?.selected_delivery_charge?.charge_value) : parseFloat(data?.other_charges) }</Text>
                         </View>
 
                         <View style={styles.grandTotalBottom}>
