@@ -13,7 +13,7 @@ import CartContext from '../../contexts/Cart';
 const QbuyProducts = async (items, pageparam) => {
     const homeDataProduct = await customAxios.post(`customer/new-product-list?page=` + pageparam, { ...items, page: pageparam });
 
-    reactotron.log({homeDataProduct})
+    //reactotron.log({homeDataProduct})
     
 
     let products = [];
@@ -23,7 +23,7 @@ const QbuyProducts = async (items, pageparam) => {
 
      
 
-    reactotron.log({products})
+    //reactotron.log({products})
     return {
         data: products,
         lastPage:homeDataProduct?.data?.data?.last_page,

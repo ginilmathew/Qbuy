@@ -17,7 +17,6 @@ import CartItemsCount from '../Components/CartItemsCount';
 import MyAccountNav from './MyAccountNav';
 import PandaContext from '../contexts/Panda';
 import AuthContext from '../contexts/Auth';
-import reactotron from 'reactotron-react-native';
 
 
 const Tab = createBottomTabNavigator();

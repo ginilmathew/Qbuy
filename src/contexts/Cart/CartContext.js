@@ -6,7 +6,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import Toast from "react-native-toast-message";
 import LoaderContext from "../Loader";
 import AuthContext from "../Auth";
-import reactotron from "reactotron-react-native";
 import PandaContext from "../Panda";
 import { getProducts } from "../../helper/homeProductsHelper";
 
@@ -30,8 +29,6 @@ const CartProvider = (props) => {
 
 
     const getCartDetails = useCallback(async () => {
-        //let cartId = await AsyncStorage.getItem("cartId");
-        //reactotron.log({cartId})
         //if (cartId) {
             loadingContext.setLoading(true);
             await customAxios.get(`customer/cart/show/${panda?.active}`)
@@ -51,7 +48,7 @@ const CartProvider = (props) => {
                 })
         //}
 
-    }, [])
+    }, [panda?.active])
 
 
     // useEffect(() => {
@@ -67,19 +64,12 @@ const CartProvider = (props) => {
         else{
             findIndex = cart?.product_details?.findIndex(pr => pr?.product_id === product?._id)
         }
-        //reactotron.log({cart, index, mode, product})
-        //return false;
         if(mode === "add"){
             cart.product_details[findIndex].quantity = cart.product_details[index].quantity + 1
         }
         else if(mode === "delete"){
             let remain = cart.product_details?.filter((prod, i)  => i != findIndex)
-            //delete cart.product_details[index]
-
-            //reactotron.log({remain})
             cart['product_details'] = remain
-
-            //reactotron.log({cart})
             updateCart()
         }
         else{
@@ -98,7 +88,6 @@ const CartProvider = (props) => {
         let minimumQty = item?.minQty ? item?.minQty : 1
 
 
-        //reactotron.log({item, selectedVariant})
 
         if (cart?.product_details?.length > 0) {
             url = "customer/cart/update";
@@ -126,8 +115,6 @@ const CartProvider = (props) => {
             }
 
             if (existing) {
-
-                //reactotron.log({existing})
 
                 if(price?.stock){
                     if((parseInt(existing?.quantity) + 1) <= parseInt(price?.stock_value)){
@@ -305,7 +292,6 @@ const CartProvider = (props) => {
 
 
     const addToCart = async (item) => {
-        reactotron.log({item, cart})
 
         //return false
         let productDetails;
@@ -334,14 +320,12 @@ const CartProvider = (props) => {
                 existing = cart?.product_details?.find(prod => prod.product_id === item?._id)
             }
 
-            //reactotron.log({item, existing})
 
             if(existing){
                 if(item.stock){
                     if((parseInt(existing?.quantity) + 1) <= parseInt(item?.stockValue)){
                         existing.quantity = existing.quantity + 1;
                         setCart({...cart})
-                        //reactotron.log({cart})
                         return false;
                     }
                     else{
@@ -381,7 +365,6 @@ const CartProvider = (props) => {
                 }
             }
 
-            //reactotron.log({cart})
         }
         else{
             url = "customer/cart/add";
@@ -546,8 +529,6 @@ const CartProvider = (props) => {
 
     const updateCart = useCallback(async() => {
 
-        // reactotron.log({cart})
-        // return false;
 
         if(cart){
             loadingContext?.setLoading(true)
@@ -579,7 +560,6 @@ const CartProvider = (props) => {
 
 
     const addLocalCart = async (item, selectedVariant = null) => {
-        //reactotron.log({item})
         let { _id, name, store, franchisee, stock, minQty, product_image, variant, price, available, stockValue, delivery } = item
         if (variant) {
             //Find Product
@@ -666,8 +646,6 @@ const CartProvider = (props) => {
 
             }
         }
-        //reactotron.log({item})
-        //setProducts((prev) => prev ? [...prev, item] : [item])
     }
 
 

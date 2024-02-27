@@ -40,7 +40,7 @@ const CartScreen = ({ navigation }) => {
 
 
         let products = cart?.product_details;
-        reactotron.log({cart})
+        //reactotron.log({cart})
         let datas = products?.map(prod => {
             return {
                 ...prod?.productdata,
@@ -52,7 +52,7 @@ const CartScreen = ({ navigation }) => {
 
         let allProds = await getProducts(datas, cart?.offer_status)
 
-        reactotron.log({allProds, products})
+        //reactotron.log({allProds, products})
         setCartItemsList(allProds);
     };
 
@@ -74,7 +74,7 @@ const CartScreen = ({ navigation }) => {
     }
 
     const modifyCart = (product, mode, index) => {
-        reactotron.log({product})
+        //reactotron.log({product})
         if (product?.available) {
             if (mode === "add") {
                 if (product?.stock) { //need to check with stock

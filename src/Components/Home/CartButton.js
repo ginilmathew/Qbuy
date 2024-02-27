@@ -5,7 +5,6 @@ import { useNavigation } from '@react-navigation/native';
 import CartContext from '../../contexts/Cart';
 import LinearGradient from 'react-native-linear-gradient';
 import PandaContext from '../../contexts/Panda';
-import reactotron from 'reactotron-react-native';
 import { getProducts } from '../../helper/homeProductsHelper';
 import Animated, { FadeIn, FadeOut, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
@@ -30,7 +29,6 @@ const CartButton = ({ bottom }) => {
     }, [cart?.product_details?.length]);
 
 
-   // reactotron.log("button", {cart})
 
     const navigation = useNavigation()
 
@@ -60,7 +58,6 @@ const CartButton = ({ bottom }) => {
 
         setTotal(total)
 
-        //reactotron.log({allProds})
     }
 
 

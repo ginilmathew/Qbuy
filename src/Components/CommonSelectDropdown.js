@@ -7,7 +7,6 @@ import reactotron from 'reactotron-react-native';
 
 const CommonSelectDropdown = ({topLabel, mb, placeholder, data, value, setValue, search, height, mt, width, shadowOpacity, elevation, flex, index}) => {
 
-    //reactotron.log({value})
 
     const contextPanda = useContext(PandaContext)
     let active = contextPanda.active

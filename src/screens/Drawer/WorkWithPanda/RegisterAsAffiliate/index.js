@@ -64,7 +64,6 @@ const RegisterAsAffiliate = ({ navigation }) => {
         }
       }, [])
 
-    reactotron.log({errors})
 
     const onSubmit = useCallback((value) => {
         setLoading(true);

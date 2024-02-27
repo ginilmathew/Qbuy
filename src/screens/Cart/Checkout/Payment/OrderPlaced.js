@@ -12,6 +12,7 @@ import moment from 'moment'
 import AuthContext from '../../../../contexts/Auth'
 import { NativeModules } from "react-native";
 import { green } from 'react-native-reanimated/lib/typescript/reanimated2/Colors'
+import { TabActions } from '@react-navigation/native'
 
 
 const OrderPlaced = ({ route, navigation }) => {
@@ -20,7 +21,15 @@ const OrderPlaced = ({ route, navigation }) => {
 
 
 
+    useEffect(() => {
+        setTimeout(() => {
+            navigation.navigate("dashboard", { screen: 'home' })
+            //const jumpToAction = TabActions.jumpTo('dashboard', { screen: 'HomeNav' });
 
+            //navigation.dispatch(jumpToAction);
+        }, 3000);
+    }, [])
+    
 
 
 

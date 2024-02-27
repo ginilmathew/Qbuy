@@ -28,11 +28,9 @@ const OrderProcessing = ({ route, navigation }) => {
             let order = await customAxios.post(`customer/order/new-test-create`, route?.params?.datas);
             if(order?.data?.message === "Success"){
                 let data = order?.data?.data
-                reactotron.log({data})
                 if (data?.payment_type == "online" && has(data, "paymentDetails") && !isEmpty(data?.paymentDetails)) {
                     payWithPayTM(data)
                 } else {
-                    reactotron.log("in")
                     navigation.navigate("OrderPlaced", { item: data })
                 }
             }

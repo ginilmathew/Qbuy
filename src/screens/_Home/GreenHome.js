@@ -84,7 +84,6 @@ const GreenHome = ({ navigation }) => {
 
 
 
-    //reactotron.log({ data })
 
 
     const changeAddress = useCallback(() => {

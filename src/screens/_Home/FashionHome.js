@@ -86,7 +86,6 @@ const FashionHome = ({ route, navigation }) => {
     })
 
 
-    reactotron.log({data})
 
     const changeAddress = useCallback(() => {
         navigation?.push("AddNewLocation", { mode: 'home' })

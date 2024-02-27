@@ -330,19 +330,21 @@ const TabNav = () => {
     };
 
     const gotoPanda = useCallback(() => {
-        switchcartUpdate('panda')
+        //switchcartUpdate('panda')
         pandaContext.setActive('panda')
-        startTransition(() => {
-            navigation.dispatch(
-                CommonActions.reset({
-                    index: 0,
-                    routes: [
-                        { name: 'home' },
-                    ],
-                })
-            );
-        })
-        setShowSwitch(!showSwitch)
+        //cartContext.getCartDetails()
+        //navigation.navigate("home")
+        // startTransition(() => {
+        //     navigation.dispatch(
+        //         CommonActions.reset({
+        //             index: 0,
+        //             routes: [
+        //                 { name: 'home' },
+        //             ],
+        //         })
+        //     );
+        // })
+        //setShowSwitch(!showSwitch)
         // startTransition(() => {
         //     navigation.dispatch(
         //         CommonActions.reset({
@@ -357,19 +359,19 @@ const TabNav = () => {
     }, [showSwitch, cartContext?.cart])
 
     const goToFashion = useCallback(async () => {
-        switchcartUpdate('fashion')
+        //switchcartUpdate('fashion')
         pandaContext.setActive('fashion')
-        startTransition(() => {
-            navigation.dispatch(
-                CommonActions.reset({
-                    index: 0,
-                    routes: [
-                        { name: 'home' },
-                    ],
-                })
-            );
-        })
-        setShowSwitch(!showSwitch)
+        // startTransition(() => {
+        //     navigation.dispatch(
+        //         CommonActions.reset({
+        //             index: 0,
+        //             routes: [
+        //                 { name: 'home' },
+        //             ],
+        //         })
+        //     );
+        // })
+        // setShowSwitch(!showSwitch)
         // if(cartContext?.cart){
         //     await AsyncStorage.setItem("greenCart",JSON.stringify(cartContext?.cart))
         // }
@@ -395,21 +397,20 @@ const TabNav = () => {
 
     }, [cartContext?.cart, showSwitch])
 
-    const goTogreen = useCallback(() => {
-        switchcartUpdate('green')
-        pandaContext.setActive('green')
-        startTransition(() => {
-            navigation.dispatch(
-                CommonActions.reset({
-                    index: 0,
-                    routes: [
-                        { name: 'home' },
-                    ],
-                })
-            );
-        })
 
+    useEffect(() => {
+        //reactotron.log({active: pandaContext?.active})
+        cartContext.getCartDetails()
+        navigation.navigate("home")
         setShowSwitch(!showSwitch)
+    }, [pandaContext?.active])
+    
+
+    const goTogreen = useCallback(async() => {
+        //switchcartUpdate('green')
+        await pandaContext.setActive('green')
+        
+        
     }, [showSwitch, cartContext?.cart])
 
     const imageswitch = {

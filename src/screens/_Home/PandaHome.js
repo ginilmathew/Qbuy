@@ -70,7 +70,6 @@ const PandaHome = ({ navigation }) => {
 
 
 
-    reactotron.log({ data })
 
     useFocusEffect(
         React.useCallback(() => {

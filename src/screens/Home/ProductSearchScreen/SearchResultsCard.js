@@ -53,7 +53,6 @@ const SearchResultsCard = memo(({ item, setValue }) => {
         pandaContext.setActive(item?.type)
         handleswitch(item?.type)
         let data = await getProduct(item);
-        reactotron.log({data})
         navigation.navigate('SingleItemScreen', { item: data })
         setValue('name', '')
     };

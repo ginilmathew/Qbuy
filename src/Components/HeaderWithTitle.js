@@ -6,7 +6,6 @@ import { TabActions, useNavigation } from '@react-navigation/native'
 import PandaContext from '../contexts/Panda'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import Fontisto from 'react-native-vector-icons/Fontisto'
-import reactotron from '../ReactotronConfig'
 import AuthContext from '../contexts/Auth'
 
 

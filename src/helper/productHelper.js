@@ -1,6 +1,5 @@
 import moment from "moment";
 import { min, max } from 'lodash'
-import reactotron from "../ReactotronConfig";
 
 export function getProduct (product) {
 
@@ -60,7 +59,6 @@ export function getProduct (product) {
                     if (offer > 0) {
                         //products have offer price , check offer price in valid range
                         if (offerFromDate && offerToDate) {
-                            reactotron.log({offerFromDate, offerToDate})
                             if (moment() >= offerFromDate && moment() <= offerToDate) {
                                 price = offer;
                                 if(regular > 0){

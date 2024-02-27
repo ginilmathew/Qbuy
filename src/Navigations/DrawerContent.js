@@ -15,7 +15,6 @@ import ListItem from '../Components/ListItem'
 import CommonTexts from '../Components/CommonTexts'
 import AuthContext from '../contexts/Auth'
 import { IMG_URL } from '../config/constants'
-import reactotron from 'reactotron-react-native'
 
 
 const DrawerContent = ({ navigation }) => {

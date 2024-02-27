@@ -4,7 +4,6 @@ import Foundation from 'react-native-vector-icons/Foundation'
 import CommonTexts from '../CommonTexts'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import Ionicons from 'react-native-vector-icons/Ionicons'
-import reactotron from 'reactotron-react-native'
 import Animated, { FadeInDown } from 'react-native-reanimated'
 
 

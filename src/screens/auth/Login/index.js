@@ -49,7 +49,6 @@ const Login = ({ navigation }) => {
 	const getPermissions = async() => {
 		const status = await PermissionsAndroid.requestMultiple([PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION]);
 
-		reactotron.log({status})
 
 		// if(status?.['android.permission.ACCESS_FINE_LOCATION'] === "granted"){
 		// 	getPosition()
