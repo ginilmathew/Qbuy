@@ -1,5 +1,5 @@
 import { Image, StyleSheet, Text, View, ScrollView, KeyboardAvoidingView } from 'react-native'
-import React, { useCallback, useContext, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import Lottie from 'lottie-react-native';
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -11,6 +11,7 @@ import PandaContext from '../../../../contexts/Panda';
 import CommonSelectDropdown from '../../../../Components/CommonSelectDropdown';
 import customAxios from '../../../../CustomeAxios';
 import Toast from 'react-native-toast-message';
+import reactotron from 'reactotron-react-native';
 
 
 
@@ -39,6 +40,10 @@ const RegisterAsAffiliate = ({ navigation }) => {
     ];
 
 
+    
+    
+
+
 
     const schema = yup.object({
         name: yup.string().required('Name is required'),
@@ -49,9 +54,17 @@ const RegisterAsAffiliate = ({ navigation }) => {
         accountnumber: yup.string().required('Account Number is required').min(5, 'Account Number should be atleast 5 characters.').max(15, 'Account Number is limited to 15 characters.'),
     }).required();
 
-    const { control, handleSubmit, formState: { errors }, setValue, setError } = useForm({
+    const { control, handleSubmit, formState: { errors }, setValue, setError, reset } = useForm({
         resolver: yupResolver(schema)
     });
+
+    useEffect(() => {
+        return () => {
+          reset()
+        }
+      }, [])
+
+    reactotron.log({errors})
 
     const onSubmit = useCallback((value) => {
         setLoading(true);

@@ -18,7 +18,7 @@ const DeliveryCharge = ({item, onClick, active, selected}) => {
                         fontSize:12,
                         marginLeft:5
                     }}
-                >{`${item?.charge_name} (${item?.time_label})`}</Text>
+                >{`${item?.charge_name} ${item?.time_label ? `(${item?.time_label})` : ''} `}</Text>
                 <Text style={{ color: '#089321', fontWeight: '900', fontSize: 16, fontFamily: 'Poppins-Bold', }}>{` ₹ ${item?.charge_value}`}</Text>
             </View>
         </TouchableOpacity>

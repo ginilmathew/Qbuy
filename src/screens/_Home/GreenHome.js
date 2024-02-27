@@ -183,7 +183,7 @@ const GreenHome = ({ navigation }) => {
     const renderStores = () => {
         return (
             <>
-                <View style={{ marginLeft: 10 }}>
+                <View style={{ marginLeft: 10, marginTop: 10 }}>
                     <CommonTexts label={'Available Stores'} fontSize={13} />
                 </View>
 
@@ -231,21 +231,24 @@ const GreenHome = ({ navigation }) => {
 
     const renderRecents = () => {
         let recents = data?.items?.[1]?.data
-        return (
-            <>
-                <View style={{ marginLeft: 10 }}>
-                    <CommonTexts label={'Recently Viewed'} fontSize={13} />
-                </View>
-                <FlatList
-                    data={recents}
-                    keyExtractor={(item) => item?._id}
-                    renderItem={renderProducts}
-                    style={{ paddingVertical: 20 }}
-                    horizontal={true}
-                    showsHorizontalScrollIndicator={false}
-                />
-            </>
-        )
+        if(recents?.length > 0){
+            return (
+                <>
+                    <View style={{ marginLeft: 10 }}>
+                        <CommonTexts label={'Recently Viewed'} fontSize={13} />
+                    </View>
+                    <FlatList
+                        data={recents}
+                        keyExtractor={(item) => item?._id}
+                        renderItem={renderProducts}
+                        style={{ paddingVertical: 20 }}
+                        horizontal={true}
+                        showsHorizontalScrollIndicator={false}
+                    />
+                </>
+            )
+        }
+        
     }
 
     const renderSuggestions = () => {
@@ -253,7 +256,7 @@ const GreenHome = ({ navigation }) => {
         if(suggestions?.length > 0){
             return (
                 <>
-                    <View style={{ marginLeft: 10 }}>
+                    <View style={{ marginLeft: 10, marginTop: 5 }}>
                         <CommonTexts label={'Panda Suggestions'} fontSize={13} />
                     </View>
                     <FlatList

@@ -132,7 +132,9 @@ const PandaHome = ({ navigation }) => {
     }
 
     const openStore = (item) => {
-        navigation.navigate('store', { name: item?.vendor?.store_name, mode: 'store', item: item?.vendor, storeId: item?.store })
+        //reactotron.log({item});
+        //return false;
+        navigation.navigate('store', { name: item?.stores?.store_name, mode: 'store', item: item?.stores, storeId: item?.stores?._id })
     }
 
     const MessageBanner = ({ item, index }) => {

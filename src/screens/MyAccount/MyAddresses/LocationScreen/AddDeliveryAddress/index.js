@@ -34,6 +34,8 @@ const AddDeliveryAddress = ({ route, navigation }) => {
     const cartContext = useContext(CartContext)
     const userContext = useContext(AuthContext)
 
+    reactotron.log({user: userContext?.userData})
+
 
 
 
@@ -76,7 +78,8 @@ const AddDeliveryAddress = ({ route, navigation }) => {
             address: locationData?.location,
             comments: locationData?.comments,
             default_status: locationData?.default,
-            pincode: locationData?.pincode?.toString()
+            pincode: locationData?.pincode?.toString(),
+            mobile: userContext?.userData?.mobile
         }
     });
 

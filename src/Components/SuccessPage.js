@@ -10,7 +10,13 @@ const SuccessPage = ({ goHome, source, text }) => {
     let active = contextPanda.active
 
 
-    setTimeout(goHome, 3000)
+    useEffect(() => {
+        setTimeout(goHome, 3000)
+    }, [])
+    
+
+
+    
 
     return (
         <View style={{
