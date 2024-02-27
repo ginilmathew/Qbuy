@@ -180,7 +180,7 @@ const MyAccount = ({ navigation }) => {
             .then(supported => {
                 if (!supported) {
                     Alert.alert(
-                        'Please install whats app to send direct message to students via whats app'
+                        'Please install whats app to send direct message to Qbuy support via whatsapp'
                     );
                 } else {
                     return Linking.openURL('whatsapp://send?text=&phone=8137009905');
