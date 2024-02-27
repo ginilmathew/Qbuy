@@ -17,6 +17,8 @@ const CheckoutItemCard = ({ openStore, item }) => {
             <Text style={[styles.quantity]}>{item?.quantity}</Text>
 
             <Text style={[styles.total]}>₹ {parseFloat(item?.price * item?.quantity).toFixed(2)}</Text>
+            {!item?.availability && <Text style={{ position: 'absolute', bottom: 0, right: 5, fontSize: 12, color: 'red', fontWeight: 'bold', paddingRight: 5 }}>Not Available in your location</Text>}
+        {(!item?.available && item?.availability) && <Text style={{ position: 'absolute', bottom: 0, right: 5, fontSize: 12, color: 'red', fontWeight: 'bold', paddingRight: 5 }}>Not Available</Text>}
         </View>
     )
 }
@@ -32,7 +34,8 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         borderBottomWidth: 1,
         borderColor: '#00000029',
-        paddingHorizontal: 7
+        paddingHorizontal: 7,
+        position:'relative'
     },
     total: {
         fontFamily: 'Poppins-Medium',

@@ -18,7 +18,11 @@ const OrderPlaced = ({ route, navigation }) => {
     const { item } = route.params;
     const { env, mode } = NativeModules.RNENVConfig
 
-      
+
+
+
+
+
 
     const userContext = useContext(AuthContext);
 
@@ -56,14 +60,18 @@ const OrderPlaced = ({ route, navigation }) => {
 
 
     const LottieMode = {
-        green:require('../../../../Lottie/qbuygreen.json'),
-        fashion:require('../../../../Lottie/dressanimation.json'),
-        panda:require('../../../../Lottie/qbuypanda.json')
- } 
+        green: require('../../../../Lottie/qbuygreen.json'),
+        fashion: require('../../../../Lottie/dressanimation.json'),
+        panda: require('../../../../Lottie/qbuypanda.json')
+    }
+
+    const goToHome = () => {
+        navigation.navigate("dashboard")
+    }
 
     return (
         <>
-            <HeaderWithTitle title={'Order Placed'} noBack />
+            <HeaderWithTitle title={'Order Placed'} onPressBack={goToHome} />
             <View style={{ flex: 1, backgroundColor: active === 'green' ? '#F4FFE9' : active === 'fashion' ? '#FFF5F7' : '#fff', paddingHorizontal: 10, justifyContent: 'center' }}>
 
                 <View style={{ height: 180, }}>

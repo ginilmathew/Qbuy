@@ -11,8 +11,9 @@ import Animated, { FadeInDown } from 'react-native-reanimated'
 
 
 const CheckoutBottomView = ({navigateToAddress, active, clickBillDetails, isLoading, showList, placeOrder, data}) => {
-    //reactotron.log({defaultAddress})
-    //if(defaultAddress){
+
+
+    if(data?.address){
         return(
             <Animated.View style={styles.addressContainer} entering={FadeInDown.duration(3000).springify()}>
                 <Pressable style={styles.addrHeader} onPress={navigateToAddress}>
@@ -78,6 +79,17 @@ const CheckoutBottomView = ({navigateToAddress, active, clickBillDetails, isLoad
                         >₹ {pri?.price}</Text>
 
                     </View>))}
+                    {data?.coupon_amount && data?.coupon_amount > 0 && <View  style={styles.charges}>
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <Text
+                                style={styles.textMedium}
+                            >{"Coupon Discount"}</Text>
+                        </View>
+                        <Text
+                            style={styles.textMedium}
+                        >₹ {data?.coupon_amount}</Text>
+
+                    </View>}
                     <View style={styles.grandTotal}>
                         <Text
                             style={styles.textMedium}
@@ -118,7 +130,36 @@ const CheckoutBottomView = ({navigateToAddress, active, clickBillDetails, isLoad
 
             </Animated.View>
         )
-    //}
+    }
+
+    
+        return(
+            <Animated.View style={styles.addressContainer} entering={FadeInDown.duration(3000).springify()}>
+                
+                <View
+                    style={{
+                        backgroundColor:  active === 'green' ? '#8ED053' : active === 'fashion' ? '#FF7190' : '#58D36E',
+                        height: 60,
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        paddingHorizontal: 20,
+                        position: 'absolute',
+                        width: '100%',
+                        bottom: 0
+                    }}
+                >
+                    
+                    <TouchableOpacity
+                        disabled={isLoading}
+                        style={{ flex: 1, justifyContent: 'center', alignItems:'center' }}
+                        onPress={navigateToAddress}
+                    >
+                        <CommonTexts fullLabel={true} label={"Choose Delivery Address"} color='#fff' fontSize={17} />
+                    </TouchableOpacity>
+                </View>
+
+            </Animated.View>
+        )
 
   
 }

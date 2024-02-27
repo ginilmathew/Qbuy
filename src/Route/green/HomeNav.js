@@ -13,6 +13,8 @@ import MyAddresses from '../../screens/MyAccount/MyAddresses';
 import LocationScreen from '../../screens/MyAccount/MyAddresses/LocationScreen';
 import AddNewLocation from '../../screens/MyAccount/MyAddresses/LocationScreen/AddNewLocation';
 import AddDeliveryAddress from '../../screens/MyAccount/MyAddresses/LocationScreen/AddDeliveryAddress';
+import OrderProcessing from '../../screens/_Home/OrderProcessing';
+import OrderPlaced from '../../screens/Cart/Checkout/Payment/OrderPlaced';
 
 const Stack = createNativeStackNavigator();
 
@@ -22,6 +24,7 @@ const HomeNav = () => {
             <Stack.Screen name="dashboard" component={TabNav} />
             <Stack.Screen name="cartpage" component={CartScreen} />
             <Stack.Screen name="checkout" component={CheckoutScreen} />
+            <Stack.Screen name="order" component={OrderProcessing} />
             <Stack.Screen name="Category" component={CategoryScreen} />
             <Stack.Screen name="restaurant" component={RestaurantScreen} />
             <Stack.Screen name="store" component={StoreScreen} />
@@ -31,6 +34,7 @@ const HomeNav = () => {
             <Stack.Screen name="LocationScreen" component={LocationScreen}/>
             <Stack.Screen name="AddNewLocation" component={AddNewLocation}/>
             <Stack.Screen name="AddDeliveryAddress" component={AddDeliveryAddress}/>
+            <Stack.Screen name="OrderPlaced" component={OrderPlaced}/>
 
         </Stack.Navigator>
     )

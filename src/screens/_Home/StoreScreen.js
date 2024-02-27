@@ -14,6 +14,8 @@ import { IMG_URL } from '../../config/constants';
 import moment from 'moment';
 import TypeCard from '../Home/Grocery/TypeCard';
 import CategoriesCard from '../../Components/Home/CategoriesCard';
+import CartContext from '../../contexts/Cart';
+import CartButton from '../../Components/Home/CartButton';
 
 const StoreScreen = ({ route, navigation }) => {
 
@@ -24,6 +26,7 @@ const StoreScreen = ({ route, navigation }) => {
     const { width, height } = useWindowDimensions()
     const styles1 = makeStyles(height);
     const [item, setItem] = useState(route?.params?.item)
+    const cartContext = useContext(CartContext)
 
     useFocusEffect(
         React.useCallback(() => {
@@ -83,6 +86,12 @@ const StoreScreen = ({ route, navigation }) => {
         navigation.goBack()
     }
 
+    const addToCart = (item) => {
+        //reactotron.log({item});
+        // return false
+        cartContext.addToCart(item)
+    }
+
     const renderProduct = ({ item }) => {
         return (
             <View style={{ padding: 5 }}>
@@ -94,6 +103,7 @@ const StoreScreen = ({ route, navigation }) => {
                 loggedIn={userContext?.userData ? true : false}
                 height={height / 4}
                 viewProduct={viewProduct}
+                addToCart={addToCart}
             />
             </View>
         )
@@ -157,6 +167,7 @@ const StoreScreen = ({ route, navigation }) => {
                 <ActivityIndicator color={"red"} size={"large"} />
                 <Text>Loading...</Text>
             </View>}
+            <CartButton bottom={0} />
         </>
     )
 }

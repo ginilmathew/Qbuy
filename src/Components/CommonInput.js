@@ -7,7 +7,7 @@ import { NativeModules } from "react-native"
 
 const { env, mode } = NativeModules.RNENVConfig
 
-const CommonInput = ({ placeholder, control, fieldName, error, inputMode, mt, leftElement, backgroundColor, topLabel, mb, placeholderTextColor, width, maxHeight, top, shadowOpacity, elevation, editable }) => {
+const CommonInput = ({ placeholder, control, fieldName, error, inputMode, mt, leftElement, backgroundColor, topLabel, mb, placeholderTextColor, width, maxHeight, top, shadowOpacity, elevation, editable, values }) => {
 
     const contextPanda = useContext(PandaContext)
     let active = contextPanda.active
@@ -52,7 +52,7 @@ const CommonInput = ({ placeholder, control, fieldName, error, inputMode, mt, le
                         <TextInput
                             onBlur={onBlur}
                             onChangeText={onChange}
-                            value={value}
+                            value={values ? values : value}
                             minHeight={50}
                             placeholder={placeholder}
                             placeholderTextColor={placeholderTextColor ? placeholderTextColor : '#23233C'}

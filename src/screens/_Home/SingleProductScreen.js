@@ -21,6 +21,7 @@ import ProductCard from '../../Components/Home/ProductCard'
 import AuthContext from '../../contexts/Auth'
 import { getProducts } from '../../helper/homeProductsHelper'
 import CartContext from '../../contexts/Cart'
+import CartButton from '../../Components/Home/CartButton'
 
 const SingleProductScreen = ({ route, navigation }) => {
 
@@ -81,6 +82,8 @@ const SingleProductScreen = ({ route, navigation }) => {
             if(response?.data?.message === "Success"){
                 let data = response?.data?.data;
                 let priceDetails = await singleProduct(data);
+
+                reactotron.log({priceDetails})
                 
                 setPriceDetails(priceDetails)
 
@@ -378,7 +381,7 @@ const SingleProductScreen = ({ route, navigation }) => {
 
     const addToCart = () => {
         //if(price?._id)
-        //reactotron.log({data, price})
+        reactotron.log({data, price})
         variantAddToCart(data, price)
     }
 
@@ -521,6 +524,7 @@ const SingleProductScreen = ({ route, navigation }) => {
                 contentContainerStyle={{ margin: 5 }}
                 ListFooterComponent={() => loading ? <ActivityIndicator color={"red"} /> : null}
             /> */}
+            <CartButton bottom={20} />
         </>
     )
 }

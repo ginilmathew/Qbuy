@@ -203,7 +203,7 @@ const MyAccount = ({ navigation }) => {
                         img={ active === 'green' ? require('../../Images/addressOrange.png') : active === 'fashion' ? require('../../Images/fashionAddress.png') : require('../../Images/address.png') }
                         label={ 'My Addresses' }
                     />
-                    {/* <ListCard
+                    <ListCard
                                 onPress={
                                     // gotoPandaCoins
                                     null
@@ -211,16 +211,16 @@ const MyAccount = ({ navigation }) => {
                                 img={active === 'green' ? require('../../Images/Orangepanda.png') : active === 'fashion' ? require('../../Images/fashionPanda.png') : require('../../Images/panda.png')}
                                 label={'Panda Coins'}
                                 pandaCoin=''
-                            /> */}
-                    {/* {!active === 'fashion' || !active === 'green' ? null : <ListCard
+                            />
+                    {!active === 'fashion' || !active === 'green' ? null : <ListCard
                                 onPress={
                                     // gotoAffiliateBonus
                                 null
                                 }
                                 img={active === 'green' ? require('../../Images/affiliateOrange.png') : require('../../Images/affiliate.png')}
                                 label={'Affiliate Bonus'}
-                            />} */}
-                    {/* <ListCard
+                            />}
+                    <ListCard
                         img={active === 'green' ? require('../../Images/buildingOrange.png') : active === 'fashion' ? require('../../Images/fashionBuilding.png') : require('../../Images/building.png')}
                         label={'About Us'}
                     />
@@ -249,7 +249,7 @@ const MyAccount = ({ navigation }) => {
                         label={'Help and Support'}
                         DntshowRightArrow
                         noBorder
-                    /> */}
+                    />
 
                 </View>
 

@@ -1,5 +1,5 @@
 import { ActivityIndicator, FlatList, StyleSheet, Text, View } from 'react-native'
-import React, { memo } from 'react'
+import React, { memo, useContext } from 'react'
 import { useInfiniteQuery } from '@tanstack/react-query'
 import customAxios from '../../CustomeAxios';
 import reactotron from 'reactotron-react-native';
@@ -7,10 +7,14 @@ import ProductCard from '../../Components/Home/ProductCard';
 import CommonTexts from '../../Components/CommonTexts';
 import { getProducts } from '../../helper/homeProductsHelper';
 import { useFocusEffect } from '@react-navigation/native';
+import CartContext from '../../contexts/Cart';
 //import { getProduct } from '../../helper/productHelper';
 
 const QbuyProducts = async (items, pageparam) => {
     const homeDataProduct = await customAxios.post(`customer/new-product-list?page=` + pageparam, { ...items, page: pageparam });
+
+    reactotron.log({homeDataProduct})
+    
 
     let products = [];
     if(homeDataProduct?.data?.data?.available_product?.length > 0){
@@ -29,7 +33,7 @@ const QbuyProducts = async (items, pageparam) => {
 }
 
 
-const AvailableProducts = ({ styles, width, loggedIn, height, datas, viewProduct, addToCart }) => {
+const AvailableProducts = ({ styles, width, loggedIn, height, datas, viewProduct, addToCart, children }) => {
 
     const firstTimeRef = React.useRef(true)
     
@@ -90,11 +94,14 @@ const AvailableProducts = ({ styles, width, loggedIn, height, datas, viewProduct
 
     const listHeader = () => {
         return(
+            <>
+            {children}
             <View
                 style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 15, marginBottom: 5, justifyContent: 'space-between', marginRight: 5, paddingVertical: 10 }}
             >
                 <CommonTexts label={'Products'} fontSize={13} />
             </View>
+            </>
         )
         
     }
@@ -102,23 +109,19 @@ const AvailableProducts = ({ styles, width, loggedIn, height, datas, viewProduct
 
 
     return (
-        <>
-           
             <FlatList
+                
                 data={ data?.pages?.map(page => page?.data)?.flat()}
                 refreshing={isLoading}
                 renderItem={renderProduct}
-                style={{ flexGrow: 1, paddingBottom: 70 }}
+                style={{ flexGrow: 1, paddingBottom: 70, backgroundColor: '#fff' }}
                 numColumns={2}
-                onEndReachedThreshold={0.3}
                 onEndReached={fetchMoreData}
                 ListFooterComponent={(isLoading || isFetching) ? () => <ActivityIndicator color={"red"} /> : null}
                 ListHeaderComponent={listHeader}
                 onRefresh={refetch}
                 extraData={isFetching}
             />
-        </>
-
     )
 }
 

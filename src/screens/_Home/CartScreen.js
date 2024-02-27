@@ -24,57 +24,36 @@ const CartScreen = ({ navigation }) => {
     useFocusEffect(
         React.useCallback(() => {
             getCartItems();
-        }, []),
+        }, [cart]),
     );
+
+
+    // useEffect(() => {
+    //     return () => {
+    //         updateCart()
+    //     }
+    // }, [cart])
+
 
 
     const getCartItems = async () => {
 
 
         let products = cart?.product_details;
-            let datas = products?.map(prod => {
-                return {
-                    ...prod?.productdata,
-                    quantity: prod?.quantity,
-                    availability: prod?.availability,
-                    selectedVariant: prod?.variants?.[0]?.variant_id
-                }
-            })
+        reactotron.log({cart})
+        let datas = products?.map(prod => {
+            return {
+                ...prod?.productdata,
+                quantity: prod?.quantity,
+                availability: prod?.availability,
+                selectedVariant: prod?.variants?.[0]?.variant_id
+            }
+        })
 
-            let allProds = await getProducts(datas, cart?.offer_status)
+        let allProds = await getProducts(datas, cart?.offer_status)
 
-            //reactotron.log({allProds, cart})
-            setCartItemsList(allProds);
-
-        // setLoading(true);
-
-        // await customAxios.get(`customer/cart/show/${active}`)
-        // .then(async response => {
-        //     let products = response?.data?.data?.product_details;
-        //     setCart(response?.data?.data)
-        //     let datas = products?.map(prod => {
-        //         return {
-        //             ...prod?.productdata,
-        //             quantity: prod?.quantity,
-        //             availability: prod?.availability,
-        //             selectedVariant: prod?.variants?.[0]?.variant_id
-        //         }
-        //     })
-
-        //     let allProds = await getProducts(datas, response?.data?.data?.offer_status)
-
-        //     reactotron.log({allProds})
-        //     setCartItemsList(allProds);
-        // })
-        // .catch(async error => {
-        //     Toast.show({
-        //         type: 'error',
-        //         text1: error,
-        //     });
-        // })
-        // .finally(() => {
-        //     setLoading(false)
-        // });
+        reactotron.log({allProds, products})
+        setCartItemsList(allProds);
     };
 
 
@@ -95,7 +74,7 @@ const CartScreen = ({ navigation }) => {
     }
 
     const modifyCart = (product, mode, index) => {
-        //reactotron.log({ product, cart })
+        reactotron.log({product})
         if (product?.available) {
             if (mode === "add") {
                 if (product?.stock) { //need to check with stock
@@ -108,7 +87,7 @@ const CartScreen = ({ navigation }) => {
                     }
                 }
 
-                modifyQuantity(index, mode)
+                modifyQuantity(index, mode, product)
                 cartItemsList[index].quantity = cartItemsList[index].quantity + 1
             }
             else {
@@ -116,7 +95,7 @@ const CartScreen = ({ navigation }) => {
                 if (product?.quantity === product?.minQty) { //product have stock
                     //reactotron.log("delete")
                     cartItemsList.splice(index, 1)
-                    modifyQuantity(index, 'delete')
+                    modifyQuantity(index, 'delete', product)
                     // setTimeout(() => {
                     //     getCartItems()
                     // }, 1000);
@@ -124,7 +103,7 @@ const CartScreen = ({ navigation }) => {
                 else if (product?.quantity === 1) {
                     //reactotron.log("delete")
                     cartItemsList.splice(index, 1)
-                    modifyQuantity(index, 'delete')
+                    modifyQuantity(index, 'delete', product)
                     // setTimeout(() => {
                     //     getCartItems()
                     // }, 1000);
@@ -132,7 +111,7 @@ const CartScreen = ({ navigation }) => {
                 }
                 else {
                     cartItemsList[index].quantity = cartItemsList[index].quantity - 1
-                    modifyQuantity(index, 'minus')
+                    modifyQuantity(index, 'minus', product)
                 }
 
             }
@@ -147,17 +126,13 @@ const CartScreen = ({ navigation }) => {
     }
 
 
-    
-    
 
 
-    const deleteItem = async (index) => {
+
+
+    const deleteItem = async (index, item) => {
         await cartItemsList.splice(index, 1)
-        await modifyQuantity(index, 'delete')
-        //await updateCart()
-        // setTimeout(() => {
-        //     getCartItems()
-        // }, 1000);
+        await modifyQuantity(index, 'delete', item)
     }
 
 
@@ -171,16 +146,14 @@ const CartScreen = ({ navigation }) => {
                 removeItem={() => modifyCart(item, 'remove', index)}
                 width={width}
                 active={active}
-                deleteItem={() => deleteItem(index)}
+                deleteItem={() => deleteItem(index, item)}
                 availability={item?.availability}
             />
         )
     }
 
     const gotoCheckout = async () => {
-        let cartItems = cartItemsList?.filter(cart =>( cart?.available === false || cart?.availability === false))
-
-        //reactotron.log({ cartItems, cartItemsList })
+        let cartItems = cartItemsList?.filter(cart => (cart?.available === false || cart?.availability === false))
 
         if (cartItems?.length > 0) {
             Toast.show({
@@ -201,7 +174,7 @@ const CartScreen = ({ navigation }) => {
     }
 
     const emptyComponent = () => {
-        if(!loading){
+        if (!loading) {
             return (
                 <View
                     style={{
@@ -247,7 +220,7 @@ const CartScreen = ({ navigation }) => {
                 </View>
             )
         }
-        
+
     }
 
 

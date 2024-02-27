@@ -27,31 +27,25 @@ import CartButton from '../../Components/Home/CartButton'
 const pandHome = async (datas) => {
     const homeData = await customAxios.post('customer/home', datas);
     let sliders = homeData?.data?.data?.[5];
-    let recent = await getProducts(homeData?.data?.data?.[2]?.data)
-    let messagesBanner = homeData?.data?.data?.[7]
-    let recents = {
-        type:'recentlyviewed',
-        data: recent
-    }
-    let messageArray = {
-        type:'recentlyviewed',
-        data: recent
-    }
-    let sugges = await getProducts(homeData?.data?.data?.[4]?.data)
-    let suggestions = {
-        type:'suggested_products',
-        data: sugges
-    }
-    let newArray = [homeData?.data?.data?.[0], recents, suggestions, messagesBanner]
+    let recent = [];
+    
+    recent = await getProducts(homeData?.data?.data?.[2]?.data)
+    let messagesBanner = homeData?.data?.data?.[7]?.data
+    let sugges = [];
+    //sugges = await getProducts(homeData?.data?.data?.[4]?.data)
     return {
-        items: newArray,
-        sliders
+        //items: newArray,
+        sliders,
+        recent,
+        category: homeData?.data?.data?.[0]?.data,
+        suggestions: sugges,
+        messagesBanner
     }
 }
 
 
 
-const PandaHome = ({navigation}) => {
+const PandaHome = ({ navigation }) => {
 
     const userContext = useContext(AuthContext)
     const { active } = useContext(PandaContext)
@@ -75,39 +69,40 @@ const PandaHome = ({navigation}) => {
     })
 
 
-    //reactotron.log({data})
 
-    // useFocusEffect(
-    //     React.useCallback(() => {
-    //       if (firstTimeRef.current) {
-    //          firstTimeRef.current = false;
-    //          return;
-    //       }
-    
-    //       refetch()
-    //       //infiniteQueryRefetch()
-    //     }, [refetch])
-    // )
+    reactotron.log({ data })
+
+    useFocusEffect(
+        React.useCallback(() => {
+          if (firstTimeRef.current) {
+             firstTimeRef.current = false;
+             return;
+          }
+
+          refetch()
+          //infiniteQueryRefetch()
+        }, [refetch])
+    )
 
     const onClickDrawer = useCallback(() => {
         navigation.openDrawer()
-    },[])
+    }, [])
 
     const changeAddress = useCallback(() => {
         navigation?.push("AddNewLocation", { mode: 'home', enableBack: true })
-    },[]);
+    }, []);
 
 
     const onClickNotificatn = useCallback(() => {
         navigation.navigate('Notifications');
-    },[]);
+    }, []);
 
 
     const onCategoryClick = useCallback((item) => {
         //reactotron.log({item})
         //navigation.navigate(mode === 'panda' ? 'pandaCategory' : 'Category', { name: mode === 'panda' ? item?.store_name : item?.name, mode, item: item })
         navigation.navigate(item?.name?.toUpperCase() === "RESTAURANTS" ? "restaurant" : "Category", { name: active === 'panda' ? item?.store_name : item?.name, active, item: item })
-    },[]);
+    }, []);
 
     const CarouselSelect = (item) => {
         switch (item?.screentype) {
@@ -159,25 +154,25 @@ const PandaHome = ({navigation}) => {
 
     const onSearch = useCallback(() => {
         navigation.navigate('ProductSearchScreen', { mode: 'panda' })
-    },[])
+    }, [])
 
 
     const listHeader = () => {
-        return(
+        return (
             <View style={{ backgroundColor: '#fff' }}>
-            {data?.sliders?.data?.length > 0 && <Carousel
-                loop
-                width={width}
-                height={height / 5}
-                autoPlay={true}
-                data={data?.sliders?.data}
-                scrollAnimationDuration={1000}
-                renderItem={CarouselCardItem}
-                
-            />}
+                {data?.sliders?.data?.length > 0 && <Carousel
+                    loop
+                    width={width}
+                    height={height / 5}
+                    autoPlay={true}
+                    data={data?.sliders?.data}
+                    scrollAnimationDuration={1000}
+                    renderItem={CarouselCardItem}
+
+                />}
                 <SearchBox onPress={onSearch} />
                 <View style={{ marginHorizontal: 2, marginVertical: 15 }}>
-                    <NameText userName={ userContext?.userData ? userContext?.userData?.name ? userContext?.userData?.name : userContext?.userData?.mobile : "Guest"} mt={8} />
+                    <NameText userName={userContext?.userData ? userContext?.userData?.name ? userContext?.userData?.name : userContext?.userData?.mobile : "Guest"} mt={8} />
                 </View>
             </View>
         )
@@ -190,19 +185,18 @@ const PandaHome = ({navigation}) => {
 
 
     const _renderItem = ({ section, index }) => {
-        reactotron.log({section})
         const items = [];
-        if(section?.type === "categories"){
+        if (section?.type === "categories") {
             let numColumns = 4;
             if (index % numColumns !== 0) return null;
 
-            
-    
+
+
             for (let i = index; i < index + numColumns; i++) {
                 if (i >= section.data.length) {
                     break;
                 }
-    
+
                 items.push(<CategoriesCard item={section.data[i]} key={`${index}${section?.data[i]?._id}`} onCategoryClick={onCategoryClick} width={width} />);
             }
 
@@ -219,38 +213,38 @@ const PandaHome = ({navigation}) => {
                 </View>
             );
         }
-        else if(section?.type === "message_banner_array"){
-            if(index > 0) {
+        else if (section?.type === "message_banner_array") {
+            if (index > 0) {
                 return;
-            } 
+            }
 
-            return(
+            return (
                 <View style={{ height: 200 }}>
-                <Carousel
-                    loop
-                    width={width}
-                    height={height / 5}
-                    autoPlay={true}
-                    data={section?.data}
-                    scrollAnimationDuration={5000}
-                    renderItem={MessageBanner}
-                    
-                />
+                    <Carousel
+                        loop
+                        width={width}
+                        height={height / 5}
+                        autoPlay={true}
+                        data={section?.data}
+                        scrollAnimationDuration={5000}
+                        renderItem={MessageBanner}
+
+                    />
                 </View>
             )
         }
-        else if(section?.type === "recentlyviewed" || section?.type === "suggested_products"){
-            if(index > 0) {
+        else if (section?.type === "recentlyviewed" || section?.type === "suggested_products") {
+            if (index > 0) {
                 return;
-            } 
+            }
             return (
                 <ScrollView
                     horizontal
                     showsHorizontalScrollIndicator={false}
-                    style={{ backgroundColor:'#fff', paddingVertical: 10, marginRight: 10, paddingLeft: 5 }}
+                    style={{ backgroundColor: '#fff', paddingVertical: 10, marginRight: 10, paddingLeft: 5 }}
                 >
                     {section?.data?.map(item => {
-                        return(
+                        return (
                             <ProductCard
                                 key={`${item?._id}${section?.type}`}
                                 data={item}
@@ -266,14 +260,14 @@ const PandaHome = ({navigation}) => {
             );
         }
 
-        
-        
+
+
     };
 
 
-    const sectionHeader = ({section}) => {
-        if(section.type === "recentlyviewed" && section?.data?.length > 0){
-            return(
+    const sectionHeader = ({ section }) => {
+        if (section.type === "recentlyviewed" && section?.data?.length > 0) {
+            return (
                 <View
                     style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 15, marginBottom: 5, justifyContent: 'space-between', marginRight: 5 }}
                 >
@@ -282,17 +276,17 @@ const PandaHome = ({navigation}) => {
                         onChange={setFilter} 
                     /> */}
                 </View>
-                
+
             )
         }
-        else if(section.type === "suggested_products" && section?.data?.length > 0){
-            return(
+        else if (section.type === "suggested_products" && section?.data?.length > 0) {
+            return (
                 <View
                     style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 15, marginBottom: 5, justifyContent: 'space-between', marginRight: 5 }}
                 >
                     <CommonTexts label={'Panda Suggestions'} fontSize={13} />
                 </View>
-                
+
             )
         }
     }
@@ -305,9 +299,9 @@ const PandaHome = ({navigation}) => {
         navigation.navigate('RefferRestaurant')
     }, [])
 
-    const sectionFooter = ({section}) => {
-        if(section?.type === "categories"){
-            return(
+    const sectionFooter = ({ section }) => {
+        if (section?.type === "categories") {
+            return (
                 <View style={styles.pickupReferContainer}>
                     <PickDropAndReferCard
                         onPress={pickupDropClick}
@@ -328,10 +322,10 @@ const PandaHome = ({navigation}) => {
 
 
     //Get Products Pagination wise
-    
 
 
-   
+
+
     const addToCart = (item) => {
         // reactotron.log({item});
         // return false
@@ -340,14 +334,14 @@ const PandaHome = ({navigation}) => {
 
 
 
-    
+
 
 
     return (
         <>
-            <Header 
+            <Header
                 userData={userContext?.userData}
-                changeAddress={changeAddress} 
+                changeAddress={changeAddress}
                 opendrawer={onClickDrawer}
                 currentAddress={userContext?.currentAddress}
                 active={active}
@@ -355,7 +349,8 @@ const PandaHome = ({navigation}) => {
                 //onClickWishlist={onClickWishlist}
                 onClickNotificatn={onClickNotificatn}
             />
-            <SectionList
+
+            {/* <SectionList
                 sections={data?.items ? data?.items : []}
                 keyExtractor={(item, index) => `${item?._id}${index}`}
                 renderItem={_renderItem}
@@ -363,19 +358,126 @@ const PandaHome = ({navigation}) => {
                 renderSectionFooter={sectionFooter}
                 ListHeaderComponent={listHeader}
                 style={{ backgroundColor: '#fff' }}
-                ListFooterComponent={() => <AvailableProducts 
-                    styles={styles1}
-                    width={width}
-                    loggedIn={userContext?.userData ? true : false}
-                    height={height/4}
-                    datas={datas}
-                    viewProduct={viewProduct}
-                    addToCart={addToCart}
-                />}
+                // ListFooterComponent={() => <AvailableProducts 
+                //     styles={styles1}
+                //     width={width}
+                //     loggedIn={userContext?.userData ? true : false}
+                //     height={height/4}
+                //     datas={datas}
+                //     viewProduct={viewProduct}
+                //     addToCart={addToCart}
+                // />}
                 stickySectionHeadersEnabled={false}
                 refreshing={isLoading}
                 //extraData={filter}
-            />
+            /> */}
+            <AvailableProducts
+                styles={styles1}
+                width={width}
+                loggedIn={userContext?.userData ? true : false}
+                height={height / 4}
+                datas={datas}
+                viewProduct={viewProduct}
+                addToCart={addToCart}
+                //cart={cartContext?.cart}
+            >
+                <ScrollView style={{ backgroundColor: '#fff' }}>
+                    <View style={{ backgroundColor: '#fff' }}>
+                        {data?.sliders?.data?.length > 0 && <Carousel
+                            loop
+                            width={width}
+                            height={height / 5}
+                            autoPlay={true}
+                            data={data?.sliders?.data}
+                            scrollAnimationDuration={1000}
+                            renderItem={CarouselCardItem}
+
+                        />}
+                        <SearchBox onPress={onSearch} />
+                        <View style={{ marginHorizontal: 2, marginVertical: 15 }}>
+                            <NameText userName={userContext?.userData ? userContext?.userData?.name ? userContext?.userData?.name : userContext?.userData?.mobile : "Guest"} mt={8} />
+                        </View>
+                    </View>
+                    <View
+                        style={{
+                            flexDirection: "row",
+                            justifyContent: "space-between",
+                            backgroundColor: '#fff',
+                            marginTop: 5
+                        }}
+                    >
+                        {data?.category?.map((cat, index) => (
+                            <CategoriesCard item={cat} key={`${index}${cat?._id}`} onCategoryClick={onCategoryClick} width={width} />
+                        ))}
+                    </View>
+                    {data?.messagesBanner?.length > 0 && <View style={{ height: 200 }}>
+                        <Carousel
+                            loop
+                            width={width}
+                            height={height / 5}
+                            autoPlay={true}
+                            data={data?.messagesBanner}
+                            scrollAnimationDuration={5000}
+                            renderItem={MessageBanner}
+
+                        />
+                    </View>}
+                    {data?.recent?.length > 0 && 
+                    <View style={{ paddingLeft: 10 }}>
+                    <View
+                        style={{ 
+                            flexDirection: 'row', 
+                            alignItems: 'center',
+                            marginBottom: 5, 
+                            justifyContent: 'space-between', 
+                            marginRight: 5,
+                            paddingTop: 20 
+                        }}
+                    >
+                        <CommonTexts label={'Recently Viewed'} fontSize={13} />
+                    </View>
+                    <ScrollView
+                        horizontal
+                        showsHorizontalScrollIndicator={false}
+                        style={{ backgroundColor: '#fff', paddingVertical: 10, marginRight: 10 }}
+                    >
+                        {data?.recent?.map(item => {
+                            return (
+                                <ProductCard
+                                    key={`${item?._id}`}
+                                    data={item}
+                                    styles={styles1}
+                                    width={width / 2.5}
+                                    loggedIn={userContext?.userData ? true : false}
+                                    viewProduct={viewProduct}
+                                    addToCart={addToCart}
+                                />
+                            )
+                        })}
+                    </ScrollView>
+                    </View>}
+                    {data?.suggestions?.length > 0 && <ScrollView
+                        horizontal
+                        showsHorizontalScrollIndicator={false}
+                        style={{ backgroundColor: '#fff', paddingVertical: 10, marginRight: 10, paddingLeft: 5 }}
+                    >
+                        {data?.suggestions?.map(item => {
+                            return (
+                                <ProductCard
+                                    key={`${item?._id}`}
+                                    data={item}
+                                    styles={styles1}
+                                    width={width / 2.5}
+                                    loggedIn={userContext?.userData ? true : false}
+                                    viewProduct={viewProduct}
+                                    addToCart={addToCart}
+
+                                />
+                            )
+                        })}
+                    </ScrollView>}
+                </ScrollView>
+            </AvailableProducts>
             <CartButton bottom={0} />
         </>
     )
@@ -464,13 +566,13 @@ const makeStyles = fontScale => StyleSheet.create({
         left: 5
     },
     priceTag: {
-        backgroundColor:"red",
-        alignItems:"center",
-        justifyContent:"center",
-        width:30,
-        borderTopLeftRadius:10,
-        borderBottomRightRadius:10,
-        height:20,
+        backgroundColor: "red",
+        alignItems: "center",
+        justifyContent: "center",
+        width: 30,
+        borderTopLeftRadius: 10,
+        borderBottomRightRadius: 10,
+        height: 20,
         margin: 1,
     }
 })
@@ -484,29 +586,29 @@ const styles = StyleSheet.create({
         justifyContent: 'space-evenly',
     },
     offerText: {
-        textAlign: 'center', 
-        fontWeight: 'bold', 
-        color: '#fff', 
-        fontSize: 20, 
+        textAlign: 'center',
+        fontWeight: 'bold',
+        color: '#fff',
+        fontSize: 20,
         marginTop: 50
     },
     offerDescription: {
-        textAlign: 'center', 
+        textAlign: 'center',
         //fontWeight: 'bold', 
-        color: '#FFF', 
-        fontSize: 14, 
+        color: '#FFF',
+        fontSize: 14,
         marginVertical: 15
     },
     bannerButton: {
-        width: '100%', 
-        height: '85%', 
-        alignItems: 'center', 
+        width: '100%',
+        height: '85%',
+        alignItems: 'center',
         marginTop: 20
     },
     bannerContent: {
-        position: 'absolute',  
-        height: '100%', 
-        backgroundColor: 'rgba(0,0,0,0.5)', 
+        position: 'absolute',
+        height: '100%',
+        backgroundColor: 'rgba(0,0,0,0.5)',
         width: '95%'
     }
 })

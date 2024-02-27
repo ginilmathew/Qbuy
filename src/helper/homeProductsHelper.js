@@ -1,8 +1,4 @@
 import moment from "moment";
-import { min, max } from 'lodash'
-import { useContext } from "react";
-import AuthContext from "../contexts/Auth";
-import reactotron from "reactotron-react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export async function getProducts(productsArray, offer_status = true) {
@@ -77,19 +73,17 @@ function VariantsPrice(pr, stock, minQty, vendorComission){
     const { seller_price, regular_price, offer_price, attributs, offer_date_from, offer_date_to, fixed_delivery_price, _id, title, stock_value, commission } = pr
 
     let available = false, regularPrice, sellerPrice, discountPercentage;
-
-
     if (stock) {
         if (parseInt(minQty) <= parseInt(stock_value)) {
             available = true
             let offer = offer_price ? parseFloat(offer_price) : 0;
-            let offerFromDate = moment(offer_date_from, "YYYY-MM-DD").isValid() ? moment(offer_date_from, "YYYY-MM-DD") : null
-            let offerToDate = moment(offer_date_to, "YYYY-MM-DD").isValid() ? moment(offer_date_to, "YYYY-MM-DD") : null
+            let offerFromDate = moment(offer_date_from, "YYYY-MM-DD").isValid() ? moment(moment(`${offer_date_from} 00:00:00`) , "YYYY-MM-DD HH:mm:ss") : null
+            let offerToDate = moment(offer_date_to, "YYYY-MM-DD").isValid() ? moment(moment(`${offer_date_to} 23:59:59`, "YYYY-MM-DD HH:mm:ss")) : null
 
             if (offer > 0) {
                 //products have offer price , check offer price in valid range
                 if (offerFromDate && offerToDate) {
-                    if (moment(moment().format("YYYY-MM-DD"), "YYYY-MM-DD") >= offerFromDate && moment(moment().format("YYYY-MM-DD"), "YYYY-MM-DD") <= offerToDate) {
+                    if (moment() >= offerFromDate && moment() <= offerToDate) {
                         sellerPrice = offer;
                         if (parseInt(regular_price) > 0) {
                             regularPrice = parseInt(regular_price)
@@ -178,7 +172,7 @@ function VariantsPrice(pr, stock, minQty, vendorComission){
                     }
                 }
                 else if (offerFromDate && !offerToDate) {
-                    if (moment(moment().format("YYYY-MM-DD"), "YYYY-MM-DD") >= offerFromDate) {
+                    if (moment() >= offerFromDate) {
                         sellerPrice = offer
                         if (parseInt(regular_price) > 0) {
                             regularPrice = parseInt(regular_price)
@@ -469,22 +463,21 @@ function customerGroupVariantsPrice(pr, customerGroupDiscount, customerGroupDisc
 
     let available = false, regularPrice, sellerPrice, discountPercentage;
 
-
     if (stock) {
         if (parseInt(minQty) <= parseInt(stock_value)) {
             available = true
             if (parseInt(regular_price) > 0) {
-                regularPrice = parseInt(regular_price)
+                regularPrice = parseFloat(regular_price)
             }
             else {
                 let comi;
                 //product commission
                 if (commission) {
-                    comi = parseInt(commission)
+                    comi = parseFloat(commission)
                 }
                 else { //get vendor commission
                     if (vendorComission) {
-                        comi = parseInt(vendorComission)
+                        comi = parseFloat(vendorComission)
                     }
                     else {
                         //set commission as 0
@@ -560,7 +553,6 @@ function customerGroupVariantsPrice(pr, customerGroupDiscount, customerGroupDisc
             regularPrice = amount
         }
 
-        //reactotron.log({ customerGroupDiscountType, customerGroupDiscount })
 
         if (customerGroupDiscountType?.toLowerCase() === "percentage") {
             let offerValue = (regularPrice / 100) * customerGroupDiscount;
@@ -573,17 +565,6 @@ function customerGroupVariantsPrice(pr, customerGroupDiscount, customerGroupDisc
             discountPercentage = (((regularPrice - sellerPrice) / regularPrice) * 100)
         }
 
-        // reactotron.log({
-        //     _id,
-        //     title,
-        //     regularPrice,
-        //     sellerPrice,
-        //     attributs,
-        //     stock_value,
-        //     available: true,
-        //     stock: stock,
-        //     discount: discountPercentage
-        // })
 
         return {
             _id,
@@ -616,13 +597,13 @@ function NormalProductPrice(prod){
         if (parseInt(minQty) <= parseInt(stock_value)) {
             available = true
             let offer = offer_price ? parseFloat(offer_price) : 0;
-            let offerFromDate = moment(offer_date_from, "YYYY-MM-DD").isValid() ? moment(offer_date_from, "YYYY-MM-DD") : null
-            let offerToDate = moment(offer_date_to, "YYYY-MM-DD").isValid() ? moment(offer_date_to, "YYYY-MM-DD") : null
+            let offerFromDate = moment(offer_date_from, "YYYY-MM-DD").isValid() ? moment(`${offer_date_from} 00:00:00`, "YYYY-MM-DD HH:mm:ss") : null
+            let offerToDate = moment(offer_date_to, "YYYY-MM-DD").isValid() ? moment(`${offer_date_to} 23:59:59`, "YYYY-MM-DD HH:mm:ss") : null
 
             if (offer > 0) {
                 //products have offer price , check offer price in valid range
                 if (offerFromDate && offerToDate) {
-                    if (moment(moment().format("YYYY-MM-DD"), "YYYY-MM-DD") >= offerFromDate && moment(moment().format("YYYY-MM-DD"), "YYYY-MM-DD") <= offerToDate) {
+                    if (moment() >= offerFromDate && moment() <= offerToDate) {
                         sellerPrice = offer;
                         if (parseInt(regular_price) > 0) {
                             regularPrice = parseInt(regular_price)
@@ -711,7 +692,7 @@ function NormalProductPrice(prod){
                     }
                 }
                 else if (offerFromDate && !offerToDate) {
-                    if (moment(moment().format("YYYY-MM-DD"), "YYYY-MM-DD") >= offerFromDate) {
+                    if (moment() >= offerFromDate) {
                         sellerPrice = offer
                         if (parseInt(regular_price) > 0) {
                             regularPrice = parseInt(regular_price)
@@ -949,13 +930,13 @@ function NormalProductPrice(prod){
         const { stock_value, regular_price, seller_price, commission, _id, attributes, offer_date_from, offer_date_to, offer_price } = prod
         available = true
         let offer = offer_price ? parseFloat(offer_price) : 0;
-        let offerFromDate = moment(offer_date_from, "YYYY-MM-DD").isValid() ? moment(offer_date_from, "YYYY-MM-DD") : null
-        let offerToDate = moment(offer_date_to, "YYYY-MM-DD").isValid() ? moment(offer_date_to, "YYYY-MM-DD") : null
+        let offerFromDate = moment(offer_date_from, "YYYY-MM-DD").isValid() ? moment(`${offer_date_from} 00:00:00`, "YYYY-MM-DD HH:mm:ss") : null
+        let offerToDate = moment(offer_date_to, "YYYY-MM-DD").isValid() ? moment(`${offer_date_to} 23:59:59`, "YYYY-MM-DD HH:mm:ss") : null
 
         if (offer > 0) {
             //products have offer price , check offer price in valid range
             if (offerFromDate && offerToDate) {
-                if (moment(moment().format("YYYY-MM-DD"), "YYYY-MM-DD") >= offerFromDate && moment(moment().format("YYYY-MM-DD"), "YYYY-MM-DD") <= offerToDate) {
+                if (moment() >= offerFromDate && moment() <= offerToDate) {
                     sellerPrice = offer;
                     if (parseInt(regular_price) > 0) {
                         regularPrice = parseInt(regular_price)
@@ -1044,7 +1025,7 @@ function NormalProductPrice(prod){
                 }
             }
             else if (offerFromDate && !offerToDate) {
-                if (moment(moment().format("YYYY-MM-DD"), "YYYY-MM-DD") >= offerFromDate) {
+                if (moment() >= offerFromDate) {
                     sellerPrice = offer
                     if (parseInt(regular_price) > 0) {
                         regularPrice = parseInt(regular_price)
@@ -1272,8 +1253,6 @@ function NormalProductPrice(prod){
 
 function customerGroupPrice(prod, customerGroupDiscount, customerGroupDiscountType) {
 
-    reactotron.log({prod, customerGroupDiscount, customerGroupDiscountType})
-
 
     let available = false, regularPrice, sellerPrice;
     let minQty = prod?.minimum_qty ? parseFloat(prod?.minimum_qty) : 1
@@ -1416,25 +1395,29 @@ async function getProductPrice(prod, customerGroup, offer_status) {
             let variants;
             if(prod?.selectedVariant){
                 let variant = await prod?.variants?.find(vr => vr?._id === prod?.selectedVariant);
-                let res = customerGroupVariantsPrice(variant, parseFloat(customerGroup?.discount_value), customerGroup?.discount_type, parseInt(prod?.stock), minQty, comi) 
+                let res = customerGroupVariantsPrice(variant, parseFloat(customerGroup?.discount_value), customerGroup?.discount_type, prod?.stock, minQty, comi) 
                 variants = [res];
             }
             else{
                 variants = await prod?.variants?.map(pr => {
-                    return customerGroupVariantsPrice(pr, parseFloat(customerGroup?.discount_value), customerGroup?.discount_type, parseInt(prod?.stock), minQty, comi)
+                    return customerGroupVariantsPrice(pr, parseFloat(customerGroup?.discount_value), customerGroup?.discount_type, prod?.stock, minQty, comi)
                 })
             }
-            //let 
 
-            //reactotron.log({ variants })
 
-            var result = variants?.filter((vari) => vari?.available === true).reduce(function (res, obj) {
-                return (obj.sellerPrice < res.sellerPrice) ? obj : res;
-            });
+            let available = variants?.filter((vari) => vari?.available === true);
+            let result = available
+            if(available?.length > 0){
+                result = available.reduce(function (res, obj) {
+                    return (obj.sellerPrice < res.sellerPrice) ? obj : res;
+                });
+            }
+            // var result = variants?.filter((vari) => vari?.available === true)?.reduce(function (res, obj) {
+            //     return (obj.sellerPrice < res.sellerPrice) ? obj : res;
+            // });
 
             result['attributesName'] = result?.attributs?.join(', ')
 
-            reactotron.log({result})
 
             return result
         }
@@ -1450,24 +1433,29 @@ async function getProductPrice(prod, customerGroup, offer_status) {
             let variants;
             if(prod?.selectedVariant){
                 let variant = await prod?.variants?.find(vr => vr?._id === prod?.selectedVariant);
-                let res = customerGroupVariantsPrice(variant, parseFloat(offer_value), offer_type, parseInt(prod?.stock), minQty, comi) 
+                let res = customerGroupVariantsPrice(variant, parseFloat(offer_value), offer_type, prod?.stock, minQty, comi) 
                 variants = [res];
             }
             else{
                 variants = await prod?.variants?.map(pr => {
-                    return customerGroupVariantsPrice(pr, parseFloat(offer_value), offer_type, parseInt(prod?.stock), minQty, comi)
+                    return customerGroupVariantsPrice(pr, parseFloat(offer_value), offer_type, prod?.stock, minQty, comi)
                 })
             }
 
-            // let variants = await prod?.variants?.map(pr => {
-            //     return customerGroupVariantsPrice(pr, parseFloat(offer_value), offer_type, parseInt(prod?.stock), minQty, comi)
-            // })
 
-            //reactotron.log({ variants })
 
-            var result = variants?.filter((vari) => vari?.available === true).reduce(function (res, obj) {
-                return (obj.sellerPrice < res.sellerPrice) ? obj : res;
-            });
+            let available = variants?.filter((vari) => vari?.available === true);
+            let result = available
+
+            if(available?.length > 0){
+                result = available?.reduce(function (res, obj) {
+                    return (obj?.sellerPrice < res?.sellerPrice) ? obj : res;
+                });
+            }
+
+
+
+            
 
             result['attributesName'] = result?.attributs?.join(', ')
 
@@ -1479,16 +1467,15 @@ async function getProductPrice(prod, customerGroup, offer_status) {
     }
     else{
         if (prod?.variants?.length > 0) {
-
             let variants;
             if(prod?.selectedVariant){
                 let variant = await prod?.variants?.find(vr => vr?._id === prod?.selectedVariant);
-                let res = VariantsPrice(variant, parseInt(prod?.stock), minQty, comi) 
+                let res = VariantsPrice(variant, prod?.stock, minQty, comi) 
                 variants = [res];
             }
             else{
                 variants = await prod?.variants?.map(pr => {
-                    return VariantsPrice(pr, parseInt(prod?.stock), minQty, comi)
+                    return VariantsPrice(pr, prod?.stock, minQty, comi)
                 })
             }
 
@@ -1496,9 +1483,20 @@ async function getProductPrice(prod, customerGroup, offer_status) {
             //     return VariantsPrice(pr, parseInt(prod?.stock), minQty, comi)
             // })
 
-            var result = variants?.filter((vari) => vari?.available === true).reduce(function (res, obj) {
-                return (obj.sellerPrice < res.sellerPrice) ? obj : res;
-            });
+            
+
+            let available = variants?.filter((vari) => vari?.available === true);
+            let result = available
+
+            if(available?.length > 0){
+                result = available?.reduce(function (res, obj) {
+                    return (obj.sellerPrice < res.sellerPrice) ? obj : res;
+                });
+            }
+            
+
+
+
 
             result['attributesName'] = result?.attributs?.join(', ')
 

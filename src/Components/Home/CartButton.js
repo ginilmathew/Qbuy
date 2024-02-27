@@ -56,7 +56,7 @@ const CartButton = ({ bottom }) => {
 
         const total = allProds?.reduce((acc, curr) => {
             return acc + parseFloat(curr?.price) * parseFloat(curr?.quantity)
-        }, 0)
+        },0)
 
         setTotal(total)
 
@@ -78,7 +78,8 @@ const CartButton = ({ bottom }) => {
 
     if(cart?.product_details?.length > 0) {
         return (
-            <Animated.View style={[styles.container, animatedStyles]} entering={FadeIn} exiting={FadeOut}>
+            <View style={{ paddingTop: 70 }}>
+            <Animated.View style={[styles.container, { bottom: bottom, }]} entering={FadeIn} exiting={FadeOut}>
             <TouchableOpacity
                 onPress={onPress}
                 activeOpacity={0.8}
@@ -108,7 +109,7 @@ const CartButton = ({ bottom }) => {
                 </LinearGradient>
             </TouchableOpacity>
             </Animated.View>
-           
+            </View>
         );
     }
 

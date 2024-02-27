@@ -59,23 +59,31 @@ const CartProvider = (props) => {
     // }, [address])
 
 
-    const modifyQuantity = (index, mode) => {
-        //reactotron.log({cart, index, mode})
+    const modifyQuantity = (index, mode, product) => {
+        let findIndex;
+        if(product?.variant_id){
+            findIndex = cart?.product_details?.findIndex(pr => pr?.product_id === product?._id && pr?.variants?.[0]?.variant_id === product?.variant_id)
+        }
+        else{
+            findIndex = cart?.product_details?.findIndex(pr => pr?.product_id === product?._id)
+        }
+        //reactotron.log({cart, index, mode, product})
+        //return false;
         if(mode === "add"){
-            cart.product_details[index].quantity = cart.product_details[index].quantity + 1
+            cart.product_details[findIndex].quantity = cart.product_details[index].quantity + 1
         }
         else if(mode === "delete"){
-            let remain = cart.product_details?.filter((prod, i)  => i != index)
+            let remain = cart.product_details?.filter((prod, i)  => i != findIndex)
             //delete cart.product_details[index]
 
             //reactotron.log({remain})
             cart['product_details'] = remain
 
             //reactotron.log({cart})
-            //updateCart()
+            updateCart()
         }
         else{
-            cart.product_details[index].quantity = cart.product_details[index].quantity - 1
+            cart.product_details[findIndex].quantity = cart.product_details[findIndex].quantity - 1
         }
 
         
@@ -148,48 +156,113 @@ const CartProvider = (props) => {
                 // }
             }
             else{
-                productDetails = {
-                    product_id: item?._id,
-                    name: item?.name,
-                    image: item?.product_image,
-                    type: price?._id ? 'variant' : 'single',
-                    attributes: price?.attributs,
-                    variants: price?._id ? [
-                        {
-                            variant_id: price?._id,
-                            attributs: price?.attributs
+                if(price?.stock){
+                    if(parseInt(price?.stock_value) >= minimumQty){
+                        productDetails = {
+                            product_id: item?._id,
+                            name: item?.name,
+                            image: item?.product_image,
+                            type: price?._id ? 'variant' : 'single',
+                            attributes: price?.attributs,
+                            variants: price?._id ? [
+                                {
+                                    variant_id: price?._id,
+                                    attributs: price?.attributs
+                                }
+                            ] : null,
+                            quantity: minimumQty
+                        };
+                        cartItems = {
+                            product_details: [...cart?.product_details, productDetails],
+                            user_id: userData?._id,
+                            type: panda.active
                         }
-                    ] : null,
-                    quantity: minimumQty
-                };
-                cartItems = {
-                    product_details: [...cart?.product_details, productDetails],
-                    user_id: userData?._id,
-                    type: panda.active
+                    }
+                    else{
+                        Toast.show({
+                            text1: 'Out off stock'
+                        })
+                        return false;
+                    }
                 }
+                else{
+                    productDetails = {
+                        product_id: item?._id,
+                        name: item?.name,
+                        image: item?.product_image,
+                        type: price?._id ? 'variant' : 'single',
+                        attributes: price?.attributs,
+                        variants: price?._id ? [
+                            {
+                                variant_id: price?._id,
+                                attributs: price?.attributs
+                            }
+                        ] : null,
+                        quantity: minimumQty
+                    };
+                    cartItems = {
+                        product_details: [...cart?.product_details, productDetails],
+                        user_id: userData?._id,
+                        type: panda.active
+                    }
+                }
+
             }
         }
         else {
-            url = "customer/cart/add";
-            productDetails = {
-                product_id: item?._id,
-                name: item?.name,
-                image: item?.product_image,
-                type: price?._id ? 'variant' : 'single',
-                attributes: price?.attributs,
-                variants: price?._id ? [
-                    {
-                        variant_id: price?._id,
-                        attributs: price?.attributs
+            if(price?.stock){
+                if(parseInt(price?.stock_value) >= minimumQty){
+                    url = "customer/cart/add";
+                    productDetails = {
+                        product_id: item?._id,
+                        name: item?.name,
+                        image: item?.product_image,
+                        type: price?._id ? 'variant' : 'single',
+                        attributes: price?.attributs,
+                        variants: price?._id ? [
+                            {
+                                variant_id: price?._id,
+                                attributs: price?.attributs
+                            }
+                        ] : null,
+                        quantity: minimumQty
+                    };
+                    cartItems = {
+                        product_details: [productDetails],
+                        user_id: userData?._id,
+                        type: panda.active
                     }
-                ] : null,
-                quantity: minimumQty
-            };
-            cartItems = {
-                product_details: [productDetails],
-                user_id: userData?._id,
-                type: panda.active
+                }
+                else{
+                    Toast.show({
+                        text1: 'Out off stock'
+                    })
+                    return false;
+                }
             }
+            else{
+                url = "customer/cart/add";
+                    productDetails = {
+                        product_id: item?._id,
+                        name: item?.name,
+                        image: item?.product_image,
+                        type: price?._id ? 'variant' : 'single',
+                        attributes: price?.attributs,
+                        variants: price?._id ? [
+                            {
+                                variant_id: price?._id,
+                                attributs: price?.attributs
+                            }
+                        ] : null,
+                        quantity: minimumQty
+                    };
+                    cartItems = {
+                        product_details: [productDetails],
+                        user_id: userData?._id,
+                        type: panda.active
+                    }
+            }
+            
 
 
         }
@@ -232,7 +305,9 @@ const CartProvider = (props) => {
 
 
     const addToCart = async (item) => {
-        //reactotron.log({item, cart})
+        reactotron.log({item, cart})
+
+        //return false
         let productDetails;
         let cartItems, url;
         let minimumQty = item?.minQty ? item?.minQty : 1
@@ -469,7 +544,7 @@ const CartProvider = (props) => {
         }
     }
 
-    const updateCart = async() => {
+    const updateCart = useCallback(async() => {
 
         // reactotron.log({cart})
         // return false;
@@ -500,7 +575,7 @@ const CartProvider = (props) => {
                 loadingContext?.setLoading(false)
             }
         }
-    }
+    },[cart])
 
 
     const addLocalCart = async (item, selectedVariant = null) => {

@@ -18,8 +18,6 @@ import { BASE_URL, MAPS_KEY } from '../config/constants';
 import axios from 'axios';
 import VersionUpgrade from '../screens/auth/VersionUpgrade';
 import DeviceInfo from 'react-native-device-info';
-import LoaderContext from '../contexts/Loader';
-import LoadingModal from '../Components/LoadingModal';
 import CartContext from '../contexts/Cart';
 
 const Stack = createNativeStackNavigator();
@@ -30,7 +28,6 @@ const index = () => {
     const [initialScreen, setInitialScreen] = useState(null);
     const { env, mode } = NativeModules.RNENVConfig
 
-    const loadingContext = useContext(LoaderContext)
     const { updateCart, getCartDetails } = useContext(CartContext)
 
 
@@ -94,23 +91,6 @@ const index = () => {
             subscription.remove();
         };
         
-        //const token = await AsyncStorage.getItem('token');
-        if (token) {
-            const subscription = AppState.addEventListener('change', async nextAppState => {
-
-                if (nextAppState === 'active') {
-
-                    await customAxios.post('customer/login-status-update', { login_status: true })
-
-                } else {
-
-                    await customAxios.post('customer/login-status-update', { login_status: false })
-                }
-            });
-            return () => {
-                subscription.remove();
-            };
-        }
     }, []);
 
 
@@ -223,7 +203,6 @@ const index = () => {
             <Stack.Screen name="version" component={VersionUpgrade} />
             <Stack.Screen name="AddNewLocation" component={AddNewLocation} />
         </Stack.Navigator>
-        <LoadingModal isVisible={loadingContext?.loading} />
         </>
     )
 }

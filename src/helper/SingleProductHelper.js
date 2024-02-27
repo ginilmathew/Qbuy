@@ -1,6 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import moment from "moment";
-import reactotron from "reactotron-react-native";
 
 
 export async function singleProduct(prod) {
@@ -19,6 +18,7 @@ export async function singleProduct(prod) {
         storeOffer = prod?.validStoreOffer;
     }
 
+
     let comi;
     let minQty = prod?.minimum_qty ? parseFloat(prod?.minimum_qty) : 1
     let vendorCom = prod?.vendors?.additional_details?.commission
@@ -31,7 +31,6 @@ export async function singleProduct(prod) {
              return  VariantsPrice(pr, customerGroup, parseInt(prod?.stock), minQty, comi, storeOffer)
         })
 
-        //reactotron.log({variants})
         return variants;
     }   
     else{
@@ -73,7 +72,7 @@ function VariantsPrice(pr, customerGroup, stock, minQty, vendorComission, storeO
 
             if(customerGroup){
                 const {discount_value, discount_type} = customerGroup
-                if (discount_type === "Percentage") {
+                if (discount_type?.toLowerCase() === "percentage") {
                     let offerValue = (regularPrice / 100) * parseFloat(discount_value);
     
                     sellerPrice = regularPrice - offerValue
@@ -98,8 +97,8 @@ function VariantsPrice(pr, customerGroup, stock, minQty, vendorComission, storeO
             }
             else if(storeOffer){
                 const {offer_type, offer_value} = storeOffer
-                if (offer_type === "Percentage") {
-                    let offerValue = (regularPrice / 100) * parseFloat(offer_value);
+                if (offer_type?.toLowerCase() === "percentage") {
+                    let offerValue = (parseFloat(regularPrice) / 100) * parseFloat(offer_value);
     
                     sellerPrice = regularPrice - offerValue
                     discountPercentage = parseFloat(offer_value)
@@ -220,7 +219,7 @@ function VariantsPrice(pr, customerGroup, stock, minQty, vendorComission, storeO
 
         if(customerGroup){
             const {discount_value, discount_type} = customerGroup
-            if (discount_type === "Percentage") {
+            if (discount_type?.toLowerCase() === "percentage") {
                 let offerValue = (regularPrice / 100) * parseFloat(discount_value);
 
                 sellerPrice = regularPrice - offerValue
@@ -245,7 +244,7 @@ function VariantsPrice(pr, customerGroup, stock, minQty, vendorComission, storeO
         }
         else if(storeOffer){
             const {offer_type, offer_value} = storeOffer
-            if (offer_type === "Percentage") {
+            if (offer_type?.toLowerCase() === "percentage") {
                 let offerValue = (regularPrice / 100) * parseFloat(offer_value);
 
                 sellerPrice = regularPrice - offerValue
@@ -369,7 +368,7 @@ function Normalprice(prod, customerGroup, storeOffer){
 
             if(customerGroup){
                 const {discount_value, discount_type} = customerGroup
-                if (discount_type === "Percentage") {
+                if (discount_type?.toLowerCase() === "percentage") {
                     let offerValue = (regularPrice / 100) * parseFloat(discount_value);
     
                     sellerPrice = regularPrice - offerValue
@@ -395,7 +394,7 @@ function Normalprice(prod, customerGroup, storeOffer){
             }
             else if(storeOffer){
                 const {offer_type, offer_value} = storeOffer
-                if (offer_type === "Percentage") {
+                if (offer_type?.toLowerCase() === "percentage") {
                     let offerValue = (regularPrice / 100) * parseFloat(offer_value);
     
                     sellerPrice = regularPrice - offerValue
@@ -518,7 +517,7 @@ function Normalprice(prod, customerGroup, storeOffer){
 
         if(customerGroup){
             const {discount_value, discount_type} = customerGroup
-            if (discount_type === "Percentage") {
+            if (discount_type?.toLowerCase() === "percentage") {
                 let offerValue = (regularPrice / 100) * parseFloat(discount_value);
 
                 sellerPrice = regularPrice - offerValue
@@ -544,7 +543,7 @@ function Normalprice(prod, customerGroup, storeOffer){
         }
         else if(storeOffer){
             const {offer_type, offer_value} = storeOffer
-            if (offer_type === "Percentage") {
+            if (offer_type?.toLowerCase() === "percentage") {
                 let offerValue = (regularPrice / 100) * parseFloat(offer_value);
 
                 sellerPrice = regularPrice - offerValue

@@ -6,19 +6,22 @@ import LinearGradient from 'react-native-linear-gradient'
 import CommonAddButton from '../CommonAddButton'
 import Fontisto from 'react-native-vector-icons/Fontisto'
 import Animated from 'react-native-reanimated'
+import reactotron from 'reactotron-react-native'
 
 const AnimatedFastImage = Animated.createAnimatedComponent(FastImage)
 
 
 const ProductCard = ({data, loggedIn, addToCart, viewProduct, width, styles, height, ...props}) => {
 
+    reactotron.log({data})
+
     const openProduct = () => {
         viewProduct(data)
     }
 
-    const addCart = useCallback(() => {
+    const addCart = () => {
         addToCart(data)
-    },[data?._id])
+    }
 
     return (
         <TouchableOpacity
