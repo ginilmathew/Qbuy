@@ -20,6 +20,7 @@ import CommonTexts from '../../Components/CommonTexts';
 import ProductCard from '../../Components/Home/ProductCard';
 import RestaurantCard from '../../Components/Home/RestaurantCard';
 import CartContext from '../../contexts/Cart';
+import CartButton from '../../Components/Home/CartButton';
 
 const RestaurantScreen = ({route, navigation}) => {
 
@@ -257,11 +258,11 @@ const RestaurantScreen = ({route, navigation}) => {
                 renderItem={_renderItem}
                 ListHeaderComponent={sectionHeader}
                 renderSectionHeader={rendersectionHeader}
-                style={{ backgroundColor: '#fff', marginHorizontal: 5 }}
-                ListFooterComponent={() => <View style={{ height: 100 }} />}
+                style={{ backgroundColor: '#fff', marginHorizontal: 5, height: cartContext?.cart?.product_details?.length > 0 ?  height-170 : height-100 }}
                 stickySectionHeadersEnabled={false}
                 //extraData={filter}
             />
+            <CartButton bottom={0} />
         </View>
         
     )

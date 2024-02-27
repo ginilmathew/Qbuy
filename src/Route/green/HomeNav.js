@@ -15,6 +15,7 @@ import AddNewLocation from '../../screens/MyAccount/MyAddresses/LocationScreen/A
 import AddDeliveryAddress from '../../screens/MyAccount/MyAddresses/LocationScreen/AddDeliveryAddress';
 import OrderProcessing from '../../screens/_Home/OrderProcessing';
 import OrderPlaced from '../../screens/Cart/Checkout/Payment/OrderPlaced';
+import RefferRestaurant from '../../screens/Home/RefferRestaurant';
 
 const Stack = createNativeStackNavigator();
 
@@ -35,6 +36,7 @@ const HomeNav = () => {
             <Stack.Screen name="AddNewLocation" component={AddNewLocation}/>
             <Stack.Screen name="AddDeliveryAddress" component={AddDeliveryAddress}/>
             <Stack.Screen name="OrderPlaced" component={OrderPlaced}/>
+            <Stack.Screen name="RefferRestaurant" component={RefferRestaurant}/>
 
         </Stack.Navigator>
     )

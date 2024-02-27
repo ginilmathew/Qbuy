@@ -157,139 +157,17 @@ const PandaHome = ({ navigation }) => {
     }, [])
 
 
-    const listHeader = () => {
-        return (
-            <View style={{ backgroundColor: '#fff' }}>
-                {data?.sliders?.data?.length > 0 && <Carousel
-                    loop
-                    width={width}
-                    height={height / 5}
-                    autoPlay={true}
-                    data={data?.sliders?.data}
-                    scrollAnimationDuration={1000}
-                    renderItem={CarouselCardItem}
-
-                />}
-                <SearchBox onPress={onSearch} />
-                <View style={{ marginHorizontal: 2, marginVertical: 15 }}>
-                    <NameText userName={userContext?.userData ? userContext?.userData?.name ? userContext?.userData?.name : userContext?.userData?.mobile : "Guest"} mt={8} />
-                </View>
-            </View>
-        )
-    }
-
+   
 
     const viewProduct = (item) => {
         navigation.navigate("SingleItemScreen", { item })
     }
 
 
-    const _renderItem = ({ section, index }) => {
-        const items = [];
-        if (section?.type === "categories") {
-            let numColumns = 4;
-            if (index % numColumns !== 0) return null;
+    
 
 
-
-            for (let i = index; i < index + numColumns; i++) {
-                if (i >= section.data.length) {
-                    break;
-                }
-
-                items.push(<CategoriesCard item={section.data[i]} key={`${index}${section?.data[i]?._id}`} onCategoryClick={onCategoryClick} width={width} />);
-            }
-
-            return (
-                <View
-                    style={{
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                        backgroundColor: '#fff',
-                        marginTop: 5
-                    }}
-                >
-                    {items}
-                </View>
-            );
-        }
-        else if (section?.type === "message_banner_array") {
-            if (index > 0) {
-                return;
-            }
-
-            return (
-                <View style={{ height: 200 }}>
-                    <Carousel
-                        loop
-                        width={width}
-                        height={height / 5}
-                        autoPlay={true}
-                        data={section?.data}
-                        scrollAnimationDuration={5000}
-                        renderItem={MessageBanner}
-
-                    />
-                </View>
-            )
-        }
-        else if (section?.type === "recentlyviewed" || section?.type === "suggested_products") {
-            if (index > 0) {
-                return;
-            }
-            return (
-                <ScrollView
-                    horizontal
-                    showsHorizontalScrollIndicator={false}
-                    style={{ backgroundColor: '#fff', paddingVertical: 10, marginRight: 10, paddingLeft: 5 }}
-                >
-                    {section?.data?.map(item => {
-                        return (
-                            <ProductCard
-                                key={`${item?._id}${section?.type}`}
-                                data={item}
-                                styles={styles1}
-                                width={width / 2.5}
-                                loggedIn={userContext?.userData ? true : false}
-                                viewProduct={viewProduct}
-                                addToCart={addToCart}
-                            />
-                        )
-                    })}
-                </ScrollView>
-            );
-        }
-
-
-
-    };
-
-
-    const sectionHeader = ({ section }) => {
-        if (section.type === "recentlyviewed" && section?.data?.length > 0) {
-            return (
-                <View
-                    style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 15, marginBottom: 5, justifyContent: 'space-between', marginRight: 5 }}
-                >
-                    <CommonTexts label={'Recently Viewed'} fontSize={13} />
-                    {/* <CommonFiltration 
-                        onChange={setFilter} 
-                    /> */}
-                </View>
-
-            )
-        }
-        else if (section.type === "suggested_products" && section?.data?.length > 0) {
-            return (
-                <View
-                    style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 15, marginBottom: 5, justifyContent: 'space-between', marginRight: 5 }}
-                >
-                    <CommonTexts label={'Panda Suggestions'} fontSize={13} />
-                </View>
-
-            )
-        }
-    }
+    
 
     const pickupDropClick = useCallback(() => {
         navigation.navigate('PickupAndDropoff')
@@ -299,26 +177,7 @@ const PandaHome = ({ navigation }) => {
         navigation.navigate('RefferRestaurant')
     }, [])
 
-    const sectionFooter = ({ section }) => {
-        if (section?.type === "categories") {
-            return (
-                <View style={styles.pickupReferContainer}>
-                    <PickDropAndReferCard
-                        onPress={pickupDropClick}
-                        lotties={require('../../Lottie/deliveryBike.json')}
-                        label={'Pick Up & Drop Off'}
-                        lottieFlex={0.5}
-                    />
-                    <PickDropAndReferCard
-                        onPress={referRestClick}
-                        lotties={require('../../Lottie/rating.json')}
-                        label={'Refer A Restaurant'}
-                        lottieFlex={0.5}
-                    />
-                </View>
-            )
-        }
-    }
+    
 
 
     //Get Products Pagination wise
@@ -423,7 +282,7 @@ const PandaHome = ({ navigation }) => {
                             lottieFlex={0.5}
                         />
                         <PickDropAndReferCard
-                            onPress={pickupDropClick}
+                            onPress={referRestClick}
                             lotties={require('../../Lottie/deliveryBike.json')}
                             label={'Refer a Restaurant'}
                             lottieFlex={0.5}
@@ -447,10 +306,10 @@ const PandaHome = ({ navigation }) => {
                                 style={{
                                     flexDirection: 'row',
                                     alignItems: 'center',
-                                    marginBottom: 5,
+                                    marginBottom: 0,
                                     justifyContent: 'space-between',
                                     marginRight: 5,
-                                    paddingTop: 20
+                                    paddingTop: 5
                                 }}
                             >
                                 <CommonTexts label={'Recently Viewed'} fontSize={13} />
@@ -638,7 +497,8 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '85%',
         alignItems: 'center',
-        marginTop: 20
+        marginTop: 20,
+        borderRadius: 5
     },
     bannerContent: {
         position: 'absolute',
