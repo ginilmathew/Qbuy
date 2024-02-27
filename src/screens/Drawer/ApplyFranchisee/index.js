@@ -69,10 +69,6 @@ const ApplyFranchisee = ({ navigation }) => {
 
             <ScrollView
                 keyboardShouldPersistTaps='always'
-                contentContainerStyle={{
-                    height,
-                    justifyContent: 'center',
-                }}
                 style={{
                     backgroundColor: active === 'green' ? '#F4FFE9' : active === 'fashion' ? '#FFF5F7' : '#fff',
                     paddingHorizontal: 15
@@ -138,11 +134,11 @@ const ApplyFranchisee = ({ navigation }) => {
                     /> */}
                 <GooglePlaces
                     control={control}
-                    fieldName={'location'}
-                    topLabel={'Location'}
+                    fieldName={'pickup'}
+                    topLabel={'Pick Up Location'}
                     setValue={setValue}
+                    // setDistance={setDistance}
                     setError={setError}
-                    bottom
                 />
 
                 <CommonInput
@@ -151,7 +147,6 @@ const ApplyFranchisee = ({ navigation }) => {
                     fieldName="comments"
                     topLabel={'Comments'}
                     multi
-                    top={60}
                 />
 
                 <CustomButton
