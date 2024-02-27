@@ -1,5 +1,5 @@
-import { Image, StyleSheet, Text, View, ScrollView } from 'react-native'
-import React, { useContext, useState } from 'react'
+import { Image, StyleSheet, Text, View, ScrollView, useWindowDimensions } from 'react-native'
+import React, { useCallback, useContext, useState } from 'react'
 import Lottie from 'lottie-react-native';
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -9,72 +9,108 @@ import CommonSelectDropdown from '../../../Components/CommonSelectDropdown';
 import CommonInput from '../../../Components/CommonInput';
 import CustomButton from '../../../Components/CustomButton';
 import PandaContext from '../../../contexts/Panda';
+import GooglePlaces from '../../../Components/GooglePlaces';
+import customAxios from '../../../CustomeAxios';
+import { Toast } from 'react-native-toast-message/lib/src/Toast';
+import SuccessPage from '../../../Components/SuccessPage';
 
 
-const ApplyFranchisee = () => {
+const ApplyFranchisee = ({ navigation }) => {
     const contextPanda = useContext(PandaContext)
+    const [loading, setLoading] = useState(false);
+    const [showSuccess, setShowSuccess] = useState(false);
+
+    const { height } = useWindowDimensions()
     let active = contextPanda.active
 
     const schema = yup.object({
-		mobile: yup.string().min(8).required('Phone number is required'),
-	}).required();
+        name: yup.string().required('Name is required'),
+        mobile: yup.number().required('Mobile is required'),
+        location: yup.string().required('Location is required'),
+        comments: yup.string().required('Comments is required'),
+    }).required();
 
-	const { control, handleSubmit, formState: { errors }, setValue } = useForm({
-		resolver: yupResolver(schema)
-	});
+    const { control, handleSubmit, formState: { errors }, setValue, setError } = useForm({
+        resolver: yupResolver(schema)
+    });
+
+    const onSubmit = useCallback((data) => {
+
+        setLoading(true);
+
+        customAxios.post('customer/franchise-enquiry', data)
+            .then(res => {
+                setShowSuccess(true);
+            })
+            .catch(err => {
+                Toast.show({
+                    type: 'error',
+                    text1: err
+                })
+            })
+            .finally(e => {
+                setLoading(false)
+            })
+    }, [])
 
 
-    // const [values, setValues] = useState(null);
+    const goHome = useCallback(() => {
+        navigation?.goBack()
+    }, [])
 
 
-    // const data = [
-    //     { label: 'Test1', value: '1' },
-    //     { label: 'Test2', value: '2' },
-    //     { label: 'Test3', value: '3' },
-    // ];
-
-    // const [fran, setFran] = useState(null);
-
-
-    // const franchise = [
-    //     { label: 'Test1', value: '1' },
-    //     { label: 'Test2', value: '2' },
-    //     { label: 'Test3', value: '3' },
-    // ];
+    if (showSuccess) {
+        return <SuccessPage source={require('../../../Lottie/send.json')} goHome={goHome} />
+    }
 
     return (
         <>
             <HeaderWithTitle title={'Apply for a franchisee'} />
-            {/* <ScrollView 
-                style={{ 
-                    flex:1, 
-                    backgroundColor: active === 'green' ? '#F4FFE9' : active === 'fashion' ? '#FFF5F7' : '#fff', 
-                    paddingHorizontal:15 
+
+            <ScrollView
+                keyboardShouldPersistTaps='always'
+                contentContainerStyle={{
+                    height,
+                    justifyContent: 'center',
+                }}
+                style={{
+                    backgroundColor: active === 'green' ? '#F4FFE9' : active === 'fashion' ? '#FFF5F7' : '#fff',
+                    paddingHorizontal: 15
                 }}
             >
-                <View style={{height:500, marginTop:-150}}>
-                    <Lottie 
-                        source={{uri :'https://assets3.lottiefiles.com/packages/lf20_fzq71t74.json'}} 
+
+                <View style={{
+                    // backgroundColor: active === 'green' ? '#F4FFE9' : active === 'fashion' ? '#FFF5F7' : '#fff',
+                    marginBottom: 30
+                }}>
+                    <Lottie
+                        style={{
+                            height: 270
+                        }}
+                        source={{ uri: 'https://assets3.lottiefiles.com/packages/lf20_fzq71t74.json' }}
                         autoPlay
                     />
-                </View>
-                <Text style={styles.mainText}>{'Connect with your ineterested franchisee!'}</Text> */}
 
-                {/* <CommonInput
-					control={control}
-					error={errors.mobile}
-					fieldName="mobile"
-                    topLabel={'Name'}
-                    mb={20}
-				/>
-     
+                    <Text style={styles.mainText}>{'Connect with your ineterested franchisee!'}</Text>
+                </View>
+
+
                 <CommonInput
-					control={control}
-					error={errors.mobile}
-					fieldName="mobile"
+                    control={control}
+                    error={errors.name}
+                    fieldName="name"
+                    topLabel={'Name'}
+                />
+
+                <CommonInput
+                    control={control}
+                    error={errors.mobile}
+                    inputMode={'numeric'}
+                    fieldName="mobile"
                     topLabel={'Contact Number'}
-                    mb={20}
-				/> */}
+                    top={20}
+                />
+
                 {/* <CommonSelectDropdown
                     topLabel={'Store Category'}
                     mb={20}
@@ -82,39 +118,52 @@ const ApplyFranchisee = () => {
                     value={values}
                     setValue={setValues}
 
-                />
-
+                /> */}
+                {/* 
                 <CommonSelectDropdown
                     topLabel={'Franchisee'}
                     mb={20}
                     data={franchise}
-                    value={fran}
-                    setValue={setFran}
-                /> */}
+                    setValue={setValue}
+                    setError={setError}
+                    fieldName={'franchise'}
+                />  */}
 
                 {/* <CommonInput
-					control={control}
-					error={errors.mobile}
-					fieldName="mobile"
+                        control={control}
+                        error={errors.location}
+                        fieldName="mobile"
+                        topLabel={'Location'}
+                        top={20}
+                    /> */}
+                <GooglePlaces
+                    control={control}
+                    fieldName={'location'}
                     topLabel={'Location'}
-                    mb={20}
-				/>
-
-
-                <CustomButton
-                    label={'Apply'}
-                    bg={ active === 'green' ? '#8ED053' : active === 'fashion' ? '#FF7190' : '#58D36E'}
-                    mb={80}
-                    mt={20}
+                    setValue={setValue}
+                    setError={setError}
+                    bottom
                 />
 
-              
-                
-            </ScrollView> */}
-                 <View style={{flex:1,alignItems:'center',justifyContent:'center'}}>
-                <Text style={{fontSize:18,letterSpacing:1}}>Coming Soon!...</Text>
+                <CommonInput
+                    control={control}
+                    error={errors.comments}
+                    fieldName="comments"
+                    topLabel={'Comments'}
+                    multi
+                    top={60}
+                />
 
-            </View>
+                <CustomButton
+                    loading={loading}
+                    onPress={!loading ? handleSubmit(onSubmit) : null}
+                    label={'Apply'}
+                    bg={active === 'green' ? '#8ED053' : active === 'fashion' ? '#FF7190' : '#58D36E'}
+                    mb={80}
+                    mt={30}
+                />
+
+            </ScrollView>
         </>
     )
 }
@@ -122,14 +171,13 @@ const ApplyFranchisee = () => {
 export default ApplyFranchisee
 
 const styles = StyleSheet.create({
-    
-    mainText : {
+
+    mainText: {
         fontFamily: 'Poppins-Medium',
         color: '#23233C',
         fontSize: 13,
-        textAlign:'center',
-        paddingHorizontal:40,
-        marginTop:-150,
-        marginBottom:20
+        textAlign: 'center',
+        paddingHorizontal: 40,
+        marginTop: -65,
     }
 })

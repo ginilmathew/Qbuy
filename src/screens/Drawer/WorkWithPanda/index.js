@@ -1,4 +1,4 @@
-import { Image, StyleSheet, Text, View, ScrollView, TouchableOpacity, useWindowDimensions } from 'react-native'
+import { Image, StyleSheet, Text, View, ScrollView, TouchableOpacity, useWindowDimensions, Share } from 'react-native'
 import React, { useCallback, useContext } from 'react'
 import Lottie from 'lottie-react-native';
 import { useForm } from "react-hook-form";
@@ -20,7 +20,7 @@ const WorkWithPanda = ({ navigation, route }) => {
     let active = contextPanda.active
 
 
-    const { width } = useWindowDimensions()
+    const { width, height } = useWindowDimensions()
 
     let regSuccess = route?.params?.mode
 
@@ -42,19 +42,45 @@ const WorkWithPanda = ({ navigation, route }) => {
     const clickRegNow = useCallback(() => {
         navigation.navigate('RegisterAsAffiliate')
     }, [])
-    
+
+    const onShare = async () => {
+        try {
+            const result = await Share.share({
+                message:
+                    'React Native | A framework for building native apps using React',
+                url: 'https://google.com',
+                title: 'hellooo'
+            });
+            if (result.action === Share.sharedAction) {
+                if (result.activityType) {
+                    // shared with activity type of result.activityType
+                } else {
+                    // shared
+                }
+            } else if (result.action === Share.dismissedAction) {
+                // dismissed
+            }
+        } catch (error) {
+            alert(error.message);
+        }
+    };
+
     return (
         <>
-            <HeaderWithTitle title={'Work With Qbuy Panda'}  />
-            {/* <ScrollView
+            <HeaderWithTitle title={'Work With Qbuy Panda'} />
+            <ScrollView
                 style={{
-                    flex: 1,
-                    backgroundColor: active === 'green' ? '#F4FFE9' : active === 'fashion' ? '#FFF5F7' : '#fff', 
+                    height,
+                    backgroundColor: active === 'green' ? '#F4FFE9' : active === 'fashion' ? '#FFF5F7' : '#fff',
                     paddingHorizontal: 15,
                 }}
             >
                 <View style={{ height: 170, alignItems: 'center' }}>
                     <Lottie
+                        style={{
+                            height: 170,
+                            width: 170
+                        }}
                         source={{ uri: 'https://assets9.lottiefiles.com/packages/lf20_dBF8frvgma.json' }}
                         autoPlay
                     />
@@ -67,7 +93,7 @@ const WorkWithPanda = ({ navigation, route }) => {
                 {regSuccess === 'success' ? '' : <CustomButton
                     onPress={clickRegNow}
                     label={'Register Now!'}
-                    bg={ active === 'green' ? '#8ED053' : active === 'fashion' ? '#FF7190' : '#58D36E'}
+                    bg={active === 'green' ? '#8ED053' : active === 'fashion' ? '#FF7190' : '#58D36E'}
                     mb={20}
                     mt={20}
                 />}
@@ -95,35 +121,30 @@ const WorkWithPanda = ({ navigation, route }) => {
                             <View style={{ flexDirection: 'row', marginTop: 15, alignItems: 'center' }}>
                                 <CommonPicker
                                     // onPress={()=>setOpenCalendar(true)}
-                                    icon={<Ionicons name={'ios-copy'} size={25} color={active === 'green' ? '#8ED053' : active === 'fashion' ? '#FF7190' : '#58D36E'} />}
+                                    icon={<Ionicons name={'copy'} size={25} color={active === 'green' ? '#8ED053' : active === 'fashion' ? '#FF7190' : '#58D36E'} />}
                                     w={width - 100}
                                     label='qbuypanda/affiliate/328745'
                                     top={-14}
                                 />
                                 <View style={{ flex: 1, alignItems: 'flex-end' }}>
                                     <CommonSquareButton
+                                        onPress={onShare}
                                         iconName={'share-social'}
                                     />
                                 </View>
                             </View>
                         </>}
-
-
-
                     </View>
-
-
-
                 }
 
 
 
-            </ScrollView> */}
-
+            </ScrollView>
+            {/* 
 <View style={{flex:1,alignItems:'center',justifyContent:'center'}}>
                 <Text style={{fontSize:18,letterSpacing:1}}>Coming Soon!...</Text>
 
-            </View>
+            </View> */}
         </>
     )
 }
