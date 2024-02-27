@@ -78,8 +78,11 @@ const PickupAndDropoff = ({ navigation, route }) => {
                     "pickup_location_coordinates": [distance?.pickup?.location?.lat, distance?.pickup?.location?.lng],
                     "kilometer": km
                 }).then(res => {
+                    let values = getValues()
+                    values.amount = res?.data?.data?.pickup_and_drop_charge_amount?.toString()
+                    reset(values)
                     setAmount(res?.data?.data)
-                    setValue('amount', res?.data?.data?.pickup_and_drop_charge_amount)
+                    //setValue('amount', res?.data?.data?.pickup_and_drop_charge_amount)
                     setError('amount', { type: 'custom', message: null })
                 })
                     .catch(err => {
@@ -122,7 +125,7 @@ const PickupAndDropoff = ({ navigation, route }) => {
         name: yup.string().required('Pickup item name is required'),
         description: yup.string().required('Description is required'),
         vehicle: yup.string().required('Vehicle type is required'),
-        weight: yup.number("Weight type must be number").required('Weight is required'),
+        weight: yup.string().required('Weight is required').typeError('Weight type must be number'),
         date: yup.string().required('Date is required'),
         time: yup.string().required('Time is required'),
         pickup: yup.string().required('Pickup location is required'),
@@ -131,7 +134,7 @@ const PickupAndDropoff = ({ navigation, route }) => {
         amount: yup.string().required('Amount is required')
     }).required();
 
-    const { control, handleSubmit, formState: { errors }, setValue, setError, getValues } = useForm({
+    const { control, handleSubmit, formState: { errors }, setValue, setError, getValues, reset } = useForm({
         resolver: yupResolver(schema),
         mode: "onChange"
     });
