@@ -18,7 +18,7 @@ const CategoriesCard = memo(({ item, onCategoryClick, width }) => {
     return (
         <TouchableOpacity
             onPress={categoryClick}
-            style={ { width: width / 4.5, height: width / 4.5, alignItems: 'center' } }
+            style={ { width: width / 4.5, height: width / 4.5, alignItems: 'center', marginVertical: 5 } }
         >
             <View
                 style={ [styles.lottieView, { width: '80%', height: '80%', padding: 3, borderRadius: width / 9, justifyContent:'center', alignItems: 'center' }] }
