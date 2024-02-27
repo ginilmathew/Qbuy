@@ -282,9 +282,10 @@ const PandaHome = ({ navigation }) => {
                             label={'Pick Up & Drop Off'}
                             lottieFlex={0.5}
                         />
+                        
                         <PickDropAndReferCard
                             onPress={referRestClick}
-                            lotties={require('../../Lottie/deliveryBike.json')}
+                            lotties={require('../../Lottie/rating.json')}
                             label={'Refer a Restaurant'}
                             lottieFlex={0.5}
                         />

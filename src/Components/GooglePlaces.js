@@ -80,11 +80,10 @@ const GooglePlaces = ({ fieldName, control, topLabel, setValue, setError, bottom
                             predefinedPlacesDescription: {
                                 color: '#1faadb',
                             },
+
                             listView: {
                                 color: 'black', //To see where exactly the list is
                                 zIndex: 1000, //To popover the component outwards
-                                position: 'absolute',
-                                top: 50
                             },
                         }}
                         onPress={addLoc}
@@ -100,7 +99,6 @@ const GooglePlaces = ({ fieldName, control, topLabel, setValue, setError, bottom
                                 fontFamily: 'Poppins-Regular',
                                 color: 'red',
                                 fontSize: 11,
-                                bottom: bottom ? -46 : 0
                             }}>
                                 {error?.message}
                             </Text>

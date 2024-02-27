@@ -7,7 +7,7 @@ import { NativeModules } from "react-native"
 
 const { env, mode } = NativeModules.RNENVConfig
 
-const CommonInput = ({ placeholder, control, fieldName, error, inputMode, mt, leftElement, backgroundColor, topLabel, mb, placeholderTextColor, width, maxHeight, top, shadowOpacity, elevation, editable, values }) => {
+const CommonInput = ({ placeholder, control, fieldName, error, inputMode, mt, leftElement, backgroundColor, topLabel, mb, placeholderTextColor, width, maxHeight, top, shadowOpacity, elevation, editable, minHeight,multi, textChange }) => {
 
     const contextPanda = useContext(PandaContext)
     let active = contextPanda.active
@@ -51,9 +51,14 @@ const CommonInput = ({ placeholder, control, fieldName, error, inputMode, mt, le
                     render={({ field: { onChange, onBlur, value } }) => (
                         <TextInput
                             onBlur={onBlur}
-                            onChangeText={onChange}
-                            value={values ? values : value}
-                            minHeight={50}
+                            onChangeText={(value) => {
+                                onChange(value)
+                                if(textChange){
+                                    textChange(value)
+                                }
+                            }}
+                            value={value}
+                            minHeight={minHeight ? minHeight :50}
                             placeholder={placeholder}
                             placeholderTextColor={placeholderTextColor ? placeholderTextColor : '#23233C'}
                             inputMode={inputMode}
@@ -64,6 +69,7 @@ const CommonInput = ({ placeholder, control, fieldName, error, inputMode, mt, le
                             width={width ? width : '100%'}
                             marginTop={Platform.OS === 'android' ? 5 : 1}
                             editable={editable}
+multiline={multi}
                         />
                     )}
                     name={fieldName}

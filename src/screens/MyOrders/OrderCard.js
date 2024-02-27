@@ -16,6 +16,7 @@ import { Toast } from 'react-native-toast-message/lib/src/Toast'
 import reactotron from 'reactotron-react-native'
 import { has } from 'lodash'
 import { NativeModules } from "react-native"
+import CommonStatusCard from '../../Components/CommonStatusCard'
 
 
 const { env, mode } = NativeModules.RNENVConfig
@@ -226,25 +227,43 @@ const OrderCard = memo(({ item, refreshOrder }) => {
     const OrderCancel = async () => {
         Alert.alert('Warning', 'Are you sure want to cancel order?', [
             {
-              text: 'Cancel',
-              //onPress: () => console.log('Cancel Pressed'),
-              style: 'cancel',
+                text: 'Cancel',
+                //onPress: () => console.log('Cancel Pressed'),
+                style: 'cancel',
             },
-            {text: 'OK', onPress: async() => {
-                try {
-                    await customAxios.post(`customer/customer-order-cancelled`, { id: item?._id })
-                    Toast.show({ type: 'success', text1: 'Order cancelled successfully' })
-                    refreshOrder();
-                } catch (err) {
-                    Toast.show({
-                        type: 'error',
-                        text1: err
-                    });
-        
+            {
+                text: 'OK', onPress: async () => {
+                    try {
+                        await customAxios.post(`customer/customer-order-cancelled`, { id: item?._id })
+                        Toast.show({ type: 'success', text1: 'Order cancelled successfully' })
+                        refreshOrder();
+                    } catch (err) {
+                        Toast.show({
+                            type: 'error',
+                            text1: err
+                        });
+
+                    }
                 }
-            }},
-          ]);
-        
+            },
+        ]);
+
+    }
+
+    const renderStatusLabel = (status) => {
+
+        switch (status) {
+            case "created":
+                return <CommonStatusCard label={status} bg='#BCE4FF' labelColor={'#0098FF'} />
+            case "pending":
+                return <CommonStatusCard label={status} bg='#FFF082' labelColor={'#A99500'} />
+            case "completed":
+                return <CommonStatusCard label={status} bg='#CCF1D3' labelColor={'#58D36E'} />
+            case "cancelled":
+                return <CommonStatusCard label={status} bg='#FFC9C9' labelColor={'#FF7B7B'} />
+            default:
+                return <CommonStatusCard label={status === "orderReturn" ? "Return" : status} bg='#FFF082' labelColor={'#A99500'} />
+        }
     }
 
 
@@ -270,13 +289,14 @@ const OrderCard = memo(({ item, refreshOrder }) => {
                 </View>
                 <View>
                     <Text style={styles.textRegular}>{'Current Status'}</Text>
-                    <View
+                    {/* <View
                         style={
-                            item?.status === 'pending' ? styles.pendingStatusBox : item?.status === 'completed' ? styles.completedStatusBox : null
+                            item?.status === 'created' ? styles.pendingStatusBox : item?.status === 'completed' ? styles.completedStatusBox : null
                         }
                     >
-                        <Text style={item?.status === 'pending' ? styles.pendingStatusText : item?.status === 'completed' ? styles.completedStatusText : null} >{item?.status}</Text>
-                    </View>
+                        <Text style={item?.status === 'created' ? styles.pendingStatusText : item?.status === 'completed' ? styles.completedStatusText : null} >{item?.status}</Text>
+                    </View> */}
+                    {renderStatusLabel(item?.status)}
                 </View>
             </View>
 
@@ -291,28 +311,25 @@ const OrderCard = memo(({ item, refreshOrder }) => {
                 {showItems && <>
                     <View style={styles.itemsHeadingView}>
                         <View style={{ flex: 0.5 }}>
-                            <Text style={[styles.textRegular, { textAlign: 'left' }]}>{'Product'}</Text>
+                            <Text style={[styles.textBold, { textAlign: 'left' }]}>{'Product'}</Text>
                         </View>
                         <Text style={[styles.textBold, { textAlign: 'center' }]}>{'Qty'}</Text>
                         <Text style={[styles.textBold, { textAlign: 'center' }]}>{'Price'}</Text>
                     </View>
+
                     {item?.product_details.map((ite) =>
                         <ItemsCard item={ite} key={ite?._id} date={item?.created_at} />
                     )}
-                    <View style={styles.delivery}>
-                        <View style={{ flex: 0.5 }}>
-                            <Text style={[styles.text1, { textAlign: 'left' }]}>{`Delivery Charge`}</Text>
+
+                    {item?.price_breakup?.map((pri, index) => (
+
+                        <View key={`${pri?._id}${index}`} style={styles.delivery}>
+                            <View style={{ flex: 0.5 }}>
+                                <Text style={[styles.text1, { textAlign: 'left' }]}>{pri?.charge_name}</Text>
+                            </View>
+                            <Text style={[styles.text1, { textAlign: 'center' }]}>₹ {pri?.price}</Text>
                         </View>
-                        <Text style={[styles.text1, { textAlign: 'center' }]}></Text>
-                        <Text style={[styles.text1, { textAlign: 'center' }]}>₹ {item?.delivery_charge}</Text>
-                    </View>
-                    <View style={styles.delivery}>
-                        <View style={{ flex: 0.5 }}>
-                            <Text style={[styles.text1, { textAlign: 'left' }]}>{`Platform Charge`}</Text>
-                        </View>
-                        <Text style={[styles.text1, { textAlign: 'center' }]}></Text>
-                        <Text style={[styles.text1, { textAlign: 'center' }]}>₹ {item?.platform_charge}</Text>
-                    </View>
+                    ))}
                 </>}
             </View>
 
@@ -331,34 +348,68 @@ const OrderCard = memo(({ item, refreshOrder }) => {
                     <Text style={styles.addressText}>{item?.shipaddress?.area?.address}</Text>
                 </View>}
 
-                {item?.paymentStatus === 'success' &&
+                {item?.payment_type === 'COD' &&
                     <>
 
-                        {item?.status === 'pending' ? <CustomButton
-                            onPress={clickDetails}
-                            label={'View Details'}
-                            bg={active === 'green' ? '#FF9C0C' : active === 'fashion' ? '#2D8FFF' : '#576FD0'}
-                            mt={8}
-                        /> : item?.status === 'completed' ?
+                        {item?.status === 'completed' ?
                             <View style={{ flex: 1, marginTop: 8, flexDirection: 'row', justifyContent: 'space-between' }}>
 
                                 <CustomButton
                                     onPress={clickDetails}
                                     label={'Details'}
-                                    bg='#576FD0'
-                                    width={width / 3.5}
+                                    bg={active === 'green' ? '#FF9C0C' : active === 'fashion' ? '#2D8FFF' : '#576FD0'}
+                                    // width={width / 3.5}
+                                    width={"49%"}
                                 />
-                                <CustomButton
+                                {/* <CustomButton
                                     // onPress={() => navigation.navigate('ViewDetails', { item: item, qty: qty, totalRate: totalRate })}
                                     label={'Reorder'}
                                     bg='#D0A857'
                                     width={width / 3.5}
-                                />
+                                /> */}
                                 <CustomButton
                                     onPress={clickRateOrder}
                                     label={'Rate Order'}
                                     bg='#58D36E'
+                                    //width={width / 3.5}
+                                    width={"49%"}
+                                />
+                            </View> : <CustomButton
+                            onPress={clickDetails}
+                            label={'View Details'}
+                            bg={active === 'green' ? '#FF9C0C' : active === 'fashion' ? '#2D8FFF' : '#576FD0'}
+                            mt={8}
+                        />
+                        }
+                    </>
+
+                }
+
+                {item?.payment_type === 'online' &&
+                    <>
+
+                        {item?.status === 'completed' ?
+                            <View style={{ flex: 1, marginTop: 8, flexDirection: 'row', justifyContent: 'space-between' }}>
+
+                                <CustomButton
+                                    onPress={clickDetails}
+                                    label={'Details'}
+                                    bg={active === 'green' ? '#FF9C0C' : active === 'fashion' ? '#2D8FFF' : '#576FD0'}
+                                    // width={width / 3.5}
+                                    width={"49%"}
+                                />
+                                {/* <CustomButton
+                                    // onPress={() => navigation.navigate('ViewDetails', { item: item, qty: qty, totalRate: totalRate })}
+                                    label={'Reorder'}
+                                    bg='#D0A857'
                                     width={width / 3.5}
+                                /> */}
+                                <CustomButton
+                                    onPress={clickRateOrder}
+                                    label={'Rate Order'}
+                                    bg='#58D36E'
+                                    //width={width / 3.5}
+                                    width={"49%"}
                                 />
                             </View> : null
                         }
@@ -366,27 +417,59 @@ const OrderCard = memo(({ item, refreshOrder }) => {
 
                 }
 
-                {(item?.status !== 'cancelled' && item?.payment_status === 'cancelled') && <CustomButton
-                    onPress={payAmount}
-                    label={'Pay Now'}
-                    bg={active === 'green' ? '#8ED053' : active === 'fashion' ? '#FF7190' : '#58D36E'}
-                    mt={8}
-                />}
+                {(item?.status !== 'cancelled' && item?.payment_status === 'cancelled') &&
+                    <View style={{ flex: 1, marginTop: 8, flexDirection: 'row', justifyContent: 'space-between' }}>
+                        <CustomButton
+                            onPress={payAmount}
+                            label={'Pay Now'}
+                            bg={active === 'green' ? '#8ED053' : active === 'fashion' ? '#FF7190' : '#58D36E'}
 
-                {item?.pendingBalance * 1 > 0 && item?.payment_type === "online" && item?.payment_status !== 'cancelled' && <CustomButton
-                    onPress={payAmountBalance}
-                    label={'Pay Balance'}
-                    bg={active === 'green' ? '#8ED053' : active === 'fashion' ? '#FF7190' : '#58D36E'}
-                    mt={8}
-                />}
+                            width={"49%"}
+                        />
+                        <CustomButton
+                            onPress={clickDetails}
+                            label={'Details'}
+                            bg={active === 'green' ? '#FF9C0C' : active === 'fashion' ? '#2D8FFF' : '#576FD0'}
+                            // width={width / 3.5}
+                            width={"49%"}
+                        />
+                    </View>
+                }
+
+                {item?.pendingBalance * 1 > 0 && item?.payment_type === "online" && item?.payment_status !== 'cancelled' &&
+                    <View style={{ flex: 1, marginTop: 8, flexDirection: 'row', justifyContent: 'space-between' }}>
+                        <CustomButton
+                            onPress={payAmountBalance}
+                            label={'Pay Balance'}
+                            bg={active === 'green' ? '#8ED053' : active === 'fashion' ? '#FF7190' : '#58D36E'}
+                            width={"49%"}
+                        />
+                        <CustomButton
+                            onPress={clickDetails}
+                            label={'Details'}
+                            bg={active === 'green' ? '#FF9C0C' : active === 'fashion' ? '#2D8FFF' : '#576FD0'}
+                            // width={width / 3.5}
+                            width={"49%"}
+                        />
+                    </View>}
 
                 {
-                    (item?.status === "onLocation" && item?.customer_status !== "cancelled") && <CustomButton
-                        onPress={OrderCancel}
-                        label={'Cancel Order'}
-                        bg={'#FF7190'}
-                        mt={8}
-                    />
+                    (item?.status === "onLocation" && item?.customer_status !== "cancelled") &&
+                    <View style={{ flex: 1, marginTop: 8, flexDirection: 'row', justifyContent: 'space-between' }}>
+                        <CustomButton
+                            onPress={OrderCancel}
+                            label={'Cancel Order'}
+                            bg={'#FF7190'}
+                            width={"49%"}
+                        />
+                        <CustomButton
+                            onPress={clickDetails}
+                            label={'Details'}
+                            bg={active === 'green' ? '#FF9C0C' : active === 'fashion' ? '#2D8FFF' : '#576FD0'}
+                            // width={width / 3.5}
+                            width={"49%"}
+                        />
+                    </View>
                 }
             </View>
             {item?.refundAmount * 1 > 0 &&
@@ -411,12 +494,12 @@ const OrderCard = memo(({ item, refreshOrder }) => {
 
                     </View>
                 </View>}
-                {item?.refund_completed_status === "completed" &&
+            {item?.refund_completed_status === "completed" &&
                 <View
                     style={{ backgroundColor: '#fff', paddingBottom: 10, borderTopWidth: showItems ? 0 : 1, borderColor: '#00000029', height: 35, alignItems: 'center', justifyContent: 'center', marginHorizontal: 10 }}
                 >
                     <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', display: 'flex', width: '100%' }}>
-                    <Text style={{ fontWeight: 'bold', fontSize: 12, color: '#000', fontFamily: 'Poppins-Medium' }}>{'Refund'}</Text>
+                        <Text style={{ fontWeight: 'bold', fontSize: 12, color: '#000', fontFamily: 'Poppins-Medium' }}>{'Refund'}</Text>
                         <Text style={{ fontWeight: 'bold', fontSize: 12, color: 'blue', fontFamily: 'Poppins-Medium' }}>{item?.refund_details?.refund_amount}</Text>
                         <Text style={{ fontWeight: 'bold', fontSize: 12, color: '#8ED053', fontFamily: 'Poppins-Medium' }}>{'Completed'}</Text>
                     </View>
@@ -434,13 +517,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: '#F3F3F3',
         justifyContent: 'space-between',
-        paddingVertical: 10,
-        borderBottomWidth: 1,
-        borderColor: '#00000029',
+        paddingVertical: 7,
+        // borderBottomWidth: 1,
+        // borderColor: '#00000029',
         paddingHorizontal: 7
     },
     container: {
-        borderRadius: 10,
+        borderRadius: 15,
         shadowOpacity: 0.1,
         shadowRadius: 2,
         marginBottom: 20,

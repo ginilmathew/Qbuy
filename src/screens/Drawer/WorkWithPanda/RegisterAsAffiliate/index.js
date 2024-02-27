@@ -47,7 +47,7 @@ const RegisterAsAffiliate = ({ navigation }) => {
 
     const schema = yup.object({
         name: yup.string().required('Name is required'),
-        phone: yup.number("Phone type must be number").required('Phone number is required'),
+        phone: yup.number().required('Phone number is required'),
         email: yup.string().email("Input value must be Email.").required('Email is required'),
         bankname: yup.string().required('Bank Name is required'),
         ifsc_code: yup.string().required('IFSC Code is required').min(5, 'IFSC Code should be atleast 5 characters.').max(15, 'IFSC Code is limited to 15 characters.'),

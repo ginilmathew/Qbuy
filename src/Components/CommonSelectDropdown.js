@@ -5,13 +5,14 @@ import { Dropdown } from 'react-native-element-dropdown';
 import PandaContext from '../contexts/Panda';
 import reactotron from 'reactotron-react-native';
 
-const CommonSelectDropdown = ({topLabel, mb, placeholder, data, value, setValue, search, height, mt, width, shadowOpacity, elevation, flex, index}) => {
+const CommonSelectDropdown = ({topLabel, mb, placeholder, data, value, setValue, search, height, mt, width, shadowOpacity, elevation, flex, index, fieldName}) => {
 
 
     const contextPanda = useContext(PandaContext)
     let active = contextPanda.active
 
     const [isFocus, setIsFocus] = useState(false);
+    const [item, setItem] = useState(value);
 
     const datas = data?.map(opt => {
         return {
@@ -42,7 +43,8 @@ const CommonSelectDropdown = ({topLabel, mb, placeholder, data, value, setValue,
     }
 
     const changeValue = (item) => {
-        setValue(item.label, index);
+        setValue(fieldName, item?.label);
+        setItem(item?.label)
         setIsFocus(false);
     }
 
@@ -87,7 +89,7 @@ const CommonSelectDropdown = ({topLabel, mb, placeholder, data, value, setValue,
             valueField="label"
             placeholder={!isFocus ? placeholder ? placeholder : '' : '...'}
             searchPlaceholder="Search..."
-            value={value}
+            value={item}
             onFocus={setFocus}
             onBlur={offFocus}
             onChange={changeValue}
