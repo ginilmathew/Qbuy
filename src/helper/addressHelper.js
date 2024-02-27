@@ -1,10 +1,8 @@
 import axios from "axios";
-import reactotron from "reactotron-react-native";
 
 export function getAddressfromLocation(lat, lng) {
     axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${lat},${lng}&key=AIzaSyBBcghyB0FvhqML5Vjmg3uTwASFdkV8wZY`).then(response => {
 
-    reactotron.log({response})
     //userContext.setCurrentAddress(response?.data?.results[0]?.formatted_address);
 
     
@@ -17,7 +15,6 @@ export function getAddressfromLocation(lat, lng) {
         longitude: lng,
     };
 
-    reactotron.log({Value})
 
     //addressContext.setCurrentAddress(Value);
 

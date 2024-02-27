@@ -84,8 +84,6 @@ const App = (props) => {
 
         const { notification } = message
 
-        reactotron.log({ message })
-
 
         // Display a notification
         await notifee.displayNotification({
@@ -148,8 +146,6 @@ const App = (props) => {
 
         if (userDetails) {
             let user = JSON.parse(userDetails)
-
-            // reactotron.log({ user })
             // Get the token
 
 
@@ -159,12 +155,9 @@ const App = (props) => {
             }
             customAxios.post('auth/update-devicetoken', data)
                 .then(response => {
-                    // reactotron.log({ response })
                 })
                 .catch(err => {
-                    // reactotron.log({ err })
                 })
-            // reactotron.log({ token })
 
         }
 
@@ -187,14 +180,12 @@ const App = (props) => {
 
         if (Platform.OS === 'android') {
             let permissions = await requestMultiple([PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION, PERMISSIONS.ANDROID.POST_NOTIFICATIONS])
-            reactotron.log({permissions})
             // const status = await PermissionsAndroid.requestMultiple([PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION]);
             
         }
         else{
             let location = await request(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE);
 
-            reactotron.log({location})
 
             const authStatus = await messaging().requestPermission();
             const enabled =
@@ -202,7 +193,6 @@ const App = (props) => {
                 authStatus === messaging.AuthorizationStatus.PROVISIONAL;
     
             if (enabled) {
-                reactotron.log('Authorization status:', authStatus);
             }
             //const status = await Geolocation.requestAuthorization('whenInUse');
         }

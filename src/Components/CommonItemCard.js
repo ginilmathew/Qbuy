@@ -39,7 +39,6 @@ const CommonItemCard = memo(({ height, width, item, marginHorizontal, wishlistIc
     const calculation = useMemo(() => getProduct(item), [item]);
 
 
-    //reactotron.log({ data })
 
     const { fontScale, height: height1 } = useWindowDimensions()
 

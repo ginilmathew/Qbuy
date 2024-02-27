@@ -13,7 +13,7 @@ const SearchBox = ({ onPress }) => {
             style={{
                 backgroundColor: '#fff',
                 borderRadius: 15,
-                marginTop: 20,
+                marginTop: 5,
                 shadowOpacity: 0.1,
                 shadowRadius: 5,
                 elevation: 2,

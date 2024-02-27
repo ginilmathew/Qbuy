@@ -59,7 +59,7 @@ const SellWithUs = ({ navigation }) => {
 
 
     const goHome = useCallback(() => {
-        navigation?.goBack()
+        navigation?.navigate('dashboard')
     }, [])
 
     if (showSuccess) {

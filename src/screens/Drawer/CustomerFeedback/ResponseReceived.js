@@ -8,7 +8,6 @@ const ResponseReceived = ({ route }) => {
 
     let item = route?.params?.item
 
-    reactotron.log(item, "From CArd")
 
     const renderStatus = () => {
         if (item?.status === "processing") {

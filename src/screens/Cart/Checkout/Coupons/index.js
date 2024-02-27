@@ -1,5 +1,5 @@
 import { Image, StyleSheet, Text, View, ScrollView, TouchableOpacity, useWindowDimensions, FlatList, Alert } from 'react-native'
-import React, { useCallback, useContext } from 'react'
+import React, { useCallback, useContext, useState } from 'react'
 import Lottie from 'lottie-react-native';
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -14,6 +14,7 @@ import customAxios from '../../../../CustomeAxios';
 import reactotron from 'reactotron-react-native';
 import Toast from 'react-native-toast-message';
 import { useQuery } from '@tanstack/react-query';
+import LoadingModal from '../../../../Components/LoadingModal';
 
 
 const getCoupons = async (datas) => {
@@ -23,6 +24,8 @@ const getCoupons = async (datas) => {
 }
 
 const Coupons = ({navigation, route}) => {
+
+    const [loading, setLoading ] = useState(false)
 
     const contextPanda = useContext(PandaContext)
     let active = contextPanda.active
@@ -46,6 +49,7 @@ const Coupons = ({navigation, route}) => {
     }
 
     const removeOffers = async(data) => {
+        setLoading(true)
         try {
             let response = await customAxios.post(`customer/cart/remove-offer`, data);
             if(response?.data?.message === "Success"){
@@ -58,12 +62,20 @@ const Coupons = ({navigation, route}) => {
 
 
         } catch (error) {
-            
+            Toast.show({
+                text1: "Error",
+                text2: error,
+                type:'error'
+            })
+        }
+        finally{
+            setLoading(false)
         }
     }
 
 
     const applyCoupon = async(item) => {
+        setLoading(true)
         try {
             let data = {
                 coupon_id: item?._id,
@@ -96,11 +108,19 @@ const Coupons = ({navigation, route}) => {
                 })
                 navigation.goBack()
             }
-            reactotron.log({response})
+
 
             
         } catch (error) {
-            
+            reactotron.log({error})
+            Toast.show({
+                text1:'Error',
+                text2: error,
+                type:'error'
+            })
+        }
+        finally{
+            setLoading(false)
         }
     }
 
@@ -126,7 +146,7 @@ const Coupons = ({navigation, route}) => {
                 refreshing={isLoading}
                 onRefresh={refetch}
             />
-            
+            <LoadingModal isVisible={loading} />
         </>
     )
 }

@@ -39,7 +39,6 @@ const CartTest = ({ navigation }) => {
 
     const [cartItemsList, setCartItemsList] = useState([])
 
-    reactotron.log({ cartItemsList }, 'CART LIST ')
 
 
     const getCartItems = async () => {
@@ -314,7 +313,6 @@ const CartTest = ({ navigation }) => {
     const checkoutValidation = async () => {
         await customAxios.get(`customer/cart/show/${cartContext?.cart?._id}`).then((response) => {
             let products = response?.data?.data?.product_details;
-            reactotron.log({ products }, 'PRODUCTS....')
             let stockcheck = false;
             products?.map((pro) => {
                 let stock = pro?.productdata?.stock;
@@ -376,7 +374,6 @@ const CartTest = ({ navigation }) => {
             product_details: allProducts,
             user_id: userContext?.userData?._id
         }
-        reactotron.log({ cartItems }, 'CARTITEMS CHECKOUT')
         let cartList = await customAxios.post(`customer/cart/update`, cartItems)
         cartContext.setCart(cartList?.data?.data)
         checkoutValidation()

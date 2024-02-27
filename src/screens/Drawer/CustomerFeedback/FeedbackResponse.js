@@ -18,7 +18,6 @@ const FeedbackRes = () => {
     const [feedbackList, setFeedbackList] = useState([])
     const { height } = useWindowDimensions();
 
-    reactotron.log(feedbackList, "feed")
 
     useEffect(() => {
         getFeedbacks()

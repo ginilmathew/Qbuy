@@ -75,7 +75,7 @@ const CheckoutScreen = () => {
 
     useEffect(() => {
         if (data?.coupon_details?.coupon_code) {
-            reactotron.log("in")
+            //reactotron.log("in")
             let data = {
                 coupon: data?.coupon_details?.coupon_code
             }
@@ -190,7 +190,8 @@ const CheckoutScreen = () => {
                     price_breakup: data?.price_breakup,
                     offer_id: data?.offer_id,
                     coupon_details: data?.coupon_details,
-                    coupon_amount: data?.coupon_amount ? data?.coupon_amount : null
+                    coupon_amount: data?.coupon_amount ? data?.coupon_amount : null,
+                    customer_group_offer: data?.customer_group_offer
                 }
 
                 navigation.navigate("order", { datas })
@@ -544,7 +545,7 @@ const CheckoutScreen = () => {
                     <View style={styles.grandTotalBox}>
                         <View style={styles.grandTotalMid}>
                             <Text style={styles.textMedium}>{'Govt Taxes & Other Charges'}</Text>
-                            <Text style={styles.textMedium}>₹ { data?.selected_delivery_charge?.charge_value ? parseFloat(data?.other_charges) + parseFloat(data?.selected_delivery_charge?.charge_value) : parseFloat(data?.other_charges) }</Text>
+                            <Text style={styles.textMedium}>₹ { data?.other_charges }</Text>
                         </View>
 
                         <View style={styles.grandTotalBottom}>

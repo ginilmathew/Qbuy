@@ -15,7 +15,6 @@ import PandaContext from '../contexts/Panda';
 import CartContext from '../contexts/Cart';
 import AuthContext from '../contexts/Auth';
 import axios from 'axios';
-import reactotron from '../ReactotronConfig';
 
 const Header = ({ onPress, openAddress, goCart }) => {
     const contextPanda = useContext(PandaContext);
@@ -31,7 +30,6 @@ const Header = ({ onPress, openAddress, goCart }) => {
     let currentAddress = userContext?.currentAddress;
 
 
-    reactotron.log({currentAddress})
 
 
 
@@ -44,7 +42,6 @@ const Header = ({ onPress, openAddress, goCart }) => {
 
 
     const changeAddress = useCallback(() => {
-        //reactotron.log({user: userContext?.user})
         // if(userContext?.userData){
         //     navigation.navigate('account', { screen: 'MyAddresses', params: { mode: 'home' } });
         // }
@@ -89,8 +86,6 @@ const Header = ({ onPress, openAddress, goCart }) => {
                 }
             };
             cartContext.setDefaultAddress(value);
-
-            // reactotron.log({ response: response?.data?.results[0]?.formatted_address }, 'LOCATION RESPONSE')
 
         })
             .catch(err => {

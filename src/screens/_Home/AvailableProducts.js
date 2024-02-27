@@ -13,7 +13,7 @@ import CartContext from '../../contexts/Cart';
 const QbuyProducts = async (items, pageparam) => {
     const homeDataProduct = await customAxios.post(`customer/new-product-list?page=` + pageparam, { ...items, page: pageparam });
 
-    reactotron.log({homeDataProduct})
+    //reactotron.log({homeDataProduct})
     
 
     let products = [];
@@ -23,7 +23,7 @@ const QbuyProducts = async (items, pageparam) => {
 
      
 
-    reactotron.log({products})
+    //reactotron.log({products})
     return {
         data: products,
         lastPage:homeDataProduct?.data?.data?.last_page,
@@ -114,7 +114,7 @@ const AvailableProducts = ({ styles, width, loggedIn, height, datas, viewProduct
                 data={ data?.pages?.map(page => page?.data)?.flat()}
                 refreshing={isLoading}
                 renderItem={renderProduct}
-                style={{ flexGrow: 1, paddingBottom: 70, backgroundColor: '#fff' }}
+                style={{ flexGrow: 1, paddingBottom: 70, backgroundColor: datas?.type === "panda" ? '#fff' :  datas?.type === "green" ? '#F4FFE9' : '#FFF5F7' }}
                 numColumns={2}
                 onEndReached={fetchMoreData}
                 ListFooterComponent={(isLoading || isFetching) ? () => <ActivityIndicator color={"red"} /> : null}

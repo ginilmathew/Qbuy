@@ -55,7 +55,6 @@ const Cart = ({ navigation }) => {
 
             let allProds = await getProducts(datas)
 
-            reactotron.log({allProds})
 
             // cartContext?.setCart(response?.data?.data)
 

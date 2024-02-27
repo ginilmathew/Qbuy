@@ -144,7 +144,6 @@ const Checkout = ({ navigation }) => {
         await customAxios.get(`customer/cart/show/${cartContext?.cart?._id}`)
             .then(async response => {
                 let products = response?.data?.data?.product_details;
-                reactotron.log({ products }, 'PRODUCTS')
 
                 let finalProducts = [];
                 //let quantity = pro?.quantity ? parseFloat(pro?.quantity) : 0
@@ -752,7 +751,6 @@ const Checkout = ({ navigation }) => {
                     setPaymentInitiated(false)
                 });
         } catch (error) {
-            reactotron.log({ error })
         }
 
         if (paymentStarted) {

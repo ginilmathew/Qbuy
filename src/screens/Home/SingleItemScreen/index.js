@@ -276,12 +276,10 @@ const SingleItemScreen = ({ route, navigation }) => {
           
             let filter = attributes?.filter(attr => attr?.variant === true || attr?.variant === null)
 
-            reactotron.log({filter})
 
             let attri = filter?.map(attr => attr?.selected)
             let selectedVari;
             item?.variants?.map(vari => {
-                reactotron.log({ a: attri.sort(), b: vari?.attributs.sort(), attributes, equal: isEqual(attri?.sort(), vari?.attributs.sort()), vari })
                 if(isEqual(attri?.sort(), vari?.attributs.sort())){
                     selectedVari = vari;
                 }
@@ -317,7 +315,6 @@ const SingleItemScreen = ({ route, navigation }) => {
 
 
     const selectAttributes = (value) => {
-        reactotron.log({value})
         let attri = [];
         let attr = attributes?.map(att => {
             if (att?.options.includes(value)) {

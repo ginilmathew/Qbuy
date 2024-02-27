@@ -82,7 +82,6 @@ const CategoryScreen = ({route, navigation}) => {
 
             setDatas(results)
 
-            reactotron.log({results})
         })
         .catch(async error => {
             Toast.show({

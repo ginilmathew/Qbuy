@@ -83,7 +83,6 @@ const SingleProductScreen = ({ route, navigation }) => {
                 let data = response?.data?.data;
                 let priceDetails = await singleProduct(data);
 
-                reactotron.log({priceDetails})
                 
                 setPriceDetails(priceDetails)
 
