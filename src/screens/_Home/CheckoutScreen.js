@@ -81,7 +81,7 @@ const CheckoutScreen = () => {
             }
 
             reset(data)
-            setValue("coupon", data?.coupon_details?.coupon_code)
+            //setValue("coupon", data?.coupon_details?.coupon_code)
         }
 
         if (data?.payment_type_details) {

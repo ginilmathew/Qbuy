@@ -21,7 +21,7 @@ const QbuyProducts = async (items, pageparam) => {
         products = await getProducts(homeDataProduct?.data?.data?.available_product)
     }
 
-     
+     reactotron.log({products})
 
     //reactotron.log({products})
     return {
