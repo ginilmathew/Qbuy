@@ -8,6 +8,7 @@ import has from 'lodash/has'
 import LoadingModal from '../../../Components/LoadingModal'
 import customAxios from '../../../CustomeAxios'
 import { Toast } from 'react-native-toast-message/lib/src/Toast'
+import reactotron from 'reactotron-react-native'
 
 
 
@@ -35,12 +36,14 @@ const SuccessPage = ({ navigation, route }) => {
                 if (details?.STATUS == "TXN_SUCCESS") {
                     setSuccess(true)
                 } else {
-                    navigation.navigate('PickupAndDropoff', { date: route?.params?.date, time: route?.params?.time });
+                    // navigation.replace('PickupAndDropoff', { date: route?.params?.date, time: route?.params?.time });
+                    navigation.goBack()
                     Toast.show({ type: 'error', text1: details?.RESPMSG || "Something went wrong !!!" })
                 }
 
             }).catch(async error => {
-                navigation.navigate('PickupAndDropoff', { date: route?.params?.date, time: route?.params?.time });
+                // navigation.replace('PickupAndDropoff', { date: route?.params?.date, time: route?.params?.time });
+                navigation.goBack() 
                 Toast.show({
                     type: 'error',
                     text1: error
@@ -54,6 +57,8 @@ const SuccessPage = ({ navigation, route }) => {
     const payWithPayTM = async () => {
 
         const { paymentDetails } = route?.params?.data
+
+        reactotron.log({paymentDetails})
 
         let orderId = paymentDetails?.orderId
         let isStaging = env === "live" ? false : true

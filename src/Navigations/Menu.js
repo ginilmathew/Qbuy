@@ -10,10 +10,13 @@ import Payment from '../screens/Cart/Checkout/Payment';
 import Notifications from '../screens/Notifications';
 import Coupons from '../screens/Cart/Checkout/Coupons';
 import ProductSearchScreen from '../screens/Home/ProductSearchScreen';
+import { navigationRef } from './RootNavigation';
 
 const Drawer = createDrawerNavigator();
 
 const Menu = () => {
+    console.log(navigationRef.getCurrentRoute())
+
     return (
 
         <>

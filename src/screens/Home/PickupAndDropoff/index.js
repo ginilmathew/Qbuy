@@ -1,4 +1,4 @@
-import { Image, StyleSheet, Text, View, ScrollView, Platform } from 'react-native'
+import { Image, StyleSheet, Text, View, ScrollView, Platform, Modal, ActivityIndicator } from 'react-native'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import HeaderWithTitle from '../../../Components/HeaderWithTitle'
 import Lottie from 'lottie-react-native';
@@ -68,13 +68,14 @@ const PickupAndDropoff = ({ navigation, route }) => {
             const response = await axios.get(url);
 
             if (response) {
+                setLoading(true)
                 const distanceValue = response.data.routes[0].legs;
 
                 const km = distanceValue[0]?.distance?.text?.replace(' km', '');
 
 
                 customAxios.post('customer/pickup-drop-charge', {
-                    "vehicle_type": "3 Wheeler",
+                    "vehicle_type": getValues()?.vehicle,
                     "pickup_location_coordinates": [distance?.pickup?.location?.lat, distance?.pickup?.location?.lng],
                     "kilometer": km
                 }).then(res => {
@@ -90,7 +91,9 @@ const PickupAndDropoff = ({ navigation, route }) => {
                             text1: err,
                             type: 'error'
                         })
-                    })
+                    }).finally 
+                        setLoading(false)
+
             }
 
         } catch (error) {
@@ -144,9 +147,10 @@ const PickupAndDropoff = ({ navigation, route }) => {
         setLoading(false);
 
         if (route?.params?.date && route?.params?.time) {
-            setValue('time', route?.params?.time);
-            setValue('date', route?.params?.date);
+            // setValue('time', route?.params?.time);
+            // setValue('date', route?.params?.date);
         } else {
+            reset()
             setValue('time', new Date());
             setValue('date', new Date());
         }
@@ -157,7 +161,6 @@ const PickupAndDropoff = ({ navigation, route }) => {
 
     const imageGalleryLaunch = useCallback(() => {
         let options = {
-
             storageOptions: {
                 skipBackup: true,
                 path: 'images',
@@ -316,7 +319,7 @@ const PickupAndDropoff = ({ navigation, route }) => {
                     error={errors.weight}
                     inputMode={'numeric'}
                     fieldName="weight"
-                    topLabel={'Weight'}
+                    topLabel={'Weight (kg)'}
                     top={15}
                 />
 
@@ -439,9 +442,21 @@ const PickupAndDropoff = ({ navigation, route }) => {
                     }}
                 />
 
-                {/* <LoadingModal isVisible={loading} /> */}
-
             </ScrollView>
+
+            <Modal visible={!!loading} style={{ backgroundColor: 'transparent' }} transparent={true} >
+                <View
+                    style={{
+                        flex: 1, backgroundColor: 'rgba(0,0,0,0.4)',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        borderRadius: 10,
+                        shadowOffset: 2,
+                    }}
+                >
+                    <ActivityIndicator color={"red"} size={30} />
+                </View>
+            </Modal>
         </>
     )
 }
