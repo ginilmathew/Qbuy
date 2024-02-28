@@ -516,6 +516,7 @@ const styles = StyleSheet.create({
         marginRight: 10 
     },
     typeContainser: {
-        paddingTop: 10
+        paddingTop: 10,
+        paddingHorizontal: 10
     }
 })

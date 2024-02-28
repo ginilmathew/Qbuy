@@ -21,6 +21,7 @@ import ResponseReceived from '../../screens/Drawer/CustomerFeedback/ResponseRece
 import FashionCategory from '../../screens/FashionCategory';
 import Wishlist from '../../screens/Wishlist';
 import SuccessPage from '../../screens/Home/PickupAndDropoff/SuccessPage';
+import PickupAndDropoff from '../../screens/Home/PickupAndDropoff';
 
 const Stack = createNativeStackNavigator();
 
@@ -47,6 +48,7 @@ const HomeNav = () => {
             <Stack.Screen name='SuccessPage' component={SuccessPage} />
             <Stack.Screen name="FashionCategory" component={FashionCategory} />
             <Stack.Screen name="Wishlist" component={Wishlist} />
+            <Stack.Screen name="PickupAndDropoff" component={PickupAndDropoff} />
 
         </Stack.Navigator>
     )
