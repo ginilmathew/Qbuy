@@ -61,7 +61,7 @@ const MyOrders = () => {
 
     const renderOrder = ({ item, index }) => {
         return (
-                <OrderCard key={index} item={item} refreshOrder={getOrderList} />
+            <OrderCard key={index} item={item} refreshOrder={getOrderList} />
         )
     }
 

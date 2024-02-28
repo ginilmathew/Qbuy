@@ -19,7 +19,7 @@ const MyOrderNav = () => {
     return (
         <Stack.Navigator initialRouteName='MyNetwork'  screenOptions={{ headerShown: false }}> 
             <Stack.Screen name="MyOrders" component={MyOrders}/>
-            <Stack.Screen name="ViewDetails" component={ViewDetails}/>
+            {/* <Stack.Screen name="ViewDetails" component={ViewDetails}/> */}
             <Stack.Screen name="RateOrder" component={RateOrder}/>
             <Stack.Screen name="Wishlist" component={Wishlist}/>
             <Stack.Screen name="FashionCategory" component={FashionCategory}/>
