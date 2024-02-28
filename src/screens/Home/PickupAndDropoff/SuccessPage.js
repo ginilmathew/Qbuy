@@ -8,6 +8,7 @@ import has from 'lodash/has'
 import LoadingModal from '../../../Components/LoadingModal'
 import customAxios from '../../../CustomeAxios'
 import { Toast } from 'react-native-toast-message/lib/src/Toast'
+import reactotron from 'reactotron-react-native'
 
 
 
@@ -55,6 +56,8 @@ const SuccessPage = ({ navigation, route }) => {
 
         const { paymentDetails } = route?.params?.data
 
+        reactotron.log({paymentDetails})
+
         let orderId = paymentDetails?.orderId
         let isStaging = env === "live" ? false : true
 
@@ -79,6 +82,7 @@ const SuccessPage = ({ navigation, route }) => {
                 `paytm${paymentDetails?.mid}`//urlScheme
             ).then((result) => {
                 paymentStarted = false
+                console.log(result);
 
                 // setLoading(true)
 

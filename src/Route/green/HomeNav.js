@@ -18,7 +18,7 @@ import OrderPlaced from '../../screens/Cart/Checkout/Payment/OrderPlaced';
 import RefferRestaurant from '../../screens/Home/RefferRestaurant';
 import FeedbackRes from '../../screens/Drawer/CustomerFeedback/FeedbackResponse';
 import ResponseReceived from '../../screens/Drawer/CustomerFeedback/ResponseReceived';
-import SuccessPage from '../../Components/SuccessPage';
+import SuccessPage from '../../screens/Home/PickupAndDropoff/SuccessPage';
 
 const Stack = createNativeStackNavigator();
 
