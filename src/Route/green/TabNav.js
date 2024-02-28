@@ -101,16 +101,7 @@ const TabNav = () => {
 
 
 
-    const switchcartUpdate = async (type) => {
-        let value = {
-            user_id: userContext?.userData?._id,
-            type: type
-
-        }
-        let result = await customAxios.post('customer/cart/newshow-cart', value)
-        cartContext.setCart(result?.data?.data)
-
-    }
+    
 
     const _renderIcon = (routeName, selectedTab) => {
         let icon = '';
@@ -143,9 +134,7 @@ const TabNav = () => {
             case 'cart':
                 return (
                     <>
-                        {cartContext?.cart?.product_details?.length > 0 && <View style={{ height: 15, width: 15, borderRadius: 7.5, backgroundColor: 'red', justifyContent: 'center', alignItems: 'center', position: 'absolute', top: 15, right: 20, zIndex: 1 }}>
-                            <Text style={{ color: '#fff', fontSize: 10, fontWeight: 'bold' }}>{cartContext?.cart?.product_details?.length}</Text>
-                        </View>}
+                        
                         {pandaContext?.active === 'green' &&
                             <AntDesign
                                 name={"shoppingcart"}
@@ -165,7 +154,9 @@ const TabNav = () => {
                                 color={routeName === selectedTab ? '#FF6184' : '#FF9FB4'}
                             />
                         }
-
+                        {cartContext?.cart?.product_details?.length > 0 && <View style={{ height: 15, width: 15, borderRadius: 7.5, backgroundColor: 'red', justifyContent: 'center', alignItems: 'center', position: 'absolute', top: 15, right: 20, zIndex: 100 }}>
+                            <Text style={{ color: '#fff', fontSize: 10, fontWeight: 'bold' }}>{cartContext?.cart?.product_details?.length}</Text>
+                        </View>}
                     </>
                 );
             case 'order':

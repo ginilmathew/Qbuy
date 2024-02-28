@@ -8,18 +8,16 @@ const NotificationDesign = ({ data }) => {
 
     //reactotron.log(data, "DATAPASSED")
 
-    //const navigation = useNavigation()
+    const navigation = useNavigation()
 
-    // const pressLinking = () => {
-    //     if (data?.type === "Order Status") {
-    //         navigation.navigate('MyOrders')
-    //     }
-    // }
+    const pressLinking = () => {
+        navigation.navigate('homepage');
+    }
 
     return (
         <TouchableOpacity
             style={{ paddingHorizontal: 23, width: "100%" }}
-        //onPress={pressLinking}
+        onPress={pressLinking}
         >
             <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }} >
 

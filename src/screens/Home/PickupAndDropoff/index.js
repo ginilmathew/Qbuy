@@ -27,6 +27,7 @@ import axios from 'axios';
 import AuthContext from '../../../contexts/Auth';
 import SuccessPage from '../../../Components/SuccessPage';
 import LoadingModal from '../../../Components/LoadingModal';
+import reactotron from 'reactotron-react-native';
 
 
 
@@ -198,6 +199,8 @@ const PickupAndDropoff = ({ navigation, route }) => {
 
 
     const onSubmit = ({ name, description, vehicle, weight, date, time, pickup, dropoff }) => {
+
+        reactotron.log({date, time})
 
         setLoading(true)
         try {

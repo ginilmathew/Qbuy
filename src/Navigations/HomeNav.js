@@ -47,7 +47,7 @@ const HomeNav = ({mode, route}) => {
             {/* <Stack.Screen name="Coupons" component={Coupons}/> */}
 
 
-            <Stack.Screen name="PickupAndDropoff" component={PickupAndDropoff}/>
+            {/* <Stack.Screen name="PickupAndDropoff" component={PickupAndDropoff}/> */}
             <Stack.Screen name="OurFarms" component={OurFarms}/>
 
             <Stack.Screen name="RefferRestaurant" component={RefferRestaurant}/>

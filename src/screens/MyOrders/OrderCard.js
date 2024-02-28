@@ -285,7 +285,7 @@ const OrderCard = memo(({ item, refreshOrder }) => {
                 </View>
                 <View>
                     <Text style={styles.textRegular}>{'Total Payment'}</Text>
-                    <Text style={styles.textBold}>{((has(item, "pendingBalance")) && item?.pendingBalance > 0) ? item?.pendingBalance : item?.grand_total}</Text>
+                    <Text style={styles.textBold}>{((has(item, "pendingBalance")) && item?.pendingBalance > 0) ? item?.pendingBalance : parseFloat(item?.grand_total).toFixed(2)}</Text>
                 </View>
                 <View>
                     <Text style={styles.textRegular}>{'Current Status'}</Text>

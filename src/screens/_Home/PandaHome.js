@@ -30,9 +30,13 @@ const pandHome = async (datas) => {
     let recent = [];
 
     recent = await getProducts(homeData?.data?.data?.[2]?.data)
+
+    
     let messagesBanner = homeData?.data?.data?.[7]?.data
     let sugges = [];
     sugges = await getProducts(homeData?.data?.data?.[4]?.data)
+
+    //reactotron.log({sugges})
     return {
         //items: newArray,
         sliders,
@@ -512,6 +516,7 @@ const styles = StyleSheet.create({
         marginRight: 10 
     },
     typeContainser: {
-        paddingTop: 10
+        paddingTop: 10,
+        paddingHorizontal: 10
     }
 })

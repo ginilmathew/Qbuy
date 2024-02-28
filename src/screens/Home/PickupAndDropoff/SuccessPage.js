@@ -58,32 +58,34 @@ const SuccessPage = ({ navigation, route }) => {
 
         const { paymentDetails } = route?.params?.data
 
-        reactotron.log({paymentDetails})
+       // reactotron.log({paymentDetails}, "in", env)
 
         let orderId = paymentDetails?.orderId
         let isStaging = env === "live" ? false : true
 
         const callbackUrl = {
-            true: "https://securegw-stage.paytm.in/theia/paytmCallback?ORDER_ID=",
-            false: "https://securegw.paytm.in/theia/paytmCallback?ORDER_ID="
+            dev: "https://securegw-stage.paytm.in/theia/paytmCallback?ORDER_ID=",
+            live: "https://securegw.paytm.in/theia/paytmCallback?ORDER_ID="
         }
 
         // setIsLoding(false)
 
-        let paymentStarted = true;
+        //let paymentStarted = true;
         try {
 
             AllInOneSDKManager.startTransaction(
                 paymentDetails?.orderId,//orderId
                 paymentDetails?.mid,//mid
                 paymentDetails?.txnToken,//txnToken
-                typeof paymentDetails?.amount === 'string' ? Number(paymentDetails?.amount).toFixed(2) : paymentDetails?.amount.toFixed(2),//amount
-                `${callbackUrl[isStaging]}${paymentDetails?.orderId}`,//callbackUrl
+                paymentDetails?.amount,//amount
+                `${callbackUrl[env]}${paymentDetails?.orderId}`,//callbackUrl
                 isStaging,//isStaging
                 true,//appInvokeRestricted
                 `paytm${paymentDetails?.mid}`//urlScheme
             ).then((result) => {
-                paymentStarted = false
+
+                reactotron.log({result})
+                //paymentStarted = false
 
                 // setLoading(true)
 
@@ -105,7 +107,7 @@ const SuccessPage = ({ navigation, route }) => {
 
 
             }).catch((err) => {
-                paymentStarted = false
+                reactotron.log({err})
 
                 let data = {
                     STATUS: 'TXN_FAILURE',
@@ -124,9 +126,6 @@ const SuccessPage = ({ navigation, route }) => {
             console.log(error);
         }
 
-        if (paymentStarted) {
-            // console.log("payment not completed")
-        }
 
     }
 
