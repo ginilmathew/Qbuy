@@ -18,6 +18,8 @@ import OrderPlaced from '../../screens/Cart/Checkout/Payment/OrderPlaced';
 import RefferRestaurant from '../../screens/Home/RefferRestaurant';
 import FeedbackRes from '../../screens/Drawer/CustomerFeedback/FeedbackResponse';
 import ResponseReceived from '../../screens/Drawer/CustomerFeedback/ResponseReceived';
+import FashionCategory from '../../screens/FashionCategory';
+import Wishlist from '../../screens/Wishlist';
 import SuccessPage from '../../screens/Home/PickupAndDropoff/SuccessPage';
 
 const Stack = createNativeStackNavigator();
@@ -43,6 +45,9 @@ const HomeNav = () => {
             <Stack.Screen  name='FeedbackResp' component={FeedbackRes} />
             <Stack.Screen  name='Respo' component={ResponseReceived} />
             <Stack.Screen name='SuccessPage' component={SuccessPage} />
+            <Stack.Screen name="FashionCategory" component={FashionCategory} />
+            <Stack.Screen name="Wishlist" component={Wishlist} />
+
         </Stack.Navigator>
     )
 }

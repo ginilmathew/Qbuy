@@ -147,8 +147,8 @@ const PickupAndDropoff = ({ navigation, route }) => {
         setLoading(false);
 
         if (route?.params?.date && route?.params?.time) {
-            setValue('time', route?.params?.time);
-            setValue('date', route?.params?.date);
+            // setValue('time', route?.params?.time);
+            // setValue('date', route?.params?.date);
         } else {
             reset()
             setValue('time', new Date());
@@ -319,7 +319,7 @@ const PickupAndDropoff = ({ navigation, route }) => {
                     error={errors.weight}
                     inputMode={'numeric'}
                     fieldName="weight"
-                    topLabel={'Weight'}
+                    topLabel={'Weight (kg)'}
                     top={15}
                 />
 

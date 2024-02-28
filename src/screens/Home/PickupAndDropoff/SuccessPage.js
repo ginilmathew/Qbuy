@@ -36,12 +36,14 @@ const SuccessPage = ({ navigation, route }) => {
                 if (details?.STATUS == "TXN_SUCCESS") {
                     setSuccess(true)
                 } else {
-                    navigation.navigate('PickupAndDropoff', { date: route?.params?.date, time: route?.params?.time });
+                    // navigation.replace('PickupAndDropoff', { date: route?.params?.date, time: route?.params?.time });
+                    navigation.goBack()
                     Toast.show({ type: 'error', text1: details?.RESPMSG || "Something went wrong !!!" })
                 }
 
             }).catch(async error => {
-                navigation.navigate('PickupAndDropoff', { date: route?.params?.date, time: route?.params?.time });
+                // navigation.replace('PickupAndDropoff', { date: route?.params?.date, time: route?.params?.time });
+                navigation.goBack() 
                 Toast.show({
                     type: 'error',
                     text1: error
@@ -82,7 +84,6 @@ const SuccessPage = ({ navigation, route }) => {
                 `paytm${paymentDetails?.mid}`//urlScheme
             ).then((result) => {
                 paymentStarted = false
-                console.log(result);
 
                 // setLoading(true)
 

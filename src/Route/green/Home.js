@@ -65,7 +65,7 @@ const HomeNav = () => {
                                     FashionHome : GreenHome
                     } />
                 <Stack.Screen name="SingleHotel" component={SingleHotel} />
-                <Stack.Screen name="checkout" component={CheckoutScreen} />
+                {/* <Stack.Screen name="checkout" component={CheckoutScreen} /> */}
                 {/* <Stack.Screen name="SingleItemScreen" component={SingleProductScreen} /> */}
                 {/* <Stack.Screen name="restaurant" component={RestaurantScreen} />
                 <Stack.Screen name="Category" component={CategoryScreen} /> */}
@@ -81,8 +81,8 @@ const HomeNav = () => {
                 <Stack.Screen name="ApplyFranchisee" component={ApplyFranchisee} />
                 <Stack.Screen name="About" component={About} /> */}
                 <Stack.Screen name="ViewAllStore" component={ViewAllStore} />
-                <Stack.Screen name="Wishlist" component={Wishlist} />
-                <Stack.Screen name="FashionCategory" component={FashionCategory} />
+                {/* <Stack.Screen name="Wishlist" component={Wishlist} /> */}
+                
                 <Stack.Screen name="tagScreen" component={TagScreen}/>
             </Stack.Navigator>
         </View>

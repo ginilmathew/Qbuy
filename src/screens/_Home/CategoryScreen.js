@@ -19,6 +19,7 @@ import CommonTexts from '../../Components/CommonTexts';
 import ProductCard from '../../Components/Home/ProductCard';
 import PandaShopCard from '../../Components/Home/PandaShopCard';
 import CartContext from '../../contexts/Cart';
+import CartButton from '../../Components/Home/CartButton';
 
 const CategoryScreen = ({route, navigation}) => {
 
@@ -230,6 +231,7 @@ const CategoryScreen = ({route, navigation}) => {
     return (
         <View  style={{ backgroundColor: contextPanda?.active === "green" ? '#F4FFE9' : contextPanda?.active === "fashion" ? '#FFF5F7' : '#fff'} }>
             <HeaderWithTitle title={ route?.params?.item?.name } />
+            <View style={{ height: cartContext?.cart?.product_details?.length > 0 ?  height-170 : height-100 }}>
             <SectionList
                 sections={datas}
                 keyExtractor={(item, index) => `${item?._id}${index}`}
@@ -237,14 +239,15 @@ const CategoryScreen = ({route, navigation}) => {
                 ListHeaderComponent={sectionHeader}
                 renderSectionHeader={rendersectionHeader}
                 style={{ backgroundColor: '#fff', marginHorizontal: 5 }}
-                ListFooterComponent={() => <View style={{ height: 100 }} />}
                 stickySectionHeadersEnabled={false}
                
             />
+            </View>
             {(datas?.length === 0 && loading) && <View style={{ height: 200, justifyContent:'center', alignItems:'center' }}> 
                 <ActivityIndicator color={"red"} size={"large"} />
                 <Text>Loading...</Text>
             </View>}
+            <CartButton bottom={0} />
         </View>
         
     )

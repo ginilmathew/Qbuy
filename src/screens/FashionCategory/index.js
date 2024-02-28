@@ -59,7 +59,7 @@ const FashionCategory = ({route}) => {
     return (
         <>
 
-            <HeaderWithTitle title={'Categories'} noBack/>
+            <HeaderWithTitle title={'Categories'} />
             <ScrollView
                 style={{
                     flex: 1,
