@@ -1,5 +1,5 @@
-import { Alert, Linking, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React, { useCallback, useContext, useState } from 'react'
+import { Alert, Linking, Platform, RefreshControl, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import HeaderWithTitle from '../../../Components/HeaderWithTitle'
 import CommonTexts from '../../../Components/CommonTexts'
 import OrderTimeCard from './OrderTimeCard'
@@ -9,15 +9,33 @@ import PandaContext from '../../../contexts/Panda'
 import reactotron from 'reactotron-react-native'
 import moment from 'moment'
 import CommonStatusCard from '../../../Components/CommonStatusCard'
+import customAxios from '../../../CustomeAxios'
+import Toast from 'react-native-toast-message'
 
 
 const ViewDetails = ({ route }) => {
 
     const contextPanda = useContext(PandaContext)
+    const [item, setItem] = useState({})
+    const [isLoading, setIsLoading] = useState(false);
 
     let grocery = contextPanda.greenPanda
 
-    let item = route?.params?.item
+
+    useEffect(() => {
+        setIsLoading(true)
+        customAxios.get(`customer/order/show/` + route?.params?.item?._id)
+            .then(async response => {
+                setItem(response.data.data);
+
+            }).catch(error => {
+
+                Toast.show({ type: 'error', text1: error || "Something went wrong !!!" });
+            }).finally(error => {
+                setIsLoading(false)
+            })
+
+    }, [route?.params?.item?._id])
 
     let qty = route?.params?.qty
 
@@ -87,6 +105,11 @@ const ViewDetails = ({ route }) => {
                     backgroundColor: grocery ? '#F4FFE9' : '#fff',
                     paddingHorizontal: 10
                 }}
+                refreshControl={
+                    <RefreshControl
+                        refreshing={isLoading}
+                    />
+                }
             >
                 <View style={styles.itemView}>
                     <View style={styles.itemHeader}>
@@ -116,7 +139,7 @@ const ViewDetails = ({ route }) => {
                             >
                                 <Text style={item?.status === 'created' ? styles.pendingStatusText : item?.status === 'completed' ? styles.completedStatusText : null} >{item?.status}</Text>
                             </View> */}
-                             {renderStatusLabel(item?.status)}
+                            {renderStatusLabel(item?.status)}
                         </View>
                     </View>
 
@@ -129,7 +152,7 @@ const ViewDetails = ({ route }) => {
                     </View>
 
                     <View style={styles.itemUnderProduct}>
-                        {item?.product_details.map((item) =>
+                        {item?.product_details?.map((item) =>
                             <ItemsCard
                                 item={item}
                                 key={item?._id}
@@ -137,13 +160,13 @@ const ViewDetails = ({ route }) => {
                         )}
                         {item?.price_breakup?.map((pri, index) => (
 
-                    <View key={`${pri?._id}${index}`} style={styles.delivery}>
-                        <View style={{ flex: 0.5 }}>
-                            <Text style={[styles.text1, { textAlign: 'left' }]}>{pri?.charge_name}</Text>
-                        </View>
-                        <Text style={[styles.text1, { textAlign: 'center' }]}>₹ {pri?.price}</Text>
-                    </View>
-                    ))}
+                            <View key={`${pri?._id}${index}`} style={styles.delivery}>
+                                <View style={{ flex: 0.5 }}>
+                                    <Text style={[styles.text1, { textAlign: 'left' }]}>{pri?.charge_name}</Text>
+                                </View>
+                                <Text style={[styles.text1, { textAlign: 'center' }]}>₹ {pri?.price}</Text>
+                            </View>
+                        ))}
                     </View>
                 </View>
 
@@ -158,11 +181,11 @@ const ViewDetails = ({ route }) => {
 
                 {item?.rider_each_order_settlement?.rider_status === "onTheWay" ? (<ContactCard
                     heading={'Call Delivery Agent'}
-                    content={'You can call your assigned delivery agent ' +`${item?.riders.mobile}`}
+                    content={'You can call your assigned delivery agent ' + `${item?.riders.mobile}`}
                     iconColor={grocery ? '#FF9C0C' : '#576FD0'}
                     iconName='call-sharp'
                     onpress={dialCall}
-                />) : null }
+                />) : null}
 
                 <ContactCard
                     heading={'Any Issues?'}

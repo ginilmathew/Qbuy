@@ -57,16 +57,21 @@ const PickupAndDropoff = ({ navigation, route }) => {
 
 
 
-    const getDistance = async () => {
+    const getDistance = async (vehicleType) => {
 
         try {
-            const origin = `${distance?.pickup?.location?.lat},${distance?.pickup?.location?.lng}`;
-            const destination = `${distance?.dropoff?.location?.lat},${distance?.dropoff?.location?.lng}`;
-            const apiKey = 'AIzaSyBBcghyB0FvhqML5Vjmg3uTwASFdkV8wZY';
+            let response = null;
+            
+            if (distance?.pickup?.location) { 
+                const origin = `${distance?.pickup?.location?.lat},${distance?.pickup?.location?.lng}`;
+                const destination = `${distance?.dropoff?.location?.lat},${distance?.dropoff?.location?.lng}`;
+                const apiKey = 'AIzaSyBBcghyB0FvhqML5Vjmg3uTwASFdkV8wZY';
+    
+                const url = `https://maps.googleapis.com/maps/api/directions/json?origin=${origin}&destination=${destination}&key=${apiKey}`;
 
-            const url = `https://maps.googleapis.com/maps/api/directions/json?origin=${origin}&destination=${destination}&key=${apiKey}`;
+                response = await axios.get(url);
+            }
 
-            const response = await axios.get(url);
 
             if (response) {
                 setLoading(true)
@@ -76,7 +81,7 @@ const PickupAndDropoff = ({ navigation, route }) => {
 
 
                 customAxios.post('customer/pickup-drop-charge', {
-                    "vehicle_type": getValues()?.vehicle,
+                    "vehicle_type": vehicleType,
                     "pickup_location_coordinates": [distance?.pickup?.location?.lat, distance?.pickup?.location?.lng],
                     "kilometer": km
                 }).then(res => {
@@ -332,6 +337,7 @@ const PickupAndDropoff = ({ navigation, route }) => {
                     error={errors.vehicle}
                     placeholder={'Select vehicle'}
                     data={vehicleTypes}
+                    onChange={getDistance}
                     mt={15}
                     mb={20}
                     setValue={setValue}
