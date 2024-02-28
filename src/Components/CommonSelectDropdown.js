@@ -5,7 +5,7 @@ import { Dropdown } from 'react-native-element-dropdown';
 import PandaContext from '../contexts/Panda';
 import reactotron from 'reactotron-react-native';
 
-const CommonSelectDropdown = ({topLabel, mb, placeholder, data, value, setValue, search, height, mt, width, shadowOpacity, elevation, flex, index, fieldName}) => {
+const CommonSelectDropdown = ({topLabel, mb, placeholder, data, value, setValue, search, height, mt, width, shadowOpacity, elevation, flex, index, fieldName, onChange}) => {
 
 
     const contextPanda = useContext(PandaContext)
@@ -45,6 +45,7 @@ const CommonSelectDropdown = ({topLabel, mb, placeholder, data, value, setValue,
     const changeValue = (item) => {
         setValue(fieldName, item?.label);
         setItem(item?.label)
+        onChange(item?.label)
         setIsFocus(false);
     }
 
