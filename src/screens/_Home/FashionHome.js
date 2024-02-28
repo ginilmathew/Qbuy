@@ -39,10 +39,12 @@ const fashionHome = async (datas) => {
         data: sugges
     }
     let newArray = [homeData?.data?.data?.[0], recents, suggestions]
+    let messagesBanner = homeData?.data?.data?.[7]?.data
     return {
         items: newArray,
         sliders,
-        stores: homeData?.data?.data?.[1]
+        stores: homeData?.data?.data?.[1],
+        messagesBanner
     }
 }
 
@@ -197,6 +199,43 @@ const FashionHome = ({ route, navigation }) => {
         )
     }
 
+
+    const MessageBanner = ({ item, index }) => {
+        return (
+            <TouchableOpacity key={`${index}${item?._id}`} onPress={() => openStore(item)} style={styles.bannerButton} >
+                <FastImage
+                    source={{ uri: `${IMG_URL}${item?.image}` }}
+                    style={styles.bannerImage}
+                    resizeMode="cover"
+                />
+                <View style={styles.bannerContent}>
+                    <Text style={styles.offerText}>{item?.offer_title}</Text>
+                    <Text style={styles.offerDescription}>{item?.offer_description}</Text>
+                </View>
+            </TouchableOpacity>
+        )
+    }
+
+    //render messageBanner
+    const rendermessageBanner = () => {
+        if(data?.messagesBanner?.length > 0){
+            return(
+                <View style={styles.messagesBanner}>
+                    <Carousel
+                        loop
+                        width={width}
+                        height={height / 5}
+                        autoPlay={true}
+                        data={data?.messagesBanner}
+                        scrollAnimationDuration={5000}
+                        renderItem={MessageBanner}
+                    />
+                </View>
+            )
+        }
+        
+    }
+
     const renderStores = () => {
         return (
             <>
@@ -231,21 +270,24 @@ const FashionHome = ({ route, navigation }) => {
     }
 
     const renderRecents = () => {
-        return (
-            <>
-                <View style={{ marginLeft: 10 }}>
-                    <CommonTexts label={'Recently Viewed'} fontSize={13} />
-                </View>
-                <FlatList
-                    data={data?.items?.[1]?.data}
-                    keyExtractor={(item) => item?._id}
-                    renderItem={renderProducts}
-                    style={{ paddingVertical: 20 }}
-                    horizontal={true}
-                    showsHorizontalScrollIndicator={false}
-                />
-            </>
-        )
+        if(data?.items?.[1]?.data?.length > 1){
+            return (
+                <>
+                    <View style={{ marginLeft: 10 }}>
+                        <CommonTexts label={'Recently Viewed'} fontSize={13} />
+                    </View>
+                    <FlatList
+                        data={data?.items?.[1]?.data}
+                        keyExtractor={(item) => item?._id}
+                        renderItem={renderProducts}
+                        style={{ paddingVertical: 20 }}
+                        horizontal={true}
+                        showsHorizontalScrollIndicator={false}
+                    />
+                </>
+            )
+        }
+        
     }
 
     const renderSuggestions = () => {
@@ -253,7 +295,7 @@ const FashionHome = ({ route, navigation }) => {
         if(suggestions?.length > 0){
             return (
                 <>
-                    <View style={{ marginLeft: 10 }}>
+                    <View style={{ marginLeft: 10, marginTop: 10 }}>
                         <CommonTexts label={'Panda Suggestions'} fontSize={13} />
                     </View>
                     <FlatList
@@ -301,19 +343,14 @@ const FashionHome = ({ route, navigation }) => {
                         lottieFlex={0.4}
                     />
                 </View> */}
+                {rendermessageBanner()}
                 {renderRecents()}
                 {renderSuggestions()}
             </>
         )
     }
 
-    const ListFooterComponents = () => {
-        return(
-            <View style={{ height: 100 }}>
 
-            </View>
-        )
-    }
 
     return (
         <>
@@ -329,37 +366,18 @@ const FashionHome = ({ route, navigation }) => {
             />
             <View style={styles.container}>
                 <NameText userName={userContext?.userData?.name ? userContext?.userData?.name : userContext?.userData?.mobile} mt={8} />
-                {data ? <FlatList
-                    disableVirtualization={true}
-                    extraData={active}
-                    ListHeaderComponent={HeaderList}
-                    ListFooterComponent={() => <AvailableProducts
-                        styles={styles1}
-                        width={width}
-                        loggedIn={userContext?.userData ? true : false}
-                        height={height / 4}
-                        datas={datas}
-                        viewProduct={viewProduct}
-                        addToCart={addToCart}
-                    />}
-                    //data={data?.pages?.map(page => page?.data)?.flat()}
-                    data={[]}
-                    //keyExtractor={keyExtractorGreen}
-                    //renderItem={renderProducts}
-                    showsVerticalScrollIndicator={false}
-                    initialNumToRender={10}
-                    removeClippedSubviews={true}
-                    windowSize={10}
-                    maxToRenderPerBatch={10}
-                    refreshing={isLoading}
-                    //onRefresh={RefetchMoreFlat}
-                    numColumns={2}
-                    style={{ marginLeft: 5 }}
-                    contentContainerStyle={{ justifyContent: 'center', gap: 10 }}
-                /> : <View style={{ height: 500, justifyContent: 'center', alignItems: 'center' }}>
-                    <ActivityIndicator color={"red"} size={"large"} />
-                    <Text>Loading...</Text>
-                </View>}
+                <AvailableProducts
+                    styles={styles1}
+                    width={width}
+                    loggedIn={userContext?.userData ? true : false}
+                    height={height / 4}
+                    datas={datas}
+                    viewProduct={viewProduct}
+                    addToCart={addToCart}
+                >
+                    {HeaderList()}
+                </AvailableProducts>
+                
             </View>
         </>
     )
@@ -378,6 +396,24 @@ const styles = StyleSheet.create({
         backgroundColor: '#F7F7F7',
         marginTop: 20,
         justifyContent: 'space-evenly',
+    },
+    bannerButton: {
+        width: '100%',
+        height: '85%',
+        alignItems: 'center',
+        marginTop: 20,
+        borderRadius: 5
+    },
+    bannerImage: {
+        height: '100%', 
+        width: '95%', 
+        borderRadius: 20
+    },
+    bannerContent: {
+        position: 'absolute',
+        height: '100%',
+        backgroundColor: 'rgba(0,0,0,0.5)',
+        width: '95%'
     },
 })
 

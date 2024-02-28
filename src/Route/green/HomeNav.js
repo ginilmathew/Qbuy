@@ -19,6 +19,8 @@ import RefferRestaurant from '../../screens/Home/RefferRestaurant';
 import FeedbackRes from '../../screens/Drawer/CustomerFeedback/FeedbackResponse';
 import ResponseReceived from '../../screens/Drawer/CustomerFeedback/ResponseReceived';
 import SuccessPage from '../../Components/SuccessPage';
+import FashionCategory from '../../screens/FashionCategory';
+import Wishlist from '../../screens/Wishlist';
 
 const Stack = createNativeStackNavigator();
 
@@ -43,6 +45,9 @@ const HomeNav = () => {
             <Stack.Screen  name='FeedbackResp' component={FeedbackRes} />
             <Stack.Screen  name='Respo' component={ResponseReceived} />
             <Stack.Screen name='SuccessPage' component={SuccessPage} />
+            <Stack.Screen name="FashionCategory" component={FashionCategory} />
+            <Stack.Screen name="Wishlist" component={Wishlist} />
+
         </Stack.Navigator>
     )
 }

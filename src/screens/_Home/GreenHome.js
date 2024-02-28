@@ -23,6 +23,7 @@ import ProductCard from '../../Components/Home/ProductCard'
 import AvailableProducts from './AvailableProducts'
 import { useFocusEffect } from '@react-navigation/native'
 import CartContext from '../../contexts/Cart'
+import CartButton from '../../Components/Home/CartButton'
 
 
 const greenHome = async (datas) => {
@@ -38,11 +39,13 @@ const greenHome = async (datas) => {
         type: 'suggested_products',
         data: sugges
     }
+    let messagesBanner = homeData?.data?.data?.[7]?.data
     let newArray = [homeData?.data?.data?.[0], recents, suggestions]
     return {
         items: newArray,
         sliders,
-        stores: homeData?.data?.data?.[1]
+        stores: homeData?.data?.data?.[1],
+        messagesBanner
     }
 }
 
@@ -136,10 +139,10 @@ const GreenHome = ({ navigation }) => {
 
     const CarouselCardItem = ({ item, index }) => {
         return (
-            <TouchableOpacity key={index} onPress={() => CarouselSelect(item)} style={{ alignItems: 'center', marginTop: 20, width: '100%', height: '85%' }} >
+            <TouchableOpacity key={index} onPress={() => CarouselSelect(item)} style={styles.caurasalCard} >
                 <FastImage
                     source={{ uri: `${IMG_URL}${item?.original_image}` }}
-                    style={{ height: '100%', width: '95%', borderRadius: 20 }}
+                    style={styles.caurasalImage}
                     resizeMode="cover"
                 />
             </TouchableOpacity>
@@ -164,6 +167,42 @@ const GreenHome = ({ navigation }) => {
 
     }
 
+    const MessageBanner = ({ item, index }) => {
+        return (
+            <TouchableOpacity key={`${index}${item?._id}`} onPress={() => openStore(item)} style={styles.bannerButton} >
+                <FastImage
+                    source={{ uri: `${IMG_URL}${item?.image}` }}
+                    style={styles.bannerImage}
+                    resizeMode="cover"
+                />
+                <View style={styles.bannerContent}>
+                    <Text style={styles.offerText}>{item?.offer_title}</Text>
+                    <Text style={styles.offerDescription}>{item?.offer_description}</Text>
+                </View>
+            </TouchableOpacity>
+        )
+    }
+
+    //render messageBanner
+    const rendermessageBanner = () => {
+        if(data?.messagesBanner?.length > 0){
+            return(
+                <View style={styles.messagesBanner}>
+                    <Carousel
+                        loop
+                        width={width}
+                        height={height / 5}
+                        autoPlay={true}
+                        data={data?.messagesBanner}
+                        scrollAnimationDuration={5000}
+                        renderItem={MessageBanner}
+                    />
+                </View>
+            )
+        }
+        
+    }
+
     const viewStore = (item) => {
         navigation.navigate("store", { item })
     }
@@ -182,7 +221,7 @@ const GreenHome = ({ navigation }) => {
     const renderStores = () => {
         return (
             <>
-                <View style={{ marginLeft: 10, marginTop: 10 }}>
+                <View style={styles.storeTitle}>
                     <CommonTexts label={'Available Stores'} fontSize={13} />
                 </View>
 
@@ -233,7 +272,7 @@ const GreenHome = ({ navigation }) => {
         if(recents?.length > 0){
             return (
                 <>
-                    <View style={{ marginLeft: 10 }}>
+                    <View style={styles.storeTitle}>
                         <CommonTexts label={'Recently Viewed'} fontSize={13} />
                     </View>
                     <FlatList
@@ -255,7 +294,7 @@ const GreenHome = ({ navigation }) => {
         if(suggestions?.length > 0){
             return (
                 <>
-                    <View style={{ marginLeft: 10, marginTop: 5 }}>
+                    <View style={styles.storeTitle}>
                         <CommonTexts label={'Panda Suggestions'} fontSize={13} />
                     </View>
                     <FlatList
@@ -303,11 +342,14 @@ const GreenHome = ({ navigation }) => {
                         lottieFlex={0.4}
                     />
                 </View>
+                {rendermessageBanner()}
                 {renderRecents()}
                 {renderSuggestions()}
             </>
         )
     }
+
+    
 
     return (
         <>
@@ -323,10 +365,7 @@ const GreenHome = ({ navigation }) => {
             />
             <View style={styles.container}>
                 <NameText userName={userContext?.userData?.name ? userContext?.userData?.name : userContext?.userData?.mobile} mt={8} />
-                {data ? <FlatList
-                    disableVirtualization={true}
-                    ListHeaderComponent={HeaderList}
-                    ListFooterComponent={() => <AvailableProducts
+                <AvailableProducts
                         styles={styles1}
                         width={width}
                         loggedIn={userContext?.userData ? true : false}
@@ -334,27 +373,11 @@ const GreenHome = ({ navigation }) => {
                         datas={datas}
                         viewProduct={viewProduct}
                         addToCart={addToCart}
-                    />}
-                    //data={data?.pages?.map(page => page?.data)?.flat()}
-                    data={[]}
-                    //keyExtractor={keyExtractorGreen}
-                    //renderItem={renderProducts}
-                    showsVerticalScrollIndicator={false}
-                    initialNumToRender={10}
-                    removeClippedSubviews={true}
-                    windowSize={10}
-                    maxToRenderPerBatch={10}
-                    refreshing={isLoading}
-                    //onRefresh={RefetchMoreFlat}
-                    numColumns={2}
-                    style={{ marginLeft: 5 }}
-                    contentContainerStyle={{ justifyContent: 'center', gap: 10 }}
-                //ListFooterComponent={ListFooterComponents}
-                /> : <View style={{ height: 500, justifyContent: 'center', alignItems: 'center' }}>
-                    <ActivityIndicator color={"red"} size={"large"} />
-                    <Text>Loading...</Text>
-                </View>}
+                >
+                    {HeaderList()}
+                </AvailableProducts>
             </View>
+            <CartButton bottom={0} />
         </>
     )
 }
@@ -371,6 +394,42 @@ const styles = StyleSheet.create({
         backgroundColor: '#F4FFE9',
         marginTop: 20,
         justifyContent: 'space-evenly',
+    },
+    messagesBanner: {
+        height: 200
+    },
+    caurasalCard: { 
+        alignItems: 'center', 
+        marginTop: 20, 
+        width: '100%', 
+        height: '85%' 
+    },
+    caurasalImage: { 
+        height: '100%', 
+        width: '95%', 
+        borderRadius: 20 
+    },
+    storeTitle: { 
+        marginLeft: 10, 
+        marginTop: 10 
+    },
+    bannerButton: {
+        width: '100%',
+        height: '85%',
+        alignItems: 'center',
+        marginTop: 20,
+        borderRadius: 5
+    },
+    bannerImage: {
+        height: '100%', 
+        width: '95%', 
+        borderRadius: 20
+    },
+    bannerContent: {
+        position: 'absolute',
+        height: '100%',
+        backgroundColor: 'rgba(0,0,0,0.5)',
+        width: '95%'
     },
 })
 

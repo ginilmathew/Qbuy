@@ -83,7 +83,7 @@ const CartButton = ({ bottom }) => {
                 style={[styles.container]}
             >
                 <LinearGradient
-            start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} colors={active === "panda" ? ['#7BE495', '#329D9C'] : ['#FF41F2', '#FF5757']}
+            start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} colors={active === "panda" ? ['#7BE495', '#329D9C'] : active === "fashion" ? ['#FF41F2', '#FF5757'] : ['#9BFF58', '#8BC852' ]}
             style={styles.container}
         >
                 <View style={styles.leftContainer}>
