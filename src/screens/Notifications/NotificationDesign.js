@@ -11,7 +11,8 @@ const NotificationDesign = ({ data }) => {
     const navigation = useNavigation()
 
     const pressLinking = () => {
-        navigation.navigate('homepage');
+        // navigation.navigate('homepage');
+        // console.log(navigation.get('homepage'));
     }
 
     return (
