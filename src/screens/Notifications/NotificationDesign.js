@@ -10,15 +10,19 @@ const NotificationDesign = ({ data }) => {
 
     const navigation = useNavigation()
 
-
     const pressLinking = () => {
-        navigation.navigate('ViewDetails', { item: { _id: data?.order_id } });
+        if (data?.order_id) {
+            navigation.navigate('ViewDetails', { item: { _id: data?.order_id } });
+        } else if (data?.complaint_id) {
+            navigation.navigate('Respo', { item: { _id: data?.complaint_id } })
+        }
+
     }
 
     return (
         <TouchableOpacity
             style={{ paddingHorizontal: 23, width: "100%" }}
-        onPress={pressLinking}
+            onPress={pressLinking}
         >
             <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }} >
 

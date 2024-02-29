@@ -66,6 +66,7 @@ const RefferRestaurant = ({ navigation }) => {
     });
 
     const goHome = useCallback(() => {
+        setShowSuccess(false)
         navigation?.goBack()
     }, [])
 
@@ -186,6 +187,7 @@ const RefferRestaurant = ({ navigation }) => {
                             error={errors.comments}
                             fieldName="comments"
                             topLabel={'Comments'}
+                            top={20}
                             multi
                         />
                     </>}

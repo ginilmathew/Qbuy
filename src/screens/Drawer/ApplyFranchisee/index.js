@@ -1,5 +1,5 @@
 import { Image, StyleSheet, Text, View, ScrollView, useWindowDimensions } from 'react-native'
-import React, { useCallback, useContext, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import Lottie from 'lottie-react-native';
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -23,6 +23,7 @@ const ApplyFranchisee = ({ navigation }) => {
     const { height } = useWindowDimensions()
     let active = contextPanda.active
 
+
     const schema = yup.object({
         name: yup.string().required('Name is required'),
         mobile: yup.string().required('Mobile is required').typeError('Mobile type must be number'),
@@ -30,8 +31,14 @@ const ApplyFranchisee = ({ navigation }) => {
         comments: yup.string().required('Comments is required'),
     }).required();
 
-    const { control, handleSubmit, formState: { errors }, setValue, setError } = useForm({
-        resolver: yupResolver(schema)
+    const { control, handleSubmit, formState: { errors }, setValue, setError, reset, getValues } = useForm({
+        resolver: yupResolver(schema),
+        defaultValues: {
+        name: '',
+        mobile: '',
+        location: '',
+        comments: '',
+    }
     });
 
     const onSubmit = useCallback((data) => {
@@ -55,7 +62,14 @@ const ApplyFranchisee = ({ navigation }) => {
 
 
     const goHome = useCallback(() => {
+        reset({
+            name: '',
+            mobile: '',
+            location: '',
+            comments: '',
+        })
         navigation?.goBack()
+        setShowSuccess(false)
     }, [])
 
 
@@ -134,7 +148,7 @@ const ApplyFranchisee = ({ navigation }) => {
                     /> */}
                 <GooglePlaces
                     control={control}
-                    fieldName={'pickup'}
+                    fieldName={'location'}
                     topLabel={'Pick Up Location'}
                     setValue={setValue}
                     // setDistance={setDistance}
@@ -146,6 +160,7 @@ const ApplyFranchisee = ({ navigation }) => {
                     error={errors.comments}
                     fieldName="comments"
                     topLabel={'Comments'}
+                    top={15}
                     multi
                 />
 

@@ -40,11 +40,6 @@ const RegisterAsAffiliate = ({ navigation }) => {
     ];
 
 
-    
-    
-
-
-
     const schema = yup.object({
         name: yup.string().required('Name is required'),
         phone: yup.number().required('Phone number is required'),
@@ -54,7 +49,7 @@ const RegisterAsAffiliate = ({ navigation }) => {
         accountnumber: yup.string().required('Account Number is required').min(5, 'Account Number should be atleast 5 characters.').max(15, 'Account Number is limited to 15 characters.'),
     }).required();
 
-    const { control, handleSubmit, formState: { errors }, setValue, setError, reset } = useForm({
+    const { control, handleSubmit, formState: { errors }, setValue, setError, reset, getValues } = useForm({
         resolver: yupResolver(schema)
     });
 
@@ -70,6 +65,7 @@ const RegisterAsAffiliate = ({ navigation }) => {
         customAxios.post('customer/affiliate/register', value)
             .then(res => {
                 navigation.navigate('WorkWithPanda', { mode: 'success' })
+                reset()
             })
             .catch(err => {
                 Toast.show({
@@ -109,6 +105,7 @@ const RegisterAsAffiliate = ({ navigation }) => {
                     topLabel={'Phone Number'}
                     inputMode={'numeric'}
                 />
+
                 <CommonInput
                     control={control}
                     error={errors.email}
@@ -124,8 +121,9 @@ const RegisterAsAffiliate = ({ navigation }) => {
                     control={control}
                     setValue={setValue}
                     setError={setError}
+                    value={getValues().bankname}
                     error={errors.bankname}
-                    fieldName='bankname'
+                    fieldName='bankname' 
                     placeholder='Bank Name'
                     height={60}
                 />

@@ -1,13 +1,24 @@
 import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import reactotron from 'reactotron-react-native'
 import HeaderWithTitle from '../../../Components/HeaderWithTitle'
 import moment from 'moment'
+import customAxios from '../../../CustomeAxios'
+import Toast from 'react-native-toast-message'
 
 const ResponseReceived = ({ route }) => {
 
-    let item = route?.params?.item
+    const [item, setItem] = useState({})
 
+
+    useEffect(() => {
+        customAxios.get(`customer/customer-complaints/show/` + route?.params?.item?._id)
+            .then(async response => {
+                setItem(response.data.data);
+            }).catch(async error => {
+                Toast.show({ type: 'error', text1: error || "Something went wrong !!!" });
+            })
+    }, [route?.params?.item?._id])
 
     const renderStatus = () => {
         if (item?.status === "processing") {
@@ -38,13 +49,17 @@ const ResponseReceived = ({ route }) => {
                     {renderStatus()}
                 </View>
                 <View style={{ gap: 10 }}>
-                    <View style={{ alignItems: "flex-start", marginHorizontal: 20 }}>
-                        <Text style={{ color: "#F71C1C", fontFamily: "Poppins-Medium", fontSize: 10 }}>23/05/2023 11 : 00am</Text>
-                        <Text style={styles.adChat}>ADMIN REPLY GOES HERE</Text>
-                    </View>
-                    <View style={{ alignItems: "flex-end", marginHorizontal: 20 }}>
-                        <Text style={styles.cusChat}>{item?.complaint}</Text>
-                    </View>
+                    {item?.complaint && (
+                        <View style={{ alignItems: "flex-end", marginHorizontal: 20 }}>
+                            <Text style={styles.cusChat}>{item?.complaint}</Text>
+                        </View>
+                    )}
+                    {item?.comments && (
+                        <View style={{ alignItems: "flex-start", marginHorizontal: 20 }}>
+                            {/* <Text style={{ color: "#F71C1C", fontFamily: "Poppins-Medium", fontSize: 10 }}>23/05/2023 11 : 00am</Text> */}
+                            <Text style={styles.adChat}>{item?.comments}</Text>
+                        </View>
+                    )}
                 </View>
             </View>
         </>

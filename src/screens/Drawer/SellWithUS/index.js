@@ -34,7 +34,7 @@ const SellWithUs = ({ navigation }) => {
         comments: yup.string().required('Comments is required'),
     }).required();
 
-    const { control, handleSubmit, formState: { errors }, setValue } = useForm({
+    const { control, handleSubmit, formState: { errors }, setValue, reset } = useForm({
         resolver: yupResolver(schema)
     });
 
@@ -59,7 +59,9 @@ const SellWithUs = ({ navigation }) => {
 
 
     const goHome = useCallback(() => {
+        reset()
         navigation?.navigate('dashboard')
+        setShowSuccess(false)
     }, [])
 
     if (showSuccess) {
@@ -140,7 +142,6 @@ const SellWithUs = ({ navigation }) => {
                     fieldName="comments"
                     topLabel={'Comments'}
                     top={20}
-                    minHeight={80}
                     placeholder='Tell us more about your store...'
                     multi
                     placeholderTextColor='#0C256C21'

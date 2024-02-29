@@ -111,7 +111,7 @@ const PickupAndDropoff = ({ navigation, route }) => {
 
     useEffect(() => {
         if (distance?.pickup && distance?.dropoff) {
-            getDistance()
+            getDistance(getValues()?.vehicle)
         }
 
     }, [distance])
