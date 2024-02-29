@@ -12,7 +12,7 @@ const NotificationDesign = ({ data }) => {
 
     const pressLinking = () => {
         // navigation.navigate('homepage');
-        // console.log(navigation.get('homepage'));
+        console.log(navigation.getState()?.routeNames);
     }
 
     return (
