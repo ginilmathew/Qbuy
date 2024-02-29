@@ -28,7 +28,6 @@ const Menu = () => {
                     headerShown: false,
                     drawerType: 'front',
                 }}
-                
                 drawerContent={(props) => <DrawerContent {...props} />}
             >
                 <Drawer.Screen name="TabNavigator" component={TabNavigator} />

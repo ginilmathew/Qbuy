@@ -39,6 +39,7 @@ const Notifications = () => {
             } else {
                 throw "Internal server error"
             }
+            
             setIsLoading(false);
         }
         catch (error) {
