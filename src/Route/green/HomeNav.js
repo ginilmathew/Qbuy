@@ -23,6 +23,7 @@ import Wishlist from '../../screens/Wishlist';
 import SuccessPage from '../../screens/Home/PickupAndDropoff/SuccessPage';
 import PickupAndDropoff from '../../screens/Home/PickupAndDropoff';
 import ViewDetails from '../../screens/MyOrders/ViewDetails';
+import Notifications from '../../screens/Notifications';
 
 const Stack = createNativeStackNavigator();
 
@@ -51,7 +52,7 @@ const HomeNav = () => {
             <Stack.Screen name="Wishlist" component={Wishlist} />
             <Stack.Screen name="PickupAndDropoff" component={PickupAndDropoff} />
             <Stack.Screen name="ViewDetails" component={ViewDetails}/>
-
+            <Stack.Screen name="Notifications" component={Notifications}/>
 
         </Stack.Navigator>
     )

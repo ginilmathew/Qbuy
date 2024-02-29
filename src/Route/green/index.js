@@ -70,7 +70,7 @@ const Green = () => {
                 {/* <Drawer.Screen name="Coupons" component={Coupons}/> */}
 
 
-                <Drawer.Screen name="Notifications" component={Notifications}/>
+                {/* <Drawer.Screen name="Notifications" component={Notifications}/> */}
                 {/* <Drawer.Screen name="store" component={StoreScreen} /> */}
                 {/* <Drawer.Screen name="SingleItemScreen" component={SingleProductScreen} /> */}
 
