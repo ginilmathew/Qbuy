@@ -43,9 +43,10 @@ const CommonSelectDropdown = ({topLabel, mb, placeholder, data, value, setValue,
     }
 
     const changeValue = (item) => {
+        if (onChange) onChange(item?.label)
+        
         setValue(fieldName, item?.label);
         setItem(item?.label)
-        onChange(item?.label)
         setIsFocus(false);
     }
 

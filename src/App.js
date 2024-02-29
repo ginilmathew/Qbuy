@@ -167,6 +167,7 @@ const App = (props) => {
 
 
     useEffect(() => {
+
         const unsubscribe = messaging().onMessage(onMessageReceived);
 
         return unsubscribe;
@@ -186,7 +187,7 @@ const App = (props) => {
                     if (data?.order_id) {
                         navigationRef.navigate('ViewDetails', { item: { _id: data?.order_id } })
                     } else if (data?.product_url) {
-                        
+                        navigationRef.navigate('SingleItemScreen', { item: { _id: data?.product_url } })
                     }
 
                     break;

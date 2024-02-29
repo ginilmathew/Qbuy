@@ -140,6 +140,7 @@ const SellWithUs = ({ navigation }) => {
                     fieldName="comments"
                     topLabel={'Comments'}
                     top={20}
+                    minHeight={80}
                     placeholder='Tell us more about your store...'
                     multi
                     placeholderTextColor='#0C256C21'
