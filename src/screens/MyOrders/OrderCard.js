@@ -192,6 +192,7 @@ const OrderCard = memo(({ item, refreshOrder }) => {
     }
 
     const payAmount = useCallback(async () => {
+        await cartContext.updateCart()
         loadingg.setLoading(true)
         cartContext.setCart(null);
         let data = {
@@ -201,9 +202,10 @@ const OrderCard = memo(({ item, refreshOrder }) => {
         await customAxios.post(`customer/order/paynow`, data)
             .then(async response => {
                 const { data } = response;
-                cartContext.setCart(data?.data)
+                cartContext.getCartDetails()
+                //cartContext.setCart(data?.data)
                 navigation.navigate('cart')
-                refreshOrder();
+                //refreshOrder();
                 // if (data?.status) {
                 //     payWithPayTM(data?.data)
                 // } else {
