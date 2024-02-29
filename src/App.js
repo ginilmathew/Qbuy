@@ -82,6 +82,8 @@ const App = (props) => {
 
     async function onMessageReceived(message) {
 
+        console.log(message);
+
         const { notification } = message
 
 
@@ -166,6 +168,30 @@ const App = (props) => {
 
     useEffect(() => {
         const unsubscribe = messaging().onMessage(onMessageReceived);
+
+        return unsubscribe;
+    }, []);
+
+    // Subscribe to events
+    useEffect(() => {
+        const unsubscribe = notifee.onForegroundEvent(({ type, detail }) => {
+            // console.log(detail.notification.data);
+
+            switch (type) {
+                case EventType.DISMISSED:
+                    break;
+                case EventType.PRESS:
+                    const data = detail?.notification?.data;
+
+                    if (data?.order_id) {
+                        navigationRef.navigate('ViewDetails', { item: { _id: data?.order_id } })
+                    } else if (data?.product_url) {
+                        
+                    }
+
+                    break;
+            }
+        });
 
         return unsubscribe;
     }, []);
