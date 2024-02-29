@@ -10,9 +10,9 @@ const NotificationDesign = ({ data }) => {
 
     const navigation = useNavigation()
 
+
     const pressLinking = () => {
-        // navigation.navigate('homepage');
-        console.log(navigation.getState()?.routeNames);
+        navigation.navigate('ViewDetails', { item: { _id: data?.order_id } });
     }
 
     return (
