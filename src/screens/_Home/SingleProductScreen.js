@@ -515,7 +515,8 @@ const SingleProductScreen = ({ route, navigation }) => {
                 ListFooterComponent={loading ? () =>  <ActivityIndicator  /> : null}
                 keyExtractor={(item, index) => `${item?._id}${index}`}
                 numColumns={2}
-                
+                refreshing={loading}
+                onRefresh={getSingleProductDetails}
             />
             {/* <SectionList
                 sections={[]}

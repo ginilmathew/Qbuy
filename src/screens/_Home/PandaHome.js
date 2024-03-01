@@ -29,20 +29,20 @@ const pandHome = async (datas) => {
     let sliders = homeData?.data?.data?.[5];
     let recent = [];
 
-    recent = await getProducts(homeData?.data?.data?.[2]?.data)
+    //recent = await getProducts(homeData?.data?.data?.[2]?.data)
 
     
     let messagesBanner = homeData?.data?.data?.[7]?.data
     let sugges = [];
-    sugges = await getProducts(homeData?.data?.data?.[4]?.data)
+    //sugges = await getProducts(homeData?.data?.data?.[4]?.data)
 
     //reactotron.log({sugges})
     return {
         //items: newArray,
         sliders,
-        recent,
+        recent: homeData?.data?.data?.[2]?.data,
         category: homeData?.data?.data?.[0]?.data,
-        suggestions: sugges,
+        suggestions: homeData?.data?.data?.[4]?.data,
         messagesBanner
     }
 }

@@ -269,6 +269,137 @@ const OrderCard = memo(({ item, refreshOrder }) => {
     }
 
 
+    const renderActions = () => {
+        if (item?.payment_type === 'COD') {
+            if (item?.status === "completed") {
+                return (
+                    <View style={{ flex: 1, marginTop: 8, flexDirection: 'row', justifyContent: 'space-between' }}>
+                        <CustomButton
+                            onPress={clickDetails}
+                            label={'Details'}
+                            bg={active === 'green' ? '#FF9C0C' : active === 'fashion' ? '#2D8FFF' : '#576FD0'}
+                            // width={width / 3.5}
+                            width={"49%"}
+                        />
+                        <CustomButton
+                            onPress={clickRateOrder}
+                            label={'Rate Order'}
+                            bg='#58D36E'
+                            //width={width / 3.5}
+                            width={"49%"}
+                        />
+                    </View>
+                )
+            }
+            else {
+                return (
+                    <CustomButton
+                        onPress={clickDetails}
+                        label={'View Details'}
+                        bg={active === 'green' ? '#FF9C0C' : active === 'fashion' ? '#2D8FFF' : '#576FD0'}
+                        mt={8}
+                    />
+                )
+            }
+        }
+        else {
+            if (item?.status === "completed") {
+                return (
+                    <View style={{ flex: 1, marginTop: 8, flexDirection: 'row', justifyContent: 'space-between' }}>
+                        <CustomButton
+                            onPress={clickDetails}
+                            label={'Details'}
+                            bg={active === 'green' ? '#FF9C0C' : active === 'fashion' ? '#2D8FFF' : '#576FD0'}
+                            // width={width / 3.5}
+                            width={"49%"}
+                        />
+                        <CustomButton
+                            onPress={clickRateOrder}
+                            label={'Rate Order'}
+                            bg='#58D36E'
+                            //width={width / 3.5}
+                            width={"49%"}
+                        />
+                    </View>
+                )
+            }
+            else if (item?.status !== 'cancelled') {
+                if (item?.payment_status === 'cancelled') {
+                    return (
+                        <View style={{ flex: 1, marginTop: 8, flexDirection: 'row', justifyContent: 'space-between' }}>
+                            <CustomButton
+                                onPress={payAmount}
+                                label={'Pay Now'}
+                                bg={active === 'green' ? '#8ED053' : active === 'fashion' ? '#FF7190' : '#58D36E'}
+
+                                width={"49%"}
+                            />
+                            <CustomButton
+                                onPress={clickDetails}
+                                label={'Details'}
+                                bg={active === 'green' ? '#FF9C0C' : active === 'fashion' ? '#2D8FFF' : '#576FD0'}
+                                // width={width / 3.5}
+                                width={"49%"}
+                            />
+                        </View>
+                    )
+                }
+                else if (item?.payment_status !== 'cancelled') {
+                    if (item?.pendingBalance && parseInt(item?.pendingBalance) > 0) {
+                        return (
+                            <View style={{ flex: 1, marginTop: 8, flexDirection: 'row', justifyContent: 'space-between' }}>
+                                <CustomButton
+                                    onPress={payAmountBalance}
+                                    label={'Pay Balance'}
+                                    bg={active === 'green' ? '#8ED053' : active === 'fashion' ? '#FF7190' : '#58D36E'}
+                                    width={"49%"}
+                                />
+                                <CustomButton
+                                    onPress={clickDetails}
+                                    label={'Details'}
+                                    bg={active === 'green' ? '#FF9C0C' : active === 'fashion' ? '#2D8FFF' : '#576FD0'}
+                                    // width={width / 3.5}
+                                    width={"49%"}
+                                />
+                            </View>
+                        )
+                    }
+                    else {
+                        return (
+                            <CustomButton
+                                onPress={clickDetails}
+                                label={'View Details'}
+                                bg={active === 'green' ? '#FF9C0C' : active === 'fashion' ? '#2D8FFF' : '#576FD0'}
+                                mt={8}
+                            />
+                        )
+                    }
+                }
+                else {
+                    return (
+                        <CustomButton
+                            onPress={clickDetails}
+                            label={'View Details'}
+                            bg={active === 'green' ? '#FF9C0C' : active === 'fashion' ? '#2D8FFF' : '#576FD0'}
+                            mt={8}
+                        />
+                    )
+                }
+            }
+            else {
+                return (
+                    <CustomButton
+                        onPress={clickDetails}
+                        label={'View Details'}
+                        bg={active === 'green' ? '#FF9C0C' : active === 'fashion' ? '#2D8FFF' : '#576FD0'}
+                        mt={8}
+                    />
+                )
+            }
+        }
+    }
+
+
     return (
         <View style={styles.container}>
             <View style={styles.header}>
@@ -349,8 +480,28 @@ const OrderCard = memo(({ item, refreshOrder }) => {
                     <CommonTexts label={'HOME'} fontSize={13} />
                     <Text style={styles.addressText}>{item?.shipaddress?.area?.address}</Text>
                 </View>}
+                {item?.refundAmount * 1 > 0 &&
+                <View
+                    style={{ backgroundColor: '#fff', paddingBottom: 10, borderTopWidth: showItems ? 0 : 1, borderColor: '#00000029', height: 35, alignItems: 'center', justifyContent: 'center', marginHorizontal: 10 }}
+                >
+                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', display: 'flex', width: '100%' }}>
+                        <Text style={styles.textBold}>{'Refund'}</Text>
+                        <Text style={{ fontWeight: 'bold', fontSize: 12, color: 'blue', fontFamily: 'Poppins-Medium' }}>{item?.refundAmount}</Text>
+                    </View>
+                </View>}
+                {item?.refund_completed_status === "completed" &&
+                <View
+                    style={{ backgroundColor: '#fff', paddingBottom: 10, borderTopWidth: showItems ? 0 : 1, borderColor: '#00000029', height: 35, alignItems: 'center', justifyContent: 'center', marginHorizontal: 10 }}
+                >
+                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', display: 'flex', width: '100%' }}>
+                        <Text style={{ fontWeight: 'bold', fontSize: 12, color: '#000', fontFamily: 'Poppins-Medium' }}>{'Refund'}</Text>
+                        <Text style={{ fontWeight: 'bold', fontSize: 12, color: 'blue', fontFamily: 'Poppins-Medium' }}>{item?.refund_details?.refund_amount}</Text>
+                        <Text style={{ fontWeight: 'bold', fontSize: 12, color: '#8ED053', fontFamily: 'Poppins-Medium' }}>{'Completed'}</Text>
+                    </View>
+                </View>}
+                {renderActions()}
 
-                {item?.payment_type === 'COD' &&
+                {/* {item?.payment_type === 'COD' &&
                     <>
 
                         {item?.status === 'completed' ?
@@ -363,12 +514,6 @@ const OrderCard = memo(({ item, refreshOrder }) => {
                                     // width={width / 3.5}
                                     width={"49%"}
                                 />
-                                {/* <CustomButton
-                                    // onPress={() => navigation.navigate('ViewDetails', { item: item, qty: qty, totalRate: totalRate })}
-                                    label={'Reorder'}
-                                    bg='#D0A857'
-                                    width={width / 3.5}
-                                /> */}
                                 <CustomButton
                                     onPress={clickRateOrder}
                                     label={'Rate Order'}
@@ -385,9 +530,9 @@ const OrderCard = memo(({ item, refreshOrder }) => {
                         }
                     </>
 
-                }
+                } */}
 
-                {item?.payment_type === 'online' &&
+                {/* {item?.payment_type === 'online' &&
                     <>
 
                         {item?.status === 'completed' ?
@@ -400,12 +545,6 @@ const OrderCard = memo(({ item, refreshOrder }) => {
                                     // width={width / 3.5}
                                     width={"49%"}
                                 />
-                                {/* <CustomButton
-                                    // onPress={() => navigation.navigate('ViewDetails', { item: item, qty: qty, totalRate: totalRate })}
-                                    label={'Reorder'}
-                                    bg='#D0A857'
-                                    width={width / 3.5}
-                                /> */}
                                 <CustomButton
                                     onPress={clickRateOrder}
                                     label={'Rate Order'}
@@ -417,9 +556,9 @@ const OrderCard = memo(({ item, refreshOrder }) => {
                         }
                     </>
 
-                }
+                } */}
 
-                {(item?.status !== 'cancelled' && item?.payment_status === 'cancelled') &&
+                {/* {(item?.status !== 'cancelled' && item?.payment_status === 'cancelled') &&
                     <View style={{ flex: 1, marginTop: 8, flexDirection: 'row', justifyContent: 'space-between' }}>
                         <CustomButton
                             onPress={payAmount}
@@ -436,9 +575,9 @@ const OrderCard = memo(({ item, refreshOrder }) => {
                             width={"49%"}
                         />
                     </View>
-                }
+                } */}
 
-                {item?.pendingBalance * 1 > 0 && item?.payment_type === "online" && item?.payment_status !== 'cancelled' &&
+                {/* {item?.pendingBalance * 1 > 0 && item?.payment_type === "online" && item?.payment_status !== 'cancelled' &&
                     <View style={{ flex: 1, marginTop: 8, flexDirection: 'row', justifyContent: 'space-between' }}>
                         <CustomButton
                             onPress={payAmountBalance}
@@ -453,9 +592,9 @@ const OrderCard = memo(({ item, refreshOrder }) => {
                             // width={width / 3.5}
                             width={"49%"}
                         />
-                    </View>}
+                    </View>} */}
 
-                {
+                {/* {
                     (item?.status === "onLocation" && item?.customer_status !== "cancelled") &&
                     <View style={{ flex: 1, marginTop: 8, flexDirection: 'row', justifyContent: 'space-between' }}>
                         <CustomButton
@@ -472,21 +611,10 @@ const OrderCard = memo(({ item, refreshOrder }) => {
                             width={"49%"}
                         />
                     </View>
-                }
+                } */}
             </View>
-            {item?.refundAmount * 1 > 0 &&
-                <View
-                    style={{ backgroundColor: '#fff', paddingBottom: 10, borderTopWidth: showItems ? 0 : 1, borderColor: '#00000029', height: 35, alignItems: 'center', justifyContent: 'center', marginHorizontal: 10 }}
-                >
-                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', display: 'flex', width: '100%' }}>
-                        <Text style={styles.textBold}>{'Refund'}</Text>
-                        <Text style={{ fontWeight: 'bold', fontSize: 12, color: 'blue', fontFamily: 'Poppins-Medium' }}>{item?.refundAmount}</Text>
-                        <TouchableOpacity onPress={clickItem}>
-                            <AntDesign name={'checkcircle'} size={18} color={active === 'green' ? '#8ED053' : active === 'fashion' ? '#FF7190' : '#58D36E'} />
-                        </TouchableOpacity>
-                    </View>
-                </View>}
-            {item?.customer_status === "cancelled" &&
+            
+            {/* {item?.customer_status === "cancelled" &&
                 <View
                     style={{ backgroundColor: '#fff', paddingBottom: 10, borderTopWidth: showItems ? 0 : 1, borderColor: '#00000029', height: 35, alignItems: 'center', justifyContent: 'center', marginHorizontal: 10 }}
                 >
@@ -495,8 +623,8 @@ const OrderCard = memo(({ item, refreshOrder }) => {
 
 
                     </View>
-                </View>}
-            {item?.refund_completed_status === "completed" &&
+                </View>} */}
+            {/* {item?.refund_completed_status === "completed" &&
                 <View
                     style={{ backgroundColor: '#fff', paddingBottom: 10, borderTopWidth: showItems ? 0 : 1, borderColor: '#00000029', height: 35, alignItems: 'center', justifyContent: 'center', marginHorizontal: 10 }}
                 >
@@ -505,7 +633,7 @@ const OrderCard = memo(({ item, refreshOrder }) => {
                         <Text style={{ fontWeight: 'bold', fontSize: 12, color: 'blue', fontFamily: 'Poppins-Medium' }}>{item?.refund_details?.refund_amount}</Text>
                         <Text style={{ fontWeight: 'bold', fontSize: 12, color: '#8ED053', fontFamily: 'Poppins-Medium' }}>{'Completed'}</Text>
                     </View>
-                </View>}
+                </View>} */}
 
         </View>
     )
