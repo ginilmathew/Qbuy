@@ -5,7 +5,6 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
 import HeaderWithTitle from '../../../Components/HeaderWithTitle';
-import CommonSelectDropdown from '../../../Components/CommonSelectDropdown';
 import CommonInput from '../../../Components/CommonInput';
 import CustomButton from '../../../Components/CustomButton';
 import PandaContext from '../../../contexts/Panda';
@@ -121,23 +120,6 @@ const ApplyFranchisee = ({ navigation }) => {
                     top={20}
                 />
 
-                {/* <CommonSelectDropdown
-                    topLabel={'Store Category'}
-                    mb={20}
-                    data={data}
-                    value={values}
-                    setValue={setValues}
-
-                /> */}
-                {/* 
-                <CommonSelectDropdown
-                    topLabel={'Franchisee'}
-                    mb={20}
-                    data={franchise}
-                    setValue={setValue}
-                    setError={setError}
-                    fieldName={'franchise'}
-                />  */}
 
                 {/* <CommonInput
                         control={control}

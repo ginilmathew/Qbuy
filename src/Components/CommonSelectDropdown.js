@@ -48,10 +48,14 @@ const CommonSelectDropdown = ({topLabel, mb, placeholder, data, value, setValue,
     }
 
     const changeValue = (item) => {
-        if (onChange) onChange(item?.label)
 
-        setValue(fieldName, item?.label);
-        setError(fieldName, { type: 'custom', message: null })
+        reactotron.log({item})
+        if (onChange) onChange(item?.label, index)
+        if(setValue){
+            setValue(fieldName, item?.label);
+            setError(fieldName, { type: 'custom', message: null })
+        }
+        
         setItem(item?.label)
         setIsFocus(false);
     }

@@ -2,10 +2,6 @@ import { Image, StyleSheet, Text, View, ScrollView, TouchableOpacity, useWindowD
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import HeaderWithTitle from '../../../Components/HeaderWithTitle';
-import CommonSelectDropdown from '../../../Components/CommonSelectDropdown';
-import CommonInput from '../../../Components/CommonInput';
-import CustomButton from '../../../Components/CustomButton';
-import PandaContext from '../../../contexts/Panda';
 import customAxios from '../../../CustomeAxios';
 import Toast from 'react-native-toast-message';
 import reactotron from 'reactotron-react-native';
