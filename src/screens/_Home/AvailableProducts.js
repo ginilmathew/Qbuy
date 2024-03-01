@@ -16,16 +16,16 @@ const QbuyProducts = async (items, pageparam) => {
     //reactotron.log({homeDataProduct})
     
 
-    let products = [];
-    if(homeDataProduct?.data?.data?.available_product?.length > 0){
-        products = await getProducts(homeDataProduct?.data?.data?.available_product)
-    }
+    // let products = [];
+    // if(homeDataProduct?.data?.data?.available_product?.length > 0){
+    //     products = await getProducts(homeDataProduct?.data?.data?.available_product)
+    // }
 
-     reactotron.log({products})
+    //  reactotron.log({products})
 
     //reactotron.log({products})
     return {
-        data: products,
+        data: homeDataProduct?.data?.data?.available_product,
         lastPage:homeDataProduct?.data?.data?.last_page,
         pageparam
     }

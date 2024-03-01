@@ -28,7 +28,7 @@ const CommonInput = ({ placeholder, control, fieldName, error, inputMode, mt, le
                     backgroundColor: backgroundColor ? backgroundColor : active === 'green' || active === 'fashion' ? '#fff' : '#F2F2F2',
                     borderRadius: 7,
                     marginTop: mt ? mt : 3,
-                    maxHeight: maxHeight ? maxHeight : 45,
+                    maxHeight: maxHeight ? maxHeight : 145,
                     shadowOpacity: shadowOpacity,
                     shadowRadius: 5,
                     elevation: elevation,
@@ -65,6 +65,7 @@ const CommonInput = ({ placeholder, control, fieldName, error, inputMode, mt, le
                             paddingLeft={7}
                             fontFamily='Poppins-Regular'
                             fontSize={12}
+                            textAlignVertical='top'
                             color='#23233C'
                             width={width ? width : '100%'}
                             marginTop={Platform.OS === 'android' ? 5 : 1}

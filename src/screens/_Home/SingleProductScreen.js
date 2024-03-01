@@ -36,7 +36,8 @@ const SingleProductScreen = ({ route, navigation }) => {
     const contextPanda = useContext(PandaContext)
     const userContext = useContext(AuthContext)
     const courasol = useRef(null);
-    const [image, setImage] = useState(`${IMG_URL}${route?.params?.item?.product_image}`)
+    //const [productItem, setProductItem] = useState({})
+    const [image, setImage] = useState(``)
     const [data, setData] = useState(null)
     const [selectedVariant, setSelectedVariant] = useState(null)
     const [priceDetails, setPriceDetails] = useState(null)
@@ -46,20 +47,22 @@ const SingleProductScreen = ({ route, navigation }) => {
 
     const { variantAddToCart } = useContext(CartContext)
     
-   //reactotron.log({ price })
+    //reactotron.log({ price }) 65df243fb059da96cf074c43
+
+    reactotron.log({data})
 
     useEffect(() => {
         if(route?.params?.item?._id){
             setCourasolArray(null)
             getSingleProductDetails()
-            addViewCount()
+            addViewCount(route?.params?.item?._id)
         }
     }, [route?.params?.item?._id])
 
-    const addViewCount = async (item) => {
+    const addViewCount = async (id) => {
         let datas = {
             type: contextPanda?.active,
-            product_id: route?.params?.item?._id,
+            product_id: id,
             customer_id: userContext?.userData?._id
         }
         await customAxios.post(`customer/product/viewcount`, datas)
@@ -81,7 +84,11 @@ const SingleProductScreen = ({ route, navigation }) => {
             const response = await customAxios.get(`customer/product/${route?.params?.item?._id}`)
             if(response?.data?.message === "Success"){
                 let data = response?.data?.data;
+                //setProductItem(data)
+                setImage(`${IMG_URL}${data?.product_image}`)
                 let priceDetails = await singleProduct(data);
+
+                //reactotron.log({priceDetails})
 
                 
                 setPriceDetails(priceDetails)
@@ -96,7 +103,7 @@ const SingleProductScreen = ({ route, navigation }) => {
                 setData(data)
                 let images = [ {
                     type: 'image',
-                    url: `${IMG_URL}${route?.params?.item?.product_image}`
+                    url: `${IMG_URL}${data?.product_image}`
                 }]
                 if(data?.image?.length > 0){
                     data?.image?.map(img => {
@@ -122,7 +129,7 @@ const SingleProductScreen = ({ route, navigation }) => {
                 
 
                 if(data?.variants?.length > 0){
-                    var result = priceDetails?.find((vari) => vari?.available === true && vari?._id === route?.params?.item?.variant_id);
+                    var result = priceDetails?.find((vari) => vari?.available === true && vari?._id === priceDetails?.variant_id);
                     setPrice(result);
                     //reactotron.log({result})
                     let selectedVariant = data?.variants?.find(vari => vari?._id === result?._id)
@@ -185,10 +192,13 @@ const SingleProductScreen = ({ route, navigation }) => {
         navigation.navigate("SingleItemScreen", { item })
     }
 
+
+    reactotron.log({priceDetails})
+
     const renderInStock = useCallback(() => {
-        if (route?.params?.item?.available) {
-            if (route?.params?.item?.stock) {
-                if (parseFloat(route?.params?.item?.stockValue) > 0) {
+        if (priceDetails?.available) {
+            if (priceDetails?.stock) {
+                if (parseFloat(priceDetails?.stock_value) > 0) {
                     return (
                         <View
                             style={{ position: 'absolute', left: 20, top: 15, backgroundColor: contextPanda?.active === 'green' ? '#8ED053' : contextPanda?.active === 'fashion' ? '#FF7190' : '#58D36E', borderRadius: 8 }}
@@ -226,7 +236,7 @@ const SingleProductScreen = ({ route, navigation }) => {
                 </View>
             )
         }
-    }, [route?.params?.item])
+    }, [priceDetails])
 
 
     const renderImageAnimation = ({ item, index }) => {
@@ -298,7 +308,7 @@ const SingleProductScreen = ({ route, navigation }) => {
                 </AnimatedFastImage>
             )
         }
-    }, [courasolArray?.length])
+    }, [courasolArray?.length, image])
 
     const gotoStore = () => {
         navigation.navigate("store", { item: data?.vendors })
@@ -407,9 +417,9 @@ const SingleProductScreen = ({ route, navigation }) => {
                     views={data?.viewCount ? data?.viewCount : 0}
                     sold={data?.order_count}
                     minQty={data?.minimum_qty}
-                    price={price?.sellerPrice}
-                    regularPrice={price?.regularPrice}
-                    available={price?.available}
+                    price={priceDetails?.sellerPrice}
+                    regularPrice={priceDetails?.regularPrice}
+                    available={priceDetails?.available}
                 />}
                 {data?.weight !== ('' || null) &&
                 <View style={{ paddingLeft: 10, display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 2 }}>
@@ -476,7 +486,7 @@ const SingleProductScreen = ({ route, navigation }) => {
                     </View>
                 </View>
                 <View style={{ flexDirection: 'row', width: width, justifyContent: contextPanda?.active === "panda" ? 'center' : 'center', marginTop: 10, paddingHorizontal: 10, gap: 5 }}>
-                    {price?.available && <CustomButton
+                    {priceDetails?.available && <CustomButton
                         onPress={addToCart}
                         label={'Add to Cart'} bg={contextPanda?.active === 'green' ? '#8ED053' : contextPanda?.active === 'fashion' ? '#FF7190' : '#58D36E'} width={width / 2.2}
                         loading={loading}
@@ -495,7 +505,7 @@ const SingleProductScreen = ({ route, navigation }) => {
 
     return (
         <>
-            <HeaderWithTitle title={route?.params?.item?.name} />
+            <HeaderWithTitle title={data?.name} />
             {/* {listHeader()} */}
             <FlatList 
                 data={relatedProducts}
@@ -505,7 +515,8 @@ const SingleProductScreen = ({ route, navigation }) => {
                 ListFooterComponent={loading ? () =>  <ActivityIndicator  /> : null}
                 keyExtractor={(item, index) => `${item?._id}${index}`}
                 numColumns={2}
-                
+                refreshing={loading}
+                onRefresh={getSingleProductDetails}
             />
             {/* <SectionList
                 sections={[]}

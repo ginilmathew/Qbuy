@@ -53,7 +53,6 @@ const HomeNav = () => {
             <Stack.Screen name="PickupAndDropoff" component={PickupAndDropoff} />
             <Stack.Screen name="ViewDetails" component={ViewDetails}/>
             <Stack.Screen name="Notifications" component={Notifications}/>
-
         </Stack.Navigator>
     )
 }
