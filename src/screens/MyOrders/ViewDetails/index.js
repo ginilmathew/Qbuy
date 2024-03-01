@@ -179,7 +179,7 @@ const ViewDetails = ({ route }) => {
                     complete={item?.status === "completed" ? true : false}
                 /> */}
 
-                {item?.rider_each_order_settlement?.rider_status === "onTheWay" ? (<ContactCard
+                {item?.rider_each_order_settlement?.rider_status === "onTheWay" || item?.rider_each_order_settlement?.rider_status === "onLocation" ? (<ContactCard
                     heading={'Call Delivery Agent'}
                     content={'You can call your assigned delivery agent ' + `${item?.riders.mobile}`}
                     iconColor={grocery ? '#FF9C0C' : '#576FD0'}

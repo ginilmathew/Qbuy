@@ -348,6 +348,8 @@ const OrderCard = memo(({ item, refreshOrder }) => {
                     <Text style={styles.addressText}>{item?.shipaddress?.area?.address}</Text>
                 </View>}
 
+                {/* {item?.status !== 'completed'} */}
+
                 {item?.payment_type === 'COD' &&
                     <>
 
@@ -374,12 +376,13 @@ const OrderCard = memo(({ item, refreshOrder }) => {
                                     //width={width / 3.5}
                                     width={"49%"}
                                 />
-                            </View> : <CustomButton
-                            onPress={clickDetails}
-                            label={'View Details'}
-                            bg={active === 'green' ? '#FF9C0C' : active === 'fashion' ? '#2D8FFF' : '#576FD0'}
-                            mt={8}
-                        />
+                            </View> : null
+                            //     <CustomButton
+                            //     onPress={clickDetails}
+                            //     label={'View Details'}
+                            //     bg={active === 'green' ? '#FF9C0C' : active === 'fashion' ? '#2D8FFF' : '#576FD0'}
+                            //     mt={8}
+                            // />
                         }
                     </>
 
@@ -485,15 +488,26 @@ const OrderCard = memo(({ item, refreshOrder }) => {
                     </View>
                 </View>}
             {item?.customer_status === "cancelled" &&
-                <View
-                    style={{ backgroundColor: '#fff', paddingBottom: 10, borderTopWidth: showItems ? 0 : 1, borderColor: '#00000029', height: 35, alignItems: 'center', justifyContent: 'center', marginHorizontal: 10 }}
-                >
-                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', display: 'flex', width: '100%' }}>
-                        <Text style={{ fontWeight: 'bold', fontSize: 12, color: 'red', fontFamily: 'Poppins-Medium' }}>{'Order Cancelled by you'}</Text>
+                <View style={{ paddingHorizontal: 8, paddingBottom: 10 }}>
+                     <Text style={styles.cancelStyle}>{'Order Cancelled by you'}</Text>
+                    <CustomButton
+                        onPress={clickDetails}
+                        label={'View Details'}
+                        bg={active === 'green' ? '#FF9C0C' : active === 'fashion' ? '#2D8FFF' : '#576FD0'}
+                        width={"100%"}
+                    />
+                </View>
+                // <View
+                //     style={{ backgroundColor: '#fff', paddingBottom: 10, borderTopWidth: showItems ? 0 : 1, borderColor: '#00000029', height: 35, alignItems: 'center', justifyContent: 'center', marginHorizontal: 10 }}
+                // >
+                //     <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', display: 'flex', width: '100%' }}>
+                //         <Text style={{ fontWeight: 'bold', fontSize: 12, color: 'red', fontFamily: 'Poppins-Medium' }}>{'Order Cancelled by you'}</Text>
 
 
-                    </View>
-                </View>}
+                //     </View>
+
+                // </View>
+            }
             {item?.refund_completed_status === "completed" &&
                 <View
                     style={{ backgroundColor: '#fff', paddingBottom: 10, borderTopWidth: showItems ? 0 : 1, borderColor: '#00000029', height: 35, alignItems: 'center', justifyContent: 'center', marginHorizontal: 10 }}
@@ -630,5 +644,13 @@ const styles = StyleSheet.create({
         color: '#23233C',
         fontSize: 12,
     },
+    cancelStyle: {
+        fontWeight: 'bold', 
+        fontSize: 12, 
+        color: 'red', 
+        fontFamily: 'Poppins-Medium',
+        marginBottom: 10,
+        marginTop: -5
+    }
 
 })
