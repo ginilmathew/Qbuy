@@ -101,7 +101,7 @@ const WorkWithPanda = ({ navigation, route }) => {
 
                 {regSuccess === 'success' &&
                     <View style={{ paddingBottom: 80 }}>
-                        {status !== 'approved' && <Text style={styles.submittedText}>{'Your Form Has Been Submitted Successfully'}</Text>}
+                        {/* {status !== 'approved' && <Text style={styles.submittedText}>{'Your Form Has Been Submitted Successfully'}</Text>} */}
                         <View style={{ alignItems: 'center', marginTop: 15 }}>
                             <Ionicons name={status === 'approved' ? 'checkmark-circle-sharp' : 'alert-circle'} color={status === 'approved' ? '#1A9730' : '#B29211'} size={30} />
                             <Text
@@ -112,11 +112,11 @@ const WorkWithPanda = ({ navigation, route }) => {
                                     textAlign: 'center',
                                     marginTop: 10
                                 }}
-                            >{status === 'approved' ? 'Your Form Has Been Approved' : 'Awaiting Approval'}</Text>
+                            >{'Affiliate request sent'}</Text>
                         </View>
 
 
-                        {status === 'approved' && <>
+                        {/* {status === 'approved' && <>
                             <Text style={styles.shareLinkText}>{'Share the affiliate link to earn panda coins !'}</Text>
                             <View style={{ flexDirection: 'row', marginTop: 15, alignItems: 'center' }}>
                                 <CommonPicker
@@ -133,7 +133,7 @@ const WorkWithPanda = ({ navigation, route }) => {
                                     />
                                 </View>
                             </View>
-                        </>}
+                        </>} */}
                     </View>
                 }
 

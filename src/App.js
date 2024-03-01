@@ -81,9 +81,7 @@ const App = (props) => {
     }, [])
 
     async function onMessageReceived(message) {
-
-        console.log(message);
-
+                
         const { notification } = message
 
 
@@ -188,6 +186,8 @@ const App = (props) => {
                         navigationRef.navigate('ViewDetails', { item: { _id: data?.order_id } })
                     } else if (data?.product_url) {
                         navigationRef.navigate('SingleItemScreen', { item: { _id: data?.product_url } })
+                    } else if (data?.complaint_id) {
+                        navigationRef.navigate('Respo', { item: { _id: data?.complaint_id } })
                     }
 
                     break;
