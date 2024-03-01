@@ -391,9 +391,12 @@ const TabNav = () => {
 
     useEffect(() => {
         //reactotron.log({active: pandaContext?.active})
-        cartContext.getCartDetails()
+        if(userContext?.userData){
+            cartContext.getCartDetails()
+        }
+        
         navigation.navigate("home")
-        setShowSwitch(!showSwitch)
+       // setShowSwitch(!showSwitch)
     }, [pandaContext?.active])
     
 

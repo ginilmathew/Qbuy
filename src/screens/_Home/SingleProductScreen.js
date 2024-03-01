@@ -128,9 +128,19 @@ const SingleProductScreen = ({ route, navigation }) => {
                 }
                 
 
-                if(data?.variants?.length > 0){
-                    var result = priceDetails?.find((vari) => vari?.available === true && vari?._id === priceDetails?.variant_id);
-                    setPrice(result);
+                if(priceDetails?.length > 1){
+                    let result;
+                    var results = priceDetails?.filter((vari) => vari?.available === true);
+                    if(results?.length > 0){
+                        result = results.reduce(function (res, obj) {
+                            return (obj.regularPrice < res.regularPrice) ? obj : res;
+                        });
+                        setPrice(result);
+                    }
+                    else{
+                        result = priceDetails[0]
+                        setPrice(priceDetails[0])
+                    }
                     //reactotron.log({result})
                     let selectedVariant = data?.variants?.find(vari => vari?._id === result?._id)
                     setSelectedVariant(selectedVariant)
@@ -193,12 +203,12 @@ const SingleProductScreen = ({ route, navigation }) => {
     }
 
 
-    reactotron.log({priceDetails})
+    reactotron.log({price})
 
     const renderInStock = useCallback(() => {
-        if (priceDetails?.available) {
-            if (priceDetails?.stock) {
-                if (parseFloat(priceDetails?.stock_value) > 0) {
+        if (price?.available) {
+            if (price?.stock) {
+                if (parseFloat(price?.stock_value) > 0) {
                     return (
                         <View
                             style={{ position: 'absolute', left: 20, top: 15, backgroundColor: contextPanda?.active === 'green' ? '#8ED053' : contextPanda?.active === 'fashion' ? '#FF7190' : '#58D36E', borderRadius: 8 }}
@@ -236,7 +246,7 @@ const SingleProductScreen = ({ route, navigation }) => {
                 </View>
             )
         }
-    }, [priceDetails])
+    }, [price])
 
 
     const renderImageAnimation = ({ item, index }) => {
@@ -321,41 +331,6 @@ const SingleProductScreen = ({ route, navigation }) => {
         attributes[index]['selected'] = value
         setAttributes([...attributes])
 
-        //reactotron.log({value, priceDetails, attributes: data?.attributes, index})
-
-        // let selected = priceDetails?.find(price => price?.title === value);
-
-        // setPrice(selected)
-
-        // setSelectedVariant(data?.variants?.find(vari => vari?._id === selected?._id))
-
-
-        // let attri = [];
-        // let attr = data?.attributes?.map(att => {
-        //     if (att?.options.includes(value)) {
-        //         if (att?.variant) {
-        //             let values = value?.split(' ')
-        //             values?.map(va => {
-        //                 attri.push(va)
-        //             })
-        //         }
-
-        //         return {
-        //             ...att,
-        //             selected: value
-        //         }
-        //     }
-        //     else {
-        //         if (att?.variant) {
-        //             let values = att.selected?.split(' ')
-        //             values?.map(va => {
-        //                 attri.push(va)
-        //             })
-        //         }
-        //         return att
-        //     }
-        // })
-
         let selected = []
         attributes?.map(att => {
             if(att?.selected){
@@ -417,9 +392,9 @@ const SingleProductScreen = ({ route, navigation }) => {
                     views={data?.viewCount ? data?.viewCount : 0}
                     sold={data?.order_count}
                     minQty={data?.minimum_qty}
-                    price={priceDetails?.sellerPrice}
-                    regularPrice={priceDetails?.regularPrice}
-                    available={priceDetails?.available}
+                    price={price?.sellerPrice}
+                    regularPrice={price?.regularPrice}
+                    available={price?.available}
                 />}
                 {data?.weight !== ('' || null) &&
                 <View style={{ paddingLeft: 10, display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 2 }}>
@@ -476,8 +451,7 @@ const SingleProductScreen = ({ route, navigation }) => {
                                 key={index}
                                 placeholder={attr?.name}
                                 data={attr.options}
-                                value={attr?.selected}
-                                setValue={selectAttributes}
+                                onChange={selectAttributes}
                                 height={40}
                                 width={'48%'}
                                 index={index}

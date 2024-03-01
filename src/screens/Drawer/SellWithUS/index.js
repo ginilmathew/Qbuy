@@ -7,7 +7,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import HeaderWithTitle from '../../../Components/HeaderWithTitle';
-import CommonSelectDropdown from '../../../Components/CommonSelectDropdown';
 import CommonInput from '../../../Components/CommonInput';
 import CustomButton from '../../../Components/CustomButton';
 import PandaContext from '../../../contexts/Panda';
