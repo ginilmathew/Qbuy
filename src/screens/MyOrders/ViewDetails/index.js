@@ -155,7 +155,7 @@ const ViewDetails = ({ route }) => {
                         {item?.product_details?.map((item) =>
                             <ItemsCard
                                 item={item}
-                                key={item?._id}
+                                key={item?.product_id}
                             />
                         )}
                         {item?.price_breakup?.map((pri, index) => (

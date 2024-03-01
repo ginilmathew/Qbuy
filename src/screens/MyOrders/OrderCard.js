@@ -451,54 +451,60 @@ const OrderCard = memo(({ item, refreshOrder }) => {
                     </View>
 
                     {item?.product_details.map((ite) =>
-                        <ItemsCard item={ite} key={ite?._id} date={item?.created_at} />
+                        <ItemsCard item={ite} key={ite?.product_id} date={item?.created_at} />
                     )}
-
-                    {item?.price_breakup?.map((pri, index) => (
-
-                        <View key={`${pri?._id}${index}`} style={styles.delivery}>
-                            <View style={{ flex: 0.5 }}>
-                                <Text style={[styles.text1, { textAlign: 'left' }]}>{pri?.charge_name}</Text>
-                            </View>
-                            <Text style={[styles.text1, { textAlign: 'center' }]}>₹ {pri?.price}</Text>
-                        </View>
-                    ))}
                 </>}
             </View>
 
             <View
                 style={{ backgroundColor: '#fff', paddingBottom: 10, borderTopWidth: showItems ? 0 : 1, borderColor: '#00000029', marginHorizontal: 7 }}
             >
+                
                 <View style={styles.shippingView}>
-                    <Text style={styles.textBold}>{'Qbuy Panda Slot Based Shipping'}</Text>
+                    <Text style={styles.textBold}>{'Other Charges'}</Text>
                     <TouchableOpacity onPress={clickAddress}>
                         <Ionicons name={showAddress ? 'chevron-up-circle' : 'chevron-down-circle'} size={22} color={active === 'green' ? '#8ED053' : active === 'fashion' ? '#FF7190' : '#58D36E'} />
                     </TouchableOpacity>
-
                 </View>
-                {showAddress && <View style={styles.addressBox}>
-                    <CommonTexts label={'HOME'} fontSize={13} />
-                    <Text style={styles.addressText}>{item?.shipaddress?.area?.address}</Text>
-                </View>}
+
+                {showAddress &&
+                    <>
+                        <View style={styles.chargesStyles}>
+                            <View style={{ flex: 0.5 }}>
+                                <Text style={[styles.textBold, { textAlign: 'left' }]}>{'Charge Name'}</Text>
+                            </View>
+                            <Text style={[styles.textBold, { textAlign: 'center' }]}>{'Amount'}</Text>
+                        </View>
+                        {item?.price_breakup?.map((pri, index) => (
+                            <View key={`${pri?._id}${index}`} style={styles.delivery}>
+                                <View style={{ flex: 0.5 }}>
+                                    <Text style={[styles.text1, { textAlign: 'left' }]}>{pri?.charge_name}</Text>
+                                </View>
+                                <Text style={[styles.text1, { textAlign: 'center' }]}>₹ {pri?.price}</Text>
+                            </View>
+                        ))}
+                    </>
+                }
+
                 {item?.refundAmount * 1 > 0 &&
-                <View
-                    style={{ backgroundColor: '#fff', paddingBottom: 10, borderTopWidth: showItems ? 0 : 1, borderColor: '#00000029', height: 35, alignItems: 'center', justifyContent: 'center', marginHorizontal: 10 }}
-                >
-                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', display: 'flex', width: '100%' }}>
-                        <Text style={styles.textBold}>{'Refund'}</Text>
-                        <Text style={{ fontWeight: 'bold', fontSize: 12, color: 'blue', fontFamily: 'Poppins-Medium' }}>{item?.refundAmount}</Text>
-                    </View>
-                </View>}
+                    <View
+                        style={{ backgroundColor: '#fff', paddingBottom: 10, borderTopWidth: showItems ? 0 : 1, borderColor: '#00000029', height: 35, alignItems: 'center', justifyContent: 'center', marginHorizontal: 10 }}
+                    >
+                        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', display: 'flex', width: '100%' }}>
+                            <Text style={styles.textBold}>{'Refund'}</Text>
+                            <Text style={{ fontWeight: 'bold', fontSize: 12, color: 'blue', fontFamily: 'Poppins-Medium' }}>{item?.refundAmount}</Text>
+                        </View>
+                    </View>}
                 {item?.refund_completed_status === "completed" &&
-                <View
-                    style={{ backgroundColor: '#fff', paddingBottom: 10, borderTopWidth: showItems ? 0 : 1, borderColor: '#00000029', height: 35, alignItems: 'center', justifyContent: 'center', marginHorizontal: 10 }}
-                >
-                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', display: 'flex', width: '100%' }}>
-                        <Text style={{ fontWeight: 'bold', fontSize: 12, color: '#000', fontFamily: 'Poppins-Medium' }}>{'Refund'}</Text>
-                        <Text style={{ fontWeight: 'bold', fontSize: 12, color: 'blue', fontFamily: 'Poppins-Medium' }}>{item?.refund_details?.refund_amount}</Text>
-                        <Text style={{ fontWeight: 'bold', fontSize: 12, color: '#8ED053', fontFamily: 'Poppins-Medium' }}>{'Completed'}</Text>
-                    </View>
-                </View>}
+                    <View
+                        style={{ backgroundColor: '#fff', paddingBottom: 10, borderTopWidth: showItems ? 0 : 1, borderColor: '#00000029', height: 35, alignItems: 'center', justifyContent: 'center', marginHorizontal: 10 }}
+                    >
+                        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', display: 'flex', width: '100%' }}>
+                            <Text style={{ fontWeight: 'bold', fontSize: 12, color: '#000', fontFamily: 'Poppins-Medium' }}>{'Refund'}</Text>
+                            <Text style={{ fontWeight: 'bold', fontSize: 12, color: 'blue', fontFamily: 'Poppins-Medium' }}>{item?.refund_details?.refund_amount}</Text>
+                            <Text style={{ fontWeight: 'bold', fontSize: 12, color: '#8ED053', fontFamily: 'Poppins-Medium' }}>{'Completed'}</Text>
+                        </View>
+                    </View>}
                 {renderActions()}
 
                 {/* {item?.payment_type === 'COD' &&
@@ -614,7 +620,7 @@ const OrderCard = memo(({ item, refreshOrder }) => {
                     </View>
                 } */}
             </View>
-            
+
             {/* {item?.customer_status === "cancelled" &&
                 <View
                     style={{ backgroundColor: '#fff', paddingBottom: 10, borderTopWidth: showItems ? 0 : 1, borderColor: '#00000029', height: 35, alignItems: 'center', justifyContent: 'center', marginHorizontal: 10 }}
@@ -644,14 +650,15 @@ export default OrderCard
 
 const styles = StyleSheet.create({
     delivery: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        backgroundColor: '#F3F3F3',
-        justifyContent: 'space-between',
-        paddingVertical: 7,
-        // borderBottomWidth: 1,
-        // borderColor: '#00000029',
-        paddingHorizontal: 7
+        flexDirection: 'row', 
+        alignItems: 'center', 
+        backgroundColor: '#F3F3F3', 
+        justifyContent: 'space-between', 
+        paddingVertical: 10, 
+        borderBottomWidth: 1, 
+        borderColor: '#e8e8e8', 
+        paddingHorizontal: 7, 
+        marginHorizontal: -7
     },
     container: {
         borderRadius: 15,
@@ -743,7 +750,7 @@ const styles = StyleSheet.create({
     addressText: {
         fontFamily: 'Poppins-Regular',
         color: '#23233C',
-        fontSize: 12, marginTop: 5
+        fontSize: 12,
     },
     shippingView: {
         flexDirection: 'row',
@@ -753,7 +760,6 @@ const styles = StyleSheet.create({
     },
     addressBox: {
         backgroundColor: '#F3F3F3',
-        padding: 10,
         borderRadius: 10
     },
     text1: {
@@ -762,12 +768,18 @@ const styles = StyleSheet.create({
         fontSize: 12,
     },
     cancelStyle: {
-        fontWeight: 'bold', 
-        fontSize: 12, 
-        color: 'red', 
+        fontWeight: 'bold',
+        fontSize: 12,
+        color: 'red',
         fontFamily: 'Poppins-Medium',
         marginBottom: 10,
         marginTop: -5
-    }
-
+    },
+    chargesStyles: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginTop: 10,
+        marginBottom: 10,
+    },
 })
