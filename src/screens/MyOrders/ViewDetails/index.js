@@ -158,6 +158,7 @@ const ViewDetails = ({ route }) => {
                                 key={item?.product_id}
                             />
                         )}
+                        <View style={{padding: 2}}/>
                         {item?.price_breakup?.map((pri, index) => (
 
                             <View key={`${pri?._id}${index}`} style={styles.delivery}>
@@ -274,7 +275,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         justifyContent: 'space-between',
         marginTop: 10,
-        marginHorizontal: 7
+        marginHorizontal: 7,
+        marginBottom: 10
     },
     itemUnderProduct: {
 

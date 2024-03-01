@@ -488,7 +488,7 @@ const OrderCard = memo(({ item, refreshOrder }) => {
 
                 {item?.refundAmount * 1 > 0 &&
                     <View
-                        style={{ backgroundColor: '#fff', paddingBottom: 10, borderTopWidth: showItems ? 0 : 1, borderColor: '#00000029', height: 35, alignItems: 'center', justifyContent: 'center', marginHorizontal: 10 }}
+                        style={{ backgroundColor: '#fff', paddingBottom: 10, borderTopWidth: showItems ? 0 : 1, borderColor: '#00000029', height: 35, alignItems: 'center', justifyContent: 'center', paddingVertical: 10, marginTop: 10}}
                     >
                         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', display: 'flex', width: '100%' }}>
                             <Text style={styles.textBold}>{'Refund'}</Text>
