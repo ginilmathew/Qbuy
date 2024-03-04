@@ -25,7 +25,7 @@ const ItemDetails = ({ itemName, hotelName, views, sold, minQty, price, onPress,
     return (
         <View style={ styles.container }>
             <View style={ { flex: 0.4, } }>
-                <CommonTexts label={ itemName } fontSize={ 13 } />
+                <CommonTexts label={ itemName } fullLabel={true} fontSize={ 13 } />
                 <TouchableOpacity
                     onPress={ onPress }
                     style={ { flexDirection: 'row', alignItems: 'center', flexWrap: "wrap" } }

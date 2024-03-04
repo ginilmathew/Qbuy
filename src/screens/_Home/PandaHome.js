@@ -425,7 +425,7 @@ const makeStyles = fontScale => StyleSheet.create({
         backgroundColor: "red",
         alignItems: "center",
         justifyContent: "center",
-        width: 30,
+        width: 50,
         borderTopLeftRadius: 10,
         borderBottomRightRadius: 10,
         height: 20,
