@@ -67,8 +67,8 @@ const StoreScreen = ({ route, navigation }) => {
 
         await customAxios.post('customer/store', data)
             .then(async response => {
-                let prods = await getProducts(response?.data?.data?.products)
-                setProducts(prods)
+                //let prods = await getProducts(response?.data?.data?.products)
+                setProducts(response?.data?.data?.products)
                 setStoreDetails(response?.data?.data);
             })
             .catch(async error => {

@@ -369,7 +369,8 @@ const makeStyles = fontScale => StyleSheet.create({
         fontFamily: 'Poppins-SemiBold',
         color: '#fff',
         fontSize: 0.011 * fontScale,
-        marginBottom: 3
+        marginBottom: 3,
+        
     },
     addContainer: {
         position: 'absolute',
