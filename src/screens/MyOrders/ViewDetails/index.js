@@ -155,9 +155,10 @@ const ViewDetails = ({ route }) => {
                         {item?.product_details?.map((item) =>
                             <ItemsCard
                                 item={item}
-                                key={item?._id}
+                                key={item?.product_id}
                             />
                         )}
+                        <View style={{padding: 2}}/>
                         {item?.price_breakup?.map((pri, index) => (
 
                             <View key={`${pri?._id}${index}`} style={styles.delivery}>
@@ -179,7 +180,7 @@ const ViewDetails = ({ route }) => {
                     complete={item?.status === "completed" ? true : false}
                 /> */}
 
-                {item?.rider_each_order_settlement?.rider_status === "onTheWay" ? (<ContactCard
+                {item?.rider_each_order_settlement?.rider_status === "onTheWay" || item?.rider_each_order_settlement?.rider_status === "onLocation" ? (<ContactCard
                     heading={'Call Delivery Agent'}
                     content={'You can call your assigned delivery agent ' + `${item?.riders.mobile}`}
                     iconColor={grocery ? '#FF9C0C' : '#576FD0'}
@@ -274,7 +275,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         justifyContent: 'space-between',
         marginTop: 10,
-        marginHorizontal: 7
+        marginHorizontal: 7,
+        marginBottom: 10
     },
     itemUnderProduct: {
 
