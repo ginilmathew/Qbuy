@@ -418,6 +418,24 @@ const CheckoutScreen = () => {
                     type: 'error'
                 })
             }
+            else if(response?.data?.message === "Coupon exist"){
+                Alert.alert('Warning', 'Some products already have an offer. If you choose to use this offer, any applied offer in the cart will be removed. Do you want to continue?', [
+                    {
+                      text: 'Cancel',
+                      onPress: null,
+                      style: 'cancel',
+                    },
+                    {text: 'OK', onPress: () =>  applyCoins()},
+                ]);
+            }
+            else if(response?.data?.message === "Coupon Applied"){
+                Toast.show({
+                    text1: 'Success',
+                    text2: 'Panda Coin applied successfully',
+                    type: 'success'
+                })
+                refetch()
+            }
         } catch (error) {
             
         }

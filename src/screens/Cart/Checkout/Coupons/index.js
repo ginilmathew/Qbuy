@@ -108,6 +108,16 @@ const Coupons = ({navigation, route}) => {
                 })
                 navigation.goBack()
             }
+            else if(response?.data?.message === "Panda Coins"){
+                Alert.alert('Warning', 'Some products already have an offer. If you choose to use this offer, any applied offer in the cart will be removed. Do you want to continue?', [
+                    {
+                      text: 'Cancel',
+                      onPress: null,
+                      style: 'cancel',
+                    },
+                    {text: 'OK', onPress: () =>  removeOffers(data)},
+                ]);
+            }
 
 
             

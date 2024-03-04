@@ -453,6 +453,7 @@ const SingleProductScreen = ({ route, navigation }) => {
                                 data={attr.options}
                                 onChange={selectAttributes}
                                 height={40}
+                                value={attr?.selected}
                                 width={'48%'}
                                 index={index}
                             />
@@ -460,7 +461,7 @@ const SingleProductScreen = ({ route, navigation }) => {
                     </View>
                 </View>
                 <View style={{ flexDirection: 'row', width: width, justifyContent: contextPanda?.active === "panda" ? 'center' : 'center', marginTop: 10, paddingHorizontal: 10, gap: 5 }}>
-                    {priceDetails?.available && <CustomButton
+                    {price?.available && <CustomButton
                         onPress={addToCart}
                         label={'Add to Cart'} bg={contextPanda?.active === 'green' ? '#8ED053' : contextPanda?.active === 'fashion' ? '#FF7190' : '#58D36E'} width={width / 2.2}
                         loading={loading}

@@ -89,6 +89,17 @@ const CheckoutBottomView = ({navigateToAddress, active, clickBillDetails, isLoad
                         >₹ {data?.coupon_amount}</Text>
 
                     </View>}
+                    {(data?.applied_panda_coins > 0) && <View  style={styles.charges}>
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <Text
+                                style={styles.textMedium}
+                            >{"Panda Coins Discount"}</Text>
+                        </View>
+                        <Text
+                            style={styles.textMedium}
+                        >₹ {data?.applied_panda_coins}</Text>
+
+                    </View>}
                     <View style={styles.grandTotal}>
                         <Text
                             style={styles.textMedium}

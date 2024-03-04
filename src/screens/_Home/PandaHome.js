@@ -304,10 +304,10 @@ const PandaHome = ({ navigation }) => {
                     {data?.suggestions?.length > 0 && 
                     <View style={styles.typeContainser}>
                         <View
-                                style={styles.headerBox}
-                            >
-                                <CommonTexts label={'Panda Suggestions'} fontSize={13} />
-                            </View>
+                            style={styles.headerBox}
+                        >
+                            <CommonTexts label={'Panda Suggestions'} fontSize={13} />
+                        </View>
                     <ScrollView
                         horizontal
                         showsHorizontalScrollIndicator={false}
@@ -513,7 +513,7 @@ const styles = StyleSheet.create({
     recents: { 
         backgroundColor: '#fff', 
         paddingVertical: 10, 
-        marginRight: 10 
+        //marginRight: 10 
     },
     typeContainser: {
         paddingTop: 10,
