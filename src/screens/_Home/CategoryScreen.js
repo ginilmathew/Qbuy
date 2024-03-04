@@ -59,10 +59,10 @@ const CategoryScreen = ({route, navigation}) => {
             let categories = response?.data?.data?.find(
                 home => home?.type === 'categories',
             );
-            let products = await getProducts(categories?.data)
+            //let products = await getProducts(categories?.data)
             let product = {
                 type: 'product',
-                data: products,
+                data: categories?.data,
                 style: { backgroundColor: '#76867314' },
             }
             //setProducts(products);

@@ -37,7 +37,7 @@ const ProductCard = ({data, loggedIn, addToCart, viewProduct, width, styles, hei
                     <Text style={styles.textSemi}>{data?.attributesName ? `${data?.name}  (${data?.attributesName})` : data?.name}</Text>
                     {data?.available && <Text style={styles.bottomRateText}>{`₹ ${data?.price}`}
                     {parseInt(data?.discount_percentage) > 0 && <Text style={{ color:'#fff',textDecorationLine: 'line-through', textDecorationStyle: 'solid', fontSize: 10, textDecorationColor:'#000' }}>{` ₹ ${data?.regular_price}`}</Text>}</Text>}
-                    <Text style={styles.lightText}>{data?.store_name}</Text>
+                    <Text numberOfLines={1} style={[styles.lightText, { width: '80%' }]}>{data?.store_name}</Text>
                 </LinearGradient>
                 {!data?.available && <View style={{ position: 'absolute', top: '32%', width: '100%' }}>
                     <View style={{ justifyContent: 'center', alignItems: 'center' }}>
