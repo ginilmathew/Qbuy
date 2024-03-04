@@ -263,6 +263,8 @@ const OrderCard = memo(({ item, refreshOrder }) => {
                 return <CommonStatusCard label={status} bg='#CCF1D3' labelColor={'#58D36E'} />
             case "cancelled":
                 return <CommonStatusCard label={status} bg='#FFC9C9' labelColor={'#FF7B7B'} />
+            case "customer_cancel":
+                return <CommonStatusCard label={"Cancelled"} bg='#FFC9C9' labelColor={'#FF7B7B'} />
             default:
                 return <CommonStatusCard label={status === "orderReturn" ? "Return" : status} bg='#FFF082' labelColor={'#A99500'} />
         }
@@ -457,9 +459,9 @@ const OrderCard = memo(({ item, refreshOrder }) => {
             </View>
 
             <View
-                style={{ backgroundColor: '#fff', paddingBottom: 10, borderTopWidth: showItems ? 0 : 1, borderColor: '#00000029', marginHorizontal: 7 }}
+                style={{ backgroundColor: '#fff', paddingBottom: 10, borderTopWidth: showItems ? 0 : 1, borderColor: '#00000029', marginHorizontal: 7, borderBottomLeftRadius: 15, borderBottomRightRadius: 15 }}
             >
-                
+
                 <View style={styles.shippingView}>
                     <Text style={styles.textBold}>{'Other Charges'}</Text>
                     <TouchableOpacity onPress={clickAddress}>
@@ -488,7 +490,7 @@ const OrderCard = memo(({ item, refreshOrder }) => {
 
                 {item?.refundAmount * 1 > 0 &&
                     <View
-                        style={{ backgroundColor: '#fff', paddingBottom: 10, borderTopWidth: showItems ? 0 : 1, borderColor: '#00000029', height: 35, alignItems: 'center', justifyContent: 'center', paddingVertical: 10, marginTop: 10}}
+                        style={{ backgroundColor: '#fff', paddingBottom: 10, borderTopWidth: showItems ? 0 : 1, borderColor: '#00000029', height: 35, alignItems: 'center', justifyContent: 'center', paddingVertical: 10, marginTop: 10 }}
                     >
                         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', display: 'flex', width: '100%' }}>
                             <Text style={styles.textBold}>{'Refund'}</Text>
@@ -650,14 +652,14 @@ export default OrderCard
 
 const styles = StyleSheet.create({
     delivery: {
-        flexDirection: 'row', 
-        alignItems: 'center', 
-        backgroundColor: '#F3F3F3', 
-        justifyContent: 'space-between', 
-        paddingVertical: 10, 
-        borderBottomWidth: 1, 
-        borderColor: '#e8e8e8', 
-        paddingHorizontal: 7, 
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: '#F3F3F3',
+        justifyContent: 'space-between',
+        paddingVertical: 10,
+        borderBottomWidth: 1,
+        borderColor: '#e8e8e8',
+        paddingHorizontal: 7,
         marginHorizontal: -7
     },
     container: {
