@@ -22,6 +22,7 @@ const CartButton = ({ bottom }) => {
     }));
 
     React.useEffect(() => {
+        getAllProds()
         if(cart?.product_details?.length === 1){
             offset.value = withTiming(5, { duration: 3000 })
         }
@@ -40,20 +41,20 @@ const CartButton = ({ bottom }) => {
 
 
 
-    let datas = cart?.product_details?.map(prod => {
-        return {
-            ...prod?.productdata,
-            quantity: prod?.quantity,
-            availability: prod?.availability,
-            selectedVariant: prod?.variants?.[0]?.variant_id
-        }
-    })
+    // let datas = cart?.product_details?.map(prod => {
+    //     return {
+    //         ...prod?.productdata,
+    //         quantity: prod?.quantity,
+    //         availability: prod?.availability,
+    //         selectedVariant: prod?.variants?.[0]?.variant_id
+    //     }
+    // })
 
-    const getAllProds = async(datas, offer_status) => {
-        let allProds = await getProducts(datas, offer_status)
+    const getAllProds = async() => {
+        //let allProds = await getProducts(datas, offer_status)
 
-        const total = allProds?.reduce((acc, curr) => {
-            return acc + parseFloat(curr?.price) * parseFloat(curr?.quantity)
+        const total = cart?.product_details?.reduce((acc, curr) => {
+            return acc + parseFloat(curr?.productdata?.price) * parseFloat(curr?.quantity)
         },0)
 
         setTotal(total)
@@ -61,7 +62,7 @@ const CartButton = ({ bottom }) => {
     }
 
 
-    getAllProds(datas, cart?.offer_status)
+    
 
     
 

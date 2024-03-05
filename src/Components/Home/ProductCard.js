@@ -34,7 +34,7 @@ const ProductCard = ({data, loggedIn, addToCart, viewProduct, width, styles, hei
                 //{...props}
             >
                 <LinearGradient colors={data?.available ? ['rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, 0.7)'] : ['rgba(0, 0, 0, 0.4)', 'rgba(0, 0, 0, 0.9)']} style={{ height: '100%', justifyContent: 'flex-end', padding: 10 }}>
-                    <Text style={styles.textSemi}>{data?.attributesName ? `${data?.name}  (${data?.attributesName})` : data?.name}</Text>
+                    <Text style={styles.textSemi}>{data?.attributes ? `${data?.name}  (${data?.attributes?.join(', ')})` : data?.name}</Text>
                     {data?.available && <Text style={styles.bottomRateText}>{`₹ ${data?.price}`}
                     {parseInt(data?.discount_percentage) > 0 && <Text style={{ color:'#fff',textDecorationLine: 'line-through', textDecorationStyle: 'solid', fontSize: 10, textDecorationColor:'#000' }}>{` ₹ ${data?.regular_price}`}</Text>}</Text>}
                     <Text numberOfLines={1} style={[styles.lightText, { width: '80%' }]}>{data?.store_name}</Text>
