@@ -296,7 +296,7 @@ const CartProvider = (props) => {
 
     const addToCart = async (item) => {
 
-        reactotron.log({item})
+        reactotron.log({item, cart})
 
         //return false
         let productDetails;
@@ -333,7 +333,7 @@ const CartProvider = (props) => {
             if(existing){
                 if(item.stock){
                     if((parseInt(existing?.quantity) + 1) <= parseInt(item?.stock_value)){
-                        existing.quantity = existing.quantity + 1;
+                        existing.quantity = parseInt(existing.quantity) + 1;
                         setCart({...cart})
                         return false;
                     }
@@ -352,6 +352,7 @@ const CartProvider = (props) => {
                 
             }
             else{
+                reactotron.log("in")
                 if((item.stock && parseInt(item?.stock_value) >= minimumQty) || !item.stock){
                     url = "customer/cart/update";
                     productDetails = {
@@ -373,6 +374,8 @@ const CartProvider = (props) => {
                         user_id: userData?._id,
                         type: panda.active
                     }
+
+                    reactotron.log({cartItems})
                 }
                 else{
                     Toast.show({

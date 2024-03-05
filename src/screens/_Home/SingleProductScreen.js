@@ -214,7 +214,7 @@ const SingleProductScreen = ({ route, navigation }) => {
     }
 
     const viewProduct = (item) => {
-        navigation.navigate("SingleItemScreen", { item })
+        navigation.push("SingleItemScreen", { item })
     }
 
 
@@ -261,7 +261,7 @@ const SingleProductScreen = ({ route, navigation }) => {
                 </View>
             )
         }
-    }, [datas?.stock])
+    }, [datas?.stock_value])
 
 
     const renderImageAnimation = ({ item, index }) => {
@@ -563,7 +563,7 @@ const SingleProductScreen = ({ route, navigation }) => {
         <>
             <HeaderWithTitle title={data?.name} />
             <FlatList 
-                data={[]}
+                data={datas?.related_product}
                 ListHeaderComponent={listHeader}
                 renderItem={_renderItem}
                 contentContainerStyle={{ margin: 5, backgroundColor: '#fff', flexGrow: 1 }}

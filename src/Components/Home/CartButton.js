@@ -21,8 +21,10 @@ const CartButton = ({ bottom }) => {
         bottom: offset.value,
     }));
 
+    
+
     React.useEffect(() => {
-        getAllProds()
+        
         if(cart?.product_details?.length === 1){
             offset.value = withTiming(5, { duration: 3000 })
         }
@@ -37,38 +39,6 @@ const CartButton = ({ bottom }) => {
         navigation.navigate('cart');
     }
 
-    //let products = cart?.product_details;
-
-
-
-    // let datas = cart?.product_details?.map(prod => {
-    //     return {
-    //         ...prod?.productdata,
-    //         quantity: prod?.quantity,
-    //         availability: prod?.availability,
-    //         selectedVariant: prod?.variants?.[0]?.variant_id
-    //     }
-    // })
-
-    const getAllProds = async() => {
-        //let allProds = await getProducts(datas, offer_status)
-
-        const total = cart?.product_details?.reduce((acc, curr) => {
-            return acc + parseFloat(curr?.productdata?.price) * parseFloat(curr?.quantity)
-        },0)
-
-        setTotal(total)
-
-    }
-
-
-    
-
-    
-
-
-    
-    //setCartProducts(allProds)
     
 
     
@@ -95,13 +65,17 @@ const CartButton = ({ bottom }) => {
                     />
                     <View style={styles.textContainer}>
                         <Text style={styles.mainText}>{"Go to Cart"}</Text>
-                        <Text style={styles.items}>{cart?.product_details?.length} Items</Text>
+                        <Text style={styles.items}>{cart?.product_details?.reduce((acc, curr) => {
+            return acc + parseInt(curr?.quantity)
+        },0)} Items</Text>
                     </View>
                 </View>
                 <View style={styles.rightContainer}>
                     <Text style={styles.totalText}>{'total'}</Text>
                     <View style={styles.priceContainer}>
-                        <Text style={styles.price}>₹ {total}</Text>
+                        <Text style={styles.price}>₹ {cart?.product_details?.reduce((acc, curr) => {
+            return acc + parseFloat(curr?.productdata?.price) * parseFloat(curr?.quantity)
+        },0)}</Text>
                     </View>
                 </View>
                 </LinearGradient>

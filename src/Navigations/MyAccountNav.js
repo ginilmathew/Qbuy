@@ -30,12 +30,12 @@ const MyAccountNav = () => {
             <Stack.Screen name="PandaCoins" component={PandaCoins}/>
             <Stack.Screen name="AffiliateBonus" component={AffiliateBonus}/>
             <Stack.Screen name="EditProfile" component={EditProfile}/>
-            <Stack.Screen name="FashionCategory" component={FashionCategory}/>
-            <Stack.Screen name="Category" component={CategoryScreen} />
-            <Stack.Screen name="SingleItemScreen" component={SingleItemScreen} />
-            <Stack.Screen name="SingleHotel" component={SingleHotel} />
-            <Stack.Screen name="store" component={StoreScreen} />
-            <Stack.Screen name="Wishlist" component={Wishlist} />
+            {/* <Stack.Screen name="FashionCategory" component={FashionCategory}/> */}
+            {/* <Stack.Screen name="Category" component={CategoryScreen} /> */}
+            {/* <Stack.Screen name="SingleItemScreen" component={SingleItemScreen} /> */}
+            {/* <Stack.Screen name="SingleHotel" component={SingleHotel} /> */}
+            {/* <Stack.Screen name="store" component={StoreScreen} /> */}
+            {/* <Stack.Screen name="Wishlist" component={Wishlist} /> */}
 
         </Stack.Navigator>
     )
