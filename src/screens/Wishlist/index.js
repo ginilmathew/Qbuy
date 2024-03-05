@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, ScrollView, useWindowDimensions, TouchableOpacity, ActivityIndicator } from 'react-native'
+import { StyleSheet, Text, View, ScrollView, useWindowDimensions, TouchableOpacity, ActivityIndicator, FlatList } from 'react-native'
 import React, { useContext, useEffect, useState } from 'react'
 import FastImage from 'react-native-fast-image'
 import HeaderWithTitle from '../../Components/HeaderWithTitle'
@@ -12,6 +12,8 @@ import AuthContext from '../../contexts/Auth'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { isEmpty, isArray } from 'lodash'
 import reactotron from 'reactotron-react-native'
+import ProductCard from '../../Components/Home/ProductCard'
+import CartButton from '../../Components/Home/CartButton'
 
 const Wishlist = ({ navigation }) => {
 
@@ -27,6 +29,8 @@ const Wishlist = ({ navigation }) => {
 
     let loadingg = loadingContex?.loading
     let active = contextPanda.active
+
+    const styles1 = makeStyles(height)
 
     const [wishlist, setWishlist] = useState([])
 
@@ -64,33 +68,70 @@ const Wishlist = ({ navigation }) => {
     }
 
 
+    const viewProduct = (item) => {
+        navigation.navigate("SingleItemScreen", { item })
+    }
 
+    const addToCart = (item) => {
+        // reactotron.log({item});
+        // return false
+        cartContext.addToCart(item)
+    }
+
+    const renderProduct = ({ item }) => {
+        return (
+            <View style={{ width: width / 2, padding: 5 }}>
+                <ProductCard
+                    key={`${item?._id}product`}
+                    data={item}
+                    styles={styles1}
+                    loggedIn={userContext?.userData ? true : false}
+                    height={height/4}
+                    viewProduct={viewProduct}
+                    //sharedTransitionTag={`images${item?._id}`}
+                    addToCart={addToCart}
+                />
+            </View>
+        )
+    }
 
 
     return (
         <>
             <HeaderWithTitle title={ 'Wishlist' } />
-            <ScrollView
-                style={ { flex: 1, backgroundColor: active === 'green' ? '#F4FFE9' : active === 'fashion' ? '#FFF5F7' : '#fff', paddingTop: 10 } }
-            >
-                { wishlist?.length > 0 && <View style={ styles.container }>
+                <FlatList
+                
+                data={ wishlist}
+                refreshing={loadingg}
+                renderItem={renderProduct}
+                style={{ flexGrow: 1, paddingBottom: 70, backgroundColor: active === "panda" ? '#fff' :  active === "green" ? '#F4FFE9' : '#FFF5F7' }}
+                numColumns={2}
+                onRefresh={getWishlist}
+                ListEmptyComponent={() => (
+                    <View style={ { display: 'flex', justifyContent: 'center', alignItems: 'center', height: height / 1.3 } }>
+                        <Text style={ { color: '#000' } }>Wishlist is empty!</Text>
+                    </View>
+                )}
+            />
+                {/* { wishlist?.length > 0 && <View style={ styles.container }>
                     { wishlist?.map((item, index) => (
-                        <CommonItemCard
-                            item={ item }
-                            key={ index }
-                            width={ width / 2.2 }
-                            height={ 250 }
-                            wishlistIcon
-                            getWishlist={ getWishlist }
+                        <ProductCard
+                            key={`${item?._id}product`}
+                            data={item}
+                            styles={styles}
+                            loggedIn={userContext?.userData ? true : false}
+                            height={height}
+                            viewProduct={viewProduct}
+                            //sharedTransitionTag={`images${item?._id}`}
+                            addToCart={addToCart}
                         />
                     )) }
 
                 </View> }
                 { wishlist?.length <= 0 && <View style={ { display: 'flex', justifyContent: 'center', alignItems: 'center', height: height / 1.3 } }>
                     <Text style={ { color: '#000' } }>Wishlist is empty!</Text>
-                </View> }
-
-            </ScrollView>
+                </View> } */}
+                <CartButton bottom={20} />
         </>
 
 
@@ -105,5 +146,98 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap',
         gap: 10,
         paddingHorizontal: '3%',
+    }
+})
+
+const makeStyles = fontScale => StyleSheet.create({
+
+
+    bottomCountText: {
+        fontFamily: 'Poppins-medium',
+        color: '#fff',
+        fontSize: 0.01 * fontScale,
+    },
+    bottomRateText: {
+        fontFamily: 'Poppins-ExtraBold',
+        color: '#fff',
+        fontSize: 0.015 * fontScale,
+    },
+    textSemi: {
+        fontFamily: 'Poppins-SemiBold',
+        color: '#fff',
+        fontSize: 0.014 * fontScale,
+        paddingBottom: 2
+    },
+    textSemiError: {
+        fontFamily: 'Poppins-SemiBold',
+        color: 'red',
+        fontSize: 10 / fontScale,
+        paddingBottom: 2
+    },
+    lightText: {
+        fontFamily: 'Poppins-SemiBold',
+        color: '#fff',
+        fontSize: 0.011 * fontScale,
+        marginBottom: 3,
+        
+    },
+    addContainer: {
+        position: 'absolute',
+        right: 5,
+        bottom: 10
+    },
+    tagText: {
+        fontFamily: 'Poppins-SemiBold',
+        color: '#fff',
+        fontSize: 12 / fontScale,
+        padding: 5
+    },
+    hearIcon: {
+        position: 'absolute',
+        top: 8,
+        right: 8,
+        zIndex: 1,
+        width: 24,
+        height: 24,
+        borderRadius: 12,
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        alignItems: 'center',
+        justifyContent: 'center'
+
+    },
+    RBsheetHeader: {
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        flexDirection: 'row',
+        marginTop: 10
+    },
+    totalCount: {
+        borderRightWidth: 3,
+        borderColor: '#fff',
+        flex: 0.4
+    },
+    outofstock: {
+        borderRightWidth: 3,
+        borderColor: '#fff',
+        flex: 0.4
+    },
+    viewCartBox: {
+        alignItems: 'flex-end',
+        flex: 0.5
+    },
+    discountViewer: {
+        position: 'absolute',
+        top: 5,
+        left: 5
+    },
+    priceTag: {
+        backgroundColor: "red",
+        alignItems: "center",
+        justifyContent: "center",
+        width: 50,
+        borderTopLeftRadius: 10,
+        borderBottomRightRadius: 10,
+        height: 20,
+        margin: 1,
     }
 })

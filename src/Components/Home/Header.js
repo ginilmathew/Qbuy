@@ -44,7 +44,7 @@ const Header = ({ userData, changeAddress, opendrawer, currentAddress, active, o
 
                 </>}
 
-            {onClickWishlist &&
+            {onClickWishlist && userData &&
                 <TouchableOpacity onPress={onClickWishlist}>
                     <Fontisto name={'heart'} color="#FF6464" size={20} marginHorizontal={8} />
                 </TouchableOpacity>}

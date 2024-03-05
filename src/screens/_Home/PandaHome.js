@@ -195,7 +195,9 @@ const PandaHome = ({ navigation }) => {
     }
 
 
-
+    const onClickWishlist = useCallback(() => {
+        navigation.navigate('Wishlist');
+    }, []);
 
 
 
@@ -208,7 +210,7 @@ const PandaHome = ({ navigation }) => {
                 currentAddress={userContext?.currentAddress}
                 active={active}
                 //onClickFashionCat={onClickFashionCat}
-                //onClickWishlist={onClickWishlist}
+                onClickWishlist={onClickWishlist}
                 onClickNotificatn={onClickNotificatn}
             />
             <AvailableProducts
