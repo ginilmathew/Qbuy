@@ -22,6 +22,19 @@ import AuthContext from '../../contexts/Auth'
 import { getProducts } from '../../helper/homeProductsHelper'
 import CartContext from '../../contexts/Cart'
 import CartButton from '../../Components/Home/CartButton'
+import Fontisto from 'react-native-vector-icons/Fontisto'
+import { useQuery } from '@tanstack/react-query'
+import { useFocusEffect } from '@react-navigation/native'
+import { useFocusNotifyOnChangeProps } from '../../hooks/useFocusNotifyOnChangeProps'
+import LoadingModal from '../../Components/LoadingModal'
+
+
+const singleProductData = async (datas) => {
+    const productData = await customAxios.post(`customer/get-product-details`, datas);
+
+    reactotron.log({ datas:productData?.data?.data })
+    return productData?.data?.data;
+}
 
 const SingleProductScreen = ({ route, navigation }) => {
 
@@ -45,19 +58,51 @@ const SingleProductScreen = ({ route, navigation }) => {
     const [relatedProducts, setRelatedProducts] = useState([])
     const [attributes, setAttributes] = useState([])
 
-    const { variantAddToCart } = useContext(CartContext)
+    const [userInput, setUserInput] = useState({
+        product_id: route?.params?.item?._id,
+        attributes: null
+    })
+
+    const firstTimeRef = React.useRef(true)
+    const notifyOnChangeProps = useFocusNotifyOnChangeProps();
+
+    const { variantAddToCart, addToCart } = useContext(CartContext)
     
     //reactotron.log({ price }) 65df243fb059da96cf074c43
 
-    reactotron.log({data})
+    //reactotron.log({data})
+
+    // let userInput = {
+    //     product_id: route?.params?.item?._id,
+    //     attributes: null
+    // }
+
+
+    const { data: datas, isLoading, isFetching, refetch } = useQuery({
+        queryKey: ['singleProduct', userInput],
+        queryFn: ({queryKey}) => singleProductData(queryKey[1]),
+        //enabled: false
+    })
 
     useEffect(() => {
         if(route?.params?.item?._id){
             setCourasolArray(null)
-            getSingleProductDetails()
+            refetch()
             addViewCount(route?.params?.item?._id)
         }
     }, [route?.params?.item?._id])
+
+    useFocusEffect(
+        React.useCallback(() => {
+            if (firstTimeRef.current) {
+                firstTimeRef.current = false;
+                return;
+            }
+
+            refetch()
+            //infiniteQueryRefetch()
+        }, [refetch])
+    )
 
     const addViewCount = async (id) => {
         let datas = {
@@ -76,111 +121,81 @@ const SingleProductScreen = ({ route, navigation }) => {
                 });
             })
     }
-    
 
-    const getSingleProductDetails = async() => {
-        setLoading(true)
-        try {
-            const response = await customAxios.get(`customer/product/${route?.params?.item?._id}`)
-            if(response?.data?.message === "Success"){
-                let data = response?.data?.data;
-                //setProductItem(data)
-                setImage(`${IMG_URL}${data?.product_image}`)
-                let priceDetails = await singleProduct(data);
 
-                //reactotron.log({priceDetails})
+    useEffect(() => {
 
-                
-                setPriceDetails(priceDetails)
+        async function setProducts(datas){
+            let data = datas;
+            //setProductItem(data)
+            setImage(`${IMG_URL}${data?.product_image}`)
+            //let priceDetails = await singleProduct(data);
 
-                if(data?.relatedProducts){
-                    let related = await getProducts(data?.relatedProducts)
+            //reactotron.log({priceDetails})
 
-                    //reactotron.log({related})
-                    setRelatedProducts(related)
-                }
-                //reactotron.log({priceDetails})
-                setData(data)
-                let images = [ {
-                    type: 'image',
-                    url: `${IMG_URL}${data?.product_image}`
-                }]
-                if(data?.image?.length > 0){
-                    data?.image?.map(img => {
-                        images.push({
-                            type: 'image',
-                            url: `${IMG_URL}${img}`
-                        })
-                    })
-                    if(data?.video_link){
-                        let videoId;
-                        let video = data?.video_link;
-                        if (video.includes("https://www.youtube.com/")) {
-                            videoId = video.split('=')[1]
-                            images.push({
-                                type: 'video',
-                                url: videoId
-                            })
-                        }
-                        
-                    }
-                    setCourasolArray(images)
-                }
-                
+            
+            //setPriceDetails(priceDetails)
 
-                if(priceDetails?.length > 1){
-                    let result;
-                    var results = priceDetails?.filter((vari) => vari?.available === true);
-                    if(results?.length > 0){
-                        result = results.reduce(function (res, obj) {
-                            return (obj.regularPrice < res.regularPrice) ? obj : res;
-                        });
-                        setPrice(result);
-                    }
-                    else{
-                        result = priceDetails[0]
-                        setPrice(priceDetails[0])
-                    }
-                    //reactotron.log({result})
-                    let selectedVariant = data?.variants?.find(vari => vari?._id === result?._id)
-                    setSelectedVariant(selectedVariant)
-                    
+            if(data?.relatedProducts){
+                let related = await getProducts(data?.relatedProducts)
 
-                    if(data?.attributes){
-                        let attributes = data?.attributes?.map((att, index) => {
-                            return {
-                                ...att,
-                                selected: selectedVariant?.attributs[index]
-                            }
-                        })
-
-                        setAttributes(attributes)
-
-                        //setAttributes(attributes)
-                        //reactotron.log({selectedVariant, attributes: data.attributes, attributess: attributes})
-                    }
-                    
-                }
-                else{
-                    //setAttributes(data?.attributes)
-                    setPrice(priceDetails)
-                }
-
-                
+                //reactotron.log({related})
+                setRelatedProducts(related)
             }
-            else{
-                throw new Error('Something went wrong. Please try again lator')
+            //reactotron.log({priceDetails})
+            setData(data)
+            let images = [ {
+                type: 'image',
+                url: `${IMG_URL}${data?.product_image}`
+            }]
+            if(data?.image?.length > 0){
+                data?.image?.map(img => {
+                    images.push({
+                        type: 'image',
+                        url: `${IMG_URL}${img}`
+                    })
+                })
+                if(data?.video_link){
+                    let videoId;
+                    let video = data?.video_link;
+                    if (video.includes("https://www.youtube.com/")) {
+                        videoId = video.split('=')[1]
+                        images.push({
+                            type: 'video',
+                            url: videoId
+                        })
+                    }
+                    
+                }
+                setCourasolArray(images)
             }
             
-        } catch (error) {
-            Toast.show({
-                text1: error
-            })
+
+
+                if(data?.attributes){
+                    let attributes = data?.attributes?.map((att, index) => {
+                        return {
+                            ...att,
+                            selected: data?.selected_attribute[index]
+                        }
+                    })
+
+                    setAttributes(attributes)
+                }
         }
-        finally{
-            setLoading(false)
+
+        if(datas){
+            reactotron.log({datasss: datas})
+            setProducts(datas)
         }
-    }
+        
+
+        
+    }, [datas])
+    
+    
+
+   
 
     const _renderItem = ({item}) => {
         return(
@@ -206,9 +221,9 @@ const SingleProductScreen = ({ route, navigation }) => {
     reactotron.log({price})
 
     const renderInStock = useCallback(() => {
-        if (price?.available) {
-            if (price?.stock) {
-                if (parseFloat(price?.stock_value) > 0) {
+        if (datas?.available) {
+            if (datas?.stock) {
+                if (datas?.stock_value && parseFloat(datas?.stock_value) > 0) {
                     return (
                         <View
                             style={{ position: 'absolute', left: 20, top: 15, backgroundColor: contextPanda?.active === 'green' ? '#8ED053' : contextPanda?.active === 'fashion' ? '#FF7190' : '#58D36E', borderRadius: 8 }}
@@ -246,7 +261,7 @@ const SingleProductScreen = ({ route, navigation }) => {
                 </View>
             )
         }
-    }, [price])
+    }, [datas?.stock])
 
 
     const renderImageAnimation = ({ item, index }) => {
@@ -274,18 +289,11 @@ const SingleProductScreen = ({ route, navigation }) => {
 
 
     const makeSelected = async(index) => {
-        //if(courasolArray[index].type === "image"){
-            await courasol?.current?.scrollTo({ index, animated: false })
-        //}
-
+        await courasol?.current?.scrollTo({ index, animated: false })
         if(courasolArray[index].type === "video"){
             setImage(index)
         }
         
-        //setImage(index)
-        // setTimeout(() => {
-        //     setImage(index)
-        // }, 200);
         
     }
 
@@ -293,6 +301,7 @@ const SingleProductScreen = ({ route, navigation }) => {
         if(courasolArray && courasolArray?.length > 0){
             return(
                 <View style={{ height: 220 }}>
+                    
                 <Carousel
                     ref={courasol}
                     // autoPlay={true}
@@ -308,6 +317,7 @@ const SingleProductScreen = ({ route, navigation }) => {
         }
         else{
             return(
+                
                 <AnimatedFastImage
                     // source={data?.image[selectedImage]?.name} 
                     //sharedTransitionTag={`images${route?.params?.item?._id}`}
@@ -316,20 +326,21 @@ const SingleProductScreen = ({ route, navigation }) => {
                     resizeMode='cover'
                 >
                 </AnimatedFastImage>
+                
             )
         }
     }, [courasolArray?.length, image])
 
     const gotoStore = () => {
-        navigation.navigate("store", { item: data?.vendors })
-        //navigation.navigate('store', { name: data?.vendor?.store_name, mode: 'store', item: data?.vendor, storeId: data?.vendor?._id })
-        //navigation.navigate('store', { name: data?.store?.name, mode: 'singleItem', storeId: data?.store?._id })
+        navigation.navigate("store", { item: data?.stores })
     }
 
     const selectAttributes = (value, index) => {
 
+
+
         attributes[index]['selected'] = value
-        setAttributes([...attributes])
+        //setAttributes([...attributes])
 
         let selected = []
         attributes?.map(att => {
@@ -339,11 +350,9 @@ const SingleProductScreen = ({ route, navigation }) => {
         })
 
 
-        
-
         let selectedVariant;
 
-        data?.variants?.map(vari => {
+        datas?.product_variants?.map(vari => {
             //reactotron.log("length matched", vari, selected)
             if(vari?.attributs?.length === selected?.length){
                 
@@ -353,27 +362,95 @@ const SingleProductScreen = ({ route, navigation }) => {
             }
         })
 
-        //reactotron.log({selectedVariant})
-
         if(selectedVariant){
-            setSelectedVariant({...selectedVariant})
-            setPrice(priceDetails?.find(pr => pr?._id === selectedVariant?._id))
+            let data = {
+                product_id: route?.params?.item?._id,
+                variant_id: selectedVariant?._id
+            }
+            setUserInput(data)
+            refetch()
         }
-        // //setAttributes([...attr])
+
+        
     }
 
 
-    const addToCart = () => {
-        //if(price?._id)
-        reactotron.log({data, price})
-        variantAddToCart(data, price)
+    const addToCarts = () => {
+        addToCart(data)
+    }
+
+    const addToWishList = async () => {
+        //setHeart(!heart)
+
+        let data = {
+            type: contextPanda?.active,
+            product_id: datas?._id
+        }
+
+        await customAxios.post(`customer/wishlist/create`, data)
+            .then(async response => {
+                refetch()
+            })
+            .catch(async error => {
+                Toast.show({
+                    type: 'error',
+                    text1: error
+                });
+            })
+
+    }
+
+
+    const removeWishList = async () => {
+        //setHeart(!heart)
+
+        let data = {
+            type: contextPanda?.active,
+            product_id: datas?._id
+        }
+
+
+        await customAxios.post(`customer/wishlist/delete`, data)
+            .then(async response => {
+                refetch()
+
+            })
+            .catch(async error => {
+                Toast.show({
+                    type: 'error',
+                    text1: error
+                });
+            })
+
+    }
+
+
+    const renderWishList = () => {
+        if(userContext?.userData){
+            return(
+                <View style={ styles.hearIcon }>
+                <TouchableOpacity
+                    onPress={ (data?.is_wishlist) ? removeWishList : addToWishList }
+                    
+                >
+
+                    <Fontisto 
+                        name={ "heart" } 
+                        color={ (data?.is_wishlist) ? "#FF6464" : '#EDEDED' }
+                    />
+                </TouchableOpacity>
+                </View>
+            )
+        }
     }
 
     const listHeader = () => {
         return (
             <View style={{ width }}>
                 {renderImages()}
+                {renderWishList()}
                 {renderInStock()}
+                
                 {courasolArray?.length > 0 && <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                     {courasolArray?.map((item, index) =>
                         <ImageVideoBox
@@ -385,18 +462,18 @@ const SingleProductScreen = ({ route, navigation }) => {
                         />
                     )}
                 </ScrollView>}
-                {data && <ItemDetails
+                {datas && <ItemDetails
                     onPress={gotoStore}
-                    itemName={data?.name}
-                    hotelName={data?.store?.name}
-                    views={data?.viewCount ? data?.viewCount : 0}
-                    sold={data?.order_count}
-                    minQty={data?.minimum_qty}
-                    price={price?.sellerPrice}
-                    regularPrice={price?.regularPrice}
-                    available={price?.available}
+                    itemName={datas?.name}
+                    hotelName={datas?.stores?.store_name}
+                    views={datas?.viewCount ? data?.viewCount : 0}
+                    sold={datas?.order_count}
+                    minQty={datas?.minimum_qty}
+                    price={datas?.price}
+                    regularPrice={datas?.regular_price}
+                    available={datas?.available}
                 />}
-                {data?.weight !== ('' || null) &&
+                {datas?.weight !== ('' || null) &&
                 <View style={{ paddingLeft: 10, display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 2 }}>
                     <Text style={{
                         fontFamily: 'Poppins',
@@ -445,11 +522,11 @@ const SingleProductScreen = ({ route, navigation }) => {
 
                 </View>}
                 <View style={{ paddingHorizontal: 10 }}>
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10, flexWrap: 'wrap' }}>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: 10, flexWrap: 'wrap' }}>
                         {(attributes?.map((attr, index) =>
                             <CommonSelectDropdown
                                 key={index}
-                                placeholder={attr?.name}
+                                topLabel={attr?.name}
                                 data={attr.options}
                                 onChange={selectAttributes}
                                 height={40}
@@ -461,18 +538,22 @@ const SingleProductScreen = ({ route, navigation }) => {
                     </View>
                 </View>
                 <View style={{ flexDirection: 'row', width: width, justifyContent: contextPanda?.active === "panda" ? 'center' : 'center', marginTop: 10, paddingHorizontal: 10, gap: 5 }}>
-                    {price?.available && <CustomButton
-                        onPress={addToCart}
+                    {userContext?.userData && datas?.available && <CustomButton
+                        onPress={addToCarts}
                         label={'Add to Cart'} bg={contextPanda?.active === 'green' ? '#8ED053' : contextPanda?.active === 'fashion' ? '#FF7190' : '#58D36E'} width={width / 2.2}
                         loading={loading}
                     />}
                 </View>
                 <View style={{ backgroundColor: '#0C256C0D', height: 1, marginVertical: 20 }} />
-                {data?.description &&
+                {datas?.description &&
                 <View style={{ paddingLeft: 10, paddingRight: 10 }}>
                     <Text style={styles.DetailsText}>Details</Text>
-                    <Text style={styles.DetailsTextDescription}>{data?.description}</Text>
+                    <Text style={styles.DetailsTextDescription}>{datas?.description}</Text>
 
+                </View>}
+                {datas?.related_product?.length > 0 &&
+                <View style={{ paddingLeft: 10, paddingRight: 10 }}>
+                    <Text style={styles.DetailsText}>Related Products</Text>
                 </View>}
             </View>
         )
@@ -481,9 +562,8 @@ const SingleProductScreen = ({ route, navigation }) => {
     return (
         <>
             <HeaderWithTitle title={data?.name} />
-            {/* {listHeader()} */}
             <FlatList 
-                data={relatedProducts}
+                data={datas?.related_product}
                 ListHeaderComponent={listHeader}
                 renderItem={_renderItem}
                 contentContainerStyle={{ padding: 5, backgroundColor: '#fff', flexGrow: 1 }}
@@ -491,25 +571,10 @@ const SingleProductScreen = ({ route, navigation }) => {
                 keyExtractor={(item, index) => `${item?._id}${index}`}
                 numColumns={2}
                 refreshing={loading}
-                onRefresh={getSingleProductDetails}
+                onRefresh={refetch}
             />
-            {/* <SectionList
-                sections={[]}
-                keyExtractor={(item, index) => `${item?._id}${index}`}
-                renderItem={_renderItem}
-                //renderSectionHeader={sectionHeader}
-                //renderSectionFooter={sectionFooter}
-                ListHeaderComponent={listHeader}
-                style={{ backgroundColor: '#fff' }}
-                //ListFooterComponent={}
-                stickySectionHeadersEnabled={false}
-                refreshing={loading}
-                refreshControl={()=> <ActivityIndicator color={"red"} />}
-                //extraData={filter}
-                contentContainerStyle={{ margin: 5 }}
-                ListFooterComponent={() => loading ? <ActivityIndicator color={"red"} /> : null}
-            /> */}
             <CartButton bottom={20} />
+            <LoadingModal isVisible={isLoading || isFetching} />
         </>
     )
 }
@@ -558,19 +623,7 @@ const makeStyles = fontScale => StyleSheet.create({
         fontSize: 12 / fontScale,
         padding: 5
     },
-    hearIcon: {
-        position: 'absolute',
-        top: 8,
-        right: 8,
-        zIndex: 1,
-        width: 24,
-        height: 24,
-        borderRadius: 12,
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-        alignItems: 'center',
-        justifyContent: 'center'
-
-    },
+    
     RBsheetHeader: {
         alignItems: 'center',
         justifyContent: 'space-between',
@@ -605,7 +658,8 @@ const makeStyles = fontScale => StyleSheet.create({
         borderBottomRightRadius:10,
         height:20,
         margin: 1,
-    }
+    },
+    
 })
 
 const styles = StyleSheet.create({
@@ -634,5 +688,17 @@ const styles = StyleSheet.create({
         color: '#000',
         letterSpacing: 1,
         fontSize: 12,
+    },
+    hearIcon: {
+        position: 'absolute',
+        top: 0,
+        right: 8,
+        zIndex: 1,
+        width: 24,
+        height: 24,
+        borderRadius: 12,
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        alignItems: 'center',
+        justifyContent: 'center'
     }
 })

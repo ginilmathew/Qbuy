@@ -19,6 +19,10 @@ import { CommonActions } from '@react-navigation/native';
 import { NativeModules } from 'react-native';
 import CommonUpdateModal from '../../../Components/CommonUpdateModal';
 import CartContext from '../../../contexts/Cart';
+import Geolocation from 'react-native-geolocation-service';
+import axios from 'axios';
+import { MAPS_KEY } from '../../../config/constants';
+
 const { mode } = NativeModules.RNENVConfig;
 
 const Otp = ({ navigation }) => {
@@ -69,13 +73,13 @@ const Otp = ({ navigation }) => {
 				AsyncStorage.setItem('token', response?.data?.access_token);
 				AsyncStorage.setItem('user', JSON.stringify(response?.data?.user));
 				await getCartDetails();
-				//currentPosition()
-				navigation.dispatch(CommonActions.reset({
-					index: 0,
-					routes: [
-						{ name: 'Location' },
-					],
-				}));
+				currentPosition()
+				// navigation.dispatch(CommonActions.reset({
+				// 	index: 0,
+				// 	routes: [
+				// 		{ name: 'Location' },
+				// 	],
+				// }));
 			})
 			.catch(async error => {
 				Toast.show({
@@ -88,6 +92,76 @@ const Otp = ({ navigation }) => {
 				loadingg.setLoading(false);
 			});
 	};
+
+
+	const currentPosition = async() => {
+		loadingg.setLoading(true);
+		await Geolocation.getCurrentPosition(
+			position => {
+
+				getAddressFromCoordinates(position?.coords?.latitude, position.coords?.longitude)
+
+			},
+			error => {
+				loadingg.setLoading(false);
+				navigation.dispatch(CommonActions.reset({
+					index: 0,
+					routes: [
+						{ name: 'Location' },
+					],
+				}));
+
+			},
+			{
+				accuracy: {
+					android: 'high',
+					ios: 'best',
+				},
+				enableHighAccuracy: true,
+				timeout: 15000,
+				maximumAge: 10000,
+				distanceFilter: 0,
+				forceRequestLocation: true,
+				forceLocationManager: false,
+				showLocationDialog: true,
+			},
+		);
+	}
+
+	async function getAddressFromCoordinates(latitude, longitude) {
+        let response = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${latitude},${longitude}&key=${MAPS_KEY}`);
+
+        let Value = {
+            location: response?.data?.results[0]?.formatted_address,
+            city: response?.data?.results[0]?.address_components?.filter(st =>
+                st.types?.includes('locality')
+            )[0]?.long_name,
+            latitude: latitude,
+            longitude: longitude,
+        };
+
+
+        //addressContext.setCurrentAddress(Value);
+
+        let location = {
+            latitude: latitude,
+            longitude: longitude,
+            address: Value?.location
+        }
+
+
+        await AsyncStorage.setItem("location", JSON.stringify(location))
+        user.setLocation([latitude, longitude]);
+        user.setCurrentAddress(response?.data?.results[0]?.formatted_address)
+		loadingg.setLoading(false);
+        navigation.dispatch(CommonActions.reset({
+			index: 0,
+			routes: [
+				{ name: 'home' },
+			],
+		}));
+
+    }
 
 	
 

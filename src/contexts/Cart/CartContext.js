@@ -296,7 +296,7 @@ const CartProvider = (props) => {
         //return false
         let productDetails;
         let cartItems, url;
-        let minimumQty = item?.minQty ? item?.minQty : 1
+        let minimumQty = item?.minimum_qty ? item?.minimum_qty : 1
         
         if(cart?._id){
             let existing;
@@ -323,7 +323,7 @@ const CartProvider = (props) => {
 
             if(existing){
                 if(item.stock){
-                    if((parseInt(existing?.quantity) + 1) <= parseInt(item?.stockValue)){
+                    if((parseInt(existing?.quantity) + 1) <= parseInt(item?.stock_value)){
                         existing.quantity = existing.quantity + 1;
                         setCart({...cart})
                         return false;
@@ -343,7 +343,40 @@ const CartProvider = (props) => {
                 
             }
             else{
-                url = "customer/cart/update";
+                if((item.stock && parseInt(item?.stock_value) >= minimumQty) || !item.stock){
+                    url = "customer/cart/update";
+                    productDetails = {
+                        product_id: item?._id,
+                        name: item?.name,
+                        image: item?.product_image,
+                        type: item?.variant_id ? 'variant' : 'single',
+                        attributes: item?.attributes,
+                        variants: item?.variant_id ? [
+                            {
+                                variant_id: item?.variant_id,
+                                attributs: item?.attributes
+                            }
+                        ] : null,
+                        quantity: minimumQty
+                    };
+                    cartItems = {
+                        product_details: [...cart?.product_details, productDetails],
+                        user_id: userData?._id,
+                        type: panda.active
+                    }
+                }
+                else{
+                    Toast.show({
+                        text1: 'Out off stock'
+                    })
+                    return false;
+                }
+            }
+
+        }
+        else{
+            if((item.stock && parseInt(item?.stock_value) >= minimumQty) || !item.stock){
+                url = "customer/cart/add";
                 productDetails = {
                     product_id: item?._id,
                     name: item?.name,
@@ -359,120 +392,22 @@ const CartProvider = (props) => {
                     quantity: minimumQty
                 };
                 cartItems = {
-                    product_details: [...cart?.product_details, productDetails],
+                    product_details: [productDetails],
                     user_id: userData?._id,
                     type: panda.active
                 }
             }
-
-        }
-        else{
-            url = "customer/cart/add";
-            productDetails = {
-                product_id: item?._id,
-                name: item?.name,
-                image: item?.product_image,
-                type: item?.variant_id ? 'variant' : 'single',
-                attributes: item?.attributes,
-                variants: item?.variant_id ? [
-                    {
-                        variant_id: item?.variant_id,
-                        attributs: item?.attributes
-                    }
-                ] : null,
-                quantity: minimumQty
-            };
-            cartItems = {
-                product_details: [productDetails],
-                user_id: userData?._id,
-                type: panda.active
+            else{
+                Toast.show({
+                    text1: 'Out off stock'
+                })
+                return false;
             }
+            
         }
 
         
-        // let cartItems, url;
-        // let productDetails;
-        // let minimumQty = item?.minQty ? item?.minQty : 1
-
-        // if (cart) {
-        //     url = "customer/cart/update";
-        //     let cartProducts = cart?.product_details;
-        //     let existing;
-
-        //     if(item?.variant_id){
-        //         existing = cart?.product_details?.find(prod => prod.product_id === item?._id && prod?.variants?.[0]?.variant_id === item?.variant_id)
-        //     }
-        //     else if(item?.attributes?.length > 0){
-        //         let filterProducts = cart?.product_details?.filter(prod => prod.product_id === item?._id)
-        //         filterProducts && filterProducts?.map(prod => {
-        //             let att = [];
-        //             attributes?.map(attr => {
-        //                 att.push(attr?.selected)
-        //             })
-
-        //             if(prod?.attributes?.every(v => att.includes(v))){
-        //                 existing = prod;
-        //             }
-        //         })
-        //     }
-        //     else {
-        //         existing = cart?.product_details?.find(prod => prod.product_id === item?._id)
-        //     }
-
-        //     if (existing) {
-        //         existing.quantity = existing.quantity + 1;
-        //         cartItems = {
-        //             product_details: cartProducts,
-        //             user_id: userData?._id,
-        //             type: panda.active
-        //         }
-        //     }
-        //     else{
-        //         productDetails = {
-        //             product_id: item?._id,
-        //             name: item?.name,
-        //             image: item?.product_image,
-        //             type: item?.variant_id ? 'variant' : 'single',
-        //             attributes: item?.attributes,
-        //             variants: item?.variant_id ? [
-        //                 {
-        //                     variant_id: item?.variant_id,
-        //                     attributs: item?.attributes
-        //                 }
-        //             ] : null,
-        //             quantity: minimumQty
-        //         };
-        //         cartItems = {
-        //             product_details: [...cart?.product_details, productDetails],
-        //             user_id: userData?._id,
-        //             type: panda.active
-        //         }
-        //     }
-        // }
-        // else {
-        //     url = "customer/cart/add";
-        //     productDetails = {
-        //         product_id: item?._id,
-        //         name: item?.name,
-        //         image: item?.product_image,
-        //         type: item?.variant_id ? 'variant' : 'single',
-        //         attributes: item?.attributes,
-        //         variants: item?.variant_id ? [
-        //             {
-        //                 variant_id: item?.variant_id,
-        //                 attributs: item?.attributes
-        //             }
-        //         ] : null,
-        //         quantity: minimumQty
-        //     };
-        //     cartItems = {
-        //         product_details: [productDetails],
-        //         user_id: userData?._id,
-        //         type: panda.active
-        //     }
-
-
-        // }
+        
 
         loadingContext.setLoading(true)
         await customAxios.post(url, cartItems)

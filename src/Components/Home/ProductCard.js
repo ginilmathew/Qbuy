@@ -53,9 +53,9 @@ const ProductCard = ({data, loggedIn, addToCart, viewProduct, width, styles, hei
                         onPress={addCart}
                     />
                 </View>}
-                {parseInt(data?.discount_percentage) > 0 && <View style={styles.discountViewer}>
-                    <View style={styles?.priceTag}>
-                    <Text style={{ color: '#fff', textAlign: 'center', fontWeight: 'bold', alignSelf: 'center', fontSize: 8 }}>{`${parseInt(data?.discount_percentage)}%`}</Text>
+                {parseFloat(data?.discount_percentage) > 0 && <View style={styles.discountViewer}>
+                    <View style={[styles?.priceTag, { width: 40 }]}>
+                    <Text style={{ color: '#fff', textAlign: 'center', fontWeight: 'bold', alignSelf: 'center', fontSize: 8 }}>{`${parseFloat(data?.discount_percentage).toFixed(2)}%`}</Text>
                     </View>
                     
                 </View>}

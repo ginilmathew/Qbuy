@@ -195,7 +195,9 @@ const PandaHome = ({ navigation }) => {
     }
 
 
-
+    const onClickWishlist = useCallback(() => {
+        navigation.navigate('Wishlist');
+    }, []);
 
 
 
@@ -208,7 +210,7 @@ const PandaHome = ({ navigation }) => {
                 currentAddress={userContext?.currentAddress}
                 active={active}
                 //onClickFashionCat={onClickFashionCat}
-                //onClickWishlist={onClickWishlist}
+                onClickWishlist={onClickWishlist}
                 onClickNotificatn={onClickNotificatn}
             />
             <AvailableProducts
@@ -425,7 +427,7 @@ const makeStyles = fontScale => StyleSheet.create({
         backgroundColor: "red",
         alignItems: "center",
         justifyContent: "center",
-        width: 30,
+        width: 50,
         borderTopLeftRadius: 10,
         borderBottomRightRadius: 10,
         height: 20,

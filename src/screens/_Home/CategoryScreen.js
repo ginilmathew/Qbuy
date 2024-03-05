@@ -20,6 +20,7 @@ import ProductCard from '../../Components/Home/ProductCard';
 import PandaShopCard from '../../Components/Home/PandaShopCard';
 import CartContext from '../../contexts/Cart';
 import CartButton from '../../Components/Home/CartButton';
+import LoadingModal from '../../Components/LoadingModal';
 
 const CategoryScreen = ({route, navigation}) => {
 
@@ -248,6 +249,7 @@ const CategoryScreen = ({route, navigation}) => {
                 <Text>Loading...</Text>
             </View>}
             <CartButton bottom={0} />
+            <LoadingModal isVisible={loading} />
         </View>
         
     )
