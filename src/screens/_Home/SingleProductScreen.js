@@ -223,7 +223,7 @@ const SingleProductScreen = ({ route, navigation }) => {
     const renderInStock = useCallback(() => {
         if (datas?.available) {
             if (datas?.stock) {
-                if (datas?.stock_value && parseFloat(datas?.stock_value) > 0) {
+                if (datas?.stock_value && parseInt(datas?.stock_value) > 0) {
                     return (
                         <View
                             style={{ position: 'absolute', left: 20, top: 15, backgroundColor: contextPanda?.active === 'green' ? '#8ED053' : contextPanda?.active === 'fashion' ? '#FF7190' : '#58D36E', borderRadius: 8 }}
@@ -368,7 +368,7 @@ const SingleProductScreen = ({ route, navigation }) => {
                 variant_id: selectedVariant?._id
             }
             setUserInput(data)
-            refetch()
+            //refetch()
         }
 
         
@@ -563,7 +563,7 @@ const SingleProductScreen = ({ route, navigation }) => {
         <>
             <HeaderWithTitle title={data?.name} />
             <FlatList 
-                data={datas?.related_product}
+                data={[]}
                 ListHeaderComponent={listHeader}
                 renderItem={_renderItem}
                 contentContainerStyle={{ margin: 5, backgroundColor: '#fff', flexGrow: 1 }}

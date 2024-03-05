@@ -40,20 +40,21 @@ const CartScreen = ({ navigation }) => {
 
 
         let products = cart?.product_details;
-        //reactotron.log({cart})
+        reactotron.log({cart})
         let datas = products?.map(prod => {
             return {
                 ...prod?.productdata,
-                quantity: prod?.quantity,
+                quantity: parseInt(prod?.quantity),
                 availability: prod?.availability,
-                selectedVariant: prod?.variants?.[0]?.variant_id
+                selectedVariant: prod?.variants?.[0]?.variant_id,
+                attributes: prod?.attributes
             }
         })
 
-        let allProds = await getProducts(datas, cart?.offer_status)
+        //let allProds = await getProducts(datas, cart?.offer_status)
 
-        //reactotron.log({allProds, products})
-        setCartItemsList(allProds);
+        reactotron.log({cart: datas})
+        setCartItemsList(datas);
     };
 
 
@@ -75,10 +76,12 @@ const CartScreen = ({ navigation }) => {
 
     const modifyCart = (product, mode, index) => {
         //reactotron.log({product})
+        reactotron.log("in")
         if (product?.available) {
             if (mode === "add") {
                 if (product?.stock) { //need to check with stock
-                    if (product?.quantity >= product?.stockValue) { //product have stock
+                    
+                    if (parseInt(product?.quantity) >= parseInt(product?.stock_value)) { //product have stock
                         Toast.show({
                             text1: 'Stock not available',
                             type: 'error'
@@ -88,7 +91,7 @@ const CartScreen = ({ navigation }) => {
                 }
 
                 modifyQuantity(index, mode, product)
-                cartItemsList[index].quantity = cartItemsList[index].quantity + 1
+                cartItemsList[index].quantity = parseInt(cartItemsList[index].quantity) + 1
             }
             else {
 

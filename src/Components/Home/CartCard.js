@@ -45,19 +45,19 @@ const CartCard = ({gotoStore, addItem, removeItem, item, width, active, deleteIt
                         source={{ uri: `${IMG_URL}${item?.product_image}` }}
                     />
                     <View style={{ marginLeft: 5, flex: 0.95 }}>
-                        {item?.attributesName ? <Text style={styles.nameText}>{`${item?.name}(${item?.attributesName})`}</Text> : <Text style={styles.nameText}>{item?.name}</Text>}
+                        {item?.attributes?.length > 0 ? <Text style={styles.nameText}>{`${item?.name}(${item?.attributes?.join(', ')})`}</Text> : <Text style={styles.nameText}>{item?.name}</Text>}
                         <TouchableOpacity onPress={gotoStore}>
                             <Text style={styles.shopText}>{item?.store_name}</Text>
                         </TouchableOpacity>
                     </View>
                     {/* {renderPricing()} */}
                     {item?.available && <View style={{ flexDirection: 'row', alignItems: 'center', }}>
-                        <Text style={styles.rateText}>{(!item?.stock || (item?.stock && item?.stockValue >= item?.quantity )) ? `₹ ${item?.price}` : ""}</Text>
+                        <Text style={styles.rateText}>{(!item?.stock || (item?.stock && parseInt(item?.stock_value) >= parseInt(item?.quantity ))) ? `₹ ${item?.price}` : ""}</Text>
                         <CommonCounter
                             count={item?.quantity}
                             addItem={addItem}
                             removeItem={removeItem}
-                            disabled={!item?.available || !item?.availability}
+                            disabled={!item?.available}
                             width={width}
                             active={active}
                         />
@@ -67,8 +67,8 @@ const CartCard = ({gotoStore, addItem, removeItem, item, width, active, deleteIt
             </Swipeable>
             <View style={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
                 {item?.minQty > item?.quantity  && <Text style={styles.outofStock}>{`Min. quantity:${item?.minQty}`}</Text>}
-                {(!item?.available || !item?.availability) && <Text style={styles.outofStock}>{"Not Available"}</Text>}
-                {(item?.stock && (item?.stockValue < item?.quantity)) && <Text style={styles.outofStock}>{"Out of Stock"}</Text>}
+                {(item?.stock && (parseInt(item?.stock_value) < parseInt(item?.quantity))) && <Text style={styles.outofStock}>{"Out of Stock"}</Text>}
+                {(!item?.available && item?.stock && (parseInt(item?.stock_value) > parseInt(item?.quantity))) && <Text style={styles.outofStock}>{"Not Available"}</Text>}
             </View>
 
         </Animated.View>

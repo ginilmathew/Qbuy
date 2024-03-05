@@ -8,6 +8,7 @@ import LoaderContext from "../Loader";
 import AuthContext from "../Auth";
 import PandaContext from "../Panda";
 import { getProducts } from "../../helper/homeProductsHelper";
+import reactotron from "reactotron-react-native";
 
 const CartProvider = (props) => {
 
@@ -57,9 +58,11 @@ const CartProvider = (props) => {
 
 
     const modifyQuantity = (index, mode, product) => {
+        reactotron.log({product, cart: cart?.product_details })
         let findIndex;
         if(product?.variant_id){
-            findIndex = cart?.product_details?.findIndex(pr => pr?.product_id === product?._id && pr?.variants?.[0]?.variant_id === product?.variant_id)
+            findIndex = cart?.product_details?.findIndex(pr => pr?.product_id === product?._id && pr?.variants?.[0]?.variant_id === product?.selectedVariant)
+            reactotron.log({findIndex})
         }
         else{
             findIndex = cart?.product_details?.findIndex(pr => pr?.product_id === product?._id)
@@ -293,6 +296,8 @@ const CartProvider = (props) => {
 
     const addToCart = async (item) => {
 
+        reactotron.log({item})
+
         //return false
         let productDetails;
         let cartItems, url;
@@ -307,9 +312,13 @@ const CartProvider = (props) => {
                 let filterProducts = cart?.product_details?.filter(prod => prod.product_id === item?._id)
                 filterProducts && filterProducts?.map(prod => {
                     let att = [];
-                    attributes?.map(attr => {
-                        att.push(attr?.selected)
-                    })
+                    if(item?.selected_attribute){
+                        att = item?.selected_attribute
+                    }
+                    else{
+                        att = item?.attributes
+                    }
+                    
 
                     if(prod?.attributes?.every(v => att.includes(v))){
                         existing = prod;
@@ -350,7 +359,7 @@ const CartProvider = (props) => {
                         name: item?.name,
                         image: item?.product_image,
                         type: item?.variant_id ? 'variant' : 'single',
-                        attributes: item?.attributes,
+                        attributes: item?.selected_attribute ? item?.selected_attribute : item?.attributes,
                         variants: item?.variant_id ? [
                             {
                                 variant_id: item?.variant_id,
@@ -382,7 +391,7 @@ const CartProvider = (props) => {
                     name: item?.name,
                     image: item?.product_image,
                     type: item?.variant_id ? 'variant' : 'single',
-                    attributes: item?.attributes,
+                    attributes: item?.selected_attribute ? item?.selected_attribute : item?.attributes,
                     variants: item?.variant_id ? [
                         {
                             variant_id: item?.variant_id,
