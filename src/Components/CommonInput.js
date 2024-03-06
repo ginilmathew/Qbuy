@@ -7,7 +7,7 @@ import { NativeModules } from "react-native"
 
 const { env, mode } = NativeModules.RNENVConfig
 
-const CommonInput = ({ placeholder, control, fieldName, error, inputMode, mt, leftElement, backgroundColor, topLabel, mb, placeholderTextColor, width, maxHeight, top, shadowOpacity, elevation, editable, minHeight,multi, textChange, values }) => {
+const CommonInput = ({ placeholder, control, fieldName, error, inputMode, mt, leftElement, backgroundColor, topLabel, mb, placeholderTextColor, width, maxHeight, top, shadowOpacity, elevation, editable, minHeight, multi, textChange, values, mLength }) => {
 
     const contextPanda = useContext(PandaContext)
     let active = contextPanda.active
@@ -41,7 +41,7 @@ const CommonInput = ({ placeholder, control, fieldName, error, inputMode, mt, le
             >
                 {leftElement && <Image
                     style={styles.logo}
-                    source={ mode === "fashion" ? require('../Images/fashionMobile.png') : require('../Images/mobile.png')}
+                    source={mode === "fashion" ? require('../Images/fashionMobile.png') : require('../Images/mobile.png')}
                 />}
                 <Controller
                     control={control}
@@ -53,12 +53,12 @@ const CommonInput = ({ placeholder, control, fieldName, error, inputMode, mt, le
                             onBlur={onBlur}
                             onChangeText={(value) => {
                                 onChange(value)
-                                if(textChange){
+                                if (textChange) {
                                     textChange(value)
                                 }
                             }}
                             value={values ? values : value}
-                            minHeight={minHeight ? minHeight :50}
+                            minHeight={minHeight ? minHeight : 50}
                             placeholder={placeholder}
                             placeholderTextColor={placeholderTextColor ? placeholderTextColor : '#23233C'}
                             inputMode={inputMode}
@@ -70,7 +70,8 @@ const CommonInput = ({ placeholder, control, fieldName, error, inputMode, mt, le
                             width={width ? width : '100%'}
                             marginTop={Platform.OS === 'android' ? 5 : 1}
                             editable={editable}
-multiline={multi}
+                            multiline={multi}
+                            maxLength={mLength}
                         />
                     )}
                     name={fieldName}
@@ -96,5 +97,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Poppins-Regular',
         color: 'red',
         fontSize: 11,
+        marginTop: 10,
+        marginLeft: 2
     }
 })

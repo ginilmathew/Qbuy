@@ -181,7 +181,7 @@ const AddDeliveryAddress = ({ route, navigation }) => {
                     backgroundColor: active === 'green' ? '#F4FFE9' : active === 'fashion' ? '#FFF5F7' : '#fff',
                     flex: 1,
                     paddingHorizontal: 15,
-                    marginBottom: 30
+                    //marginBottom: 30
                 } }
             >
                 <KeyboardAvoidingView>
@@ -240,6 +240,7 @@ const AddDeliveryAddress = ({ route, navigation }) => {
                         placeholder='Delivery Pincode e.g. 695111'
                         placeholderTextColor='#0C256C21'
                         top={ 10 }
+                        inputMode={ 'numeric' }
                     />
                     <CommonInput
                         control={ control }

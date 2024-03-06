@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable prettier/prettier */
 import { StyleSheet, Text, ScrollView, Platform, SafeAreaView, ToastAndroid, TouchableOpacity, PermissionsAndroid, Keyboard } from 'react-native';
-import React, { useCallback, useContext } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -51,6 +51,25 @@ const Otp = ({ navigation }) => {
 
 	let mask = cardnumber?.substring(2, cardnumber.length - 1).replace(/\d/g, '*');
 	let phoneNum = first2 + mask + last1;
+
+	const [timer, setTimer] = useState(0);
+	const [disableResend, setDisableResend] = useState(false);
+	const resendTimeout = 5; // 60 seconds timeout before allowing resend
+
+	useEffect(() => {
+		let interval;
+
+		if (timer > 0) {
+			interval = setInterval(() => {
+				setTimer(prevTimer => prevTimer - 1);
+			}, 1000);
+		} else {
+			setDisableResend(false); // Enable the Resend OTP button when timer reaches 0
+		}
+
+		return () => clearInterval(interval);
+	}, [timer]);
+
 
 
 	
@@ -175,6 +194,8 @@ const Otp = ({ navigation }) => {
 					type: 'success',
 					text1: response?.data?.message,
 				});
+				setTimer(resendTimeout); // Start the timer for resend timeout
+				setDisableResend(true);
 				loadingg.setLoading(false);
 			})
 			.catch(async error => {
@@ -231,12 +252,12 @@ const Otp = ({ navigation }) => {
 						} }
 					/>
 					{ errors?.otp && <Text style={ { color: 'red', fontSize: 10 } } > { errors?.otp?.message }</Text> }
-					<TouchableOpacity onPress={ onClickResendOtp }>
+					<TouchableOpacity onPress={ onClickResendOtp } disabled={disableResend}>
 						<CommonTexts
-							label={ 'Resend OTP' }
+								label={timer ? "Try Again in " + timer : "Resend OTP"}
 							mt={ 10 }
 							textAlign="right"
-							color={ '#5871D3' }
+							color={disableResend ? "#C8C8C8" : "#5871D3"}
 						/>
 					</TouchableOpacity>
 

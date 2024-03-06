@@ -361,7 +361,7 @@ const MyAddresses = ({ route, navigation }) => {
                     bg={active === 'green' ? '#FF9C0C' : active === 'fashion' ? '#2D8FFF' : '#5871D3'}
                     width={'100%'}
                     alignSelf='center'
-                    mb={100}
+                    mb={70}
                 />
             </View>
         </>
