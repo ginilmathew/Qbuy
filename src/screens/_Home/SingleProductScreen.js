@@ -1,4 +1,4 @@
-import { ActivityIndicator, FlatList, ScrollView, SectionList, StyleSheet, Text, View, useWindowDimensions } from 'react-native'
+import { ActivityIndicator, FlatList, Modal, SafeAreaView, ScrollView, SectionList, StyleSheet, Text, View, useWindowDimensions } from 'react-native'
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react'
 import HeaderWithTitle from '../../Components/HeaderWithTitle'
 import FastImage from 'react-native-fast-image'
@@ -27,18 +27,22 @@ import { useQuery } from '@tanstack/react-query'
 import { useFocusEffect } from '@react-navigation/native'
 import { useFocusNotifyOnChangeProps } from '../../hooks/useFocusNotifyOnChangeProps'
 import LoadingModal from '../../Components/LoadingModal'
+import ImageViewer from 'react-native-image-zoom-viewer';
+import AntDesign from 'react-native-vector-icons/AntDesign'
+import Ionicons from 'react-native-vector-icons/Ionicons'
+
 
 
 const singleProductData = async (datas) => {
     const productData = await customAxios.post(`customer/get-product-details`, datas);
 
-    reactotron.log({ datas:productData?.data?.data })
+    reactotron.log({ datas: productData?.data?.data })
     return productData?.data?.data;
 }
 
 const SingleProductScreen = ({ route, navigation }) => {
 
-    
+
 
     const AnimatedFastImage = Animated.createAnimatedComponent(FastImage)
 
@@ -52,11 +56,14 @@ const SingleProductScreen = ({ route, navigation }) => {
     //const [productItem, setProductItem] = useState({})
     const [image, setImage] = useState(``)
     const [data, setData] = useState(null)
+    const [showSingleImg, setShowSingleImg] = useState(null)
+    const [imagesArray, setImagesArray] = useState([])
     const [selectedVariant, setSelectedVariant] = useState(null)
     const [priceDetails, setPriceDetails] = useState(null)
     const [price, setPrice] = useState(null)
     const [relatedProducts, setRelatedProducts] = useState([])
     const [attributes, setAttributes] = useState([])
+    const [selectedImage, setSelectedImage] = useState(null)
 
     const [userInput, setUserInput] = useState({
         product_id: route?.params?.item?._id,
@@ -67,7 +74,7 @@ const SingleProductScreen = ({ route, navigation }) => {
     const notifyOnChangeProps = useFocusNotifyOnChangeProps();
 
     const { variantAddToCart, addToCart } = useContext(CartContext)
-    
+
     //reactotron.log({ price }) 65df243fb059da96cf074c43
 
     //reactotron.log({data})
@@ -80,12 +87,12 @@ const SingleProductScreen = ({ route, navigation }) => {
 
     const { data: datas, isLoading, isFetching, refetch } = useQuery({
         queryKey: ['singleProduct', userInput],
-        queryFn: ({queryKey}) => singleProductData(queryKey[1]),
+        queryFn: ({ queryKey }) => singleProductData(queryKey[1]),
         //enabled: false
     })
 
     useEffect(() => {
-        if(route?.params?.item?._id){
+        if (route?.params?.item?._id) {
             setCourasolArray(null)
             refetch()
             addViewCount(route?.params?.item?._id)
@@ -103,6 +110,10 @@ const SingleProductScreen = ({ route, navigation }) => {
             //infiniteQueryRefetch()
         }, [refetch])
     )
+
+    const closeSingleImg = () => {
+        setShowSingleImg(false)
+    }
 
     const addViewCount = async (id) => {
         let datas = {
@@ -125,7 +136,7 @@ const SingleProductScreen = ({ route, navigation }) => {
 
     useEffect(() => {
 
-        async function setProducts(datas){
+        async function setProducts(datas) {
             let data = datas;
             //setProductItem(data)
             setImage(`${IMG_URL}${data?.product_image}`)
@@ -133,10 +144,10 @@ const SingleProductScreen = ({ route, navigation }) => {
 
             //reactotron.log({priceDetails})
 
-            
+
             //setPriceDetails(priceDetails)
 
-            if(data?.relatedProducts){
+            if (data?.relatedProducts) {
                 let related = await getProducts(data?.relatedProducts)
 
                 //reactotron.log({related})
@@ -144,18 +155,18 @@ const SingleProductScreen = ({ route, navigation }) => {
             }
             //reactotron.log({priceDetails})
             setData(data)
-            let images = [ {
+            let images = [{
                 type: 'image',
                 url: `${IMG_URL}${data?.product_image}`
             }]
-            if(data?.image?.length > 0){
+            if (data?.image?.length > 0) {
                 data?.image?.map(img => {
                     images.push({
                         type: 'image',
                         url: `${IMG_URL}${img}`
                     })
                 })
-                if(data?.video_link){
+                if (data?.video_link) {
                     let videoId;
                     let video = data?.video_link;
                     if (video.includes("https://www.youtube.com/")) {
@@ -165,49 +176,49 @@ const SingleProductScreen = ({ route, navigation }) => {
                             url: videoId
                         })
                     }
-                    
+
                 }
                 setCourasolArray(images)
             }
-            
 
 
-                if(data?.attributes){
-                    let attributes = data?.attributes?.map((att, index) => {
-                        return {
-                            ...att,
-                            selected: data?.selected_attribute[index]
-                        }
-                    })
 
-                    setAttributes(attributes)
-                }
+            if (data?.attributes) {
+                let attributes = data?.attributes?.map((att, index) => {
+                    return {
+                        ...att,
+                        selected: data?.selected_attribute[index]
+                    }
+                })
+
+                setAttributes(attributes)
+            }
         }
 
-        if(datas){
-            reactotron.log({datasss: datas})
+        if (datas) {
+            reactotron.log({ datasss: datas })
             setProducts(datas)
         }
-        
 
-        
+
+
     }, [datas])
-    
-    
 
-   
 
-    const _renderItem = ({item}) => {
-        return(
+
+
+
+    const _renderItem = ({ item }) => {
+        return (
             <View style={{ width: width / 2 - 15, margin: 5 }}>
                 <ProductCard
                     key={`${item?._id}product`}
                     data={item}
                     styles={styles1}
                     loggedIn={userContext?.userData ? true : false}
-                    height={height/4}
+                    height={height / 4}
                     viewProduct={viewProduct}
-                    //sharedTransitionTag={`images${item?._id}`}
+                //sharedTransitionTag={`images${item?._id}`}
                 />
             </View>
         )
@@ -218,7 +229,7 @@ const SingleProductScreen = ({ route, navigation }) => {
     }
 
 
-    reactotron.log({price})
+    reactotron.log({ price })
 
     const renderInStock = useCallback(() => {
         if (datas?.available) {
@@ -232,7 +243,7 @@ const SingleProductScreen = ({ route, navigation }) => {
                         </View>
                     )
                 }
-                else{
+                else {
                     return (
                         <View
                             style={{ position: 'absolute', left: 20, top: 15, backgroundColor: 'red', borderRadius: 8 }}
@@ -268,9 +279,9 @@ const SingleProductScreen = ({ route, navigation }) => {
 
         if (item?.type === "image") {
             return (
-                <TouchableOpacity 
-                //onPress={openSingleImg} 
-                style={{ width: width-10 }}>
+                <TouchableOpacity
+                    onPress={() => openImagePreview(`${item?.url}`)}
+                    style={{ width: width - 10 }}>
                     <FastImage
                         source={{ uri: `${item?.url}` }}
                         style={{ height: width / 1.7, width: '100%', borderRadius: 2 }}
@@ -282,51 +293,79 @@ const SingleProductScreen = ({ route, navigation }) => {
         }
         else {
             return (
-                <VideoPlayer videoId={item?.url} selected={image}  index={index} item={item} />
+                <VideoPlayer videoId={item?.url} selected={image} index={index} item={item} />
             )
         }
     }
 
 
-    const makeSelected = async(index) => {
+    const makeSelected = async (index) => {
         await courasol?.current?.scrollTo({ index, animated: false })
-        if(courasolArray[index].type === "video"){
+        if (courasolArray[index].type === "video") {
             setImage(index)
         }
+
+
+    }
+
+
+    const openImagePreview = (image) => {
+        let otherImages = datas?.image?.map(img => {
+            return { url: `${IMG_URL}${img}` }
+        })
+        let images;
+        if(otherImages){
+            images = [{ url: `${IMG_URL}${datas?.product_image}` }, ...otherImages]
+            let findIndex = images?.findIndex(img => img?.url === image)
+
+            setSelectedImage(findIndex)
+        }
+        else{
+            images = [{ url: `${IMG_URL}${datas?.product_image}` }]
+            setSelectedImage(0)
+        } 
+
+        setImagesArray(images)
+
         
-        
+
+        setShowSingleImg(true)
+
+        //reactotron.log({ image, datas, images })
     }
 
     const renderImages = useCallback(() => {
-        if(courasolArray && courasolArray?.length > 0){
-            return(
+        if (courasolArray && courasolArray?.length > 0) {
+            return (
                 <View style={{ height: 220 }}>
-                    
-                <Carousel
-                    ref={courasol}
-                    // autoPlay={true}
-                    //height={100}
-                    width={width-10}
-                    data={courasolArray}
-                    renderItem={renderImageAnimation}
-                    onSnapToItem={(index) => makeSelected(index)}
-                    scrollAnimationDuration={10}
-                />
+
+                    <Carousel
+                        ref={courasol}
+                        // autoPlay={true}
+                        //height={100}
+                        width={width - 10}
+                        data={courasolArray}
+                        renderItem={renderImageAnimation}
+                        onSnapToItem={(index) => makeSelected(index)}
+                        scrollAnimationDuration={10}
+                    />
                 </View>
             )
         }
-        else{
-            return(
-                
-                <AnimatedFastImage
-                    // source={data?.image[selectedImage]?.name} 
-                    //sharedTransitionTag={`images${route?.params?.item?._id}`}
-                    source={{ uri: image }}
-                    style={{ width: width - 10, height: 180, borderRadius: 15, }}
-                    resizeMode='cover'
-                >
-                </AnimatedFastImage>
-                
+        else {
+            return (
+                <TouchableOpacity onPress={() => openImagePreview(image)}>
+                    <AnimatedFastImage
+                        // source={data?.image[selectedImage]?.name} 
+                        //sharedTransitionTag={`images${route?.params?.item?._id}`}
+                        source={{ uri: image }}
+                        style={{ width: width - 10, height: 180, borderRadius: 15, }}
+                        resizeMode='cover'
+
+                    >
+                    </AnimatedFastImage>
+                </TouchableOpacity>
+
             )
         }
     }, [courasolArray?.length, image])
@@ -344,7 +383,7 @@ const SingleProductScreen = ({ route, navigation }) => {
 
         let selected = []
         attributes?.map(att => {
-            if(att?.selected){
+            if (att?.selected) {
                 selected.push(att?.selected)
             }
         })
@@ -354,15 +393,15 @@ const SingleProductScreen = ({ route, navigation }) => {
 
         datas?.product_variants?.map(vari => {
             //reactotron.log("length matched", vari, selected)
-            if(vari?.attributs?.length === selected?.length){
-                
-                if(isEqual(vari?.attributs?.sort(), selected.sort())){
+            if (vari?.attributs?.length === selected?.length) {
+
+                if (isEqual(vari?.attributs?.sort(), selected.sort())) {
                     selectedVariant = vari;
                 }
             }
         })
 
-        if(selectedVariant){
+        if (selectedVariant) {
             let data = {
                 product_id: route?.params?.item?._id,
                 variant_id: selectedVariant?._id
@@ -371,7 +410,7 @@ const SingleProductScreen = ({ route, navigation }) => {
             //refetch()
         }
 
-        
+
     }
 
 
@@ -426,19 +465,19 @@ const SingleProductScreen = ({ route, navigation }) => {
 
 
     const renderWishList = () => {
-        if(userContext?.userData){
-            return(
-                <View style={ styles.hearIcon }>
-                <TouchableOpacity
-                    onPress={ (data?.is_wishlist) ? removeWishList : addToWishList }
-                    
-                >
+        if (userContext?.userData) {
+            return (
+                <View style={styles.hearIcon}>
+                    <TouchableOpacity
+                        onPress={(data?.is_wishlist) ? removeWishList : addToWishList}
 
-                    <Fontisto 
-                        name={ "heart" } 
-                        color={ (data?.is_wishlist) ? "#FF6464" : '#EDEDED' }
-                    />
-                </TouchableOpacity>
+                    >
+
+                        <Fontisto
+                            name={"heart"}
+                            color={(data?.is_wishlist) ? "#FF6464" : '#EDEDED'}
+                        />
+                    </TouchableOpacity>
                 </View>
             )
         }
@@ -450,7 +489,7 @@ const SingleProductScreen = ({ route, navigation }) => {
                 {renderImages()}
                 {renderWishList()}
                 {renderInStock()}
-                
+
                 {courasolArray?.length > 0 && <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                     {courasolArray?.map((item, index) =>
                         <ImageVideoBox
@@ -474,21 +513,21 @@ const SingleProductScreen = ({ route, navigation }) => {
                     available={datas?.available}
                 />}
                 {datas?.weight !== ('' || null) &&
-                <View style={{ paddingLeft: 10, display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 2 }}>
-                    <Text style={{
-                        fontFamily: 'Poppins',
-                        letterSpacing: 1,
-                        fontSize: 10,
+                    <View style={{ paddingLeft: 10, display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 2 }}>
+                        <Text style={{
+                            fontFamily: 'Poppins',
+                            letterSpacing: 1,
+                            fontSize: 10,
 
-                    }}>weight :</Text>
-                    <Text style={{
-                        fontFamily: 'Poppins',
-                        letterSpacing: 1,
-                        fontSize: 10,
+                        }}>weight :</Text>
+                        <Text style={{
+                            fontFamily: 'Poppins',
+                            letterSpacing: 1,
+                            fontSize: 10,
 
-                    }}>{data?.weight}</Text>
+                        }}>{data?.weight}</Text>
 
-                </View>}
+                    </View>}
                 {(data?.dimensions?.width && data?.dimensions?.width !== "") &&
                     <View style={{ paddingLeft: 10, display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 2 }}>
                         <Text style={{
@@ -506,21 +545,21 @@ const SingleProductScreen = ({ route, navigation }) => {
 
                     </View>}
                 {data?.dimensions?.height &&
-                <View style={{ paddingLeft: 10, display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 2 }}>
-                    <Text style={{
-                        fontFamily: 'Poppins',
-                        letterSpacing: 1,
-                        fontSize: 10,
+                    <View style={{ paddingLeft: 10, display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 2 }}>
+                        <Text style={{
+                            fontFamily: 'Poppins',
+                            letterSpacing: 1,
+                            fontSize: 10,
 
-                    }}>Height :</Text>
-                    <Text style={{
-                        fontFamily: 'Poppins',
-                        letterSpacing: 1,
-                        fontSize: 10,
+                        }}>Height :</Text>
+                        <Text style={{
+                            fontFamily: 'Poppins',
+                            letterSpacing: 1,
+                            fontSize: 10,
 
-                    }}>{data?.dimensions?.height}</Text>
+                        }}>{data?.dimensions?.height}</Text>
 
-                </View>}
+                    </View>}
                 <View style={{ paddingHorizontal: 10 }}>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: 10, flexWrap: 'wrap' }}>
                         {(attributes?.map((attr, index) =>
@@ -546,15 +585,29 @@ const SingleProductScreen = ({ route, navigation }) => {
                 </View>
                 <View style={{ backgroundColor: '#0C256C0D', height: 1, marginVertical: 20 }} />
                 {datas?.description &&
-                <View style={{ paddingLeft: 10, paddingRight: 10 }}>
-                    <Text style={styles.DetailsText}>Details</Text>
-                    <Text style={styles.DetailsTextDescription}>{datas?.description}</Text>
+                    <View style={{ paddingLeft: 10, paddingRight: 10 }}>
+                        <Text style={styles.DetailsText}>Details</Text>
+                        <Text style={styles.DetailsTextDescription}>{datas?.description}</Text>
 
-                </View>}
+                    </View>}
                 {datas?.related_product?.length > 0 &&
-                <View style={{ paddingLeft: 10, paddingRight: 10 }}>
-                    <Text style={styles.DetailsText}>Related Products</Text>
-                </View>}
+                    <View style={{ paddingLeft: 10, paddingRight: 10 }}>
+                        <Text style={styles.DetailsText}>Related Products</Text>
+                    </View>}
+            </View>
+        )
+    }
+
+
+    const renderHeader = (currentIndex) => {
+
+        return (
+            <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
+                <TouchableOpacity
+                    onPress={closeSingleImg}
+                    style={{ paddingHorizontal: 10, paddingVertical: 10 }}>
+                    <Ionicons name="close" size={25} color="#000" />
+                </TouchableOpacity>
             </View>
         )
     }
@@ -562,7 +615,7 @@ const SingleProductScreen = ({ route, navigation }) => {
     return (
         <>
             <HeaderWithTitle title={data?.name} />
-            <FlatList 
+            <FlatList
                 data={datas?.related_product}
                 ListHeaderComponent={listHeader}
                 renderItem={_renderItem}
@@ -575,6 +628,24 @@ const SingleProductScreen = ({ route, navigation }) => {
             />
             <CartButton bottom={20} />
             <LoadingModal isVisible={isLoading || isFetching} />
+            <Modal visible={showSingleImg} >
+                    <ImageViewer
+                        // onChange={(index) =>ImageViewerChange(index)}
+                        style={{ paddingTop: 50 }}
+                        enableSwipeDown
+                        index={selectedImage}
+                        onSwipeDown={closeSingleImg}
+                        onCancel={closeSingleImg}
+                        imageUrls={imagesArray}
+                        onClick={closeSingleImg}
+                        renderFooter={() => <TouchableOpacity
+                            onPress={closeSingleImg}
+                            style={{ alignSelf: 'flex-end', position: 'absolute', zIndex: 150, bottom: 50, left: width / 2, elevation: 5 }}
+                        >
+                            <AntDesign name='closecircle' onPress={closeSingleImg} color='#fff' size={25} alignSelf={'flex-end'} />
+                        </TouchableOpacity>}
+                    />
+            </Modal>
         </>
     )
 }
@@ -623,7 +694,7 @@ const makeStyles = fontScale => StyleSheet.create({
         fontSize: 12 / fontScale,
         padding: 5
     },
-    
+
     RBsheetHeader: {
         alignItems: 'center',
         justifyContent: 'space-between',
@@ -650,16 +721,16 @@ const makeStyles = fontScale => StyleSheet.create({
         left: 5
     },
     priceTag: {
-        backgroundColor:"red",
-        alignItems:"center",
-        justifyContent:"center",
-        width:30,
-        borderTopLeftRadius:10,
-        borderBottomRightRadius:10,
-        height:20,
+        backgroundColor: "red",
+        alignItems: "center",
+        justifyContent: "center",
+        width: 30,
+        borderTopLeftRadius: 10,
+        borderBottomRightRadius: 10,
+        height: 20,
         margin: 1,
     },
-    
+
 })
 
 const styles = StyleSheet.create({
