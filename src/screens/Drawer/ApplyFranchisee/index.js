@@ -96,7 +96,7 @@ const ApplyFranchisee = ({ navigation }) => {
                         style={{
                             height: 270
                         }}
-                        source={{ uri: 'https://assets3.lottiefiles.com/packages/lf20_fzq71t74.json' }}
+                        source={require('../../../Lottie/applyfranchise.json')}
                         autoPlay
                     />
 
@@ -116,6 +116,7 @@ const ApplyFranchisee = ({ navigation }) => {
                     error={errors.mobile}
                     inputMode={'numeric'}
                     fieldName="mobile"
+                    maxLength
                     topLabel={'Contact Number'}
                     top={20}
                 />

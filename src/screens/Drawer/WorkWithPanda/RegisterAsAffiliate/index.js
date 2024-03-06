@@ -102,6 +102,7 @@ const RegisterAsAffiliate = ({ navigation }) => {
                     error={errors.phone}
                     fieldName="phone"
                     top={20}
+                    maxLength
                     topLabel={'Phone Number'}
                     inputMode={'numeric'}
                 />

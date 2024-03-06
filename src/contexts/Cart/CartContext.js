@@ -68,7 +68,7 @@ const CartProvider = (props) => {
             findIndex = cart?.product_details?.findIndex(pr => pr?.product_id === product?._id)
         }
         if(mode === "add"){
-            cart.product_details[findIndex].quantity = cart.product_details[index].quantity + 1
+            cart.product_details[findIndex].quantity = parseInt(cart.product_details[index].quantity) + 1
         }
         else if(mode === "delete"){
             let remain = cart.product_details?.filter((prod, i)  => i != findIndex)
@@ -76,7 +76,7 @@ const CartProvider = (props) => {
             updateCart()
         }
         else{
-            cart.product_details[findIndex].quantity = cart.product_details[findIndex].quantity - 1
+            cart.product_details[findIndex].quantity = parseInt(cart.product_details[findIndex].quantity) - 1
         }
 
         

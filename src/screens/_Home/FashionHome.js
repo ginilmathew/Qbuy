@@ -23,6 +23,7 @@ import ProductCard from '../../Components/Home/ProductCard'
 import AvailableProducts from './AvailableProducts'
 import { useFocusEffect } from '@react-navigation/native'
 import CartContext from '../../contexts/Cart'
+import CartButton from '../../Components/Home/CartButton'
 
 
 const fashionHome = async (datas) => {
@@ -378,6 +379,8 @@ const FashionHome = ({ route, navigation }) => {
                     {HeaderList()}
                 </AvailableProducts>
                 
+                <CartButton bottom={0} />
+
             </View>
         </>
     )

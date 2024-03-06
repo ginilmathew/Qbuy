@@ -77,7 +77,7 @@ const WorkWithPanda = ({ navigation, route }) => {
                             height: 170,
                             width: 170
                         }}
-                        source={{ uri: 'https://assets9.lottiefiles.com/packages/lf20_dBF8frvgma.json' }}
+                        source={require('../../../Lottie/workwithpanda.json')}
                         autoPlay
                     />
                 </View>

@@ -601,7 +601,6 @@ const TabNav = () => {
                                     }}
                                 >
                                     <CustomAnimated
-
                                         onpress={gotoPanda}
                                         imageswitch={imageswitch?.panda}
                                         colors={['#7BE495', '#329D9C']}
@@ -659,8 +658,7 @@ const TabNav = () => {
                 //         if(route?.state?.index > 0){
                 //             navigation.popToTop()
                 //         }
-                //     },
-                    
+                //     },                    
                 // })}
             />
             <CurvedBottomBar.Screen

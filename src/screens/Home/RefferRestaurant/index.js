@@ -112,6 +112,7 @@ const RefferRestaurant = ({ navigation }) => {
                             fieldName="mobile"
                             inputMode={'numeric'}
                             top={20}
+                            maxLength
                             topLabel={'Phone Number'}
                         />
                         <CommonInput
@@ -167,6 +168,7 @@ const RefferRestaurant = ({ navigation }) => {
                             error={errors.mobile}
                             fieldName="mobile"
                             inputMode={'numeric'}
+                            maxLength
                             topLabel={'Store Contact Number'}
                             placeholder='Mobile Number e.g. Mobile of the owner'
                             placeholderTextColor='#0C256C21'

@@ -94,7 +94,7 @@ const StoreScreen = ({ route, navigation }) => {
 
     const renderProduct = ({ item }) => {
         return (
-            <View style={{ padding: 5 }}>
+            <View style={{ padding: 5, paddingBottom: 20 }}>
             <ProductCard
                 key={`${item?._id}`}
                 data={item}
@@ -167,7 +167,7 @@ const StoreScreen = ({ route, navigation }) => {
                 <ActivityIndicator color={"red"} size={"large"} />
                 <Text>Loading...</Text>
             </View>}
-            <CartButton bottom={0} />
+            <CartButton bottom={20} />
         </>
     )
 }

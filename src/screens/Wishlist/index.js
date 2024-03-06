@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, ScrollView, useWindowDimensions, TouchableOpacity, ActivityIndicator, FlatList } from 'react-native'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import FastImage from 'react-native-fast-image'
 import HeaderWithTitle from '../../Components/HeaderWithTitle'
 import CommonItemCard from '../../Components/CommonItemCard'
@@ -14,6 +14,7 @@ import { isEmpty, isArray } from 'lodash'
 import reactotron from 'reactotron-react-native'
 import ProductCard from '../../Components/Home/ProductCard'
 import CartButton from '../../Components/Home/CartButton'
+import { useFocusEffect } from '@react-navigation/native'
 
 const Wishlist = ({ navigation }) => {
 
@@ -35,9 +36,13 @@ const Wishlist = ({ navigation }) => {
     const [wishlist, setWishlist] = useState([])
 
 
-    useEffect(() => {
-        getWishlist()
-    }, [])
+    // useEffect(() => {
+    //     getWishlist()
+    // }, [])
+
+    useFocusEffect(useCallback(() => {
+            getWishlist()
+    }, []))
 
     const getWishlist = async () => {
         loadingContex.setLoading(true)

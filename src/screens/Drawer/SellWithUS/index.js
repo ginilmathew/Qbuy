@@ -46,7 +46,6 @@ const SellWithUs = ({ navigation }) => {
                 setShowSuccess(true);
             })
             .catch(err => {
-                console.log(err);
                 Toast.show({
                     type: 'error',
                 });
@@ -79,7 +78,7 @@ const SellWithUs = ({ navigation }) => {
                         height: 150,
                         width: 150,
                     }}
-                    source={{ uri: 'https://assets8.lottiefiles.com/packages/lf20_9aaqrsgf.json' }}
+                    source={require('../../../Lottie/sellwithus.json')}
                     autoPlay
                 />
 
@@ -115,6 +114,7 @@ const SellWithUs = ({ navigation }) => {
                     error={errors.mobile}
                     inputMode={'numeric'}
                     fieldName="mobile"
+                    maxLength
                     topLabel={'Contact Number'}
                     top={20}
                 />

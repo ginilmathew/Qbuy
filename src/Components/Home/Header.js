@@ -9,6 +9,8 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 
 const Header = ({ userData, changeAddress, opendrawer, currentAddress, active, onClickFashionCat, onClickWishlist, onClickNotificatn }) => {
+
+
     return (
         <SafeAreaView
             style={{
@@ -48,9 +50,13 @@ const Header = ({ userData, changeAddress, opendrawer, currentAddress, active, o
                 <TouchableOpacity onPress={onClickWishlist}>
                     <Fontisto name={'heart'} color="#FF6464" size={20} marginHorizontal={8} />
                 </TouchableOpacity>}
-            <TouchableOpacity onPress={onClickNotificatn} style={{ marginRight: 8 }}>
-                <Ionicons name={'notifications'} color="#23233C" size={25} />
-            </TouchableOpacity>
+                {
+                    userData && (
+                    <TouchableOpacity onPress={onClickNotificatn} style={{ marginRight: 8 }}>
+                        <Ionicons name={'notifications'} color="#23233C" size={25} />
+                    </TouchableOpacity>
+                    )
+                }
 
         </SafeAreaView>
     )

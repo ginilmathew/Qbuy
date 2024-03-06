@@ -69,7 +69,7 @@ const ViewDetails = ({ route }) => {
             Alert("Please insert mobile no");
         }
 
-    }, [])
+    }, [item])
 
     const dialCall = () => {
         let phoneNumber = '';
@@ -98,7 +98,7 @@ const ViewDetails = ({ route }) => {
 
     return (
         <>
-            <HeaderWithTitle title={'Order ID ' + item?.order_id} />
+            <HeaderWithTitle title={'Order ID ' + (item?.order_id ? item?.order_id : '')} />
             <ScrollView
                 style={{
                     flex: 1,

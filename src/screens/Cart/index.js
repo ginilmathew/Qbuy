@@ -411,7 +411,7 @@ const Cart = ({ navigation }) => {
                         : active === 'fashion'
                             ? '#FFF5F7'
                             : '#fff',
-            } }>
+            }}>
             <HeaderWithTitle title={ 'Cart' } />
 
             {/* {!loadingg?.loading && */ }

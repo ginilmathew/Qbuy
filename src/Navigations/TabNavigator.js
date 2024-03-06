@@ -79,7 +79,6 @@ const TabNavigator = ({ navigation }) => {
     },[showPandas])
     
     
-    
     return (
         <>
             {/* <Header 
