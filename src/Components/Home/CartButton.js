@@ -46,7 +46,9 @@ const CartButton = ({ bottom }) => {
 
     if(cart?.product_details?.length > 0) {
         return (
-            <View style={{ paddingTop: 70 }}>
+            <View style={{ 
+                paddingTop: 70
+                }}>
             <Animated.View style={[styles.container, { bottom: bottom, }]} entering={FadeIn} exiting={FadeOut}>
             <TouchableOpacity
                 onPress={onPress}

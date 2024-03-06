@@ -68,7 +68,7 @@ const Login = ({ navigation }) => {
 
 	const phone = /^(\+\d{1,3}[- ]?)?\d{10}$/;
 	const schema = yup.object({
-		mobile: yup.string().required('Phone number is required').max(10, 'Phone Number must be 10 digits').min(10, 'Phone Number must be 10 digits').matches(phone, 'Not a valid number'),
+		mobile: yup.string().required('Mobile number is required').max(10, 'Mobile Number must be 10 digits').min(10, 'Mobile Number must be 10 digits').matches(phone, 'Not a valid number'),
 	}).required();
 
 	const { control, handleSubmit, formState: { errors }, setValue } = useForm({
@@ -204,6 +204,7 @@ const Login = ({ navigation }) => {
 					backgroundColor="#fff"
 					shadowOpacity={ 0.1 }
 					elevation={ 2 }
+					maxLength
 				/>
 				<TermsAndPrivacyText />
 

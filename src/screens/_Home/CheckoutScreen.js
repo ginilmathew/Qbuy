@@ -487,18 +487,7 @@ const CheckoutScreen = () => {
                             )}
                         </View>
                     </View>
-                    <View style={styles.productBox}>
-                        <View style={styles.commonContainer}>
-                            <Text style={styles.boldText}>{'Payment Mode'}</Text>
-                            {paymentDetails?.map((item, index) =>
-                                <PaymentMethod
-                                    item={item}
-                                    key={index}
-                                    setSelected={(id) => setPaymentMethod(id, index)}
-                                />
-                            )}
-                        </View>
-                    </View>
+                    
                     <View style={styles.productBox}>
                         <View style={styles.commonContainer}>
                             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -540,6 +529,18 @@ const CheckoutScreen = () => {
                                     />
                                 </View>
                             </View>
+                        </View>
+                    </View>
+                    <View style={styles.productBox}>
+                        <View style={styles.commonContainer}>
+                            <Text style={styles.boldText}>{'Payment Mode'}</Text>
+                            {paymentDetails?.map((item, index) =>
+                                <PaymentMethod
+                                    item={item}
+                                    key={index}
+                                    setSelected={(id) => setPaymentMethod(id, index)}
+                                />
+                            )}
                         </View>
                     </View>
                     {data?.panda_coins && <View

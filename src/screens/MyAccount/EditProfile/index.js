@@ -167,7 +167,7 @@ const EditProfile = ({ navigation }) => {
                 <View style={ { alignSelf: 'center' } }>
                     <Image
                         style={ styles.image }
-                        resizeMode='contain'
+                        resizeMode='cover'
                         source={ filePath ? { uri: filePath?.assets?.[0]?.uri } : userdata.image ? { uri: `${IMG_URL}${userdata?.image}` } : require('../../../Images/drawerLogo.png') }
                     />
                     <TouchableOpacity

@@ -301,7 +301,7 @@ const CartProvider = (props) => {
         //return false
         let productDetails;
         let cartItems, url;
-        let minimumQty = item?.minimum_qty ? item?.minimum_qty : 1
+        let minimumQty = item?.minimum_qty ? parseInt(item?.minimum_qty) : 1
         
         if(cart?._id){
             let existing;

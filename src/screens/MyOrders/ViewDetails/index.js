@@ -89,6 +89,8 @@ const ViewDetails = ({ route }) => {
                 return <CommonStatusCard label={status} bg='#CCF1D3' labelColor={'#58D36E'} />
             case "cancelled":
                 return <CommonStatusCard label={status} bg='#FFC9C9' labelColor={'#FF7B7B'} />
+            case "customer_cancel":
+                return <CommonStatusCard label={"Cancelled"} bg='#FFC9C9' labelColor={'#FF7B7B'} />
             default:
                 return <CommonStatusCard label={status === "orderReturn" ? "Return" : status} bg='#FFF082' labelColor={'#A99500'} />
         }
@@ -158,7 +160,7 @@ const ViewDetails = ({ route }) => {
                                 key={item?.product_id}
                             />
                         )}
-                        <View style={{padding: 2}}/>
+                        <View style={{ padding: 2 }} />
                         {item?.price_breakup?.map((pri, index) => (
 
                             <View key={`${pri?._id}${index}`} style={styles.delivery}>

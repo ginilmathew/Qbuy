@@ -143,7 +143,7 @@ const PandaHome = ({ navigation }) => {
             <TouchableOpacity key={`${index}${item?._id}`} onPress={() => openStore(item)} style={styles.bannerButton} >
                 <FastImage
                     source={{ uri: `${IMG_URL}${item?.image}` }}
-                    style={{ height: '100%', width: '95%', borderRadius: 20 }}
+                    style={{ height: '100%', width: '95%', borderRadius: 12 }}
                     resizeMode="cover"
                 />
                 <View style={styles.bannerContent}>
@@ -268,7 +268,7 @@ const PandaHome = ({ navigation }) => {
                         <Carousel
                             loop
                             width={width}
-                            height={height / 5}
+                            //height={height / 5}
                             autoPlay={true}
                             data={data?.messagesBanner}
                             scrollAnimationDuration={5000}
@@ -448,14 +448,14 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: '#fff',
         fontSize: 20,
-        marginTop: 50
+        marginTop: 45
     },
     offerDescription: {
         textAlign: 'center',
         //fontWeight: 'bold', 
         color: '#FFF',
         fontSize: 14,
-        marginVertical: 15
+        marginVertical: 10
     },
     bannerButton: {
         width: '100%',
@@ -473,7 +473,8 @@ const styles = StyleSheet.create({
         position: 'absolute',
         height: '100%',
         backgroundColor: 'rgba(0,0,0,0.5)',
-        width: '95%'
+        width: '95%',
+        borderRadius: 12
     },
     caurasal: {
         width: '100%', 

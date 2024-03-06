@@ -25,21 +25,21 @@ const MyOrders = () => {
     let loader = loadingg?.loading
 
     const [orderList, setOrderList] = useState([]);
-    const [isLoading,setIsLoading]=useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
 
-  
+
 
 
     const getOrderList = async () => {
-       setIsLoading(true)
+        setIsLoading(true)
         await customAxios.get(`customer/order/list/${contextPanda?.active}`)
             .then(async response => {
                 setOrderList(response?.data?.data)
-               setIsLoading(false)
+                setIsLoading(false)
             })
             .catch(async error => {
-             
+
                 Toast.show({
                     type: 'error',
                     text1: error
@@ -54,8 +54,8 @@ const MyOrders = () => {
         React.useCallback(() => {
             getOrderList()
         }, [])
-      );
-    
+    );
+
 
     const keyExtractorOrder = (item) => item?._id;
 
@@ -68,7 +68,8 @@ const MyOrders = () => {
     const ListEmptyComponents = () => {
         return (
             <View style={{ height: height / 1.3, alignItems: 'center', justifyContent: 'center', fontFamily: 'Poppins-Medium', }}>
-                <Text style={{ fontSize: 18 }}>No Order Found!..</Text>
+                <Ionicons name={"alert-circle"} size={40} color={'#d8d8d8'} />
+                <Text style={{ fontSize: 18, fontFamily: "Poppins-Medium", color: "#d8d8d8" }}>No Order Found!..</Text>
             </View>
         )
     }
@@ -76,31 +77,31 @@ const MyOrders = () => {
     return (
         <View>
             <HeaderWithTitle title={'My Orders'} noBack />
-           
-                <FlatList
-                    
-                    refreshControl={
-                        <RefreshControl
-                          refreshing={isLoading}
-                          onRefresh={getOrderList}
-                   
-                        />
-                    }
-                    data={orderList}
-                    showsVerticalScrollIndicator={false}
-                    initialNumToRender={4}
-                    removeClippedSubviews={true}
-                    windowSize={10}
-                    maxToRenderPerBatch={4}
-                    keyExtractorCategory={keyExtractorOrder}
-                    refreshing={isLoading}
-                    onRefresh={getOrderList}
-                    // style={{ marginLeft: 5 }}
-                    ListEmptyComponent={ListEmptyComponents}
-                    contentContainerStyle={{ paddingBottom: 150, paddingTop: 10, paddingHorizontal: 10, backgroundColor: active === 'green' ? '#F4FFE9' : active === 'fashion' ? '#FFF5F7' : '#fff', minHeight: height-160}}
-                    renderItem={renderOrder}
-                />
-         
+
+            <FlatList
+
+                refreshControl={
+                    <RefreshControl
+                        refreshing={isLoading}
+                        onRefresh={getOrderList}
+
+                    />
+                }
+                data={orderList}
+                showsVerticalScrollIndicator={false}
+                initialNumToRender={4}
+                removeClippedSubviews={true}
+                windowSize={10}
+                maxToRenderPerBatch={4}
+                keyExtractorCategory={keyExtractorOrder}
+                refreshing={isLoading}
+                onRefresh={getOrderList}
+                // style={{ marginLeft: 5 }}
+                ListEmptyComponent={ListEmptyComponents}
+                contentContainerStyle={{ paddingBottom: 150, paddingTop: 10, paddingHorizontal: 10, backgroundColor: active === 'green' ? '#F4FFE9' : active === 'fashion' ? '#FFF5F7' : '#fff', minHeight: height - 160 }}
+                renderItem={renderOrder}
+            />
+
         </View>
     )
 }
