@@ -206,8 +206,14 @@ const SingleProductScreen = ({ route, navigation }) => {
 
 
     const addToCarts = (item) => {
+        reactotron.log({ item })
         addToCart(item)
     }
+
+    const addItemToCart = () => {
+        addToCart(datas)
+    }
+    
 
 
     const _renderItem = ({ item }) => {
@@ -578,7 +584,7 @@ const SingleProductScreen = ({ route, navigation }) => {
                 </View>
                 <View style={{ flexDirection: 'row', width: width, justifyContent: contextPanda?.active === "panda" ? 'center' : 'center', marginTop: 10, paddingHorizontal: 10, gap: 5 }}>
                     {userContext?.userData && datas?.available && <CustomButton
-                        onPress={addToCarts}
+                        onPress={addItemToCart}
                         label={'Add to Cart'} bg={contextPanda?.active === 'green' ? '#8ED053' : contextPanda?.active === 'fashion' ? '#FF7190' : '#58D36E'} width={width / 2.2}
                         loading={loading}
                     />}
