@@ -313,17 +313,25 @@ const SingleProductScreen = ({ route, navigation }) => {
         let otherImages = datas?.image?.map(img => {
             return { url: `${IMG_URL}${img}` }
         })
-        let images = [{ url: `${IMG_URL}${datas?.product_image}` }, ...otherImages]
+        let images;
+        if(otherImages){
+            images = [{ url: `${IMG_URL}${datas?.product_image}` }, ...otherImages]
+            let findIndex = images?.findIndex(img => img?.url === image)
+
+            setSelectedImage(findIndex)
+        }
+        else{
+            images = [{ url: `${IMG_URL}${datas?.product_image}` }]
+            setSelectedImage(0)
+        } 
 
         setImagesArray(images)
 
-        let findIndex = images?.findIndex(img => img?.url === image)
-
-        setSelectedImage(findIndex)
+        
 
         setShowSingleImg(true)
 
-        reactotron.log({ image, datas, images })
+        //reactotron.log({ image, datas, images })
     }
 
     const renderImages = useCallback(() => {
