@@ -599,18 +599,7 @@ const SingleProductScreen = ({ route, navigation }) => {
     }
 
 
-    const renderHeader = (currentIndex) => {
 
-        return (
-            <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
-                <TouchableOpacity
-                    onPress={closeSingleImg}
-                    style={{ paddingHorizontal: 10, paddingVertical: 10 }}>
-                    <Ionicons name="close" size={25} color="#000" />
-                </TouchableOpacity>
-            </View>
-        )
-    }
 
     return (
         <>
