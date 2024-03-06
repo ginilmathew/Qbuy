@@ -205,7 +205,9 @@ const SingleProductScreen = ({ route, navigation }) => {
     }, [datas])
 
 
-
+    const addToCarts = (item) => {
+        addToCart(item)
+    }
 
 
     const _renderItem = ({ item }) => {
@@ -218,6 +220,7 @@ const SingleProductScreen = ({ route, navigation }) => {
                     loggedIn={userContext?.userData ? true : false}
                     height={height / 4}
                     viewProduct={viewProduct}
+                    addToCart={addToCarts}
                 //sharedTransitionTag={`images${item?._id}`}
                 />
             </View>
@@ -414,9 +417,6 @@ const SingleProductScreen = ({ route, navigation }) => {
     }
 
 
-    const addToCarts = () => {
-        addToCart(data)
-    }
 
     const addToWishList = async () => {
         //setHeart(!heart)
@@ -599,18 +599,7 @@ const SingleProductScreen = ({ route, navigation }) => {
     }
 
 
-    const renderHeader = (currentIndex) => {
 
-        return (
-            <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
-                <TouchableOpacity
-                    onPress={closeSingleImg}
-                    style={{ paddingHorizontal: 10, paddingVertical: 10 }}>
-                    <Ionicons name="close" size={25} color="#000" />
-                </TouchableOpacity>
-            </View>
-        )
-    }
 
     return (
         <>
