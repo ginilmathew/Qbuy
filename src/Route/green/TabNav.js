@@ -155,7 +155,9 @@ const TabNav = () => {
                             />
                         }
                         {cartContext?.cart?.product_details?.length > 0 && <View style={{ height: 15, width: 15, borderRadius: 7.5, backgroundColor: 'red', justifyContent: 'center', alignItems: 'center', position: 'absolute', top: 15, right: 20, zIndex: 100 }}>
-                            <Text style={{ color: '#fff', fontSize: 10, fontWeight: 'bold' }}>{cartContext?.cart?.product_details?.length}</Text>
+                            <Text style={{ color: '#fff', fontSize: 10, fontWeight: 'bold' }}>{cartContext?.cart?.product_details?.reduce((acc, curr) => {
+            return acc + parseInt(curr?.quantity)
+        },0)}</Text>
                         </View>}
                     </>
                 );
@@ -323,6 +325,7 @@ const TabNav = () => {
     const gotoPanda = useCallback(() => {
         //switchcartUpdate('panda')
         pandaContext.setActive('panda')
+        setShowSwitch(prev => !prev)
         //cartContext.getCartDetails()
         //navigation.navigate("home")
         // startTransition(() => {
@@ -352,6 +355,7 @@ const TabNav = () => {
     const goToFashion = useCallback(async () => {
         //switchcartUpdate('fashion')
         pandaContext.setActive('fashion')
+        setShowSwitch(prev => !prev)
         // startTransition(() => {
         //     navigation.dispatch(
         //         CommonActions.reset({
@@ -402,6 +406,7 @@ const TabNav = () => {
 
     const goTogreen = useCallback(async() => {
         //switchcartUpdate('green')
+        setShowSwitch(prev => !prev)
         await pandaContext.setActive('green')
         
         

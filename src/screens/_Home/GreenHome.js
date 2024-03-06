@@ -349,6 +349,10 @@ const GreenHome = ({ navigation }) => {
         )
     }
 
+    const onClickWishlist = useCallback(() => {
+        navigation.navigate('Wishlist');
+    }, []);
+
     
 
     return (
@@ -360,7 +364,7 @@ const GreenHome = ({ navigation }) => {
                 currentAddress={userContext?.currentAddress}
                 active={active}
                 //onClickFashionCat={onClickFashionCat}
-                //onClickWishlist={onClickWishlist}
+                onClickWishlist={onClickWishlist}
                 onClickNotificatn={onClickNotificatn}
             />
             <View style={styles.container}>
