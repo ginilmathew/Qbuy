@@ -241,27 +241,28 @@ const SingleItemScreen = ({ route, navigation }) => {
 
     const addToCart = useCallback(async () => {
         if (!userContext?.userData) {
-            Alert.alert(
-                'Warning',
-                'Add to cart option only available for logged in user. Click OK to Login.',
-                [
-                    {
-                        text: 'Cancel',
-                        //onPress: () => Alert.alert('Cancel Pressed'),
-                        style: 'cancel',
-                    },
-                    {
-                        text: 'OK',
-                        onPress: () => navigation.navigate('Login'),
-                        style: 'cancel',
-                    },
-                ],
-                {
-                    cancelable: true,
-                },
-            );
+            // Alert.alert(
+            //     'Warning',
+            //     'Add to cart option only available for logged in user. Click OK to Login.',
+            //     [
+            //         {
+            //             text: 'Cancel',
+            //             //onPress: () => Alert.alert('Cancel Pressed'),
+            //             style: 'cancel',
+            //         },
+            //         {
+            //             text: 'OK',
+            //             onPress: () => navigation.navigate('Login'),
+            //             style: 'cancel',
+            //         },
+            //     ],
+            //     {
+            //         cancelable: true,
+            //     },
+            // );
 
             //navigation.navigate('Login')
+            navigation.navigate("guestModal")
             return false;
         }
 

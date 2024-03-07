@@ -155,9 +155,9 @@ const PandaHome = ({ navigation }) => {
     }
 
 
-    const onSearch = useCallback(() => {
+    const onSearch = () => {
         navigation.navigate('ProductSearchScreen', { mode: 'panda' })
-    }, [])
+    }
 
 
    

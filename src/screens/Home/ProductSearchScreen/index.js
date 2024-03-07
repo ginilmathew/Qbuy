@@ -1,4 +1,4 @@
-import { ActivityIndicator, ScrollView, StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native'
+import { ActivityIndicator, ScrollView, StyleSheet, Text, TouchableOpacity, View, Image, FlatList } from 'react-native'
 import React, { useContext, useState, useEffect, useCallback, } from 'react'
 import PandaContext from '../../../contexts/Panda'
 import HeaderWithTitle from '../../../Components/HeaderWithTitle'
@@ -23,7 +23,7 @@ const ProductSearchScreen = ({ route }) => {
     const userContext = useContext(AuthContext)
     let active = contextPanda.active
 
-    const [isloading,setisLoading]=useState(false)
+    const [isloading,setIsLoading]=useState(false)
 
 
 
@@ -32,6 +32,8 @@ const ProductSearchScreen = ({ route }) => {
 
     const [filterResult, setFilterResult] = useState([])
     const [datatrue, setdataTrue] = useState(true)
+
+
 
     const schema = yup.object({
         name: yup.string().required('Name is required'),
@@ -65,60 +67,88 @@ const ProductSearchScreen = ({ route }) => {
 
 
         if (value !== "") {
-            loadingg.setLoading(true)
             await customAxios.post(`customer/product-search`, datas)
                 .then(async response => {
                     setFilterResult(response?.data?.data)
-                    loadingg.setLoading(false)
                 })
                 .catch(async error => {
                     // Toast.show({
                     //     type: 'error',
                     //     text1: error
                     // });
-                    loadingg.setLoading(false)
-                }).finally(
-          
-                    loadingg.setLoading(false)
-                )
+                }).finally(() =>{
+                    setTimeout(() => {
+                        setIsLoading(false)
+                    }, 1000);
+                })
+        }
+        else{
+            setIsLoading(false)
         }
 
-    }, [filterResult, text])
+    }, [])
+
+    reactotron.log({filterResult})
 
 
 
-    useFocusEffect(
-        React.useCallback(() => {
-            setText("")
-            setFilterResult([])
-        }, [])
-    );
+    
+
+    function header(){
+        return(
+            <CustomSearch
+                values={text}
+                mb={2}
+                control={control}
+                error={errors.name}
+                fieldName="name"
+                placeholder='Search...'
+                onChangeText={filterResults}
+                autoFocus={true}
+                setIsLoading={(value) =>setIsLoading(value)}
+            />
+        )
+    }
+
+
+    const renderResult = ({item, index}) => {
+        return(
+            <SearchResultsCard item={item} key={index} />
+        )
+    }
 
     return (
         <>
             <HeaderWithTitle title={'Search Items...'} />
-            <ScrollView
+            
+            {/* <ScrollView
                 keyboardShouldPersistTaps="always"
                 style={{
                     flex: 1,
                     backgroundColor: active === 'green' ? '#F4FFE9' : active === 'fashion' ? '#FFF5F7' : '#fff',
                 }}
-            >
-                <CustomSearch
-                    values={text}
-                    mb={2}
-                    control={control}
-                    error={errors.name}
-                    fieldName="name"
-                    placeholder='Search...'
-                    onChangeText={filterResults}
-                    autoFocus={true}
-                />
+            > */}
+                
 
-                <View style={{ paddingHorizontal: 15, marginTop: 10 }}>
-                    {loader ? <ActivityIndicator /> : filterResult?.map((item, index) => (<SearchResultsCard item={item} key={index} setValue={setValue} />))}
+                <View style={{ height:'90%', backgroundColor: active === 'green' ? '#F4FFE9' : active === 'fashion' ? '#FFF5F7' : '#fff' }}>
+                {header()}
+                    <FlatList 
+                        data={filterResult}
+                        style={{ 
+                            flexGrow: 1,
+                            padding: 10
+                        }}
+                        keyExtractor={(item) => item?._id}
+                        renderItem={renderResult}
+                        showsVerticalScrollIndicator={false}
+                        ListEmptyComponent={() => <View 
+                            style={{ height: 200, justifyContent:'center', alignItems:'center' }} >
+                                {isloading ? <ActivityIndicator /> : <Text>No result found</Text>}
+                            </View>}
+                    />
+                    
                 </View>
-            </ScrollView>
+            {/* </ScrollView> */} 
         </>
     )
 }

@@ -24,6 +24,8 @@ import SuccessPage from '../../screens/Home/PickupAndDropoff/SuccessPage';
 import PickupAndDropoff from '../../screens/Home/PickupAndDropoff';
 import ViewDetails from '../../screens/MyOrders/ViewDetails';
 import Notifications from '../../screens/Notifications';
+import ProductSearchScreen from '../../screens/Home/ProductSearchScreen';
+import ModalScreen from '../../screens/ModalScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -53,6 +55,11 @@ const HomeNav = () => {
             <Stack.Screen name="PickupAndDropoff" component={PickupAndDropoff} />
             <Stack.Screen name="ViewDetails" component={ViewDetails}/>
             <Stack.Screen name="Notifications" component={Notifications}/>
+            <Stack.Screen name="ProductSearchScreen" component={ProductSearchScreen} />
+            <Stack.Screen name='guestModal' component={ModalScreen} options={{
+                presentation: 'transparentModal'
+            }} />
+
         </Stack.Navigator>
     )
 }

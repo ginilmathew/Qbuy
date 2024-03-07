@@ -36,14 +36,14 @@ const ItemDetails = ({ itemName, hotelName, views, sold, minQty, price, onPress,
                     }}
                 >{'Sold by : '}</Text>
 
-                <Tooltip
+                {/* <Tooltip
                     isVisible={tooltip}
                     content={<CommonTexts label='Click Here to view store' color={'#fff'} fontSize={9} />}
                     placement="bottom"
                     onClose={() => setTooltip(false)}
                     backgroundColor='transparent'
                     contentStyle={{ backgroundColor: '#000', width: width / 3, height: 30, alignItems: 'center', justifyContent: 'center', borderRadius: 12, flexWrap: 'wrap' }}
-                >
+                > */}
                     <TouchableOpacity
                         onPress={onPress}
                         style={{ flexDirection: 'row', alignItems: 'center', flexWrap: "wrap" }}
@@ -58,7 +58,7 @@ const ItemDetails = ({ itemName, hotelName, views, sold, minQty, price, onPress,
                             numberOfLines={2}
                         >{hotelName}</Text>
                     </TouchableOpacity>
-                </Tooltip>
+                {/* </Tooltip> */}
 
             </View >
             <View style={styles.numbersBox}>

@@ -6,6 +6,7 @@ import LinearGradient from 'react-native-linear-gradient'
 import CommonAddButton from '../CommonAddButton'
 import Fontisto from 'react-native-vector-icons/Fontisto'
 import Animated from 'react-native-reanimated'
+import { useNavigation } from '@react-navigation/native'
 
 const AnimatedFastImage = Animated.createAnimatedComponent(FastImage)
 
@@ -13,12 +14,20 @@ const AnimatedFastImage = Animated.createAnimatedComponent(FastImage)
 const ProductCard = ({ data, loggedIn, addToCart, viewProduct, width, styles, height, ...props }) => {
 
 
+    const navigation = useNavigation()
+
+
     const openProduct = () => {
         viewProduct(data)
     }
 
     const addCart = () => {
-        addToCart(data)
+        if(loggedIn){
+            addToCart(data)
+        }
+        else{
+            navigation.navigate("guestModal")
+        }
     }
 
     return (
@@ -51,14 +60,14 @@ const ProductCard = ({ data, loggedIn, addToCart, viewProduct, width, styles, he
 
                 </View>}
 
-                {(data?.available && loggedIn) && <View style={styles.addContainer}>
+                {(data?.available) && <View style={styles.addContainer}>
                     <CommonAddButton
                         onPress={addCart}
                     />
                 </View>}
                 {parseFloat(data?.discount_percentage) > 0 && <View style={styles.discountViewer}>
                     <View style={[styles?.priceTag, { width: 40 }]}>
-                        <Text style={{ color: '#fff', textAlign: 'center', fontWeight: 'bold', alignSelf: 'center', fontSize: 8 }}>{`${parseFloat(data?.discount_percentage).toFixed(2)}%`}</Text>
+                        <Text style={{ color: '#fff', textAlign: 'center', fontWeight: 'bold', alignSelf: 'center', fontSize: 8 }}>{`${parseFloat(data?.discount_percentage).toFixed(1)}%`}</Text>
                     </View>
 
                 </View>}

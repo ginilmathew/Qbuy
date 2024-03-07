@@ -48,7 +48,6 @@ const Green = () => {
                 drawerContent={(props) => <DrawerContent {...props} />}
             >
                 <Drawer.Screen name="homepage" component={HomeNav} />
-                <Drawer.Screen name="ProductSearchScreen" component={ProductSearchScreen} />
                 {/* <Drawer.Screen name="restaurant" component={RestaurantScreen} /> */}
                 {/* <Drawer.Screen name="Category" component={CategoryScreen} />
                 <Drawer.Screen name="checkout" component={CheckoutScreen} /> */}

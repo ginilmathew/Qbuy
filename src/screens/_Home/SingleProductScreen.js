@@ -1,4 +1,4 @@
-import { ActivityIndicator, FlatList, Modal, SafeAreaView, ScrollView, SectionList, StyleSheet, Text, View, useWindowDimensions } from 'react-native'
+import { ActivityIndicator, Alert, FlatList, Modal, SafeAreaView, ScrollView, SectionList, StyleSheet, Text, View, useWindowDimensions } from 'react-native'
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react'
 import HeaderWithTitle from '../../Components/HeaderWithTitle'
 import FastImage from 'react-native-fast-image'
@@ -90,6 +90,9 @@ const SingleProductScreen = ({ route, navigation }) => {
         queryFn: ({ queryKey }) => singleProductData(queryKey[1]),
         //enabled: false
     })
+
+
+    reactotron.log({ isLoading, isFetching })
 
     useEffect(() => {
         if (route?.params?.item?._id) {
@@ -211,7 +214,20 @@ const SingleProductScreen = ({ route, navigation }) => {
     }
 
     const addItemToCart = () => {
-        addToCart(datas)
+        if(userContext?.userData){
+            addToCart(datas)
+        }
+        else{
+            navigation.navigate('guestModal')
+            // Alert.alert('Please Login', 'Cart is only available for logged in users', [
+            //     {
+            //         text: 'Cancel',
+            //         // onPress: () => console.log('Cancel Pressed'),
+            //         style: 'cancel',
+            //     },
+            //     { text: 'OK', onPress: () => navigation.navigate('Login') },
+            // ]);
+        }
     }
     
 
@@ -476,9 +492,7 @@ const SingleProductScreen = ({ route, navigation }) => {
                 <View style={styles.hearIcon}>
                     <TouchableOpacity
                         onPress={(data?.is_wishlist) ? removeWishList : addToWishList}
-
                     >
-
                         <Fontisto
                             name={"heart"}
                             color={(data?.is_wishlist) ? "#FF6464" : '#EDEDED'}
@@ -583,7 +597,7 @@ const SingleProductScreen = ({ route, navigation }) => {
                     </View>
                 </View>
                 <View style={{ flexDirection: 'row', width: width, justifyContent: contextPanda?.active === "panda" ? 'center' : 'center', marginTop: 10, paddingHorizontal: 10, gap: 5 }}>
-                    {userContext?.userData && datas?.available && <CustomButton
+                    {datas?.available && <CustomButton
                         onPress={addItemToCart}
                         label={'Add to Cart'} bg={contextPanda?.active === 'green' ? '#8ED053' : contextPanda?.active === 'fashion' ? '#FF7190' : '#58D36E'} width={width / 2.2}
                         loading={loading}
@@ -622,7 +636,7 @@ const SingleProductScreen = ({ route, navigation }) => {
                 onRefresh={refetch}
             />
             <CartButton bottom={20} />
-            <LoadingModal isVisible={isLoading || isFetching} />
+            <LoadingModal isVisible={isLoading} />
             <Modal visible={showSingleImg} >
                     <ImageViewer
                         // onChange={(index) =>ImageViewerChange(index)}
