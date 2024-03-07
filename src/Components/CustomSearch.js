@@ -5,24 +5,33 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import { Controller } from 'react-hook-form'
 import CommonSquareButton from './CommonSquareButton'
 import { useFocusEffect } from '@react-navigation/native'
+import _debounce from 'lodash/debounce';
 
 
-const CustomSearch = ({ placeholder, control, fieldName, error, placeHoldeColor, width, keyboardType, mt, mb, onPress, onChangeText, readonly, autoFocus,values }) => {
+const CustomSearch = ({ placeholder, control, fieldName, error, placeHoldeColor, width, keyboardType, mt, mb, onPress, onChangeText, readonly, autoFocus,values, setIsLoading }) => {
+
+    const debounceFn = useCallback(_debounce((value) => {
+        onChangeText(value)
+    }, 1000), []);
 
     const textRef = useRef(null);
 
+    const [value, setValue] = useState('');
+
     useFocusEffect(
         useCallback(() => {
-            // When the screen is focused
-            const focus = () => {
-                setTimeout(() => {
-                    textRef?.current?.focus();
-                }, 1);
-            };
-            focus();
-            return focus; // cleanup
+            if (autoFocus) {
+                textRef.current.focus();
+            }
+            setValue(null)
         }, []),
     );
+
+    function handleChange (value) {
+        setIsLoading(true)
+        setValue(value);
+        debounceFn(value);
+    };
 
     return (
 
@@ -49,17 +58,18 @@ const CustomSearch = ({ placeholder, control, fieldName, error, placeHoldeColor,
                     rules={{
                         required: true,
                     }}
-                    render={({ field: { onChange, onBlur, value } }) => (
+                    render={({ field: { onChange, onBlur } }) => (
                         <TextInput
                             ref={textRef}
                             onPressIn={onPress}
                             isReadOnly={readonly}
+                            focusable={true}
                             mt={mt}
                             mb={mb}
                             width={width}
                             onBlur={onBlur}
-                            onChangeText={onChangeText ? onChangeText : onChange}
-                            value={values ? values : value}
+                            onChangeText={onChangeText ? handleChange : onChange}
+                            value={value}
                             variant="unstyled"
                             placeholder={placeholder}
                             backgroundColor={'#fff'}

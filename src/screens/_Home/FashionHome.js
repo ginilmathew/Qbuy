@@ -139,7 +139,7 @@ const FashionHome = ({ route, navigation }) => {
     }
 
     const onSearch = useCallback(() => {
-        navigation.navigate('ProductSearchScreen', { mode: 'green' })
+        navigation.navigate('ProductSearchScreen', { mode: 'fashion' })
     })
 
     const CarouselSelect = (item) => {

@@ -1,21 +1,12 @@
 /* eslint-disable prettier/prettier */
-import { FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View, Switch, Platform, useWindowDimensions, ToastAndroid, Image, ActivityIndicator, SafeAreaView } from 'react-native'
+import { FlatList,  StyleSheet,  View,  useWindowDimensions } from 'react-native'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
-import ImageSlider from '../../../Components/ImageSlider';
-import CustomSearch from '../../../Components/CustomSearch';
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
-import CommonSquareButton from '../../../Components/CommonSquareButton';
 import CommonItemCard from '../../../Components/CommonItemCard';
-import CommonTexts from '../../../Components/CommonTexts';
 import NameText from '../NameText';
-import PickDropAndReferCard from '../PickDropAndReferCard';
 import Header from '../../../Components/Header';
-import ShopCard from '../Grocery/ShopCard';
-import TypeCard from '../Grocery/TypeCard';
-import Offer from './Offer';
-import CountDownComponent from '../../../Components/CountDown';
 import LoaderContext from '../../../contexts/Loader';
 import customAxios from '../../../CustomeAxios';
 import reactotron from '../../../ReactotronConfig';
@@ -26,8 +17,6 @@ import SearchBox from '../../../Components/SearchBox';
 import CartContext from '../../../contexts/Cart';
 import { env, location } from '../../../config/constants';
 import CategoryCard from '../QBuyGreen/CategoryCard';
-import RecentlyViewed from '../QBuyGreen/RecentlyViewed';
-import AvailableProducts from '../QBuyGreen/AvailableProducts';
 import CommonWhatsappButton from '../../../Components/CommonWhatsappButton';
 
 
@@ -36,14 +25,10 @@ const QBuyFashion = () => {
     const auth = useContext(AuthContext)
     const cartContext = useContext(CartContext)
 
-    let coord = auth.location
-
-    reactotron.log({ auth: auth?.userData })
+    
 
 
     const loadingg = useContext(LoaderContext)
-
-    let loading = loadingg?.loading
 
     //const homeData = fashionHome?.fashionHomeData
     const [homeData, setHomeData] = useState(null)
@@ -54,10 +39,6 @@ const QBuyFashion = () => {
 
     const navigation = useNavigation()
 
-    const categories = homeData?.category_list
-    const storeList = homeData?.store_list
-    const recentViewList = homeData?.recently_viewed
-    const availablePdts = homeData?.available_products
 
     const schema = yup.object({
         name: yup.string().required('Name is required'),

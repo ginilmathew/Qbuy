@@ -280,28 +280,9 @@ const TabNav = () => {
             else{
                 if(routeName === "home"){
                     navigate(routeName)
-                    // navigation.navigate(routeName)
-                    // startTransition(() => {
-                    //     navigation.dispatch(
-                    //         CommonActions.reset({
-                    //             index: 0,
-                    //             routes: [
-                    //                 { name: 'green' },
-                    //             ],
-                    //         })
-                    //     );
-                    // })
                 }
                 else{
-                    Alert.alert('Warning', 'This page not available for guest user. Click Ok to proceed with login', [
-                        {
-                          text: 'Cancel',
-                          onPress: () => console.log('Cancel Pressed'),
-                          style: 'cancel',
-                        },
-                        {text: 'OK', onPress: () => navigation.navigate("Login")},
-                      ]);
-                    
+                    navigation.navigate("guestModal")
                 }
                 
             }
