@@ -556,7 +556,7 @@ const CheckoutScreen = () => {
                     >
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                             <FastImage source={active === 'green' ? require('../../Images/Orangepanda.png') : require('../../Images/panda.png')} style={styles.logo} />
-                            <Text style={styles.boldText}>{data?.panda_coins?.total}</Text>
+                            <Text style={styles.boldText}>{Math.floor(data?.panda_coins?.total)}</Text>
                             <Text style={styles.textRegular}>{' Panda coins can be used'}</Text>
                         </View>
                         <CustomButton onPress={!data?.applied_panda_coins ? applyPandaCoins : null} label={data?.applied_panda_coins ? 'Applied' : 'Apply'} bg={active === 'green' ? '#FF9C0C' : active === 'fashion' ? '#2D8FFF' : '#586DD3'} width={100} />

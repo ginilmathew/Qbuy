@@ -22,6 +22,8 @@ import CartContext from '../../../contexts/Cart';
 import Geolocation from 'react-native-geolocation-service';
 import axios from 'axios';
 import { MAPS_KEY } from '../../../config/constants';
+import messaging from '@react-native-firebase/messaging';
+
 
 const { mode } = NativeModules.RNENVConfig;
 
@@ -89,8 +91,19 @@ const Otp = ({ navigation }) => {
 		await customAxios.post('auth/customerlogin', datas)
 			.then(async response => {
 				user.setUserData(response?.data?.user);
-				AsyncStorage.setItem('token', response?.data?.access_token);
-				AsyncStorage.setItem('user', JSON.stringify(response?.data?.user));
+				await AsyncStorage.setItem('token', response?.data?.access_token);
+				await AsyncStorage.setItem('user', JSON.stringify(response?.data?.user));
+				await messaging().registerDeviceForRemoteMessages();
+				const token = await messaging().getToken();
+
+				//console.log({ token })
+
+				let data = {
+					id: response?.data?.user?._id,
+					token: token
+				}
+
+				customAxios.post('auth/update-devicetoken', data)
 				await getCartDetails();
 				currentPosition()
 				// navigation.dispatch(CommonActions.reset({
@@ -190,6 +203,7 @@ const Otp = ({ navigation }) => {
 		loadingg.setLoading(true);
 		await customAxios.post('auth/customerloginotp', { mobile: mobileNo })
 			.then(async response => {
+
 				Toast.show({
 					type: 'success',
 					text1: response?.data?.message,

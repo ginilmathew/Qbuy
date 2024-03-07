@@ -28,6 +28,8 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AddressContext from '../../../contexts/Address';
 import LoadingModal from '../../../Components/LoadingModal';
+import messaging from '@react-native-firebase/messaging';
+
 
 const { env, mode } = NativeModules.RNENVConfig;
 
@@ -84,6 +86,10 @@ const Login = ({ navigation }) => {
 		await customAxios.post('auth/customerloginotp', data)
 			.then(async response => {
 				setData(response?.data?.data);
+
+				// Register the device with FCM
+				let userDetails = await AsyncStorage.getItem("user");
+
 				loadingg.setLoading(false);
 				navigation.navigate('Otp');
 			})

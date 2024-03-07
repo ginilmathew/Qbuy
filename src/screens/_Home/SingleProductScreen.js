@@ -614,7 +614,7 @@ const SingleProductScreen = ({ route, navigation }) => {
                 data={datas?.related_product}
                 ListHeaderComponent={listHeader}
                 renderItem={_renderItem}
-                contentContainerStyle={{ padding: 5, backgroundColor: '#fff', flexGrow: 1 }}
+                contentContainerStyle={{ padding: 5, backgroundColor: '#ff.f', flexGrow: 1 }}
                 ListFooterComponent={loading ? () =>  <ActivityIndicator  /> : null}
                 keyExtractor={(item, index) => `${item?._id}${index}`}
                 numColumns={2}

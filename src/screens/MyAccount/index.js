@@ -183,7 +183,7 @@ const MyAccount = ({ navigation }) => {
                         'Please install whats app to send direct message to Qbuy support via whatsapp'
                     );
                 } else {
-                    return Linking.openURL('whatsapp://send?phone=8137009905');
+                    return Linking.openURL('whatsapp://send?text= &phone=8137009905');
                 }
             })
             .catch(err => console.error('An error occurred', err));

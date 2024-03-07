@@ -43,8 +43,9 @@ const ViewDetails = ({ route }) => {
 
     let active = contextPanda.active
 
+    const discount = item?.panda_coins_applied || item?.coupon_amount || null;
 
-    reactotron.log(item, "VIEWDETAILS")
+
 
     const gotTowhtsapp = useCallback(() => {
         let msg = "Hi, I am having problems with the order ID: " + item?.order_id;
@@ -170,6 +171,16 @@ const ViewDetails = ({ route }) => {
                                 <Text style={[styles.text1, { textAlign: 'center' }]}>₹ {pri?.price}</Text>
                             </View>
                         ))}
+                        {
+                            discount && (
+                                <View style={styles.delivery}>
+                                    <View style={{ flex: 0.5 }}>
+                                        <Text style={[styles.text1, { textAlign: 'left' }]}>{'Discount'}</Text>
+                                    </View>
+                                    <Text style={[styles.text1, { textAlign: 'center' }]}>₹ {discount}</Text>
+                                </View>
+                            )
+                        }
                     </View>
                 </View>
 
@@ -197,9 +208,6 @@ const ViewDetails = ({ route }) => {
                     iconName='logo-whatsapp'
                     onpress={gotTowhtsapp}
                 />
-
-
-
 
             </ScrollView>
         </>

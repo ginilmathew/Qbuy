@@ -25,7 +25,13 @@ const ItemDetails = ({ itemName, hotelName, views, sold, minQty, price, onPress,
     return (
         <View style={styles.container}>
             <View style={{ flex: 0.4, }}>
-                <CommonTexts label={itemName} fontSize={13} />
+                <Text style={{
+                    fontSize: 10,
+                    color: '#0000',
+                    fontWeight: '800'
+                }}>
+                    {itemName}
+                </Text>
 
                 <Text
                     style={{

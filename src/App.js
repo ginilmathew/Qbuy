@@ -47,7 +47,7 @@ const queryClient = new QueryClient()
 
 const App = (props) => {
 
-    
+    console.log({ mode });
 
 
     function onAppStateChange(status) {
@@ -81,7 +81,7 @@ const App = (props) => {
     }, [])
 
     async function onMessageReceived(message) {
-                
+
         const { notification } = message
 
 
@@ -138,28 +138,6 @@ const App = (props) => {
         .subscribeToTopic(`${mode}_${env}_customer_general`)
         .then(() => console.log('Subscribed to topic!'));
         // Register the device with FCM
-        let userDetails = await AsyncStorage.getItem("user");
-        await messaging().registerDeviceForRemoteMessages();
-        const token = await messaging().getToken();
-
-        //console.log({ token })
-
-        if (userDetails) {
-            let user = JSON.parse(userDetails)
-            // Get the token
-
-
-            let data = {
-                id: user?._id,
-                token: token
-            }
-            customAxios.post('auth/update-devicetoken', data)
-                .then(response => {
-                })
-                .catch(err => {
-                })
-
-        }
 
     }
 
