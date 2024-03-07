@@ -16,8 +16,8 @@ const ModalScreen = () => {
     return (
         <View style={styles.container}>
             <View style={styles.modal}>
-                <Text style={styles.warningText}>Welcome as a Guest User!</Text>
-                <Text style={styles.messageText}>As a guest user, you have limited access to certain features.</Text>
+                <Text style={styles.warningText}>Warning</Text>
+                <Text style={styles.messageText}>Guest users are not able to purchase products or place orders. Please sign in to continue.</Text>
                 <Button title="Continue as Guest" onPress={handleCloseModal} />
                 <Button title="Login" onPress={loginUser} />
             </View>
