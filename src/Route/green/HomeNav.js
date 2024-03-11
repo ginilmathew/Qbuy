@@ -26,6 +26,7 @@ import ViewDetails from '../../screens/MyOrders/ViewDetails';
 import Notifications from '../../screens/Notifications';
 import ProductSearchScreen from '../../screens/Home/ProductSearchScreen';
 import ModalScreen from '../../screens/ModalScreen';
+import PayBalance from '../../screens/_Home/PayBalance';
 
 const Stack = createNativeStackNavigator();
 
@@ -36,6 +37,7 @@ const HomeNav = () => {
             <Stack.Screen name="cartpage" component={CartScreen} />
             <Stack.Screen name="checkout" component={CheckoutScreen} />
             <Stack.Screen name="order" component={OrderProcessing} />
+            <Stack.Screen name="paybal" component={PayBalance} />
             <Stack.Screen name="Category" component={CategoryScreen} />
             <Stack.Screen name="restaurant" component={RestaurantScreen} />
             <Stack.Screen name="store" component={StoreScreen} />

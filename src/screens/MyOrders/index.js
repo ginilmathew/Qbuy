@@ -79,14 +79,6 @@ const MyOrders = () => {
             <HeaderWithTitle title={'My Orders'} noBack />
 
             <FlatList
-
-                refreshControl={
-                    <RefreshControl
-                        refreshing={isLoading}
-                        onRefresh={getOrderList}
-
-                    />
-                }
                 data={orderList}
                 showsVerticalScrollIndicator={false}
                 initialNumToRender={4}
