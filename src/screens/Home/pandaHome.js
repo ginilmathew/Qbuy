@@ -310,7 +310,6 @@ export default function PandaHome({ navigation }) {
 
 
     const ListMainHeader = () => {
-        Alert(data?.sliders?.data?.length);
         return (
             <View>
                 {data?.sliders?.data?.length > 0 && <View>
