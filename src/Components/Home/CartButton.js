@@ -7,6 +7,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import PandaContext from '../../contexts/Panda';
 import { getProducts } from '../../helper/homeProductsHelper';
 import Animated, { FadeIn, FadeOut, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+import reactotron from 'reactotron-react-native';
 
 
 const CartButton = ({ bottom }) => {
@@ -38,9 +39,6 @@ const CartButton = ({ bottom }) => {
     const onPress = () => {
         navigation.navigate('cart');
     }
-
-    
-
     
 
 

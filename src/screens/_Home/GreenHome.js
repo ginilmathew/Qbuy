@@ -40,6 +40,7 @@ const greenHome = async (datas) => {
         data: sugges
     }
     let messagesBanner = homeData?.data?.data?.[7]?.data
+
     let newArray = [homeData?.data?.data?.[0], recents, suggestions]
     return {
         items: newArray,
@@ -83,8 +84,6 @@ const GreenHome = ({ navigation }) => {
         queryFn: () => greenHome(datas),
         notifyOnChangeProps
     })
-
-
 
 
 
@@ -269,6 +268,7 @@ const GreenHome = ({ navigation }) => {
 
     const renderRecents = () => {
         let recents = data?.items?.[1]?.data
+       
         if(recents?.length > 0){
             return (
                 <>

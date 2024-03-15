@@ -191,7 +191,8 @@ const CheckoutScreen = () => {
                     offer_id: data?.offer_id,
                     coupon_details: data?.coupon_details,
                     coupon_amount: data?.coupon_amount ? data?.coupon_amount : null,
-                    customer_group_offer: data?.customer_group_offer
+                    customer_group_offer: data?.customer_group_offer,
+                    rate_card_detail: data?.rate_card_detail
                 }
 
                 navigation.navigate("order", { datas })

@@ -5,7 +5,7 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable semi */
 /* eslint-disable no-unused-vars */
-import { StyleSheet, Text, View, useWindowDimensions, FlatList, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, useWindowDimensions, FlatList, TouchableOpacity, Alert } from 'react-native'
 import React, { useCallback, useContext, useState, useEffect } from 'react'
 import AuthContext from '../../contexts/Auth';
 import CommonItemCard from '../../Components/CommonItemCard';
@@ -310,6 +310,7 @@ export default function PandaHome({ navigation }) {
 
 
     const ListMainHeader = () => {
+        Alert(data?.sliders?.data?.length);
         return (
             <View>
                 {data?.sliders?.data?.length > 0 && <View>
