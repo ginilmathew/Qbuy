@@ -36,7 +36,7 @@ const CheckoutBottomView = ({navigateToAddress, active, clickBillDetails, isLoad
                     >{'Grand Total  '}</Text>
                     <Text
                         style={styles.boldText}
-                    >₹ {data?.grand_total}</Text>
+                    >₹ {parseFloat(data?.grand_total).toFixed(2)}</Text>
                 </View>
 
                 {showList && <>
@@ -53,7 +53,7 @@ const CheckoutBottomView = ({navigateToAddress, active, clickBillDetails, isLoad
                         </View>
                         <Text
                             style={styles.textMedium}
-                        >₹ {data?.total_price}</Text>
+                        >₹ {parseFloat(data?.total_price).toFixed(2)}</Text>
 
                     </View>
                     {/* <View style={styles.charges}>
@@ -75,7 +75,7 @@ const CheckoutBottomView = ({navigateToAddress, active, clickBillDetails, isLoad
                         </View>
                         <Text
                             style={styles.textMedium}
-                        >₹ {pri?.price}</Text>
+                        >₹ {parseFloat(pri?.price).toFixed(2)}</Text>
 
                     </View>))}
                     {data?.coupon_amount && data?.coupon_amount > 0 && <View  style={styles.charges}>
@@ -86,7 +86,7 @@ const CheckoutBottomView = ({navigateToAddress, active, clickBillDetails, isLoad
                         </View>
                         <Text
                             style={styles.textMedium}
-                        >₹ {data?.coupon_amount}</Text>
+                        >₹ {parseFloat(data?.coupon_amount).toFixed(2)}</Text>
 
                     </View>}
                     {(data?.applied_panda_coins > 0) && <View  style={styles.charges}>
@@ -106,7 +106,7 @@ const CheckoutBottomView = ({navigateToAddress, active, clickBillDetails, isLoad
                         >{'Grand Total  '}</Text>
                         <Text
                             style={styles.boldText}
-                        >₹ {data?.grand_total}</Text>
+                        >₹ {parseFloat(data?.grand_total).toFixed(2)}</Text>
                     </View>
                 </>}
 

@@ -34,15 +34,13 @@ const RateOrder = ({ route, navigation }) => {
 
     let item = route?.params?.item
 
-    reactotron.log(item, "afyghiasydfgisduyg")
 
     const [storeRating, setStoreRating] = useState('')
 
     const [riderRating, setRiderRating] = useState('')
 
-    // const [itemRating, setItemRating] = useState('')
 
-    reactotron.log(riderRating, "riderRating")
+    // const [itemRating, setItemRating] = useState('')
 
     const { width } = useWindowDimensions()
 
@@ -53,9 +51,10 @@ const RateOrder = ({ route, navigation }) => {
 
 
         let stores = item?.stores?.map(st => {
-            const { _id: store_id, store_name, ...rest } = st
+            const { _id: store_id, store_name, store_rating, ...rest } = st
             return {
                 store_id,
+                store_rating: store_rating || 2,
                 ...rest
             }
         })
@@ -64,11 +63,10 @@ const RateOrder = ({ route, navigation }) => {
             const { product_id, rating, feedback } = st
             return {
                 product_id,
-                rating,
+                rating: rating || 2,
                 feedback,
             }
         })
-        reactotron.log({ stores: stores })
 
         // return false;
 
@@ -77,10 +75,9 @@ const RateOrder = ({ route, navigation }) => {
             store: stores,
             product: product_details,
             rider_id: item?.riders?._id,
-            rider_rating: riderRating,
+            rider_rating: riderRating || 2,
             rider_feedback: data?.rider
         }
-        reactotron.log(data, "data")
 
 
         setLoading(true)
@@ -107,6 +104,9 @@ const RateOrder = ({ route, navigation }) => {
 
 
     const updateRating = (rating, position) => {
+        reactotron.log(
+            'rating', position
+        );
         item.stores[position]['store_rating'] = rating
     }
 

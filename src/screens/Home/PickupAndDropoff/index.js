@@ -239,7 +239,7 @@ const PickupAndDropoff = ({ navigation, route }) => {
             formData.append('type', active);
             formData.append('payment_status', 'pending');
             formData.append('payment_type', 'online');
-            formData.append('delivery_date', moment().format('DD-MM-YYYY'));
+            formData.append('delivery_date', moment().format('YYYY-MM-DD hh:mm'));
 
 
 

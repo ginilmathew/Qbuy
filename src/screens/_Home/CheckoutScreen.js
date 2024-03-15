@@ -564,12 +564,12 @@ const CheckoutScreen = () => {
                     <View style={styles.grandTotalBox}>
                         <View style={styles.grandTotalMid}>
                             <Text style={styles.textMedium}>{'Govt Taxes & Other Charges'}</Text>
-                            <Text style={styles.textMedium}>₹ { data?.other_charges }</Text>
+                            <Text style={styles.textMedium}>₹ {parseFloat(data?.other_charges).toFixed(2) }</Text>
                         </View>
 
                         <View style={styles.grandTotalBottom}>
                             <Text style={styles.boldText}>{'Grand Total'}</Text>
-                            <Text style={styles.boldText}>₹ {data?.grand_total}</Text>
+                            <Text style={styles.boldText}>₹ {parseFloat(data?.grand_total).toFixed(2)}</Text>
                         </View>
                     </View>
                 </>}

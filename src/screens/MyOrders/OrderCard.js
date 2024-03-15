@@ -23,6 +23,7 @@ const { env, mode } = NativeModules.RNENVConfig
 
 const OrderCard = memo(({ item, refreshOrder }) => {
 
+
     const contextPanda = useContext(PandaContext)
     const cartContext = useContext(CartContext)
     const loadingg = useContext(LoaderContext)
@@ -413,14 +414,14 @@ const OrderCard = memo(({ item, refreshOrder }) => {
                     <Text style={styles.dateText}>{moment(item?.created_at).format("DD-MM-YYYY hh:mm A")}</Text>
                 </View>
             </View>
-            <View style={styles.itemsContainer}>
+            <View style={[styles.itemsContainer, { borderBottomWidth:  item?.product_details ? 1 : 0 }]}>
                 <View>
                     <Text style={styles.textRegular}>{'Total Items'}</Text>
                     <Text style={styles.textBold}>{item?.product_details?.length}</Text>
                 </View>
                 <View>
                     <Text style={styles.textRegular}>{'Total Payment'}</Text>
-                    <Text style={styles.textBold}>{((has(item, "pendingBalance")) && item?.pendingBalance > 0) ? item?.pendingBalance : parseFloat(item?.grand_total).toFixed(2)}</Text>
+                    <Text style={styles.textBold}>{((has(item, "pendingBalance")) && item?.pendingBalance > 0) ? parseFloat(item?.pendingBalance).toFixed(2) : parseFloat(item?.grand_total).toFixed(2)}</Text>
                 </View>
                 <View>
                     <Text style={styles.textRegular}>{'Current Status'}</Text>
@@ -435,28 +436,34 @@ const OrderCard = memo(({ item, refreshOrder }) => {
                 </View>
             </View>
 
-            <View style={{ backgroundColor: '#fff', paddingBottom: 10, }}>
-                <View style={styles.itemsRow}>
-                    <Text style={styles.textBold}>{'Items'}</Text>
-                    <TouchableOpacity onPress={clickItem}>
-                        <Ionicons name={showItems ? 'chevron-up-circle' : 'chevron-down-circle'} size={22} color={active === 'green' ? '#8ED053' : active === 'fashion' ? '#FF7190' : '#58D36E'} />
-                    </TouchableOpacity>
-                </View>
 
-                {showItems && <>
-                    <View style={styles.itemsHeadingView}>
-                        <View style={{ flex: 0.5 }}>
-                            <Text style={[styles.textBold, { textAlign: 'left' }]}>{'Product'}</Text>
+            {
+                item?.product_details && (
+                    <View style={{ backgroundColor: '#fff', paddingBottom: 10, }}>
+                        <View style={styles.itemsRow}>
+                            <Text style={styles.textBold}>{'Items'}</Text>
+                            <TouchableOpacity onPress={clickItem}>
+                                <Ionicons name={showItems ? 'chevron-up-circle' : 'chevron-down-circle'} size={22} color={active === 'green' ? '#8ED053' : active === 'fashion' ? '#FF7190' : '#58D36E'} />
+                            </TouchableOpacity>
                         </View>
-                        <Text style={[styles.textBold, { textAlign: 'center' }]}>{'Qty'}</Text>
-                        <Text style={[styles.textBold, { textAlign: 'center' }]}>{'Price'}</Text>
-                    </View>
 
-                    {item?.product_details.map((ite) =>
-                        <ItemsCard item={ite} key={ite?.product_id} date={item?.created_at} />
-                    )}
-                </>}
-            </View>
+
+                        {showItems && <>
+                            <View style={styles.itemsHeadingView}>
+                                <View style={{ flex: 0.5 }}>
+                                    <Text style={[styles.textBold, { textAlign: 'left' }]}>{'Product'}</Text>
+                                </View>
+                                <Text style={[styles.textBold, { textAlign: 'center' }]}>{'Qty'}</Text>
+                                <Text style={[styles.textBold, { textAlign: 'center' }]}>{'Price'}</Text>
+                            </View>
+
+                            {item?.product_details?.map((ite) =>
+                                <ItemsCard item={ite} key={ite?.product_id} date={item?.created_at} />
+                            )}
+                        </>}
+                    </View>
+                )
+            }
 
             <View
                 style={{ backgroundColor: '#fff', paddingBottom: 10, borderTopWidth: showItems ? 0 : 1, borderColor: '#00000029', marginHorizontal: 7, borderBottomLeftRadius: 15, borderBottomRightRadius: 15 }}
@@ -712,7 +719,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         justifyContent: 'space-between',
         margin: 7,
-        borderBottomWidth: 1,
         paddingBottom: 10,
         borderColor: '#00000029'
     },
