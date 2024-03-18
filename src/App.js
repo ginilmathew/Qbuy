@@ -139,6 +139,18 @@ const App = (props) => {
         .then(() => console.log('Subscribed to topic!'));
         // Register the device with FCM
 
+         // Set up background message handler
+         messaging().setBackgroundMessageHandler(async remoteMessage => {
+            //reactotron.log('Message handled in the background!', remoteMessage);
+            // Handle deep linking here based on the received message
+            if (remoteMessage?.data?.order_id) {
+                navigationRef.navigate('ViewDetails', { item: { _id: remoteMessage?.data?.order_id } });
+            } else if (remoteMessage?.data?.product_url) {
+                navigationRef.navigate('SingleItemScreen', { item: { _id: remoteMessage?.data?.product_url } });
+            } else if (remoteMessage?.data?.complaint_id) {
+                navigationRef.navigate('Respo', { item: { _id: remoteMessage?.data?.complaint_id } });
+            }
+        });
     }
 
 
