@@ -34,12 +34,14 @@ const greenHome = async (datas) => {
         type: 'recentlyviewed',
         data: recent
     }
-    let sugges = await getProducts(homeData?.data?.data?.[4]?.data)
+
+    let sugges = await getProducts(homeData?.data?.data?.find(({ type }) => type === 'suggested_products')?.data)
+    
     let suggestions = {
         type: 'suggested_products',
         data: sugges
     }
-    let messagesBanner = homeData?.data?.data?.[7]?.data
+    let messagesBanner = homeData?.data?.data?.find(({ type }) => type === "message_banner_array")?.data || []
 
     let newArray = [homeData?.data?.data?.[0], recents, suggestions]
     return {
@@ -84,7 +86,6 @@ const GreenHome = ({ navigation }) => {
         queryFn: () => greenHome(datas),
         notifyOnChangeProps
     })
-
 
 
 
@@ -165,6 +166,13 @@ const GreenHome = ({ navigation }) => {
         }
 
     }
+
+    const openStore = (item) => {
+        //reactotron.log({item});
+        //return false;
+        navigation.navigate('store', { name: item?.stores?.store_name, mode: 'store', item: item?.stores, storeId: item?.stores?._id })
+    }
+
 
     const MessageBanner = ({ item, index }) => {
         return (
@@ -290,7 +298,9 @@ const GreenHome = ({ navigation }) => {
     }
 
     const renderSuggestions = () => {
-        let suggestions = data?.items?.[2]?.data
+        let suggestions = data?.items[2]?.data
+        // .log(data?.items);
+
         if(suggestions?.length > 0){
             return (
                 <>

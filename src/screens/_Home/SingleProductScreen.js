@@ -87,7 +87,9 @@ const SingleProductScreen = ({ route, navigation }) => {
 
     const { data: datas, isLoading, isFetching, refetch } = useQuery({
         queryKey: ['singleProduct', userInput],
-        queryFn: ({ queryKey }) => singleProductData(queryKey[1]),
+        queryFn: ({ queryKey }) => {
+            return singleProductData(queryKey[1])
+        },
         //enabled: false
     })
 
@@ -109,9 +111,13 @@ const SingleProductScreen = ({ route, navigation }) => {
                 return;
             }
 
+            setUserInput({
+                product_id: route?.params?.item?._id,
+                    attributes: null
+            })
             refetch()
             //infiniteQueryRefetch()
-        }, [refetch])
+        }, [refetch, route?.params])
     )
 
     const closeSingleImg = () => {
@@ -241,7 +247,7 @@ const SingleProductScreen = ({ route, navigation }) => {
                     styles={styles1}
                     loggedIn={userContext?.userData ? true : false}
                     height={height / 4}
-                    viewProduct={viewProduct}
+                    viewProduct={() => viewProduct(item)}
                     addToCart={addToCarts}
                 //sharedTransitionTag={`images${item?._id}`}
                 />
