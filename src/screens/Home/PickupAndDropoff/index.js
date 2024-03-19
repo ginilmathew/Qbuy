@@ -93,6 +93,11 @@ const PickupAndDropoff = ({ navigation, route }) => {
                     setError('amount', { type: 'custom', message: null })
                 })
                     .catch(err => {
+                        let values = getValues()
+                        values.amount = ''
+                        reset(values)
+                        setAmount('')
+
                         Toast.show({
                             text1: err,
                             type: 'error'

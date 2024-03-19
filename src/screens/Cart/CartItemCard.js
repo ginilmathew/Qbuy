@@ -277,7 +277,6 @@ const CartItemCard = ({ item, index, refreshCart }) => {
             </View>
 
         </View>
-
     )
 }
 

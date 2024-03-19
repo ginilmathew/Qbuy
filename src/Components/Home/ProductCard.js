@@ -7,6 +7,7 @@ import CommonAddButton from '../CommonAddButton'
 import Fontisto from 'react-native-vector-icons/Fontisto'
 import Animated from 'react-native-reanimated'
 import { useNavigation } from '@react-navigation/native'
+import reactotron from 'reactotron-react-native'
 
 const AnimatedFastImage = Animated.createAnimatedComponent(FastImage)
 
@@ -20,6 +21,7 @@ const ProductCard = ({ data, loggedIn, addToCart, viewProduct, width, styles, he
     const openProduct = () => {
         viewProduct(data)
     }
+
 
     const addCart = () => {
         if(loggedIn){

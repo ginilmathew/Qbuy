@@ -7,6 +7,7 @@ const CheckoutItemCard = ({ openStore, item }) => {
         openStore(item)
     }
 
+
     return (
         <View style={styles.container}>
             <View style={{ flex: 0.42 }}>

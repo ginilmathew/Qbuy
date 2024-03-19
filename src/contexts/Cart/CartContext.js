@@ -296,8 +296,6 @@ const CartProvider = (props) => {
 
     const addToCart = async (item) => {
 
-        reactotron.log({item, cart})
-
         //return false
         let productDetails;
         let cartItems, url;
@@ -367,7 +365,8 @@ const CartProvider = (props) => {
                                 attributs: item?.attributes
                             }
                         ] : null,
-                        quantity: minimumQty
+                        quantity: minimumQty,
+                        // availability: true
                     };
                     cartItems = {
                         product_details: [...cart?.product_details, productDetails],

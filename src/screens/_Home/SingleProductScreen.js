@@ -37,6 +37,7 @@ const singleProductData = async (datas) => {
     const productData = await customAxios.post(`customer/get-product-details`, datas);
 
     reactotron.log({ datas: productData?.data?.data })
+    // return {}
     return productData?.data?.data;
 }
 

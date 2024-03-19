@@ -28,7 +28,7 @@ import CartButton from '../../Components/Home/CartButton'
 
 const greenHome = async (datas) => {
     const homeData = await customAxios.post('customer/home', datas);
-    let sliders = homeData?.data?.data?.[5];
+    let sliders = homeData?.data?.data?.find(({ type }) => type === 'sliders');
     let recent = await getProducts(homeData?.data?.data?.[2]?.data)
     let recents = {
         type: 'recentlyviewed',
