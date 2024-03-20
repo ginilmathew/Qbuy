@@ -1,5 +1,5 @@
 import { SafeAreaView, StyleSheet } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Category from '../screens/Home/Category';
 import SingleHotel from '../screens/Home/SingleHotel';

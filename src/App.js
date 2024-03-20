@@ -8,7 +8,7 @@ import store from './Redux/store'
 import LoadProvider from './contexts/Loader/loaderContext'
 import Route from './Route'
 import CartProvider from './contexts/Cart/CartContext'
-import Toast from 'react-native-toast-message';
+import Toast, { ErrorToast } from 'react-native-toast-message';
 import AddressProvider from './contexts/Address/AddressContext'
 import Geolocation from 'react-native-geolocation-service';
 import RouteTest from './RouteText'
@@ -46,8 +46,6 @@ const queryClient = new QueryClient()
 
 
 const App = (props) => {
-
-    console.log({ mode });
 
 
     function onAppStateChange(status) {
@@ -241,6 +239,11 @@ const App = (props) => {
                                     </NavigationContainer>
                                     
                                     <Toast
+                                        config={{
+                                            Error: (props) => (
+                                                <ErrorToast />
+                                            )
+                                        }}
                                         position='bottom'
                                         bottomOffset={20}
                                     />

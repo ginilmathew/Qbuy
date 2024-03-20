@@ -8,7 +8,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 
 
-const Header = ({ userData, changeAddress, opendrawer, currentAddress, active, onClickFashionCat, onClickWishlist, onClickNotificatn }) => {
+const Header = ({ userData, changeAddress, opendrawer, currentAddress, active, onClickFashionCat, onClickWishlist, onClickNotificatn, count }) => {
 
 
     return (
@@ -53,6 +53,15 @@ const Header = ({ userData, changeAddress, opendrawer, currentAddress, active, o
                 {
                     userData && (
                     <TouchableOpacity onPress={onClickNotificatn} style={{ marginRight: 8 }}>
+                        {
+                            count > 0 && (
+                                <View style={[styles.notification, {
+                                    backgroundColor: active === 'fashion' ? '#FF7190' : active === 'green' ? '#8ED053' : '#58D36E',
+                                }]}>
+                                    <Text style={styles.notCount}>{count}</Text>
+                                </View>
+                            )
+                        }
                         <Ionicons name={'notifications'} color="#23233C" size={25} />
                     </TouchableOpacity>
                     )
@@ -70,6 +79,21 @@ const styles = StyleSheet.create({
         width: 25,
         height: 25,
         resizeMode: 'contain',
+    },
+    notification: {
+        alignItems: 'center',
+        position: 'absolute',
+        zIndex: 999,
+        left: 10,
+        top: -5,
+        paddingHorizontal: 2,
+        paddingVertical: 1,
+        borderRadius: 12
+    },
+    notCount: {
+        color: '#fff',
+        fontSize: 11,
+        fontWeight: '700'
     },
     textStyle: {
         fontFamily: 'Poppins-Medium',

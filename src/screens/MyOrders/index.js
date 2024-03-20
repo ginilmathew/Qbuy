@@ -53,7 +53,7 @@ const MyOrders = () => {
     useFocusEffect(
         React.useCallback(() => {
             getOrderList()
-        }, [])
+        }, [active])
     );
 
 

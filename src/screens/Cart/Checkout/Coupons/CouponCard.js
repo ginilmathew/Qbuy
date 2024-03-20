@@ -13,6 +13,7 @@ const CouponCard = memo(({ item, active, width, onApply }) => {
         onApply(item)
     }, [item?._id])
 
+
     return (
         <View style={{ padding: 10 }}>
             <View

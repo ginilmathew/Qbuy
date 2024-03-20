@@ -44,12 +44,10 @@ import CheckoutScreen from '../../screens/_Home/CheckoutScreen';
 
 const Stack = createNativeStackNavigator();
 
+
 const HomeNav = () => {
 
     const pandaContext = useContext(PandaContext)
-
-  
-
 
 
     return (

@@ -132,7 +132,7 @@ const ApplyFranchisee = ({ navigation }) => {
                 <GooglePlaces
                     control={control}
                     fieldName={'location'}
-                    topLabel={'Pick Up Location'}
+                    topLabel={'Location'}
                     setValue={setValue}
                     // setDistance={setDistance}
                     setError={setError}

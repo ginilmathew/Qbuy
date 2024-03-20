@@ -75,6 +75,7 @@ const Notifications = () => {
         return (
             <NotificationDesign
                 data={item}
+                notData={notData}
             //onpress={pressLinking}
             />
         )

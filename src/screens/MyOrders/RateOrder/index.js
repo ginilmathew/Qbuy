@@ -136,31 +136,43 @@ const RateOrder = ({ route, navigation }) => {
                 }}
             >
 
-                <View style={{ paddingHorizontal: 10 }}>
-                    <CommonTexts fullLabel label={'Rate Your Store Experience'} fontSize={15} />
-                    {item?.stores.map((item, index) =>
-                        <StoreRating
-                            item={item}
-                            key={item?._id}
-                            setStoreRating={(rating) => updateRating(rating, index)}
-                            setComments={(value) => updateComments(value, index)}
-                        />)}
-                </View>
+                {item?.stores instanceof Array
+                    && (
+                        <>
+                            <View style={{ paddingHorizontal: 10 }}>
+                                <CommonTexts fullLabel label={'Rate Your Store Experience'} fontSize={15} />
+                                {item?.stores?.map((item, index) =>
+                                    <StoreRating
+                                        item={item}
+                                        key={item?._id}
+                                        setStoreRating={(rating) => updateRating(rating, index)}
+                                        setComments={(value) => updateComments(value, index)}
+                                    />)}
+                            </View>
+                            <View style={{ width: width, height: 1, backgroundColor: '#F2F2F2', marginVertical: 20 }} />
+                        </>
+                    )
+                }
 
-                <View style={{ width: width, height: 1, backgroundColor: '#F2F2F2', marginVertical: 20 }} />
 
-                <View style={{ paddingHorizontal: 10 }}>
-                    <CommonTexts label={'Product Rating'} fontSize={15} />
-                    {item?.product_details.map((item, index) =>
-                        <ProductRatingCard
-                            item={item}
-                            key={item?._id}
-                            setItemRating={(rating) => updateProductRating(rating, index)}
-                            setComments={(value) => updateProductComments(value, index)}
-                        />)}
-                </View>
+                {
+                    item?.product_details instanceof Array && (
+                        <>
+                            <View style={{ paddingHorizontal: 10 }}>
+                                <CommonTexts label={'Product Rating'} fontSize={15} />
+                                {item?.product_details?.map((item, index) =>
+                                    <ProductRatingCard
+                                        item={item}
+                                        key={item?._id}
+                                        setItemRating={(rating) => updateProductRating(rating, index)}
+                                        setComments={(value) => updateProductComments(value, index)}
+                                    />)}
+                            </View>
 
-                <View style={{ width: width, height: 1, backgroundColor: '#F2F2F2', marginVertical: 20 }} />
+                            <View style={{ width: width, height: 1, backgroundColor: '#F2F2F2', marginVertical: 20 }} />
+                        </>
+                    )
+                }
 
                 <View style={{ paddingHorizontal: 10 }}>
                     <CommonTexts label={'Rider Rating'} fontSize={15} />

@@ -66,7 +66,7 @@ const CartCard = ({gotoStore, addItem, removeItem, item, width, active, deleteIt
 
             </Swipeable>
             <View style={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
-                {item?.minQty > item?.quantity  && <Text style={styles.outofStock}>{`Min. quantity:${item?.minQty}`}</Text>}
+                {item?.minimum_qty > item?.quantity && <Text style={styles.outofStock}>{`Min. quantity:${item?.minimum_qty}`}</Text>}
                 {(item?.stock && (parseInt(item?.stock_value) < parseInt(item?.quantity))) && <Text style={styles.outofStock}>{"Out of Stock"}</Text>}
                 {(!item?.available && item?.stock && (parseInt(item?.stock_value) > parseInt(item?.quantity))) && <Text style={styles.outofStock}>{"Not Available"}</Text>}
             </View>

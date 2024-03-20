@@ -1,4 +1,4 @@
-import { Image, StyleSheet, Text, View, ScrollView, TouchableOpacity, useWindowDimensions, FlatList, Alert } from 'react-native'
+import { Image, StyleSheet, Text, View, ScrollView, TouchableOpacity, useWindowDimensions, FlatList, Alert, Dimensions } from 'react-native'
 import React, { useCallback, useContext, useState } from 'react'
 import Lottie from 'lottie-react-native';
 import { useForm } from "react-hook-form";
@@ -143,7 +143,7 @@ const Coupons = ({navigation, route}) => {
 
     return (
         <>
-            <HeaderWithTitle title={'Coupons'} goback={backAction}/>
+            <HeaderWithTitle title={'Coupons'} goback={backAction} />
             <FlatList 
                 data={data}
                 keyExtractor={(item) => item?._id}
@@ -155,6 +155,7 @@ const Coupons = ({navigation, route}) => {
                 }}
                 refreshing={isLoading}
                 onRefresh={refetch}
+                ListEmptyComponent={ListEmptyComponent}
             />
             <LoadingModal isVisible={loading} />
         </>
@@ -162,6 +163,18 @@ const Coupons = ({navigation, route}) => {
 }
 
 export default Coupons
+
+
+
+const ListEmptyComponent = () => (
+    <View style={{
+        alignItems: 'center',
+        marginTop: Dimensions.get('screen').height / 3
+    }}>
+        <Image source={require('../../../../Images/coupon.png')} />
+        <Text style={{ color: '#555' }}>No coupons are currently available</Text>
+    </View>
+)
 
 const styles = StyleSheet.create({
 

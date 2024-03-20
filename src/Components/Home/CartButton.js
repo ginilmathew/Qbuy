@@ -65,9 +65,7 @@ const CartButton = ({ bottom }) => {
                     />
                     <View style={styles.textContainer}>
                         <Text style={styles.mainText}>{"Go to Cart"}</Text>
-                        <Text style={styles.items}>{cart?.product_details?.reduce((acc, curr) => {
-            return acc + parseInt(curr?.quantity)
-        },0)} Items</Text>
+                        <Text style={styles.items}>{cart?.product_details?.length} Items</Text>
                     </View>
                 </View>
                 <View style={styles.rightContainer}>
@@ -75,7 +73,7 @@ const CartButton = ({ bottom }) => {
                     <View style={styles.priceContainer}>
                         <Text style={styles.price}>₹ {cart?.product_details?.reduce((acc, curr) => {
             return acc + parseFloat(curr?.productdata?.price) * parseFloat(curr?.quantity)
-        },0)}</Text>
+        },0).toFixed(2)}</Text>
                     </View>
                 </View>
                 </LinearGradient>

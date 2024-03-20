@@ -1,5 +1,5 @@
 import { AppState, FlatList, StyleSheet, Text, View, useWindowDimensions } from 'react-native'
-import React, { useCallback, useContext, useEffect, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { useFocusEffect } from '@react-navigation/native';
 import customAxios from '../../CustomeAxios';
 import Toast from 'react-native-toast-message';
@@ -27,6 +27,18 @@ const CartScreen = ({ navigation }) => {
         }, [cart]),
     );
 
+    const checkCount = useMemo(() => {
+        const allowCheckout = cart?.product_details?.every(({ quantity, productdata }) => quantity >= productdata?.minimum_qty)
+
+        return allowCheckout;
+    }, [cart])
+
+    const showWarning = useCallback(() => {
+        Toast.show({
+            type: 'error',
+            text1: 'Please adjust the quantity to meet the  minimum.'
+        })
+    }, [])
 
     // useEffect(() => {
     //     return () => {
@@ -252,7 +264,7 @@ const CartScreen = ({ navigation }) => {
                 />
             </View>
             {cartItemsList?.length > 0 && <CustomButton
-                onPress={gotoCheckout}
+                onPress={checkCount ? gotoCheckout : showWarning}
                 label={'Proceed To Checkout'}
                 bg={
                     active === 'green'
