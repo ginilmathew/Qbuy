@@ -100,7 +100,7 @@ const ApplyFranchisee = ({ navigation }) => {
                         autoPlay
                     />
 
-                    <Text style={styles.mainText}>{'Connect with your ineterested franchisee!'}</Text>
+                    <Text style={styles.mainText}>{'Connect with your interested franchisee!'}</Text>
                 </View>
 
 

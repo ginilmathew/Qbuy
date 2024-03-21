@@ -212,7 +212,7 @@ const PandaHome = ({ navigation }) => {
                 //onClickFashionCat={onClickFashionCat}
                 onClickWishlist={onClickWishlist}
                 onClickNotificatn={onClickNotificatn}
-                count={data?.length}
+                // count={23}
             />
             <AvailableProducts
                 styles={styles1}
