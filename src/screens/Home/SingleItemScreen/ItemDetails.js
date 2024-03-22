@@ -156,11 +156,11 @@ const ItemDetails = ({ itemName, hotelName, views, sold, minQty, price, onPress,
 
                         }}
                     >₹{price}</Text>
-                    {(regularPrice != price) && <Text
+                    {(regularPrice != price) && regularPrice === null && <Text
                         style={{
                             fontFamily: 'Poppins-ExtraBold',
                             color: '#089321',
-                            fontSize: 10,
+                            fontSize: 10, 
                             textDecorationLine: 'line-through',
                             textDecorationStyle: 'solid'
                         }}
