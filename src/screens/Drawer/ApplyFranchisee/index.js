@@ -44,7 +44,7 @@ const ApplyFranchisee = ({ navigation }) => {
 
         setLoading(true);
 
-        customAxios.post('customer/franchise-enquiry', data)
+        customAxios.post('customer/franchise-enquiry', { ...data, type: active })
             .then(res => {
                 setShowSuccess(true);
             })
@@ -57,7 +57,7 @@ const ApplyFranchisee = ({ navigation }) => {
             .finally(e => {
                 setLoading(false)
             })
-    }, [])
+    }, [active])
 
 
     const goHome = useCallback(() => {
