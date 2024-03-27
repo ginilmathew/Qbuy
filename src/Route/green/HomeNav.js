@@ -26,6 +26,7 @@ import ViewDetails from '../../screens/MyOrders/ViewDetails';
 import Notifications from '../../screens/Notifications';
 import ProductSearchScreen from '../../screens/Home/ProductSearchScreen';
 import ModalScreen from '../../screens/ModalScreen';
+import DeliveryMap from '../../screens/MyOrders/ViewDetails/DeliveryMap';
 
 const Stack = createNativeStackNavigator();
 
@@ -54,6 +55,7 @@ const HomeNav = () => {
             <Stack.Screen name="Wishlist" component={Wishlist} />
             <Stack.Screen name="PickupAndDropoff" component={PickupAndDropoff} />
             <Stack.Screen name="ViewDetails" component={ViewDetails}/>
+            <Stack.Screen name='DeliveryMap' component={DeliveryMap}/>
             <Stack.Screen name="Notifications" component={Notifications}/>
             <Stack.Screen name="ProductSearchScreen" component={ProductSearchScreen} />
             <Stack.Screen name='guestModal' component={ModalScreen} options={{

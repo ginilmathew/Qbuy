@@ -11,9 +11,10 @@ import moment from 'moment'
 import CommonStatusCard from '../../../Components/CommonStatusCard'
 import customAxios from '../../../CustomeAxios'
 import Toast from 'react-native-toast-message'
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 
 
-const ViewDetails = ({ route }) => {
+const ViewDetails = ({ route, navigation }) => {
 
     const contextPanda = useContext(PandaContext)
     const [item, setItem] = useState({})
@@ -21,6 +22,9 @@ const ViewDetails = ({ route }) => {
 
     let grocery = contextPanda.greenPanda
 
+    const navToDeliveryMap = useCallback(() => {
+        navigation?.navigate('DeliveryMap')
+    }, [])
 
     useEffect(() => {
         setIsLoading(true)
@@ -168,7 +172,7 @@ const ViewDetails = ({ route }) => {
                                 <View style={{ flex: 0.5 }}>
                                     <Text style={[styles.text1, { textAlign: 'left' }]}>{pri?.charge_name}</Text>
                                 </View>
-                                <Text style={[styles.text1, { textAlign: 'center' }]}>₹ {pri?.price}</Text>
+                                <Text style={[styles.text1, { textAlign: 'center' }]}>₹ {pri?.price?.toFixed(2)}</Text>
                             </View>
                         ))}
                         {
@@ -192,6 +196,29 @@ const ViewDetails = ({ route }) => {
                     delivered={moment(item?.delivered_date).format("hh:mm:ss A")}
                     complete={item?.status === "completed" ? true : false}
                 /> */}
+
+                {/* <TouchableOpacity 
+                onPress={navToDeliveryMap}
+                style={{
+                    height: 45,
+                    width: '80%',
+                    alignSelf: 'center',
+                    marginVertical: 15,
+                    backgroundColor: active === "green" ? '#8ED053' : active === "fashion" ? '#FF7190' : '#58D36E'
+                    ,
+                    flexDirection: 'row',
+                    gap: 8,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    borderRadius: 12
+                }}>
+                    <Text style={{
+                        fontWeight: '700',
+                        color: '#fff',
+                        fontSize: 15
+                    }}>Track your order</Text>
+                    <MaterialCommunityIcons size={19} color="#fff" name='crosshairs-gps' />
+                </TouchableOpacity> */}
 
                 {item?.rider_each_order_settlement?.rider_status === "onTheWay" || item?.rider_each_order_settlement?.rider_status === "onLocation" ? (<ContactCard
                     heading={'Call Delivery Agent'}
