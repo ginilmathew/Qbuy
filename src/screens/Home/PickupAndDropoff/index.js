@@ -229,7 +229,7 @@ const PickupAndDropoff = ({ navigation, route }) => {
             formData.append('weight', weight);
             formData.append('vehicle_type', vehicle);
             formData.append('pickup_date', moment(date).format('DD-MM-YYYY'));
-            formData.append('pickup_time', moment(time).format("hh:mm"));
+            formData.append('pickup_time', moment(time).format("HH:mm"));
             formData.append('pickup_location_coordinates', `[${distance?.pickup?.location?.lat}, ${distance?.pickup?.location?.lng}]`);
             formData.append('drop_off_location_coordinates', `[${distance?.dropoff?.location?.lat}, ${distance?.dropoff?.location?.lng}]`)
             formData.append('name', userData?.name || null);
