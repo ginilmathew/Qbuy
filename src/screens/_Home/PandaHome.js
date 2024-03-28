@@ -74,7 +74,6 @@ const PandaHome = ({ navigation }) => {
 
 
 
-
     useFocusEffect(
         React.useCallback(() => {
             if (firstTimeRef.current) {
@@ -488,11 +487,12 @@ const styles = StyleSheet.create({
     },
     categoryCard: {
         flexDirection: "row",
-        justifyContent: "space-between",
+        justifyContent: "start",
         backgroundColor: '#fff',
         marginTop: 5,
         flex: 1,
         flexWrap: 'wrap',
+        gap: 5,
         paddingHorizontal: 5
     },
     pickup: {

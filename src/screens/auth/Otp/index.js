@@ -30,6 +30,7 @@ const { mode } = NativeModules.RNENVConfig;
 const Otp = ({ navigation }) => {
 	const user = useContext(AuthContext);
 	const loadingg = useContext(LoaderContext);
+	const [disable, setDisable] = useState(false);
 
 	const { getCartDetails } = useContext(CartContext)
 
@@ -78,6 +79,7 @@ const Otp = ({ navigation }) => {
 
 	const onSubmit = async (data) => {
 		Keyboard.dismiss()
+		setDisable(true);
 		loadingg.setLoading(true);
 		//getCurrentLocation();
 		let datas = {
@@ -118,7 +120,7 @@ const Otp = ({ navigation }) => {
 					type: 'error',
 					text1: error,
 				});
-				
+				setDisable(false)
 			})
 			.finally(() => {
 				loadingg.setLoading(false);
@@ -280,6 +282,7 @@ const Otp = ({ navigation }) => {
 						bg={ mode === 'fashion' ? '#FF7190' : '#58D36E' }
 						label={ 'Confirm' }
 						my={ 20 }
+						disabled={disable}
 						width={ 100 }
 						alignSelf="center"
 						//loading={ loader }

@@ -50,20 +50,20 @@ const ItemDetails = ({ itemName, hotelName, views, sold, minQty, price, onPress,
                     backgroundColor='transparent'
                     contentStyle={{ backgroundColor: '#000', width: width / 3, height: 30, alignItems: 'center', justifyContent: 'center', borderRadius: 12, flexWrap: 'wrap' }}
                 > */}
-                    <TouchableOpacity
-                        onPress={onPress}
-                        style={{ flexDirection: 'row', alignItems: 'center', flexWrap: "wrap" }}
-                    >
-                        <Text
-                            style={{
-                                fontFamily: 'Poppins-BoldItalic',
-                                color: '#1185E0',
-                                fontSize: 11,
-                                flexWrap: 'wrap'
-                            }}
-                            numberOfLines={2}
-                        >{hotelName}</Text>
-                    </TouchableOpacity>
+                <TouchableOpacity
+                    onPress={onPress}
+                    style={{ flexDirection: 'row', alignItems: 'center', flexWrap: "wrap" }}
+                >
+                    <Text
+                        style={{
+                            fontFamily: 'Poppins-BoldItalic',
+                            color: '#1185E0',
+                            fontSize: 11,
+                            flexWrap: 'wrap'
+                        }}
+                        numberOfLines={2}
+                    >{hotelName}</Text>
+                </TouchableOpacity>
                 {/* </Tooltip> */}
 
             </View >
@@ -140,27 +140,31 @@ const ItemDetails = ({ itemName, hotelName, views, sold, minQty, price, onPress,
             </View>
             {
                 available && <View style={{ flex: 0.20 }}>
-                    <Text
-                        style={{
-                            fontFamily: 'Poppins-Regular',
-                            color: '#23233C',
-                            fontSize: 11,
+                    {price && <>
 
-                        }}
-                    >{'Price'}</Text>
-                    <Text
+                        <Text
+                            style={{
+                                fontFamily: 'Poppins-Regular',
+                                color: '#23233C',
+                                fontSize: 11,
+
+                            }}
+                        >{'Price'}</Text>
+                        <Text
+                            style={{
+                                fontFamily: 'Poppins-ExtraBold',
+                                color: '#089321',
+                                fontSize: 14,
+
+                            }}
+                        >₹{price}</Text>
+                    </>}
+
+                    {(regularPrice != price) && regularPrice !== null && <Text
                         style={{
                             fontFamily: 'Poppins-ExtraBold',
                             color: '#089321',
-                            fontSize: 14,
-
-                        }}
-                    >₹{price}</Text>
-                    {(regularPrice != price) && regularPrice === null && <Text
-                        style={{
-                            fontFamily: 'Poppins-ExtraBold',
-                            color: '#089321',
-                            fontSize: 10, 
+                            fontSize: 10,
                             textDecorationLine: 'line-through',
                             textDecorationStyle: 'solid'
                         }}

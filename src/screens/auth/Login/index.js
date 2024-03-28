@@ -1,7 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable prettier/prettier */
-import { StyleSheet, Text, View, Image, ScrollView, ActivityIndicator, ToastAndroid, useWindowDimensions, PermissionsAndroid, Platform, Keyboard } from 'react-native';
+import { StyleSheet, Text, View, Image, ScrollView, ActivityIndicator, ToastAndroid, useWindowDimensions, PermissionsAndroid, Platform, Keyboard, Linking } from 'react-native';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -145,12 +145,33 @@ const Login = ({ navigation }) => {
 
 
 
-
+	const termsPress = useCallback(() => {
+		Linking.openURL('https://qbuypanda.com/usage/toc')
+	}, [])
 	
 
+	const privacyPress = useCallback(() => {
+		Linking.openURL('https://qbuypanda.com/usage/privacy')
+	}, [])
 
-
-	
+	const whatPress = useCallback(() => {
+		Linking.canOpenURL('whatsapp://send?text=&phone=8137009905')
+			.then(supported => {
+				if (!supported) {
+					Alert.alert(
+						'Please install whats app to send direct message to Qbuy support via whatsapp'
+					);
+				} else {
+					return Linking.openURL('whatsapp://send?text= &phone=8137009905');
+				}
+			})
+			.catch(err => console.error('An error occurred', err));
+		// Linking.openURL('whatsapp://send?text=&phone=8137009905')
+		// .then()
+		// .catch(err => {
+		//     Alert.alert('Please install whats app to send direct message to Qbuy support via whats app');
+		// })
+	}, [])
 
 	const NaviagteToGuest = useCallback(async() => {
 		loadingg.setLoading(true);
@@ -212,7 +233,7 @@ const Login = ({ navigation }) => {
 					elevation={ 2 }
 					maxLength
 				/>
-				<TermsAndPrivacyText />
+				<TermsAndPrivacyText privacyPress={privacyPress} termsPress={termsPress} />
 
 				<View style={ { flexDirection: 'row', justifyContent: 'space-between' } }>
 					<CustomButton
@@ -236,7 +257,7 @@ const Login = ({ navigation }) => {
 
 
 				<Text style={ styles.textStyle }>{ 'Need Support to Login?' }</Text>
-				<HelpAndSupportText />
+				<HelpAndSupportText whatPress={whatPress} />
 
 			</ScrollView>
 			<LoadingModal isVisible={loader} />

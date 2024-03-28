@@ -1,5 +1,5 @@
 import { AppState, NativeModules, Platform, StyleSheet, Text, View } from 'react-native'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import customAxios from '../CustomeAxios';
 import AuthContext from '../contexts/Auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -28,7 +28,7 @@ const index = () => {
     const [initialScreen, setInitialScreen] = useState(null);
     const { env, mode } = NativeModules.RNENVConfig
 
-    const { updateCart, getCartDetails } = useContext(CartContext)
+    const { updateCart, cart, getCartDetails } = useContext(CartContext)
 
 
     useEffect(() => {
@@ -71,22 +71,24 @@ const index = () => {
     }, [])
 
 
-    useEffect(async () => {
+    const onAppStateChange = useCallback(async nextAppState => {
         const token = await AsyncStorage.getItem('token');
-        const subscription = AppState.addEventListener('change', async nextAppState => {
 
-            if (nextAppState === 'active') {
-                if(token){
-                    await getCartDetails()
-                    await customAxios.post('customer/login-status-update', { login_status: true })
-                }
-            } else {
-                if(token){
-                    await updateCart()
-                    await customAxios.post('customer/login-status-update', { login_status: false })
-                }
+        if (nextAppState === 'active') {
+            if (token) {
+                await getCartDetails()
+                await customAxios.post('customer/login-status-update', { login_status: true })
             }
-        });
+        } else {
+            if (token) {
+                await updateCart()
+                await customAxios.post('customer/login-status-update', { login_status: false })
+            }
+        }
+    }, [cart])
+
+    useEffect(async () => {
+        const subscription = AppState.addEventListener('change', onAppStateChange);
         return () => {
             subscription.remove();
         };
