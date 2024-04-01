@@ -535,7 +535,7 @@ const SingleProductScreen = ({ route, navigation }) => {
                     views={datas?.viewCount ? data?.viewCount : 0}
                     sold={datas?.order_count}
                     minQty={datas?.minimum_qty}
-                    price={datas?.price}
+                    price={parseInt(datas?.price)?.toFixed(2)}
                     regularPrice={datas?.regular_price}
                     available={datas?.available}
                 />}

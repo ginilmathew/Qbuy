@@ -52,7 +52,7 @@ const CartCard = ({gotoStore, addItem, removeItem, item, width, active, deleteIt
                     </View>
                     {/* {renderPricing()} */}
                     {item?.available && <View style={{ flexDirection: 'row', alignItems: 'center', }}>
-                        <Text style={styles.rateText}>{(!item?.stock || (item?.stock && parseInt(item?.stock_value) >= parseInt(item?.quantity ))) ? `₹ ${item?.price}` : ""}</Text>
+                        <Text style={styles.rateText}>{(!item?.stock || (item?.stock && parseInt(item?.stock_value) >= parseInt(item?.quantity ))) ? `₹ ${parseInt(item?.price)?.toFixed(2)}` : ""}</Text>
                         <CommonCounter
                             count={item?.quantity}
                             addItem={addItem}

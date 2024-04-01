@@ -172,7 +172,7 @@ const ViewDetails = ({ route, navigation }) => {
                                 <View style={{ flex: 0.5 }}>
                                     <Text style={[styles.text1, { textAlign: 'left' }]}>{pri?.charge_name}</Text>
                                 </View>
-                                <Text style={[styles.text1, { textAlign: 'center' }]}>₹ {pri?.price?.toFixed(2)}</Text>
+                                <Text style={[styles.text1, { textAlign: 'center' }]}>₹ {parseInt(pri?.price)?.toFixed(2)}</Text>
                             </View>
                         ))}
                         {

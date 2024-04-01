@@ -1,5 +1,5 @@
 import { NativeModules, RefreshControl, ScrollView, SectionList, StyleSheet, Text, TouchableOpacity, View, useWindowDimensions } from 'react-native'
-import React, { useCallback, useContext } from 'react'
+import React, { useCallback, useContext, useMemo } from 'react'
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query'
 import AuthContext from '../../contexts/Auth'
 import customAxios from '../../CustomeAxios'
@@ -43,6 +43,7 @@ const pandHome = async (datas) => {
         recent: homeData?.data?.data?.[2]?.data,
         category: homeData?.data?.data?.[0]?.data,
         suggestions: homeData?.data?.data?.[4]?.data,
+        count: homeData?.data?.data?.[homeData?.data?.data?.length - 1]?.data,
         messagesBanner
     }
 }
@@ -67,7 +68,7 @@ const PandaHome = ({ navigation }) => {
     }
 
     const { data, isLoading, refetch } = useQuery({
-        queryKey: ['pandaHome'],
+        queryKey: ['pandaHome', active],
         queryFn: () => pandHome(datas),
         notifyOnChangeProps
     })
@@ -199,7 +200,6 @@ const PandaHome = ({ navigation }) => {
     }, []);
 
 
-
     return (
         <>
             <Header
@@ -211,8 +211,9 @@ const PandaHome = ({ navigation }) => {
                 //onClickFashionCat={onClickFashionCat}
                 onClickWishlist={onClickWishlist}
                 onClickNotificatn={onClickNotificatn}
-                // count={23}
+                count={data?.count}
             />
+
             <AvailableProducts
                 styles={styles1}
                 width={width}

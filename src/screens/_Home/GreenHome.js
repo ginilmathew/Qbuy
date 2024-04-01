@@ -48,6 +48,7 @@ const greenHome = async (datas) => {
         items: newArray,
         sliders,
         stores: homeData?.data?.data?.[1],
+        count: homeData?.data?.data?.[homeData?.data?.data?.length - 1]?.data,
         messagesBanner
     }
 }
@@ -82,7 +83,7 @@ const GreenHome = ({ navigation }) => {
 
 
     const { data, isLoading, refetch } = useQuery({
-        queryKey: ['greenHome'],
+        queryKey: ['greenHome', active],
         queryFn: () => greenHome(datas),
         notifyOnChangeProps
     })
@@ -376,6 +377,7 @@ const GreenHome = ({ navigation }) => {
                 //onClickFashionCat={onClickFashionCat}
                 onClickWishlist={onClickWishlist}
                 onClickNotificatn={onClickNotificatn}
+                count={data?.count}
             />
             <View style={styles.container}>
                 <NameText userName={userContext?.userData?.name ? userContext?.userData?.name : userContext?.userData?.mobile} mt={8} />

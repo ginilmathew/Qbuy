@@ -12,6 +12,7 @@ import reactotron from "reactotron-react-native";
 
 const CartProvider = (props) => {
 
+    
     const [cart, setCart] = useState(null);
     const [products, setProducts] = useState(null)
     const [address, setAddress] = useState(null);
@@ -21,9 +22,8 @@ const CartProvider = (props) => {
     const authCOntext = useContext(AuthContext)
     const panda = useContext(PandaContext)
     const [cartProducts, setCartProducts] = useState([])
-
+    
     const userData = authCOntext.userData
-
     // useEffect(() => {
     //     getCartDetails()
     // }, [])
@@ -142,7 +142,7 @@ const CartProvider = (props) => {
                 // cartItems = {
                 //     product_details: cartProducts,
                 //     user_id: userData?._id,
-                //     type: panda.active
+                //     type: panda.active 
                 // }
             }
             else{
@@ -474,8 +474,6 @@ const CartProvider = (props) => {
     }
 
     const updateCart = useCallback(async() => {
-
-
         if(cart){
             loadingContext?.setLoading(true)
             try {

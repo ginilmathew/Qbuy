@@ -45,6 +45,7 @@ const fashionHome = async (datas) => {
         items: newArray,
         sliders,
         stores: homeData?.data?.data?.[1],
+        count: homeData?.data?.data?.[homeData?.data?.data?.length - 1]?.data,
         messagesBanner
     }
 }
@@ -83,7 +84,7 @@ const FashionHome = ({ route, navigation }) => {
 
 
     const { data, isLoading, refetch } = useQuery({
-        queryKey: ['fashionHome'],
+        queryKey: ['fashionHome', active],
         queryFn: () => fashionHome(datas),
         notifyOnChangeProps
     })
@@ -364,6 +365,7 @@ const FashionHome = ({ route, navigation }) => {
                 onClickFashionCat={onClickFashionCat}
                 onClickWishlist={onClickWishlist}
                 onClickNotificatn={onClickNotificatn}
+                count={data?.count}
             />
             <View style={styles.container}>
                 <NameText userName={userContext?.userData?.name ? userContext?.userData?.name : userContext?.userData?.mobile} mt={8} />

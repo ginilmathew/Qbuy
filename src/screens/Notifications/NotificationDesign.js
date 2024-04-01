@@ -16,7 +16,10 @@ const NotificationDesign = ({ data, notData }) => {
     //reactotron.log(data, "DATAPASSED")
     const { mutate } = useMutation({
         mutationKey: 'read_status',
-        mutationFn: readStatus
+        mutationFn: readStatus,
+        onSuccess() {
+            notData()
+        }
     })
 
     const navigation = useNavigation()
@@ -35,9 +38,8 @@ const NotificationDesign = ({ data, notData }) => {
             navigation.navigate('ViewDetails', { item: { _id: data?.order_id } });
         } else if (data?.complaint_id) {
             navigation.navigate('Respo', { item: { _id: data?.complaint_id } })
-        } else {
-            notData()
-        }
+        } 
+    
 
     }, [data])
 

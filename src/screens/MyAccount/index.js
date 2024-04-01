@@ -2,7 +2,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable prettier/prettier */
 import { Image, StyleSheet, Text, View, ScrollView, useWindowDimensions, Modal, TouchableOpacity, Linking, Alert } from 'react-native';
-import React, { useCallback, useContext, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import CommonTexts from '../../Components/CommonTexts';
 import ListCard from './ListCard';
 import CustomButton from '../../Components/CustomButton';
@@ -10,7 +10,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Geolocation from 'react-native-geolocation-service';
 import HeaderWithTitle from '../../Components/HeaderWithTitle';
-import { CommonActions, useNavigation } from '@react-navigation/native';
+import { CommonActions, useFocusEffect, useNavigation } from '@react-navigation/native';
 import PandaContext from '../../contexts/Panda';
 import LogoutModal from './LogoutModal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -22,11 +22,12 @@ import { IMG_URL } from '../../config/constants';
 import reactotron from '../../ReactotronConfig';
 import DeleteUserModal from '../../Components/CustomDeleteModal';
 import AddressContext from '../../contexts/Address';
+import { useMutation, useQuery } from '@tanstack/react-query';
 
 
+const getCoinDetails = (id, type) => customAxios.post('customer/panda-coins/userShow', { user_id: id, type })
 
 const MyAccount = ({ navigation }) => {
-
 
     const { height, width } = useWindowDimensions();
     const contextPanda = useContext(PandaContext);
@@ -34,6 +35,16 @@ const MyAccount = ({ navigation }) => {
     const userContext = useContext(AuthContext);
     const addressContext = useContext(AddressContext)
     let active = contextPanda.active;
+
+    const { mutate, data } = useMutation({
+        mutationKey: ['coin-query'],
+        mutationFn: getCoinDetails
+    })
+
+    useFocusEffect(useCallback(() => {
+        mutate(user?.userData?._id, active);
+    }, [user, active]))
+
 
     const user = useContext(AuthContext);
     let userData = user?.userData;
@@ -48,6 +59,7 @@ const MyAccount = ({ navigation }) => {
     const gotoPandaCoins = useCallback(() => {
         navigation.navigate('PandaCoins');
     }, [navigation]);
+
 
     const gotoAffiliateBonus = useCallback(() => {
         navigation.navigate('AffiliateBonus');
@@ -153,6 +165,9 @@ const MyAccount = ({ navigation }) => {
         navigation.navigate('EditProfile');
     }, [navigation]);
 
+    const navToCoin = useCallback(() => {
+        navigation.navigate('PandaCoins', { data: data?.data?.data })
+    }, [navigation, data])
 
     const aboutPress = useCallback(() => {
         Linking.openURL('https://qbuypanda.com/usage/about')
@@ -193,6 +208,7 @@ const MyAccount = ({ navigation }) => {
         //     Alert.alert('Please install whats app to send direct message to Qbuy support via whats app');
         // })
     }, [])
+
 
     return (
         // <>
@@ -243,6 +259,12 @@ const MyAccount = ({ navigation }) => {
                         onPress={gotoMyAddress}
                         img={active === 'green' ? require('../../Images/addressOrange.png') : active === 'fashion' ? require('../../Images/fashionAddress.png') : require('../../Images/address.png')}
                         label={'My Addresses'}
+                    />
+                    <ListCard
+                        onPress={navToCoin}
+                        img={active === 'green' ? require('../../Images/pandaOrange.jpeg') : active === 'fashion' ? require('../../Images/pandaFashion.png') : require('../../Images/panda.png')}
+                        label={'Panda Coins'}
+                        pandaCoin={data?.data?.data?.coin}
                     />
                     {/* <ListCard
                                 onPress={

@@ -70,10 +70,10 @@ const index = () => {
 
     }, [])
 
-
+    
     const onAppStateChange = useCallback(async nextAppState => {
         const token = await AsyncStorage.getItem('token');
-
+        
         if (nextAppState === 'active') {
             if (token) {
                 await getCartDetails()
