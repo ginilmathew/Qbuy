@@ -315,7 +315,7 @@ const SingleItemScreen = ({ route, navigation }) => {
 
 
     const selectAttributes = (value) => {
-        reactotron.log({value})
+        
         let attri = [];
         let attr = attributes?.map(att => {
             if (att?.options.includes(value)) {
