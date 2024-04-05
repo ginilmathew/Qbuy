@@ -131,10 +131,13 @@ const OrderCard = memo(({ item, refreshOrder }) => {
             .then(async response => {
                 const { data } = response
 
+                reactotron.log({data})
 
                 if (data?.message === "Success") {
-                    payWithPayTM(data?.data)
-                    refreshOrder();
+                    //payWithPayTM(data?.data)
+                    reactotron.log("in")
+                    navigation.push("paybal", { datas: data?.data })
+                    //refreshOrder();
                 } else {
                     Toast.show({ type: 'error', text1: data?.message || "Something went wrong !!!" });
                     refreshOrder();
