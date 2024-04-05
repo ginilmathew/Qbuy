@@ -23,19 +23,19 @@ const MyAccountNav = () => {
     return (
         <Stack.Navigator initialRouteName='MyAccount'  screenOptions={{ headerShown: false }}> 
             <Stack.Screen name="MyAccount" component={MyAccount}/>
-            <Stack.Screen name="MyAddresses" component={MyAddresses}/>
+            {/* <Stack.Screen name="MyAddresses" component={MyAddresses}/> */}
             {/* <Stack.Screen name="LocationScreen" component={LocationScreen}/> */}
             {/* <Stack.Screen name="AddNewLocation" component={AddNewLocation}/> */}
             {/* <Stack.Screen name="AddDeliveryAddress" component={AddDeliveryAddress}/> */}
             <Stack.Screen name="PandaCoins" component={PandaCoins}/>
             <Stack.Screen name="AffiliateBonus" component={AffiliateBonus}/>
             <Stack.Screen name="EditProfile" component={EditProfile}/>
-            <Stack.Screen name="FashionCategory" component={FashionCategory}/>
-            <Stack.Screen name="Category" component={CategoryScreen} />
-            <Stack.Screen name="SingleItemScreen" component={SingleItemScreen} />
-            <Stack.Screen name="SingleHotel" component={SingleHotel} />
-            <Stack.Screen name="store" component={StoreScreen} />
-            <Stack.Screen name="Wishlist" component={Wishlist} />
+            {/* <Stack.Screen name="FashionCategory" component={FashionCategory}/> */}
+            {/* <Stack.Screen name="Category" component={CategoryScreen} /> */}
+            {/* <Stack.Screen name="SingleItemScreen" component={SingleItemScreen} /> */}
+            {/* <Stack.Screen name="SingleHotel" component={SingleHotel} /> */}
+            {/* <Stack.Screen name="store" component={StoreScreen} /> */}
+            {/* <Stack.Screen name="Wishlist" component={Wishlist} /> */}
 
         </Stack.Navigator>
     )

@@ -7,7 +7,7 @@ import { NativeModules } from "react-native"
 
 const { env, mode } = NativeModules.RNENVConfig
 
-const CommonInput = ({ placeholder, control, fieldName, error, inputMode, mt, leftElement, backgroundColor, topLabel, mb, placeholderTextColor, width, maxHeight, top, shadowOpacity, elevation, editable }) => {
+const CommonInput = ({ placeholder, control, fieldName, error, inputMode, mt, leftElement, backgroundColor, topLabel, mb, placeholderTextColor, width, maxHeight, top, shadowOpacity, elevation, editable, minHeight,multi, textChange, values, maxLength }) => {
 
     const contextPanda = useContext(PandaContext)
     let active = contextPanda.active
@@ -28,7 +28,7 @@ const CommonInput = ({ placeholder, control, fieldName, error, inputMode, mt, le
                     backgroundColor: backgroundColor ? backgroundColor : active === 'green' || active === 'fashion' ? '#fff' : '#F2F2F2',
                     borderRadius: 7,
                     marginTop: mt ? mt : 3,
-                    maxHeight: maxHeight ? maxHeight : 45,
+                    maxHeight: maxHeight ? maxHeight : 145,
                     shadowOpacity: shadowOpacity,
                     shadowRadius: 5,
                     elevation: elevation,
@@ -41,7 +41,7 @@ const CommonInput = ({ placeholder, control, fieldName, error, inputMode, mt, le
             >
                 {leftElement && <Image
                     style={styles.logo}
-                    source={ mode === "fashion" ? require('../Images/fashionMobile.png') : require('../Images/mobile.png')}
+                    source={mode === "fashion" ? require('../Images/fashionMobile.png') : require('../Images/mobile.png')}
                 />}
                 <Controller
                     control={control}
@@ -51,19 +51,27 @@ const CommonInput = ({ placeholder, control, fieldName, error, inputMode, mt, le
                     render={({ field: { onChange, onBlur, value } }) => (
                         <TextInput
                             onBlur={onBlur}
-                            onChangeText={onChange}
-                            value={value}
-                            minHeight={50}
+                            onChangeText={(value) => {
+                                onChange(value)
+                                if (textChange) {
+                                    textChange(value)
+                                }
+                            }}
+                            value={values ? values : value}
+                            minHeight={minHeight ? minHeight : 50}
                             placeholder={placeholder}
                             placeholderTextColor={placeholderTextColor ? placeholderTextColor : '#23233C'}
                             inputMode={inputMode}
                             paddingLeft={7}
+                            maxLength={maxLength && 10}
                             fontFamily='Poppins-Regular'
                             fontSize={12}
+                            textAlignVertical='top'
                             color='#23233C'
                             width={width ? width : '100%'}
                             marginTop={Platform.OS === 'android' ? 5 : 1}
                             editable={editable}
+                            multiline={multi}
                         />
                     )}
                     name={fieldName}
@@ -89,5 +97,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Poppins-Regular',
         color: 'red',
         fontSize: 11,
+        marginTop: 10,
+        marginLeft: 2
     }
 })

@@ -25,11 +25,11 @@ const AddDetails = ({navigation}) => {
 	});
 
     const backAction = useCallback(() => {
-        navigation.navigate('Checkout')
+        navigation.navigate('checkout')
     })
 
     const onSave = useCallback(() => {
-        navigation.navigate('Checkout')
+        navigation.navigate('checkout')
     })
 
     return (

@@ -16,30 +16,28 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import customAxios from '../../../CustomeAxios';
 import Toast from 'react-native-toast-message';
 import { CommonActions } from '@react-navigation/native';
-import reactotron from 'reactotron-react-native';
 import { NativeModules } from 'react-native';
-import DeviceInfo from 'react-native-device-info';
-import Geolocation from 'react-native-geolocation-service';
-import axios from 'axios';
 import CommonUpdateModal from '../../../Components/CommonUpdateModal';
 import CartContext from '../../../contexts/Cart';
+import Geolocation from 'react-native-geolocation-service';
+import axios from 'axios';
+import { MAPS_KEY } from '../../../config/constants';
+import messaging from '@react-native-firebase/messaging';
+
+
 const { mode } = NativeModules.RNENVConfig;
 
 const Otp = ({ navigation }) => {
-	const DeviceVersion = DeviceInfo.getVersion();
 	const user = useContext(AuthContext);
 	const loadingg = useContext(LoaderContext);
-	const cartContext = useContext(CartContext)
+	const [disable, setDisable] = useState(false);
+
+	const { getCartDetails } = useContext(CartContext)
 
 	let loader = loadingg?.loading;
-	const [location, setLocation] = useState(null);
 	let mobileNo = user?.login?.mobile;
 
 
-
-
-	const [versionUpdate, setversionUpdate] = useState(false);
-	const [forceUpdate, setForceUpdate] = useState(false);
 
 
 	const schema = yup.object({
@@ -57,41 +55,31 @@ const Otp = ({ navigation }) => {
 	let mask = cardnumber?.substring(2, cardnumber.length - 1).replace(/\d/g, '*');
 	let phoneNum = first2 + mask + last1;
 
+	const [timer, setTimer] = useState(0);
+	const [disableResend, setDisableResend] = useState(false);
+	const resendTimeout = 5; // 60 seconds timeout before allowing resend
 
-	const currentPosition = async() => {
-        await Geolocation.getCurrentPosition(
-            position => {
+	useEffect(() => {
+		let interval;
 
-                reactotron.log({position})
+		if (timer > 0) {
+			interval = setInterval(() => {
+				setTimer(prevTimer => prevTimer - 1);
+			}, 1000);
+		} else {
+			setDisableResend(false); // Enable the Resend OTP button when timer reaches 0
+		}
 
-                //getAddressFromCoordinates(position?.coords?.latitude, position.coords?.longitude)
+		return () => clearInterval(interval);
+	}, [timer]);
 
-                getAddressFromCoordinates(position?.coords?.latitude, position?.coords?.longitude);
-                // userContext.setLocation([position?.coords?.latitude, position.coords?.longitude])
-                
-            },
-            error => {
-                getAddressList()
 
-            },
-            {
-                accuracy: {
-                    android: 'high',
-                    ios: 'best',
-                },
-                enableHighAccuracy: true,
-                timeout: 15000,
-                maximumAge: 10000,
-                distanceFilter: 0,
-                forceRequestLocation: true,
-                forceLocationManager: false,
-                showLocationDialog: true,
-            },
-        );
-    }
+
+	
 
 	const onSubmit = async (data) => {
 		Keyboard.dismiss()
+		setDisable(true);
 		loadingg.setLoading(true);
 		//getCurrentLocation();
 		let datas = {
@@ -105,196 +93,125 @@ const Otp = ({ navigation }) => {
 		await customAxios.post('auth/customerlogin', datas)
 			.then(async response => {
 				user.setUserData(response?.data?.user);
-				AsyncStorage.setItem('token', response?.data?.access_token);
-				AsyncStorage.setItem('user', JSON.stringify(response?.data?.user));
-				const location = await AsyncStorage.getItem("location");
-				if(!user?.location){
-					currentPosition()
-				}
-				else{
-					loadingg.setLoading(false);
-					navigation.dispatch(CommonActions.reset({
-						index: 0,
-						routes: [
-							{ name: 'green' },
-						],
-					}));
-				}
-				
-				if (DeviceVersion * 1 < response?.data?.current_version * 1) {
-					if (DeviceVersion * 1 < response?.data?.current_version * 1 && response?.data?.update) {
-						setversionUpdate(true);
-						setForceUpdate(true);
-		
-					} else if (DeviceVersion * 1 < data?.current_version * 1 && !data?.update) {
-						setversionUpdate(true);
-		
-					}
-				} 
+				await AsyncStorage.setItem('token', response?.data?.access_token);
+				await AsyncStorage.setItem('user', JSON.stringify(response?.data?.user));
+				await messaging().registerDeviceForRemoteMessages();
+				const token = await messaging().getToken();
 
-				//getAddressList()
+				//console.log({ token })
 
-				//VersionManagement(response?.data);
-				// loadingg.setLoading(false);
-				// navigation.navigate(mode)
-				// navigation.navigate('NewUserDetails')
+				let data = {
+					id: response?.data?.user?._id,
+					token: token
+				}
+
+				customAxios.post('auth/update-devicetoken', data)
+				await getCartDetails();
+				currentPosition()
+				// navigation.dispatch(CommonActions.reset({
+				// 	index: 0,
+				// 	routes: [
+				// 		{ name: 'Location' },
+				// 	],
+				// }));
 			})
 			.catch(async error => {
 				Toast.show({
 					type: 'error',
 					text1: error,
 				});
+				setDisable(false)
+			})
+			.finally(() => {
 				loadingg.setLoading(false);
 			});
 	};
 
-	const getAddressList = async () => {
-        //loadingContext.setLoading(true)
-        await customAxios.get('customer/address/list')
-            .then(async response => {
-                if (response?.data?.data?.length > 0) {
-                    if (response?.data?.data?.length === 1) {
-                        user.setLocation([response?.data?.data?.[0]?.area?.latitude, response?.data?.data?.[0]?.area?.longitude])
-                        user?.setCurrentAddress(response?.data?.data?.[0]?.area?.address)
-						cartContext.setDefaultAddress(response?.data?.data?.[0])
-						let location = {
-                            latitude: response?.data?.data?.[0]?.area?.latitude,
-                            longitude: response?.data?.data?.[0]?.area?.longitude,
-                            address: response?.data?.data?.[0]?.area?.address
-                        }
-                        await AsyncStorage.setItem("location", JSON.stringify(location))
-                    }
-                    else {
-                        let defaultAdd = response?.data?.data?.find(add => add?.default === true)
-                        if (defaultAdd) {
-							cartContext.setDefaultAddress(defaultAdd)
-                            user.setLocation([defaultAdd?.area?.latitude, defaultAdd?.area?.longitude])
-                            user?.setCurrentAddress(defaultAdd?.area?.address)
-							let location = {
-								latitude: defaultAdd?.area?.latitude,
-								longitude: defaultAdd?.area?.longitude,
-								address: defaultAdd?.area?.address
-							}
-							await AsyncStorage.setItem("location", JSON.stringify(location))
-                        }
-                        else {
-							cartContext.setDefaultAddress(response?.data?.data?.[0])
-                            user.setLocation([response?.data?.data?.[0]?.area?.latitude, response?.data?.data?.[0]?.area?.longitude])
-                            user?.setCurrentAddress(response?.data?.data?.[0]?.area?.address)
-							let location = {
-								latitude: response?.data?.data?.[0]?.area?.latitude,
-								longitude: response?.data?.data?.[0]?.area?.longitude,
-								address: response?.data?.data?.[0]?.area?.address
-							}
-							await AsyncStorage.setItem("location", JSON.stringify(location))
-                        }
-                    }
-					loadingg.setLoading(false);
-					navigation.dispatch(CommonActions.reset({
-						index: 0,
-						routes: [
-							{ name: 'green' },
-						],
-					}));
 
-					//navigation.navigate('NewUserDetails')
+	const currentPosition = async() => {
+		loadingg.setLoading(true);
+		await Geolocation.getCurrentPosition(
+			position => {
 
-                    //setInitialScreen('green');
-                }
-                else {
-					await Geolocation.getCurrentPosition(
-						position => {
-			
-							//getAddressFromCoordinates(position?.coords?.latitude, position.coords?.longitude)
-			
-							getAddressFromCoordinates(position?.coords?.latitude, position?.coords?.longitude);
-							// userContext.setLocation([position?.coords?.latitude, position.coords?.longitude])
-						},
-						error => {
-							loadingg.setLoading(false);
-							navigation.dispatch(CommonActions.reset({
-								index: 0,
-								routes: [
-									//{ name: 'green'},
-									{ name: 'Location' },
-								],
-							}));
-			
-						},
-						{
-							accuracy: {
-								android: 'high',
-								ios: 'best',
-							},
-							enableHighAccuracy: true,
-							timeout: 15000,
-							maximumAge: 10000,
-							distanceFilter: 0,
-							forceRequestLocation: true,
-							forceLocationManager: false,
-							showLocationDialog: true,
-						},
-					);
-                    
-					//navigation.push('AddNewLocation', { mode: 'home' })
-                }
+				getAddressFromCoordinates(position?.coords?.latitude, position.coords?.longitude)
 
-            })
-            .catch(async error => {
-                //getAddressFromCoordinates()
-                Toast.show({
-                    type: 'error',
-                    text1: error,
-                });
+			},
+			error => {
+				loadingg.setLoading(false);
+				navigation.dispatch(CommonActions.reset({
+					index: 0,
+					routes: [
+						{ name: 'Location' },
+					],
+				}));
 
-            })
-    }
+			},
+			{
+				accuracy: {
+					android: 'high',
+					ios: 'best',
+				},
+				enableHighAccuracy: true,
+				timeout: 15000,
+				maximumAge: 10000,
+				distanceFilter: 0,
+				forceRequestLocation: true,
+				forceLocationManager: false,
+				showLocationDialog: true,
+			},
+		);
+	}
 
 	async function getAddressFromCoordinates(latitude, longitude) {
-        let response = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${latitude},${longitude}&key=AIzaSyBBcghyB0FvhqML5Vjmg3uTwASFdkV8wZY`);
+        let response = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${latitude},${longitude}&key=${MAPS_KEY}`);
+
+        let Value = {
+            location: response?.data?.results[0]?.formatted_address,
+            city: response?.data?.results[0]?.address_components?.filter(st =>
+                st.types?.includes('locality')
+            )[0]?.long_name,
+            latitude: latitude,
+            longitude: longitude,
+        };
 
 
+        //addressContext.setCurrentAddress(Value);
 
-            let Value = {
-                location: response?.data?.results[0]?.formatted_address,
-                city: response?.data?.results[0]?.address_components?.filter(st =>
-                    st.types?.includes('locality')
-                )[0]?.long_name,
-                latitude: latitude,
-                longitude: longitude,
-            };
+        let location = {
+            latitude: latitude,
+            longitude: longitude,
+            address: Value?.location
+        }
 
 
-            //addressContext.setCurrentAddress(Value);
-
-            let location = {
-                latitude: latitude,
-                longitude: longitude,
-                address: Value?.location
-            }
-
-
-            await AsyncStorage.setItem("location", JSON.stringify(location))
-            user.setLocation([latitude, longitude]);
-            user.setCurrentAddress(Value?.location)
-			loadingg.setLoading(false);
-            navigation.dispatch(CommonActions.reset({
-				index: 0,
-				routes: [
-					{ name: 'green' },
-				],
-			}));
+        await AsyncStorage.setItem("location", JSON.stringify(location))
+        user.setLocation([latitude, longitude]);
+        user.setCurrentAddress(response?.data?.results[0]?.formatted_address)
+		loadingg.setLoading(false);
+        navigation.dispatch(CommonActions.reset({
+			index: 0,
+			routes: [
+				{ name: 'home' },
+			],
+		}));
 
     }
+
+	
+
+	
 
 	const onClickResendOtp = async () => {
 		loadingg.setLoading(true);
 		await customAxios.post('auth/customerloginotp', { mobile: mobileNo })
 			.then(async response => {
+
 				Toast.show({
 					type: 'success',
 					text1: response?.data?.message,
 				});
+				setTimer(resendTimeout); // Start the timer for resend timeout
+				setDisableResend(true);
 				loadingg.setLoading(false);
 			})
 			.catch(async error => {
@@ -326,36 +243,9 @@ const Otp = ({ navigation }) => {
 	const NavigationToBack = useCallback(() => { navigation.goBack(); }, [navigation]);
 
 
-	const ColoseUpdateModal = useCallback(() => {
-		setversionUpdate(false);
-		navigation.dispatch(CommonActions.reset({
-			index: 0,
-			routes: [
-				{ name: 'green' }
-			],
-		}))
-	}, [versionUpdate])
+	
 
-	const VersionManagement = (data) => {
-		if (DeviceVersion * 1 < data?.current_version * 1) {
-			if (DeviceVersion * 1 < data?.current_version * 1 && data?.update) {
-				setversionUpdate(true);
-				setForceUpdate(true);
-
-			} else if (DeviceVersion * 1 < data?.current_version * 1 && !data?.update) {
-				setversionUpdate(true);
-
-			}
-		} else {
-			navigation.dispatch(CommonActions.reset({
-				index: 0,
-				routes: [
-					{ name: 'green' },
-				],
-			}));
-			// setversionUpdate(true);
-		}
-	};
+	
 
 	return (
 		<CommonAuthBg>
@@ -378,12 +268,12 @@ const Otp = ({ navigation }) => {
 						} }
 					/>
 					{ errors?.otp && <Text style={ { color: 'red', fontSize: 10 } } > { errors?.otp?.message }</Text> }
-					<TouchableOpacity onPress={ onClickResendOtp }>
+					<TouchableOpacity onPress={ onClickResendOtp } disabled={disableResend}>
 						<CommonTexts
-							label={ 'Resend OTP' }
+								label={timer ? "Try Again in " + timer : "Resend OTP"}
 							mt={ 10 }
 							textAlign="right"
-							color={ '#5871D3' }
+							color={disableResend ? "#C8C8C8" : "#5871D3"}
 						/>
 					</TouchableOpacity>
 
@@ -392,13 +282,14 @@ const Otp = ({ navigation }) => {
 						bg={ mode === 'fashion' ? '#FF7190' : '#58D36E' }
 						label={ 'Confirm' }
 						my={ 20 }
+						disabled={disable}
 						width={ 100 }
 						alignSelf="center"
 						//loading={ loader }
 					/>
 				</SafeAreaView>
 			</ScrollView>
-			{ versionUpdate && <CommonUpdateModal isopen={ versionUpdate } CloseModal={ ColoseUpdateModal } ForceUpdate={ forceUpdate } /> }
+			{/* { versionUpdate && <CommonUpdateModal isopen={ versionUpdate } CloseModal={ ColoseUpdateModal } ForceUpdate={ forceUpdate } /> } */}
 		</CommonAuthBg>
 	);
 };

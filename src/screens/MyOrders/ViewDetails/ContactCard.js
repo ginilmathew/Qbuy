@@ -3,7 +3,7 @@ import React from 'react'
 import CommonTexts from '../../../Components/CommonTexts'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 
-const ContactCard = ({heading,content,iconColor,iconName}) => {
+const ContactCard = ({heading,content,iconColor,iconName, onpress}) => {
     return (
         <View style={{marginTop:20}}>
             <CommonTexts label={heading} fontSize={19}/>
@@ -14,7 +14,7 @@ const ContactCard = ({heading,content,iconColor,iconName}) => {
                     >{content}</Text>
 
                 </View>
-                <TouchableOpacity style={{width:40,height:40, borderRadius:30, backgroundColor: iconColor, alignItems:'center', justifyContent:'center'}}>
+                <TouchableOpacity style={{width:40,height:40, borderRadius:30, backgroundColor: iconColor, alignItems:'center', justifyContent:'center'}} onPress={onpress ? onpress : null}>
                     
                     <Ionicons name={iconName} color={'#fff'} size={20}/>
 

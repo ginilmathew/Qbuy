@@ -1,7 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable prettier/prettier */
-import { StyleSheet, Text, View, Image, ScrollView, ActivityIndicator, ToastAndroid, useWindowDimensions, PermissionsAndroid, Platform, Keyboard } from 'react-native';
+import { StyleSheet, Text, View, Image, ScrollView, ActivityIndicator, ToastAndroid, useWindowDimensions, PermissionsAndroid, Platform, Keyboard, Linking } from 'react-native';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -28,6 +28,8 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AddressContext from '../../../contexts/Address';
 import LoadingModal from '../../../Components/LoadingModal';
+import messaging from '@react-native-firebase/messaging';
+
 
 const { env, mode } = NativeModules.RNENVConfig;
 
@@ -39,14 +41,16 @@ const Login = ({ navigation }) => {
 
 	useEffect(() => {
 		//reactotron.log("in")
-		getPermissions()
+		if(Platform.OS === 'android'){
+			getPermissions()
+		}
+		
 		//SplashScreen.hide();
 	}, []);
 
 	const getPermissions = async() => {
 		const status = await PermissionsAndroid.requestMultiple([PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION]);
 
-		reactotron.log({status})
 
 		// if(status?.['android.permission.ACCESS_FINE_LOCATION'] === "granted"){
 		// 	getPosition()
@@ -66,7 +70,7 @@ const Login = ({ navigation }) => {
 
 	const phone = /^(\+\d{1,3}[- ]?)?\d{10}$/;
 	const schema = yup.object({
-		mobile: yup.string().required('Phone number is required').max(10, 'Phone Number must be 10 digits').min(10, 'Phone Number must be 10 digits').matches(phone, 'Not a valid number'),
+		mobile: yup.string().required('Mobile number is required').max(10, 'Mobile Number must be 10 digits').min(10, 'Mobile Number must be 10 digits').matches(phone, 'Not a valid number'),
 	}).required();
 
 	const { control, handleSubmit, formState: { errors }, setValue } = useForm({
@@ -82,6 +86,10 @@ const Login = ({ navigation }) => {
 		await customAxios.post('auth/customerloginotp', data)
 			.then(async response => {
 				setData(response?.data?.data);
+
+				// Register the device with FCM
+				let userDetails = await AsyncStorage.getItem("user");
+
 				loadingg.setLoading(false);
 				navigation.navigate('Otp');
 			})
@@ -128,7 +136,7 @@ const Login = ({ navigation }) => {
             userContext.setLocation([latitude, longitude]);
             userContext.setCurrentAddress(Value?.location)
 			loadingg.setLoading(false);
-			navigation.navigate('green')
+			navigation.navigate('home')
             //navigation.navigate('LocationScreen', { mode: 'home' });
 
     }
@@ -137,12 +145,33 @@ const Login = ({ navigation }) => {
 
 
 
-
+	const termsPress = useCallback(() => {
+		Linking.openURL('https://qbuypanda.com/usage/toc')
+	}, [])
 	
 
+	const privacyPress = useCallback(() => {
+		Linking.openURL('https://qbuypanda.com/usage/privacy')
+	}, [])
 
-
-	
+	const whatPress = useCallback(() => {
+		Linking.canOpenURL('whatsapp://send?text=&phone=8137009905')
+			.then(supported => {
+				if (!supported) {
+					Alert.alert(
+						'Please install whats app to send direct message to Qbuy support via whatsapp'
+					);
+				} else {
+					return Linking.openURL('whatsapp://send?text= &phone=8137009905');
+				}
+			})
+			.catch(err => console.error('An error occurred', err));
+		// Linking.openURL('whatsapp://send?text=&phone=8137009905')
+		// .then()
+		// .catch(err => {
+		//     Alert.alert('Please install whats app to send direct message to Qbuy support via whats app');
+		// })
+	}, [])
 
 	const NaviagteToGuest = useCallback(async() => {
 		loadingg.setLoading(true);
@@ -170,30 +199,6 @@ const Login = ({ navigation }) => {
 				showLocationDialog: true,
 			},
 		);
-		// let location = await AsyncStorage.getItem("location");
-
-		// if(location){
-		// 	navigation.navigate('green')
-		// }
-		// else{
-		// 	navigation.navigate('AddNewLocation')
-		// }
-
-		// userContext.setLocation([position?.latitude, position?.longitude]);
-		// userContext.setCurrentAddress(address)
-		// setInitialScreen('green');
-		// if (userContext?.location) {
-		// 	navigation.dispatch(
-		// 		CommonActions.reset({
-		// 			index: 0,
-		// 			routes: [
-		// 				{ name: 'green' },
-		// 			],
-		// 		})
-		// 	);
-		// } else {
-		// 	getCurrentLocation();
-		// }
 
 
 	}, [navigation]);
@@ -226,8 +231,9 @@ const Login = ({ navigation }) => {
 					backgroundColor="#fff"
 					shadowOpacity={ 0.1 }
 					elevation={ 2 }
+					maxLength
 				/>
-				<TermsAndPrivacyText />
+				<TermsAndPrivacyText privacyPress={privacyPress} termsPress={termsPress} />
 
 				<View style={ { flexDirection: 'row', justifyContent: 'space-between' } }>
 					<CustomButton
@@ -251,7 +257,7 @@ const Login = ({ navigation }) => {
 
 
 				<Text style={ styles.textStyle }>{ 'Need Support to Login?' }</Text>
-				<HelpAndSupportText />
+				<HelpAndSupportText whatPress={whatPress} />
 
 			</ScrollView>
 			<LoadingModal isVisible={loader} />

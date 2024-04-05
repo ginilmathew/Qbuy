@@ -5,7 +5,6 @@ import FastImage from 'react-native-fast-image'
 import CommonCounter from '../../Components/CommonCounter'
 import { useNavigation } from '@react-navigation/native'
 import PandaContext from '../../contexts/Panda'
-import CommonSelectDropdown from '../../Components/CommonSelectDropdown'
 import { IMG_URL } from '../../config/constants'
 import customAxios from '../../CustomeAxios'
 import CartContext from '../../contexts/Cart'
@@ -278,7 +277,6 @@ const CartItemCard = ({ item, index, refreshCart }) => {
             </View>
 
         </View>
-
     )
 }
 

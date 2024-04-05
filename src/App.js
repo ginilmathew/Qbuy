@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, SafeAreaView, Platform, AppState, PermissionsAndroid, NativeModules } from 'react-native'
+import { StyleSheet, Text, View, SafeAreaView, Platform, AppState, PermissionsAndroid, NativeModules, Linking } from 'react-native'
 import React, { useCallback, useEffect } from 'react'
 import Navigation from './Navigations'
 import PandaProvider from './contexts/Panda/PandaContext'
@@ -8,7 +8,7 @@ import store from './Redux/store'
 import LoadProvider from './contexts/Loader/loaderContext'
 import Route from './Route'
 import CartProvider from './contexts/Cart/CartContext'
-import Toast from 'react-native-toast-message';
+import Toast, { ErrorToast } from 'react-native-toast-message';
 import AddressProvider from './contexts/Address/AddressContext'
 import Geolocation from 'react-native-geolocation-service';
 import RouteTest from './RouteText'
@@ -27,6 +27,10 @@ import notifee, { AndroidImportance, AndroidStyle, EventType } from '@notifee/re
 import { NavigationContainer } from '@react-navigation/native'
 import { navigationRef } from './Navigations/RootNavigation'
 import Routes from './Routes'
+import NetInfo from '@react-native-community/netinfo'
+import { onlineManager } from '@tanstack/react-query'
+import {requestMultiple, PERMISSIONS, requestNotifications, request} from 'react-native-permissions';
+
 
 
 const { mode, env } = NativeModules.RNENVConfig
@@ -48,18 +52,25 @@ const App = (props) => {
         if (Platform.OS !== 'web') {
             focusManager.setFocused(status === 'active')
         }
+
+        
     }
 
+    
+
     useEffect(() => {
+        onlineManager.setEventListener(setOnline => {
+            return NetInfo.addEventListener(state => {
+              setOnline(!!state.isConnected)
+            })
+        })
         const subscription = AppState.addEventListener('change', onAppStateChange)
         SplashScreen.hide();
         return () => subscription.remove()
     }, [])
 
 
-    if (Platform.OS === 'ios') {
-        //SplashScreen.hide()
-    }
+    
 
     useEffect(() => {
         //getCurrentLocation()
@@ -70,8 +81,6 @@ const App = (props) => {
     async function onMessageReceived(message) {
 
         const { notification } = message
-
-        reactotron.log({ message })
 
 
         // Display a notification
@@ -127,39 +136,51 @@ const App = (props) => {
         .subscribeToTopic(`${mode}_${env}_customer_general`)
         .then(() => console.log('Subscribed to topic!'));
         // Register the device with FCM
-        let userDetails = await AsyncStorage.getItem("user");
-        await messaging().registerDeviceForRemoteMessages();
-        const token = await messaging().getToken();
 
-        //console.log({ token })
-
-        if (userDetails) {
-            let user = JSON.parse(userDetails)
-
-            // reactotron.log({ user })
-            // Get the token
-
-
-            let data = {
-                id: user?._id,
-                token: token
+         // Set up background message handler
+         messaging().setBackgroundMessageHandler(async remoteMessage => {
+            //reactotron.log('Message handled in the background!', remoteMessage);
+            // Handle deep linking here based on the received message
+            if (remoteMessage?.data?.order_id) {
+                navigationRef.navigate('ViewDetails', { item: { _id: remoteMessage?.data?.order_id } });
+            } else if (remoteMessage?.data?.product_url) {
+                navigationRef.navigate('SingleItemScreen', { item: { _id: remoteMessage?.data?.product_url } });
+            } else if (remoteMessage?.data?.complaint_id) {
+                navigationRef.navigate('Respo', { item: { _id: remoteMessage?.data?.complaint_id } });
             }
-            customAxios.post('auth/update-devicetoken', data)
-                .then(response => {
-                    // reactotron.log({ response })
-                })
-                .catch(err => {
-                    // reactotron.log({ err })
-                })
-            // reactotron.log({ token })
-
-        }
-
+        });
     }
 
 
     useEffect(() => {
+
         const unsubscribe = messaging().onMessage(onMessageReceived);
+
+        return unsubscribe;
+    }, []);
+
+    // Subscribe to events
+    useEffect(() => {
+        const unsubscribe = notifee.onForegroundEvent(({ type, detail }) => {
+            // console.log(detail.notification.data);
+
+            switch (type) {
+                case EventType.DISMISSED:
+                    break;
+                case EventType.PRESS:
+                    const data = detail?.notification?.data;
+
+                    if (data?.order_id) {
+                        navigationRef.navigate('ViewDetails', { item: { _id: data?.order_id } })
+                    } else if (data?.product_url) {
+                        navigationRef.navigate('SingleItemScreen', { item: { _id: data?.product_url } })
+                    } else if (data?.complaint_id) {
+                        navigationRef.navigate('Respo', { item: { _id: data?.complaint_id } })
+                    }
+
+                    break;
+            }
+        });
 
         return unsubscribe;
     }, []);
@@ -168,19 +189,27 @@ const App = (props) => {
 
     async function requestUserPermission() {
 
+        
+
+
+
         if (Platform.OS === 'android') {
-            const status = await PermissionsAndroid.requestMultiple([PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION]);
+            let permissions = await requestMultiple([PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION, PERMISSIONS.ANDROID.POST_NOTIFICATIONS])
+            // const status = await PermissionsAndroid.requestMultiple([PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION]);
+            
         }
         else{
+            let location = await request(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE);
+
+
             const authStatus = await messaging().requestPermission();
             const enabled =
                 authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
                 authStatus === messaging.AuthorizationStatus.PROVISIONAL;
     
             if (enabled) {
-                // console.log('Authorization status:', authStatus);
             }
-            const status = await Geolocation.requestAuthorization('whenInUse');
+            //const status = await Geolocation.requestAuthorization('whenInUse');
         }
        
         //getCurrentLocation()
@@ -188,7 +217,9 @@ const App = (props) => {
 
     
 
-
+    const linking = {
+        prefixes: ['qbuypanda://', 'referBy://'],
+    };
      
 
 
@@ -202,12 +233,17 @@ const App = (props) => {
                             <PandaProvider>
                                 <CartProvider>
                                     {/* <AppWithTour/> */}
-                                    <NavigationContainer ref={navigationRef}>
-                                        <RouteTest />
-                                        {/* <Routes /> */}
+                                    <NavigationContainer ref={navigationRef} linking={linking} fallback={<Text>Loading...</Text>}>
+                                        {/* <RouteTest /> */}
+                                        <Routes />
                                     </NavigationContainer>
                                     
                                     <Toast
+                                        config={{
+                                            Error: (props) => (
+                                                <ErrorToast />
+                                            )
+                                        }}
                                         position='bottom'
                                         bottomOffset={20}
                                     />

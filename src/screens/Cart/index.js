@@ -16,7 +16,6 @@ import React, { useCallback, useContext, useEffect, useState } from 'react';
 import CustomButton from '../../Components/CustomButton';
 import HeaderWithTitle from '../../Components/HeaderWithTitle';
 import CartItemCard from './CartItemCard';
-import CommonItemsList from '../../Components/CommonItemsList';
 import PandaContext from '../../contexts/Panda';
 import LottieView from 'lottie-react-native';
 import CommonTexts from '../../Components/CommonTexts';
@@ -29,6 +28,7 @@ import Toast from 'react-native-toast-message';
 import LoaderContext from '../../contexts/Loader';
 import moment from 'moment';
 import reactotron from 'reactotron-react-native';
+import { getProducts } from '../../helper/homeProductsHelper';
 
 const Cart = ({ navigation }) => {
     const contextPanda = useContext(PandaContext);
@@ -47,284 +47,283 @@ const Cart = ({ navigation }) => {
     const [cartItemsList, setCartItemsList] = useState([]);
 
     const getCartItems = async () => {
-        if (cartContext?.cart?._id) {
-            loadingg.setLoading(true);
-            await customAxios
-                .get(`customer/cart/show/${cartContext?.cart?._id}`)
-                .then(async response => {
-                    let products = response?.data?.data?.product_details;
+        loadingg.setLoading(true);
+        await customAxios.get(`customer/cart/show/${active}`)
+        .then(async response => {
+            let products = response?.data?.data?.product_details;
+            let datas = products?.map(prod => prod?.productdata)
 
-                    // cartContext?.setCart(response?.data?.data)
+            let allProds = await getProducts(datas)
 
-                    let finalProducts = [];
-                    //let quantity = pro?.quantity ? parseFloat(pro?.quantity) : 0
-                    products?.map(pro => {
-                        let quantity = pro?.quantity ? parseFloat(pro?.quantity) : 0;
-                        let type = pro?.type;
-                        let offer,
-                            regular,
-                            comm,
-                            seller,
-                            delivery,
-                            minQty,
-                            stock,
-                            fromDate,
-                            toDate,
-                            stock_value,
-                            product;
-                        if (type === 'single') {
-                            offer = pro?.productdata?.offer_price
-                                ? parseFloat(pro?.productdata?.offer_price)
-                                : 0;
-                            regular = pro?.productdata?.regular_price
-                                ? parseFloat(pro?.productdata?.regular_price)
-                                : 0;
-                            comm = pro?.productdata?.commission
-                                ? pro?.productdata?.commission
-                                : pro?.productdata?.vendors?.additional_details?.commission
-                                    ? pro?.productdata?.vendors?.additional_details?.commission
-                                    : 0;
-                            seller = pro?.productdata?.seller_price
-                                ? parseFloat(pro?.productdata?.seller_price)
-                                : 0;
-                            delivery = pro?.productdata?.fixed_delivery_price
-                                ? parseFloat(pro?.productdata?.fixed_delivery_price)
-                                : 0;
-                            minQty = pro?.productdata?.minimum_qty
-                                ? parseFloat(pro?.productdata?.minimum_qty)
-                                : 0;
-                            stock = pro?.productdata?.stock;
-                            fromDate = moment(pro?.productdata?.offer_date_from).isValid()
-                                ? moment(pro?.productdata?.offer_date_from, 'YYYY-MM-DD')
-                                : null;
-                            toDate = moment(pro?.productdata?.offer_date_to).isValid()
-                                ? moment(pro?.productdata?.offer_date_to, 'YYYY-MM-DD')
-                                : null;
-                            stock_value = pro?.productdata?.stock_value
-                                ? parseFloat(pro?.productdata?.stock_value)
-                                : 0;
-                            product = {
-                                store_address: pro?.productdata?.vendors.store_address,
-                                product_id: pro?.product_id,
-                                name: pro?.name,
-                                image: pro?.image,
-                                type: pro?.type,
-                                // quantity: quantity >= minQty ? quantity : minQty,
-                                quantity: quantity,
-                                stock: stock,
-                                delivery,
-                                commission: comm,
-                                minimum_qty: minQty,
-                                stock_value,
-                                store: pro?.productdata?.store,
-                                status: pro?.productdata?.status,
-                                availability: pro?.availability,
-                                attributes: pro?.attributes
-                            };
-                        } else {
-                            (store_address = pro?.productdata?.vendors.store_address),
-                                (offer = pro?.variants?.offer_price
-                                    ? parseFloat(pro?.variants?.offer_price)
-                                    : 0);
-                            regular = pro?.variants?.regular_price
-                                ? parseFloat(pro?.variants?.regular_price)
-                                : 0;
-                            comm = pro?.variants?.commission
-                                ? pro?.variants?.commission
-                                : pro?.productdata?.vendors?.additional_details?.commission
-                                    ? pro?.productdata?.vendors?.additional_details?.commission
-                                    : 0;
-                            seller = pro?.variants?.seller_price
-                                ? parseFloat(pro?.variants?.seller_price)
-                                : 0;
-                            delivery = pro?.variants?.fixed_delivery_price
-                                ? parseFloat(pro?.variants?.fixed_delivery_price)
-                                : 0;
-                            minQty = pro?.productdata?.minimum_qty
-                                ? parseFloat(pro?.productdata?.minimum_qty)
-                                : 0;
-                            stock = pro?.productdata?.stock;
-                            fromDate = moment(pro?.variants?.offer_date_from).isValid()
-                                ? moment(pro?.variants?.offer_date_from, 'YYYY-MM-DD')
-                                : null;
-                            toDate = moment(pro?.variants?.offer_date_to).isValid()
-                                ? moment(pro?.variants?.offer_date_to, 'YYYY-MM-DD')
-                                : null;
-                            stock_value = pro?.variants?.stock_value
-                                ? parseFloat(pro?.variants?.stock_value)
-                                : 0;
-                            product = {
-                                store_address: pro?.productdata?.vendors.store_address,
-                                product_id: pro?.product_id,
-                                variant_id: pro?.variants?._id,
-                                attributs: pro?.variants?.attributs,
-                                name: pro?.name,
-                                image: pro?.image,
-                                type: type,
-                                // quantity: quantity >= minQty ? quantity : minQty,
-                                quantity: quantity,
-                                stock: stock,
-                                delivery,
-                                commission: comm,
-                                minimum_qty: minQty,
-                                attributes: pro?.attributes,
-                                stock_value,
-                                store: pro?.productdata?.store,
-                                status: pro?.productdata?.status,
-                                availability: pro?.availability,
-                            };
-                        }
 
-                        if (product?.status !== 'active') {
-                            product.available = false;
-                            finalProducts.push(product);
-                        }
+            // cartContext?.setCart(response?.data?.data)
 
-                        if (product?.status === 'active') {
-                            if (stock) {
-                                //products have stock
-                                if (quantity <= stock_value) {
-                                    //required quantity available
-                                    product.available = true;
-                                    if (offer > 0) {
-                                        if (
-                                            moment(fromDate, 'YYYY-MM-DD') <=
-                                            moment(moment().format('YYYY-MM-DD'), 'YYYY-MM-DD') &&
-                                            moment(toDate, 'YYYY-MM-DD') >=
-                                            moment(moment().format('YYYY-MM-DD'), 'YYYY-MM-DD')
-                                        ) {
-                                            let finalPrice = offer * quantity;
-                                            product.price = finalPrice;
-                                            finalProducts.push(product);
-                                        } else if (fromDate && !toDate) {
-                                            if (
-                                                moment(moment().format('YYYY-MM-DD'), 'YYYY-MM-DD') >=
-                                                fromDate
-                                            ) {
-                                                let finalPrice = offer * quantity;
-                                                product.price = finalPrice;
-                                                finalProducts.push(product);
-                                            } else if (regular > 0) {
-                                                let finalPrice = regular * quantity;
-                                                product.price = finalPrice;
-                                                finalProducts.push(product);
-                                            } else {
-                                                let commission = (seller / 100) * comm;
-                                                let amount = (seller + commission) * quantity;
-                                                product.price = amount;
-                                                finalProducts.push(product);
-                                            }
-                                        } else if (!fromDate && !toDate) {
-                                            let finalPrice = offer * quantity;
-                                            product.price = finalPrice;
-                                            finalProducts.push(product);
-                                        } else {
-                                            if (regular > 0) {
-                                                let finalPrice = regular * quantity;
-                                                product.price = finalPrice;
-                                                finalProducts.push(product);
-                                            } else {
-                                                let commission = (seller / 100) * comm;
-                                                let amount = (seller + commission) * quantity;
-                                                product.price = amount;
-                                                finalProducts.push(product);
-                                            }
-                                        }
-                                    } else if (regular > 0) {
-                                        let finalPrice = regular * quantity;
-                                        product.price = finalPrice;
-                                        finalProducts.push(product);
-                                    } else {
-                                        let commission = (seller / 100) * comm;
-                                        let amount = (seller + commission) * quantity;
-                                        product.price = amount;
-                                        finalProducts.push(product);
-                                    }
-                                } else {
-                                    product.available = false;
-                                    finalProducts.push(product);
-                                }
-                            } else {
-                                product.available = true;
-                                if (offer > 0) {
-                                    if (
-                                        moment(fromDate, 'YYYY-MM-DD') <=
-                                        moment(moment().format('YYYY-MM-DD'), 'YYYY-MM-DD') &&
-                                        moment(toDate, 'YYYY-MM-DD') >=
-                                        moment(moment().format('YYYY-MM-DD'), 'YYYY-MM-DD')
-                                    ) {
-                                        let finalPrice = offer * quantity;
-                                        product.price = finalPrice;
-                                        finalProducts.push(product);
-                                    } else if (fromDate && !toDate) {
-                                        if (
-                                            moment(moment().format('YYYY-MM-DD'), 'YYYY-MM-DD') >=
-                                            fromDate
-                                        ) {
-                                            let finalPrice = offer * quantity;
-                                            product.price = finalPrice;
-                                            finalProducts.push(product);
-                                        } else if (regular > 0) {
-                                            let finalPrice = regular * quantity;
-                                            product.price = finalPrice;
-                                            finalProducts.push(product);
-                                        } else {
-                                            let commission = (seller / 100) * comm;
-                                            let amount = (seller + commission) * quantity;
-                                            product.price = amount;
-                                            finalProducts.push(product);
-                                        }
-                                    } else if (!fromDate && !toDate) {
-                                        let finalPrice = offer * quantity;
-                                        product.price = finalPrice;
-                                        finalProducts.push(product);
-                                    } else {
-                                        if (regular > 0) {
-                                            let finalPrice = regular * quantity;
-                                            product.price = finalPrice;
-                                            finalProducts.push(product);
-                                        } else {
-                                            let commission = (seller / 100) * comm;
-                                            let amount = (seller + commission) * quantity;
-                                            product.price = amount;
-                                            finalProducts.push(product);
-                                        }
-                                    }
-                                } else if (regular > 0) {
-                                    let finalPrice = regular * quantity;
-                                    product.price = finalPrice;
-                                    finalProducts.push(product);
-                                } else {
-                                    let commission = (seller / 100) * comm;
-                                    let amount = (seller + commission) * quantity;
-                                    product.price = amount;
-                                    finalProducts.push(product);
-                                }
-                            }
-                        }
-                    });
-                    setCartItemsList(finalProducts);
-                    // loadingg.setLoading(false)
+            //let finalProducts = [];
+            //let quantity = pro?.quantity ? parseFloat(pro?.quantity) : 0
+            // products?.map(pro => {
+            //     let quantity = pro?.quantity ? parseFloat(pro?.quantity) : 0;
+            //     let type = pro?.type;
+            //     let offer,
+            //         regular,
+            //         comm,
+            //         seller,
+            //         delivery,
+            //         minQty,
+            //         stock,
+            //         fromDate,
+            //         toDate,
+            //         stock_value,
+            //         product;
+            //     if (type === 'single') {
+            //         offer = pro?.productdata?.offer_price
+            //             ? parseFloat(pro?.productdata?.offer_price)
+            //             : 0;
+            //         regular = pro?.productdata?.regular_price
+            //             ? parseFloat(pro?.productdata?.regular_price)
+            //             : 0;
+            //         comm = pro?.productdata?.commission
+            //             ? pro?.productdata?.commission
+            //             : pro?.productdata?.vendors?.additional_details?.commission
+            //                 ? pro?.productdata?.vendors?.additional_details?.commission
+            //                 : 0;
+            //         seller = pro?.productdata?.seller_price
+            //             ? parseFloat(pro?.productdata?.seller_price)
+            //             : 0;
+            //         delivery = pro?.productdata?.fixed_delivery_price
+            //             ? parseFloat(pro?.productdata?.fixed_delivery_price)
+            //             : 0;
+            //         minQty = pro?.productdata?.minimum_qty
+            //             ? parseFloat(pro?.productdata?.minimum_qty)
+            //             : 0;
+            //         stock = pro?.productdata?.stock;
+            //         fromDate = moment(pro?.productdata?.offer_date_from).isValid()
+            //             ? moment(pro?.productdata?.offer_date_from, 'YYYY-MM-DD')
+            //             : null;
+            //         toDate = moment(pro?.productdata?.offer_date_to).isValid()
+            //             ? moment(pro?.productdata?.offer_date_to, 'YYYY-MM-DD')
+            //             : null;
+            //         stock_value = pro?.productdata?.stock_value
+            //             ? parseFloat(pro?.productdata?.stock_value)
+            //             : 0;
+            //         product = {
+            //             store_address: pro?.productdata?.vendors.store_address,
+            //             product_id: pro?.product_id,
+            //             name: pro?.name,
+            //             image: pro?.image,
+            //             type: pro?.type,
+            //             // quantity: quantity >= minQty ? quantity : minQty,
+            //             quantity: quantity,
+            //             stock: stock,
+            //             delivery,
+            //             commission: comm,
+            //             minimum_qty: minQty,
+            //             stock_value,
+            //             store: pro?.productdata?.store,
+            //             status: pro?.productdata?.status,
+            //             availability: pro?.availability,
+            //             attributes: pro?.attributes
+            //         };
+            //     } else {
+            //         (store_address = pro?.productdata?.vendors.store_address),
+            //             (offer = pro?.variants?.offer_price
+            //                 ? parseFloat(pro?.variants?.offer_price)
+            //                 : 0);
+            //         regular = pro?.variants?.regular_price
+            //             ? parseFloat(pro?.variants?.regular_price)
+            //             : 0;
+            //         comm = pro?.variants?.commission
+            //             ? pro?.variants?.commission
+            //             : pro?.productdata?.vendors?.additional_details?.commission
+            //                 ? pro?.productdata?.vendors?.additional_details?.commission
+            //                 : 0;
+            //         seller = pro?.variants?.seller_price
+            //             ? parseFloat(pro?.variants?.seller_price)
+            //             : 0;
+            //         delivery = pro?.variants?.fixed_delivery_price
+            //             ? parseFloat(pro?.variants?.fixed_delivery_price)
+            //             : 0;
+            //         minQty = pro?.productdata?.minimum_qty
+            //             ? parseFloat(pro?.productdata?.minimum_qty)
+            //             : 0;
+            //         stock = pro?.productdata?.stock;
+            //         fromDate = moment(pro?.variants?.offer_date_from).isValid()
+            //             ? moment(pro?.variants?.offer_date_from, 'YYYY-MM-DD')
+            //             : null;
+            //         toDate = moment(pro?.variants?.offer_date_to).isValid()
+            //             ? moment(pro?.variants?.offer_date_to, 'YYYY-MM-DD')
+            //             : null;
+            //         stock_value = pro?.variants?.stock_value
+            //             ? parseFloat(pro?.variants?.stock_value)
+            //             : 0;
+            //         product = {
+            //             store_address: pro?.productdata?.vendors.store_address,
+            //             product_id: pro?.product_id,
+            //             variant_id: pro?.variants?._id,
+            //             attributs: pro?.variants?.attributs,
+            //             name: pro?.name,
+            //             image: pro?.image,
+            //             type: type,
+            //             // quantity: quantity >= minQty ? quantity : minQty,
+            //             quantity: quantity,
+            //             stock: stock,
+            //             delivery,
+            //             commission: comm,
+            //             minimum_qty: minQty,
+            //             attributes: pro?.attributes,
+            //             stock_value,
+            //             store: pro?.productdata?.store,
+            //             status: pro?.productdata?.status,
+            //             availability: pro?.availability,
+            //         };
+            //     }
 
-                    // setSingleProduct(response?.data?.data)
-                    loadingg.setLoading(false);
-                })
-                .catch(async error => {
-                    loadingg.setLoading(false);
-                    Toast.show({
-                        type: 'error',
-                        text1: error,
-                    });
-                });
-        }
+            //     if (product?.status !== 'active') {
+            //         product.available = false;
+            //         finalProducts.push(product);
+            //     }
+
+            //     if (product?.status === 'active') {
+            //         if (stock) {
+            //             //products have stock
+            //             if (quantity <= stock_value) {
+            //                 //required quantity available
+            //                 product.available = true;
+            //                 if (offer > 0) {
+            //                     if (
+            //                         moment(fromDate, 'YYYY-MM-DD') <=
+            //                         moment(moment().format('YYYY-MM-DD'), 'YYYY-MM-DD') &&
+            //                         moment(toDate, 'YYYY-MM-DD') >=
+            //                         moment(moment().format('YYYY-MM-DD'), 'YYYY-MM-DD')
+            //                     ) {
+            //                         let finalPrice = offer * quantity;
+            //                         product.price = finalPrice;
+            //                         finalProducts.push(product);
+            //                     } else if (fromDate && !toDate) {
+            //                         if (
+            //                             moment(moment().format('YYYY-MM-DD'), 'YYYY-MM-DD') >=
+            //                             fromDate
+            //                         ) {
+            //                             let finalPrice = offer * quantity;
+            //                             product.price = finalPrice;
+            //                             finalProducts.push(product);
+            //                         } else if (regular > 0) {
+            //                             let finalPrice = regular * quantity;
+            //                             product.price = finalPrice;
+            //                             finalProducts.push(product);
+            //                         } else {
+            //                             let commission = (seller / 100) * comm;
+            //                             let amount = (seller + commission) * quantity;
+            //                             product.price = amount;
+            //                             finalProducts.push(product);
+            //                         }
+            //                     } else if (!fromDate && !toDate) {
+            //                         let finalPrice = offer * quantity;
+            //                         product.price = finalPrice;
+            //                         finalProducts.push(product);
+            //                     } else {
+            //                         if (regular > 0) {
+            //                             let finalPrice = regular * quantity;
+            //                             product.price = finalPrice;
+            //                             finalProducts.push(product);
+            //                         } else {
+            //                             let commission = (seller / 100) * comm;
+            //                             let amount = (seller + commission) * quantity;
+            //                             product.price = amount;
+            //                             finalProducts.push(product);
+            //                         }
+            //                     }
+            //                 } else if (regular > 0) {
+            //                     let finalPrice = regular * quantity;
+            //                     product.price = finalPrice;
+            //                     finalProducts.push(product);
+            //                 } else {
+            //                     let commission = (seller / 100) * comm;
+            //                     let amount = (seller + commission) * quantity;
+            //                     product.price = amount;
+            //                     finalProducts.push(product);
+            //                 }
+            //             } else {
+            //                 product.available = false;
+            //                 finalProducts.push(product);
+            //             }
+            //         } else {
+            //             product.available = true;
+            //             if (offer > 0) {
+            //                 if (
+            //                     moment(fromDate, 'YYYY-MM-DD') <=
+            //                     moment(moment().format('YYYY-MM-DD'), 'YYYY-MM-DD') &&
+            //                     moment(toDate, 'YYYY-MM-DD') >=
+            //                     moment(moment().format('YYYY-MM-DD'), 'YYYY-MM-DD')
+            //                 ) {
+            //                     let finalPrice = offer * quantity;
+            //                     product.price = finalPrice;
+            //                     finalProducts.push(product);
+            //                 } else if (fromDate && !toDate) {
+            //                     if (
+            //                         moment(moment().format('YYYY-MM-DD'), 'YYYY-MM-DD') >=
+            //                         fromDate
+            //                     ) {
+            //                         let finalPrice = offer * quantity;
+            //                         product.price = finalPrice;
+            //                         finalProducts.push(product);
+            //                     } else if (regular > 0) {
+            //                         let finalPrice = regular * quantity;
+            //                         product.price = finalPrice;
+            //                         finalProducts.push(product);
+            //                     } else {
+            //                         let commission = (seller / 100) * comm;
+            //                         let amount = (seller + commission) * quantity;
+            //                         product.price = amount;
+            //                         finalProducts.push(product);
+            //                     }
+            //                 } else if (!fromDate && !toDate) {
+            //                     let finalPrice = offer * quantity;
+            //                     product.price = finalPrice;
+            //                     finalProducts.push(product);
+            //                 } else {
+            //                     if (regular > 0) {
+            //                         let finalPrice = regular * quantity;
+            //                         product.price = finalPrice;
+            //                         finalProducts.push(product);
+            //                     } else {
+            //                         let commission = (seller / 100) * comm;
+            //                         let amount = (seller + commission) * quantity;
+            //                         product.price = amount;
+            //                         finalProducts.push(product);
+            //                     }
+            //                 }
+            //             } else if (regular > 0) {
+            //                 let finalPrice = regular * quantity;
+            //                 product.price = finalPrice;
+            //                 finalProducts.push(product);
+            //             } else {
+            //                 let commission = (seller / 100) * comm;
+            //                 let amount = (seller + commission) * quantity;
+            //                 product.price = amount;
+            //                 finalProducts.push(product);
+            //             }
+            //         }
+            //     }
+            // });
+            setCartItemsList(allProds);
+            // loadingg.setLoading(false)
+
+            // setSingleProduct(response?.data?.data)
+            loadingg.setLoading(false);
+        })
+        .catch(async error => {
+            loadingg.setLoading(false);
+            Toast.show({
+                type: 'error',
+                text1: error,
+            });
+        });
     };
 
     useFocusEffect(
         React.useCallback(() => {
-            if (cartContext?.cart?._id) {
-                getCartItems();
-            }
-        }, [cartContext?.cart?._id]),
+            getCartItems();
+        }, []),
     );
 
     useEffect(() => {
@@ -387,7 +386,7 @@ const Cart = ({ navigation }) => {
             });
             return false;
         } else {
-            navigation.navigate('Checkout');
+            navigation.navigate('checkout');
             setCartItemsList([]);
         }
         // reactotron.log("Conditions are satisfied:", satisfiesConditions);
@@ -412,7 +411,7 @@ const Cart = ({ navigation }) => {
                         : active === 'fashion'
                             ? '#FFF5F7'
                             : '#fff',
-            } }>
+            }}>
             <HeaderWithTitle title={ 'Cart' } />
 
             {/* {!loadingg?.loading && */ }

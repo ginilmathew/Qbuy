@@ -5,7 +5,7 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable semi */
 /* eslint-disable no-unused-vars */
-import { StyleSheet, Text, View, useWindowDimensions, FlatList, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, useWindowDimensions, FlatList, TouchableOpacity, Alert } from 'react-native'
 import React, { useCallback, useContext, useState, useEffect } from 'react'
 import AuthContext from '../../contexts/Auth';
 import CommonItemCard from '../../Components/CommonItemCard';
@@ -45,9 +45,9 @@ import ProductCard from '../../Components/Home/ProductCard';
 import CartContext from '../../contexts/Cart';
 const pandHome = async (datas) => {
     const homeData = await customAxios.post('customer/home', datas);
-    let recents = homeData?.data?.data?.find(home => home?.type === 'recentlyviewed')?.data?.map(item => getProduct(item))
-    let suggestions = homeData?.data?.data?.find(home => home?.type === 'suggested_products')?.data?.map(item => getProduct(item))
-    let products = homeData?.data?.data?.find(home => home?.type === 'available_products')?.data?.map(item => getProduct(item))
+    // let recents = homeData?.data?.data?.find(home => home?.type === 'recentlyviewed')?.data?.map(item => getProduct(item))
+    // let suggestions = homeData?.data?.data?.find(home => home?.type === 'suggested_products')?.data?.map(item => getProduct(item))
+    // let products = homeData?.data?.data?.find(home => home?.type === 'available_products')?.data?.map(item => getProduct(item))
     return {
         home: homeData?.data?.data,
         tags: homeData?.data?.data?.find(home => home?.type === 'tags'),

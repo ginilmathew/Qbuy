@@ -1,123 +1,178 @@
 import { Image, StyleSheet, Text, View, ScrollView, useWindowDimensions } from 'react-native'
-import React, { useContext, useState } from 'react'
-import HeaderWithTitle from '../../../Components/HeaderWithTitle'
-import VideoPlayer from 'react-native-video-player'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
+import Lottie from 'lottie-react-native';
+import { useForm } from "react-hook-form";
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from "yup";
+import HeaderWithTitle from '../../../Components/HeaderWithTitle';
+import CommonInput from '../../../Components/CommonInput';
 import CustomButton from '../../../Components/CustomButton';
 import PandaContext from '../../../contexts/Panda';
-import Title from './Title';
+import GooglePlaces from '../../../Components/GooglePlaces';
+import customAxios from '../../../CustomeAxios';
+import { Toast } from 'react-native-toast-message/lib/src/Toast';
+import SuccessPage from '../../../Components/SuccessPage';
 
-const OurFarms = ({navigation}) => {
 
+const ApplyFranchisee = ({ navigation }) => {
     const contextPanda = useContext(PandaContext)
-    let grocery = contextPanda.greenPanda
+    const [loading, setLoading] = useState(false);
+    const [showSuccess, setShowSuccess] = useState(false);
 
-    const {width} = useWindowDimensions()
+    const { height } = useWindowDimensions()
+    let active = contextPanda.active
 
 
-    // farm = [
-    //     {
-    //         _id: '1',
-    //         image : require('../../../Images/farm1.jpeg')
-    //     },
-    //     {
-    //         _id: '2',
-    //         image : require('../../../Images/farm2.jpeg')
+    const schema = yup.object({
+        name: yup.string().required('Name is required'),
+        mobile: yup.string().required('Mobile is required').typeError('Mobile type must be number'),
+        location: yup.string().required('Location is required'),
+        comments: yup.string().required('Comments is required'),
+    }).required();
 
-    //     },
-    //     {
-    //         _id: '3',
-    //         image : require('../../../Images/store2.jpeg')
+    const { control, handleSubmit, formState: { errors }, setValue, setError, reset, getValues } = useForm({
+        resolver: yupResolver(schema),
+        defaultValues: {
+            name: '',
+            mobile: '',
+            location: '',
+            comments: '',
+        }
+    });
 
-    //     },
-    //     {
-    //         _id: '4',
-    //         image : require('../../../Images/tomato.jpeg')
+    const onSubmit = useCallback((data) => {
 
-    //     },
-     
-    // ]
+        setLoading(true);
+
+        customAxios.post('customer/franchise-enquiry', { ...data, type: 'green' })
+            .then(res => {
+                setShowSuccess(true);
+            })
+            .catch(err => {
+                Toast.show({
+                    type: 'error',
+                    text1: err
+                })
+            })
+            .finally(e => {
+                setLoading(false)
+            })
+    }, [])
+
+
+    const goHome = useCallback(() => {
+        reset({
+            name: '',
+            mobile: '',
+            location: '',
+            comments: '',
+        })
+        navigation?.goBack()
+        setShowSuccess(false)
+    }, [])
+
+
+    if (showSuccess) {
+        return <SuccessPage source={require('../../../Lottie/send.json')} goHome={goHome} />
+    }
 
     return (
         <>
-            <HeaderWithTitle title={'Our Farms'}/>
-            {/* <ScrollView style={styles.container} showsVerticalScrollIndicator={false}> */}
-                <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
-                <Text style={styles.commingtext}>Coming Soon..!</Text>
-                </View>
-             
+            <HeaderWithTitle title={'Our Farms'} />
 
-                {/* <View style={{backgroundColor:'#000', paddingVertical:20, borderRadius:20, marginTop:20}}> */}
-                    {/* <VideoPlayer
-                        video={require('../../../Videos/farming.mp4')} 
-                        // showDuration={true}
-                        controlsTimeout={2000}
-                        pauseOnPress={true}
-                        videoHeight={750}
-                        resizeMode='contain'
-                        thumbnail={require('../../../Images/farmThumb.jpeg')}
-                    /> */}
-                {/* </View> */}
-
-                {/* <Title 
-                    label={'Introducing Qbuy Panda Farms!'}
-                    width={width/5.8}
+            <View style={[{
+                alignItems: 'center',
+                backgroundColor: active === 'green' ? '#F4FFE9' : active === 'fashion' ? '#FFF5F7' : '#fff',
+            }]}>
+                <Lottie
+                    style={{
+                        height: 150,
+                        width: 150,
+                    }}
+                    source={require('../../../Lottie/farmer.json')}
+                    autoPlay
                 />
-                <Text style={{ fontFamily:'Poppins-LightItalic', fontSize:10, color:'#23233C', marginTop:10 }}>"The farmer is the only man in our economy who buys everything at retail, sells everything at wholesale, and pays the freight both ways."</Text>
-                <Text style={{ fontFamily:'Poppins-MediumItalic', fontSize:10, color:'#23233C', textAlign:'right', paddingRight:5, marginTop:2 }}> - John F. Kennedy</Text>
-
-                <Text style={{ fontFamily:'Poppins-Regular', fontSize:10, color:'#23233C', marginTop:10 }}>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</Text>
-
-                <Title 
-                    label={'Farm Gallery'}
-                    width={width/13}
-                /> */}
-
-                {/* <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{marginTop:10}}> */}
-
-                    {/* {farm?.map( item => <Image key={item?._id} source={item?.image} style={{width: width/2.5, height:100, borderRadius:15, marginRight:10}}/>)} */}
-
-                {/* </ScrollView> */}
 
 
-                {/* <CustomButton
-                    onPress={()=>navigation.navigate('RefferRestaurant')}
-                    label={'Join Now'}
-                    mt={25}
-                    bg={ grocery ? '#8ED053' : '#58D36E'}
-                    mb={90}
+                <Text style={styles.mainText}>{'Introducing Qbuy Panda Farms!'}</Text>
+            </View>
 
-                /> */}
+            <ScrollView
+                keyboardShouldPersistTaps='always'
+                style={{
+                    backgroundColor: active === 'green' ? '#F4FFE9' : active === 'fashion' ? '#FFF5F7' : '#fff',
+                    paddingHorizontal: 15,
+                    paddingTop: 35
+                }}
+            >
 
-               
 
-                
-       
-                
-            {/* </ScrollView> */}
+                <CommonInput
+                    control={control}
+                    error={errors.name}
+                    fieldName="name"
+                    topLabel={'Name'}
+                />
+
+                <CommonInput
+                    control={control}
+                    error={errors.mobile}
+                    inputMode={'numeric'}
+                    fieldName="mobile"
+                    maxLength
+                    topLabel={'Contact Number'}
+                    top={20}
+                />
+
+
+                {/* <CommonInput
+                        control={control}
+                        error={errors.location}
+                        fieldName="mobile"
+                        topLabel={'Location'}
+                        top={20}
+                    /> */}
+                <GooglePlaces
+                    control={control}
+                    fieldName={'location'}
+                    topLabel={'Location'}
+                    setValue={setValue}
+                    // setDistance={setDistance}
+                    setError={setError}
+                />
+
+                <CommonInput
+                    control={control}
+                    error={errors.comments}
+                    fieldName="comments"
+                    topLabel={'Comments'}
+                    top={15}
+                    multi
+                />
+
+                <CustomButton
+                    loading={loading}
+                    onPress={!loading ? handleSubmit(onSubmit) : null}
+                    label={'Apply'}
+                    bg={active === 'green' ? '#8ED053' : active === 'fashion' ? '#FF7190' : '#58D36E'}
+                    mb={80}
+                    mt={30}
+                />
+
+            </ScrollView>
         </>
     )
 }
 
-export default OurFarms
+export default ApplyFranchisee
 
 const styles = StyleSheet.create({
-    container : { 
-        flex:1, 
-        backgroundColor:'#F4FFE9', 
-        paddingHorizontal:15,
-    },
-    mainText : {
+
+    mainText: {
         fontFamily: 'Poppins-Medium',
         color: '#23233C',
         fontSize: 13,
-        textAlign:'center',
-        paddingHorizontal:70,
-        marginTop:10
-    },
-    commingtext:{
-        fontFamily: 'Poppins-Medium',
-        color: '#23233C',
-        fontSize: 16,
+        textAlign: 'center',
+        paddingHorizontal: 40,
     }
-    
 })

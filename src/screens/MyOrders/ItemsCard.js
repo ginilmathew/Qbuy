@@ -16,7 +16,7 @@ const ItemsCard = memo(({item, date}) => {
     return (
         <View style={styles.container}>
             <View style={{ flex: 0.5 }}>
-                <Text style={[styles.text1, { textAlign: 'left' }]}>{`${item?.name} ${item?.attributes ? `(${item?.attributes?.join(', ')})` : ''}`}</Text>
+                <Text style={[styles.text1, { textAlign: 'left' }]}>{`${item?.name} ${item?.attributes?.length > 0 ? `(${item?.attributes?.join(', ')})` : ''}`}</Text>
                 {/* <TouchableOpacity 
                 //onPress={goToShop}
                 >
@@ -39,8 +39,8 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between', 
         paddingVertical: 10, 
         borderBottomWidth: 1, 
-        borderColor: '#00000029', 
-        paddingHorizontal: 7 
+        borderColor: '#e8e8e8', 
+        paddingHorizontal: 7, 
     },
     text1 : {
         fontFamily: 'Poppins-Medium',

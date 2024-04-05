@@ -82,32 +82,35 @@ android {
         pandatest {
             resValue "string", "app_name", "QBuyPanda Dev"
             applicationId "com.diginest.qbuypanda.dev"
+            versionName "1.03"
         }
         greentest {
             resValue "string", "app_name", "QBuyGreen Dev"
             applicationId "com.diginest.qbuygreen.dev"
+            versionName "1.03"
         }
         fashiontest {
             resValue "string", "app_name", "Shopqbuy Dev"
             applicationId "com.diginest.qbuyfashion.dev"
+            versionName "1.03"
         }
         panda {
             resValue "string", "app_name", "QBuyPanda"
             applicationId "com.qbuypanda.app"
-            versionCode 14
-            versionName "2.6"
+            versionCode 15
+            versionName "2.7"
         }
         green {
             resValue "string", "app_name", "QBuyGreen"
             applicationId "com.diginest.qbuygreen"
-            versionCode 9
-            versionName "1.6"
+            versionCode 10
+            versionName "1.7"
         }
         fashion {
             resValue "string", "app_name", "QBuyFashion"
             applicationId "com.diginest.qbuyfashion"
-            versionCode 4
-            versionName "1.03"
+            versionCode 5
+            versionName "1.04"
         }
     }
     defaultConfig {

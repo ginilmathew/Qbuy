@@ -1,16 +1,20 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 
-const TermsAndPrivacyText = () => {
+const TermsAndPrivacyText = ({ privacyPress, termsPress }) => {
     return (
         <View style={{alignItems:'center'}}>
             <View style={{flexDirection:'row', marginTop:20}}>
                 <Text style={styles.text1}>{"By Sign in, you agree to QbuyPanda's"}</Text>
-                <Text style={styles.text2}>{" Terms of Use"}</Text>
+                <TouchableOpacity onPress={termsPress}>
+                    <Text style={styles.text2}>{" Terms of Use"}</Text>
+                </TouchableOpacity>
             </View>
             <View style={{flexDirection:'row', }}>
                 <Text style={styles.text1}>{"and"}</Text>
-                <Text style={styles.text2}>{" Privacy Policy"}</Text>
+                <TouchableOpacity onPress={privacyPress}>
+                    <Text style={styles.text2}>{" Privacy Policy"}</Text>
+                </TouchableOpacity>
             </View>
         </View>
     )

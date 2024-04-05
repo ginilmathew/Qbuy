@@ -1,12 +1,14 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 
-const HelpAndSupportText = () => {
+const HelpAndSupportText = ({ whatPress }) => {
     return (
         <View style={{alignItems:'center'}}>
             <View style={{flexDirection:'row', marginTop:15}}>
                 <Text style={styles.text1}>{"Please reach out to our"}</Text>
-                <Text style={styles.text2} >{" Help & Support"}</Text>
+                <TouchableOpacity onPress={whatPress}>
+                    <Text style={styles.text2} >{" Help & Support"}</Text>
+                </TouchableOpacity>
                 <Text style={styles.text1}>{" or call your qbuy"}</Text>
             </View>
             <View style={{flexDirection:'row', }}>

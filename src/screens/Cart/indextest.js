@@ -3,7 +3,6 @@ import React, { useCallback, useContext, useEffect, useState } from 'react'
 import CustomButton from '../../Components/CustomButton';
 import HeaderWithTitle from '../../Components/HeaderWithTitle';
 import CartItemCard from './CartItemCard';
-import CommonItemsList from '../../Components/CommonItemsList';
 import PandaContext from '../../contexts/Panda';
 import Lottie from 'lottie-react-native';
 import CommonTexts from '../../Components/CommonTexts';
@@ -40,7 +39,6 @@ const CartTest = ({ navigation }) => {
 
     const [cartItemsList, setCartItemsList] = useState([])
 
-    reactotron.log({ cartItemsList }, 'CART LIST ')
 
 
     const getCartItems = async () => {
@@ -315,7 +313,6 @@ const CartTest = ({ navigation }) => {
     const checkoutValidation = async () => {
         await customAxios.get(`customer/cart/show/${cartContext?.cart?._id}`).then((response) => {
             let products = response?.data?.data?.product_details;
-            reactotron.log({ products }, 'PRODUCTS....')
             let stockcheck = false;
             products?.map((pro) => {
                 let stock = pro?.productdata?.stock;
@@ -338,7 +335,7 @@ const CartTest = ({ navigation }) => {
                 }
             })
             if (!stockcheck) {
-                navigation.navigate('Checkout')
+                navigation.navigate('checkout')
             } else {
                 getCartItems()
             }
@@ -377,7 +374,6 @@ const CartTest = ({ navigation }) => {
             product_details: allProducts,
             user_id: userContext?.userData?._id
         }
-        reactotron.log({ cartItems }, 'CARTITEMS CHECKOUT')
         let cartList = await customAxios.post(`customer/cart/update`, cartItems)
         cartContext.setCart(cartList?.data?.data)
         checkoutValidation()

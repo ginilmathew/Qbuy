@@ -266,8 +266,28 @@ const MyAddresses = ({ route, navigation }) => {
     const selectAddress = async (id) => {
         let address = addrList.find(addr => addr?._id === id);
         if (mode === "checkout") {
-            cartContext.setDefaultAddress(address);
-            navigation.navigate("Checkout")
+            try {
+                let data = {
+                    type: active,
+                    address_id: id
+                }
+                let address = await customAxios.post(`customer/checkout/set-address`, data)
+                if(address?.data?.message === "Success"){
+                    navigation.navigate("checkout")
+                }
+                else{
+                    Toast.show({
+                        text1: address?.data?.message
+                    })
+                }
+            } catch (error) {
+                Toast.show({
+                    text1: error
+                })
+            }
+            
+            //cartContext.setDefaultAddress(address);
+            //navigation.navigate("checkout")
         }
         else{
             userContext.setLocation([address?.area?.latitude, address?.area?.longitude])
@@ -341,7 +361,7 @@ const MyAddresses = ({ route, navigation }) => {
                     bg={active === 'green' ? '#FF9C0C' : active === 'fashion' ? '#2D8FFF' : '#5871D3'}
                     width={'100%'}
                     alignSelf='center'
-                    mb={100}
+                    mb={70}
                 />
             </View>
         </>

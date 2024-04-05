@@ -227,7 +227,7 @@ const SingleItemScreen = ({ route, navigation }) => {
     }, [item, navigation])
 
     const proceedCheckout = useCallback(() => {
-        navigation.navigate('Checkout')
+        navigation.navigate('checkout')
         setShowModal(false)
     }, [navigation])
 
@@ -241,27 +241,28 @@ const SingleItemScreen = ({ route, navigation }) => {
 
     const addToCart = useCallback(async () => {
         if (!userContext?.userData) {
-            Alert.alert(
-                'Warning',
-                'Add to cart option only available for logged in user. Click OK to Login.',
-                [
-                    {
-                        text: 'Cancel',
-                        //onPress: () => Alert.alert('Cancel Pressed'),
-                        style: 'cancel',
-                    },
-                    {
-                        text: 'OK',
-                        onPress: () => navigation.navigate('Login'),
-                        style: 'cancel',
-                    },
-                ],
-                {
-                    cancelable: true,
-                },
-            );
+            // Alert.alert(
+            //     'Warning',
+            //     'Add to cart option only available for logged in user. Click OK to Login.',
+            //     [
+            //         {
+            //             text: 'Cancel',
+            //             //onPress: () => Alert.alert('Cancel Pressed'),
+            //             style: 'cancel',
+            //         },
+            //         {
+            //             text: 'OK',
+            //             onPress: () => navigation.navigate('Login'),
+            //             style: 'cancel',
+            //         },
+            //     ],
+            //     {
+            //         cancelable: true,
+            //     },
+            // );
 
             //navigation.navigate('Login')
+            navigation.navigate("guestModal")
             return false;
         }
 
@@ -276,10 +277,10 @@ const SingleItemScreen = ({ route, navigation }) => {
           
             let filter = attributes?.filter(attr => attr?.variant === true || attr?.variant === null)
 
+
             let attri = filter?.map(attr => attr?.selected)
             let selectedVari;
             item?.variants?.map(vari => {
-                reactotron.log({ a: attri.sort(), b: vari?.attributs.sort(), attributes, equal: isEqual(attri?.sort(), vari?.attributs.sort()), vari })
                 if(isEqual(attri?.sort(), vari?.attributs.sort())){
                     selectedVari = vari;
                 }
@@ -315,7 +316,6 @@ const SingleItemScreen = ({ route, navigation }) => {
 
 
     const selectAttributes = (value) => {
-        
         let attri = [];
         let attr = attributes?.map(att => {
             if (att?.options.includes(value)) {

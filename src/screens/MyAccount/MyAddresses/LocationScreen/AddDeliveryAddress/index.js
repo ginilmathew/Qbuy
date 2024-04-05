@@ -34,6 +34,8 @@ const AddDeliveryAddress = ({ route, navigation }) => {
     const cartContext = useContext(CartContext)
     const userContext = useContext(AuthContext)
 
+    reactotron.log({user: userContext?.userData})
+
 
 
 
@@ -76,7 +78,8 @@ const AddDeliveryAddress = ({ route, navigation }) => {
             address: locationData?.location,
             comments: locationData?.comments,
             default_status: locationData?.default,
-            pincode: locationData?.pincode?.toString()
+            pincode: locationData?.pincode?.toString(),
+            mobile: userContext?.userData?.mobile
         }
     });
 
@@ -95,6 +98,21 @@ const AddDeliveryAddress = ({ route, navigation }) => {
             name: 'other',
         },
     ]
+
+
+    const saveDeliveryAddress = async(address_id) => {
+        let data = {
+            type: active,
+            address_id: address_id
+        }
+        let saveDeliveryADdress = await customAxios.post(`customer/checkout/set-address`, data)
+
+        if(saveDeliveryADdress?.data?.message === "Success"){
+            navigation.navigate("checkout")
+        }
+
+        //reactotron.log({saveDeliveryADdress})
+    }
 
     const onSave = useCallback(async (data) => {
 
@@ -123,21 +141,25 @@ const AddDeliveryAddress = ({ route, navigation }) => {
                 setAddr(response?.data)
                 loadingContext.setLoading(false)
                 if(route?.params?.mode === "checkout"){
-                    cartContext.setDefaultAddress(response?.data?.data)
-                    let location = {
-                        latitude: response?.data?.data?.area?.latitude,
-                        longitude: response?.data?.data?.area?.longitude,
-                        address: response?.data?.data?.area?.address
-                    }
+                    saveDeliveryAddress(response?.data?.data?._id)
+                    
+
+                    // cartContext.setDefaultAddress(response?.data?.data)
+                    // let location = {
+                    //     latitude: response?.data?.data?.area?.latitude,
+                    //     longitude: response?.data?.data?.area?.longitude,
+                    //     address: response?.data?.data?.area?.address
+                    // }
         
         
-                    AsyncStorage.setItem("location", JSON.stringify(location))
-                    userContext.setLocation([response?.data?.data?.area?.latitude, response?.data?.data?.area?.longitude]);
-                    userContext.setCurrentAddress(response?.data?.data?.area?.address)
-                    navigation.navigate("Checkout")
+                    //AsyncStorage.setItem("location", JSON.stringify(location))
+                    //userContext.setLocation([response?.data?.data?.area?.latitude, response?.data?.data?.area?.longitude]);
+                    //userContext.setCurrentAddress(response?.data?.data?.area?.address)
+                    //navigation.navigate("checkout")
                 }
                 else{
-                    navigation.navigate("green", { screen: 'TabNavigator', params: { screen: 'account', params: { screen: 'MyAddresses', params: { mode: 'MyAcc' } } } })
+                    navigation.navigate("MyAddresses", { mode: 'MyAcc' })
+                    //navigation.navigate("green", { screen: 'TabNavigator', params: { screen: 'account', params: { screen: 'MyAddresses', params: { mode: 'MyAcc' } } } })
                     //navigation.navigate('MyAddresses', { mode: 'MyAcc' })
                 }
                 
@@ -160,7 +182,7 @@ const AddDeliveryAddress = ({ route, navigation }) => {
                     backgroundColor: active === 'green' ? '#F4FFE9' : active === 'fashion' ? '#FFF5F7' : '#fff',
                     flex: 1,
                     paddingHorizontal: 15,
-                    marginBottom: 30
+                    //marginBottom: 30
                 } }
             >
                 <KeyboardAvoidingView>
@@ -219,6 +241,7 @@ const AddDeliveryAddress = ({ route, navigation }) => {
                         placeholder='Delivery Pincode e.g. 695111'
                         placeholderTextColor='#0C256C21'
                         top={ 10 }
+                        inputMode={ 'numeric' }
                     />
                     <CommonInput
                         control={ control }

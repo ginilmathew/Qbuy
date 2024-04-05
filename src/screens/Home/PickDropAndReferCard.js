@@ -1,10 +1,28 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React from 'react'
+import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import React, { useContext } from 'react'
 import LottieView from 'lottie-react-native';
 import CommonTexts from '../../Components/CommonTexts';
+import { useNavigation } from '@react-navigation/native';
+import AuthContext from '../../contexts/Auth';
 
 
 const PickDropAndReferCard = ({label,lotties, onPress, lottieFlex, ml}) => {
+
+    const navigation = useNavigation();
+    const userContext = useContext(AuthContext)
+
+
+    const alert = () => Alert.alert('Warning', 'This page not available for guest user. Click Ok to proceed with login', [
+        {
+            text: 'Cancel',
+            onPress: () => console.log('Cancel Pressed'),
+            style: 'cancel',
+        },
+        { text: 'OK', onPress: () => navigation.navigate("Login") },
+    ]);
+
+    onPress = userContext?.userData ? onPress : alert;
+
     return (
 
         // <View style={{flex:1,alignItems:'center'}}>
@@ -32,7 +50,7 @@ const PickDropAndReferCard = ({label,lotties, onPress, lottieFlex, ml}) => {
                 />
             </View>
             <View style={{flex:1 }}>
-                <CommonTexts label={label}/>
+                <CommonTexts fontSize={12} fullLabel={true} label={label}/>
             </View>
         </TouchableOpacity>
     )

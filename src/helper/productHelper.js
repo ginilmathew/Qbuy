@@ -1,6 +1,5 @@
 import moment from "moment";
 import { min, max } from 'lodash'
-import reactotron from "../ReactotronConfig";
 
 export function getProduct (product) {
 
@@ -44,8 +43,8 @@ export function getProduct (product) {
     if (variant) {
         product?.variants?.map(vari => {
             let offer = vari?.offer_price ? parseFloat(vari?.offer_price) : 0;
-            let offerFromDate = moment(vari?.offer_date_from).isValid() ? moment(vari?.offer_date_from, "YYYY-MM-DD") : null
-            let offerToDate = moment(vari?.offer_date_to).isValid() ? moment(vari?.offer_date_to, "YYYY-MM-DD") : null
+            let offerFromDate = moment(vari?.offer_date_from, "YYYY-MM-DD").isValid() ? moment(`${vari?.offer_date_from} 00:00:00`, "YYYY-MM-DD HH:mm:ss") : null
+            let offerToDate = moment(vari?.offer_date_to, "YYYY-MM-DD").isValid() ? moment(`${vari?.offer_date_to} 23:59:59`, "YYYY-MM-DD HH:mm:ss") : null
             let regular = vari?.regular_price ? parseFloat(vari?.regular_price) : 0
             let seller = vari?.seller_price ? parseFloat(vari?.seller_price) : 0
             let commission = vari?.commission ? parseFloat(vari?.commission) : vendorCommission
@@ -60,7 +59,7 @@ export function getProduct (product) {
                     if (offer > 0) {
                         //products have offer price , check offer price in valid range
                         if (offerFromDate && offerToDate) {
-                            if (moment(moment().format("YYYY-MM-DD"), "YYYY-MM-DD") >= offerFromDate && moment(moment().format("YYYY-MM-DD"), "YYYY-MM-DD") <= offerToDate) {
+                            if (moment() >= offerFromDate && moment() <= offerToDate) {
                                 price = offer;
                                 if(regular > 0){
                                     regularPrice = regular
@@ -81,7 +80,7 @@ export function getProduct (product) {
                             }
                         }
                         else if (offerFromDate && !offerToDate) {
-                            if (moment(moment().format("YYYY-MM-DD"), "YYYY-MM-DD") >= offerFromDate) {
+                            if (moment() >= offerFromDate) {
                                 price = offer
                                 if(regular > 0){
                                     regularPrice = regular
@@ -162,7 +161,7 @@ export function getProduct (product) {
                 if (offer > 0) {
                     //products have offer price , check offer price in valid range
                     if (offerFromDate && offerToDate) {
-                        if (moment(moment().format("YYYY-MM-DD"), "YYYY-MM-DD") >= offerFromDate && moment(moment().format("YYYY-MM-DD"), "YYYY-MM-DD") <= offerToDate) {
+                        if (moment() >= offerFromDate && moment() <= offerToDate) {
                             price = offer;
                             if(regular > 0){
                                 regularPrice = regular
@@ -183,7 +182,7 @@ export function getProduct (product) {
                         }
                     }
                     else if (offerFromDate && !offerToDate) {
-                        if (moment(moment().format("YYYY-MM-DD"), "YYYY-MM-DD") >= offerFromDate) {
+                        if (moment() >= offerFromDate) {
                             price = offer
                             if(regular > 0){
                                 regularPrice = regular
@@ -278,8 +277,9 @@ export function getProduct (product) {
             newProduct['attributes'] = attributes
         }
         let offer = product?.offer_price ? parseFloat(product?.offer_price) : 0;
-        let offerFromDate = moment(product?.offer_date_from).isValid() ? moment(product?.offer_date_from, "YYYY-MM-DD") : null
-        let offerToDate = moment(product?.offer_date_to).isValid() ? moment(product?.offer_date_to, "YYYY-MM-DD") : null
+
+        let offerFromDate = moment(product?.offer_date_from, "YYYY-MM-DD").isValid() ? moment(`${product?.offer_date_from} 00:00:00`, "YYYY-MM-DD HH:mm:ss") : null
+        let offerToDate = moment(product?.offer_date_to, "YYYY-MM-DD").isValid() ? moment(`${product?.offer_date_to} 23:59:59`, "YYYY-MM-DD HH:mm:ss") : null
         let regular = product?.regular_price ? parseFloat(product?.regular_price) : 0
         let seller = product?.seller_price ? parseFloat(product?.seller_price) : 0
         let commission = product?.commission ? parseFloat(product?.commission) : vendorCommission
@@ -294,7 +294,7 @@ export function getProduct (product) {
                     //products have offer price , check offer price in valid range
                     if (offerFromDate && offerToDate) {
                         
-                        if (moment(moment().format("YYYY-MM-DD"), "YYYY-MM-DD") >= offerFromDate && moment(moment().format("YYYY-MM-DD"), "YYYY-MM-DD") <= offerToDate) {
+                        if (moment() >= offerFromDate && moment() <= offerToDate) {
                             price = offer;
                             if(regular > 0){
                                 regularPrice = regular
@@ -315,7 +315,7 @@ export function getProduct (product) {
                         }
                     }
                     else if (offerFromDate && !offerToDate) {
-                        if (moment(moment().format("YYYY-MM-DD"), "YYYY-MM-DD") >= offerFromDate) {
+                        if (moment() >= offerFromDate) {
                             price = offer
                             if(regular > 0){
                                 regularPrice = regular
@@ -379,7 +379,7 @@ export function getProduct (product) {
             if (offer > 0) {
                 //products have offer price , check offer price in valid range
                 if (offerFromDate && offerToDate) {
-                    if (moment(moment().format("YYYY-MM-DD"), "YYYY-MM-DD") >= offerFromDate && moment(moment().format("YYYY-MM-DD"), "YYYY-MM-DD") <= offerToDate) {
+                    if (moment() >= offerFromDate && moment() <= offerToDate) {
                         price = offer;
                         if(regular > 0){
                             regularPrice = regular
@@ -400,7 +400,7 @@ export function getProduct (product) {
                     }
                 }
                 else if (offerFromDate && !offerToDate) {
-                    if (moment(moment().format("YYYY-MM-DD"), "YYYY-MM-DD") >= offerFromDate) {
+                    if (moment() >= offerFromDate) {
                         price = offer
                         if(regular > 0){
                             regularPrice = regular

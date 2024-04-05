@@ -33,7 +33,7 @@ const CategoriesCard = memo(({ item }) => {
             style={ { width: width / 4, height: width / 4, alignItems: 'center' } }
         >
             <View
-                style={ [styles.lottieView, { width: width / 4 - 25, height: width / 4 - 25, }] }
+                style={ [styles.lottieView, { width: width / 4 - 25, height: width / 4 - 25 }] }
             >
                 <FastImage
                     style={ { borderRadius: width / 8, width: '100%', height: '100%' } }

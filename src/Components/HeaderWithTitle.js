@@ -6,7 +6,6 @@ import { TabActions, useNavigation } from '@react-navigation/native'
 import PandaContext from '../contexts/Panda'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import Fontisto from 'react-native-vector-icons/Fontisto'
-import reactotron from '../ReactotronConfig'
 import AuthContext from '../contexts/Auth'
 
 
@@ -22,7 +21,7 @@ const HeaderWithTitle = ({ title, noBack, onPressBack, mode,backarrow }) => {
 
     const backAction = useCallback(() => {
         if (mode === 'checkout') {
-            navigation.navigate('Checkout')
+            navigation.navigate('checkout')
         } 
         else if(mode === "home"){
             navigation.navigate('green')
@@ -60,20 +59,20 @@ const HeaderWithTitle = ({ title, noBack, onPressBack, mode,backarrow }) => {
             <View
                 style={ { backgroundColor: active === "green" ? '#8ED053' : active === "fashion" ? '#FF7190' : '#58D36E', height: Platform.OS === 'android' ? 55 : 90, flexDirection: 'row', paddingLeft: 15, alignItems: 'flex-end', } }
             >
-                <View
-                    style={ { flexDirection: 'row', alignItems: 'center', paddingBottom: 5 } }
+                <TouchableOpacity
+                    activeOpacity={noBack ? 1 : .5}
+                    onPress={noBack ? null : onPressBack ? onPressBack : backAction}
+                    style={{ flexDirection: 'row', alignItems: 'center', paddingBottom: 5 }}
                 >
-                    { !noBack && <TouchableOpacity onPress={ onPressBack ? onPressBack : backAction }>
-                        <Ionicons name={ "chevron-back" } size={ 30 } color='#fff' marginTop={ -2 } />
-                    </TouchableOpacity> }
+                    {!noBack && <Ionicons name={"chevron-back"} size={22} color='#fff' marginTop={-2} />}
                     <CommonTexts
                         label={ title }
                         color={ '#fff' }
-                        fontSize={ 21 }
+                        fontSize={ 16 }
                         mt={ Platform.OS === 'android' ? 2 : -2 }
                         numberOfLines={ 1 }
                     />
-                </View>
+                </TouchableOpacity>
                 <View style={ { flexDirection: 'row', alignItems: 'center', position: 'absolute', right: 10, bottom: 10 } }>
                     { active === "fashion" && <>
                         <TouchableOpacity onPress={ onClickFashionCat }>

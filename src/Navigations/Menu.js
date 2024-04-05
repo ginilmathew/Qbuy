@@ -10,10 +10,13 @@ import Payment from '../screens/Cart/Checkout/Payment';
 import Notifications from '../screens/Notifications';
 import Coupons from '../screens/Cart/Checkout/Coupons';
 import ProductSearchScreen from '../screens/Home/ProductSearchScreen';
+import { navigationRef } from './RootNavigation';
 
 const Drawer = createDrawerNavigator();
 
 const Menu = () => {
+    console.log(navigationRef.getCurrentRoute())
+
     return (
 
         <>
@@ -25,7 +28,6 @@ const Menu = () => {
                     headerShown: false,
                     drawerType: 'front',
                 }}
-                
                 drawerContent={(props) => <DrawerContent {...props} />}
             >
                 <Drawer.Screen name="TabNavigator" component={TabNavigator} />
@@ -34,7 +36,7 @@ const Menu = () => {
                 <Drawer.Screen name="Payment" component={Payment}/>
 
                 <Drawer.Screen name="AddDetails" component={AddDetails}/>
-                <Drawer.Screen name="Coupons" component={Coupons}/>
+                {/* <Drawer.Screen name="Coupons" component={Coupons}/> */}
 
 
                 <Drawer.Screen name="Notifications" component={Notifications}/>

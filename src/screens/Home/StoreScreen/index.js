@@ -119,7 +119,7 @@ const StoreScreen = ({ route }) => {
     }, [navigation]);
 
     const backToCheckout = useCallback(() => {
-        navigation.navigate('Checkout');
+        navigation.navigate('checkout');
     }, [navigation]);
 
 

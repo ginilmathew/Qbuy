@@ -41,6 +41,7 @@ import { BASE_URL } from '../config/constants';
 import VersionUpgrade from '../screens/auth/VersionUpgrade';
 import { useQuery } from '@tanstack/react-query';
 import { getProduct } from '../helper/productHelper';
+import FetchAddressScreen from '../screens/Location/FetchAddressScreen';
 // import OrderPlaced from '../screens/Cart/Checkout/Payment/OrderPlaced';
 
 const { env, mode } = NativeModules.RNENVConfig
@@ -69,16 +70,21 @@ const RouteTest = () => {
 
 
 
-
     useEffect(() => {
 
         async function checkVersion() {
-            let versions = await axios.get(`${BASE_URL}common/version`)
+            let data = {
+                os: Platform.OS,
+                type: mode
+            }
+            let versions = await axios.post(`${BASE_URL}common/versionnew`, data)
 
             if (versions?.data?.message === "Success") {
                 const versionInfo = versions?.data?.data
 
                 const DeviceVersion = await DeviceInfo.getVersion();
+
+                //reactotron.log(DeviceVersion, versionInfo?.current_version)
 
                 if (versionInfo?.update === true) {
                     if (parseFloat(DeviceVersion) < parseFloat(versionInfo?.current_version)) {
@@ -101,7 +107,7 @@ const RouteTest = () => {
 
 
 
-            reactotron.log({ versions })
+            //reactotron.log({ versions })
         }
 
         checkVersion()
@@ -137,8 +143,9 @@ const RouteTest = () => {
             userContext.setCurrentAddress(response?.data?.results[0]?.formatted_address)
             let user = await AsyncStorage.getItem("user");
             if (user) {
+                let userdata = JSON.parse(user)
                 setInitialScreen('green');
-                getProfile()
+                getProfile(userdata?._id)
                 getAddressList()
             }
             else {
@@ -180,6 +187,32 @@ const RouteTest = () => {
                 showLocationDialog: true,
             },
         );
+        // if(Platform.OS === "android"){
+        //     try {
+        //         const granted = await PermissionsAndroid.request(
+        //           PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        //           {
+        //             'title': 'QBuyPanda',
+        //             'message': 'QBuyPanda App access to your location to show all available restaurants and products'
+        //           }
+        //         )
+        //         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        //             setInitialScreen("FetchAddressScreen")
+        //         } else {
+        //           console.log("location permission denied")
+        //           alert("Location permission denied");
+        //         }
+        //       } catch (err) {
+        //         console.warn(err)
+        //       }
+        // }
+        // else{
+        //     let iosPermission = await Geolocation.requestAuthorization('whenInUse')
+        //     if(iosPermission === "granted"){
+        //         setInitialScreen("FetchAddressScreen")
+        //     }
+        //     reactotron.log({iosPermission})
+        // }
     }
 
 
@@ -197,8 +230,9 @@ const RouteTest = () => {
         }
         let user = await AsyncStorage.getItem("user");
         if (user) {
+            let userData = JSON.parse(user)
             setInitialScreen('green');
-            getProfile()
+            getProfile(userData?._id)
             //if (!location) {
                 getAddressList()
             //}
@@ -221,15 +255,15 @@ const RouteTest = () => {
 
 
 
-    const getProfile = useCallback(async () => {
+    const getProfile = useCallback(async (id) => {
         loadingContext.setLoading(true);
-        await customAxios.get('customer/customer-profile')
+        await customAxios.get(`auth/profile/${id}`)
             .then(async response => {
                 loadingContext.setLoading(false);
                 userContext.setUserData(response?.data?.data);
                 setUserDetails(response?.data?.data)
                 getCartDetails(response?.data?.data)
-
+                await AsyncStorage.setItem("user", JSON.stringify(response?.data?.data))
 
                 // setInitialScreen('green');
                 //setInitialScreen('green')
@@ -341,25 +375,25 @@ const RouteTest = () => {
 
 
 
-    useEffect(async () => {
-        const token = await AsyncStorage.getItem('token');
-        if (token) {
-            const subscription = AppState.addEventListener('change', async nextAppState => {
+    // useEffect(async () => {
+    //     const token = await AsyncStorage.getItem('token');
+    //     if (token) {
+    //         const subscription = AppState.addEventListener('change', async nextAppState => {
 
-                if (nextAppState === 'active') {
+    //             if (nextAppState === 'active') {
 
-                    await customAxios.post('customer/login-status-update', { login_status: true })
+    //                 await customAxios.post('customer/login-status-update', { login_status: true })
 
-                } else {
-                    await customAxios.post('customer/login-status-update', { login_status: false })
+    //             } else {
 
-                }
-            });
-            return () => {
-                subscription.remove();
-            };
-        }
-    }, []);
+    //                 await customAxios.post('customer/login-status-update', { login_status: false })
+    //             }
+    //         });
+    //         return () => {
+    //             subscription.remove();
+    //         };
+    //     }
+    // }, []);
 
 
     useEffect(() => {
@@ -416,6 +450,7 @@ const RouteTest = () => {
 
             {/* <Stack.Screen name="SplashScreen" component={SplashScreenF} /> */}
             <Stack.Screen name="Location" component={Location} />
+            <Stack.Screen name="FetchAddressScreen" component={FetchAddressScreen} />
             <Stack.Screen name="manual" component={ManualLocation} />
             <Stack.Screen name="Login" component={Login} />
             <Stack.Screen name="Otp" component={Otp} />

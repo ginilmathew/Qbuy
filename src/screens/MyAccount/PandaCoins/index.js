@@ -14,121 +14,56 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
 import CustomButton from '../../../Components/CustomButton';
 
-const PandaCoins = ({route, navigation}) => {
+const PandaCoins = ({ route, navigation }) => {
 
-    const {width} = useWindowDimensions()
+    const { width } = useWindowDimensions()
 
 
     const contextPanda = useContext(PandaContext)
     let active = contextPanda.active
 
-    const [price, setPrice] = useState('')
-
-    const [newList, setNewList] = useState(datas);
-
 
     const schema = yup.object({
-		code: yup.string().required('Phone number is required'),
-	}).required();
+        code: yup.string().required('Phone number is required'),
+    }).required();
 
-	const { control, handleSubmit, formState: { errors }, setValue } = useForm({
-		resolver: yupResolver(schema)
-	});
-
-    useEffect(() => {
-        updateColor();
-      }, []);
-
-    const updateColor = () => {
-        const updatedNumbers = datas.map(number => {
-          if (number.coin < 0) {
-            return {
-                ...number,
-                color: '#F32B2B'
-            }
-          } else {
-            return{ 
-                ...number,
-                color: active === 'fashion' ? '#2D8FFF' : '#F39E2B'
-            }
-          }
-        });
-        setNewList(updatedNumbers);
-    }
-    
-
-
-
-
-
-    let datas = [
-        {
-            _id: '1',
-            date: '22/05/2022',
-            description: 'Affiliate Bonus',
-            coin: +3
-        },
-        {
-            _id: '2',
-            date: '20/05/2022',
-            description: 'Order ID: #6268',
-            coin: -53
-        },
-        {
-            _id: '3',
-            date: '08/05/2022',
-            description: 'Order ID: #6262',
-            coin: +300
-        },
-        {
-            _id: '4',
-            date: '20/05/2022',
-            description: 'Order ID: #6268',
-            coin: -10
-        },
-        {
-            _id: '5',
-            date: '20/05/2022',
-            description: 'Order ID: #6268',
-            coin: 10
-        },
-
-    ]
-
-    useEffect(() => {
-        if(datas){
-            setPrice(datas.reduce((total, currentValue) => total = total + parseInt(currentValue.coin),0))
-        }
-    }, [datas])
-
+    const { control, handleSubmit, formState: { errors }, setValue } = useForm({
+        resolver: yupResolver(schema)
+    });
 
 
     return (
         <>
-            <HeaderWithTitle 
+            <HeaderWithTitle
                 title={'Panda Coins'}
-                // onPress={mode === 'header' ?}
+            // onPress={mode === 'header' ?}
             />
-                
+
             <ScrollView
                 showsHorizontalScrollIndicator={false}
-                style={{ 
-                    backgroundColor: active === 'green' ? '#F4FFE9' : active === 'fashion' ? '#FFF5F7' : '#fff', 
-                    paddingHorizontal:15, 
-                    flex:1
+                style={{
+                    backgroundColor: active === 'green' ? '#F4FFE9' : active === 'fashion' ? '#FFF5F7' : '#fff',
+                    paddingHorizontal: 15,
+                    flex: 1
                 }}
             >
-                <View style={{height:150,}}>
-                    <Lottie 
-                        source={{uri: 'https://assets9.lottiefiles.com/packages/lf20_CbT8Hi.json'}} 
+                <View style={{ height: 150, alignSelf: 'center' }}>
+                    <Lottie
+                        style={{
+                            height: 150,
+                            width: 150
+                        }}
+                        source={require("../../../Lottie/pandaCoin.json")}
                         autoPlay loop
                     />
                 </View>
 
-                <MyCoinsText coins={price}/>
 
-                <Text style={styles.redeemCoin}>Redeem Panda Coins</Text>
-                <View style={styles.reddemBox}>
+                <MyCoinsText coins={route?.params?.data?.coin} />
+
+
+                {/* <Text style={styles.redeemCoin}>Redeem Panda Coins</Text> */}
+                {/* <View style={styles.reddemBox}>
                     <CommonInput
                         control={control}
                         error={errors.code}
@@ -142,70 +77,73 @@ const PandaCoins = ({route, navigation}) => {
                         bg={ active === 'green' ? '#8ED053' : active === 'fashion' ? '#FF7190' : '#58D36E'}
                         width={width/5}
                     />
-                </View>
+                </View> */}
 
-                <Table>
-                    {newList?.map((item)=>  <PandaCoinListCard item={item} key={item?._id}/>)}
-                </Table>
-               
-                
-                
+                {
+                    route?.params?.data?.log?.length > 0 &&
+                    <Table>
+                        {route?.params?.data?.log?.map((item) => <PandaCoinListCard item={item} key={item?._id} />)}
+                    </Table>
+                }
+
+
+
             </ScrollView>
-         
+
         </>
-        
+
     )
 }
 
 export default PandaCoins
 
 const styles = StyleSheet.create({
-    container : {
-        flexDirection:'row' , 
-        borderTopWidth:1, 
-        borderColor:"#E9E9E9"
+    container: {
+        flexDirection: 'row',
+        borderTopWidth: 1,
+        borderColor: "#E9E9E9"
     },
-    headerView : {
+    headerView: {
         marginLeft: 10,
-        justifyContent:'center', 
-        flex:0.25, 
-        paddingVertical:8, 
-        borderRightWidth:1, 
-        borderColor:"#E9E9E9"
+        justifyContent: 'center',
+        flex: 0.25,
+        paddingVertical: 8,
+        borderRightWidth: 1,
+        borderColor: "#E9E9E9"
     },
-    headerText : {
+    headerText: {
         fontFamily: 'Poppins-Medium',
         color: '#23233C',
         fontSize: 12,
     },
-    descriptionView : {
+    descriptionView: {
         marginLeft: 10,
-        justifyContent:'center', 
-        flex:0.5,  
-        borderRightWidth:1, 
-        borderColor:"#E9E9E9",
+        justifyContent: 'center',
+        flex: 0.5,
+        borderRightWidth: 1,
+        borderColor: "#E9E9E9",
     },
-    descriptionText : {
+    descriptionText: {
         fontFamily: 'Poppins-Regular',
         color: '#23233C',
         fontSize: 12,
     },
-    coinTextView : {
+    coinTextView: {
         marginLeft: 10,
-        justifyContent:'center', 
-        alignItems:'center',
-        flex:0.25
+        justifyContent: 'center',
+        alignItems: 'center',
+        flex: 0.25
     },
-    redeemCoin : {
-        fontFamily:'Poppins-Regular', 
-        fontSize:13, 
-        color:'#000000', 
-        marginTop:20,
-        marginBottom:5
+    redeemCoin: {
+        fontFamily: 'Poppins-Regular',
+        fontSize: 13,
+        color: '#000000',
+        marginTop: 20,
+        marginBottom: 5
     },
-    reddemBox:{
-        flexDirection:'row', 
-        alignItems:'center', 
-        justifyContent:'space-between'
+    reddemBox: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between'
     }
 })

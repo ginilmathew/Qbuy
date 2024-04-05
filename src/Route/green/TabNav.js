@@ -32,6 +32,7 @@ import moment from 'moment';
 import reactotron from 'reactotron-react-native';
 import OrderPlaced from '../../screens/Cart/Checkout/Payment/OrderPlaced';
 import { navigationRef } from '../../Navigations/RootNavigation';
+import CartScreen from '../../screens/_Home/CartScreen';
 
 
 
@@ -100,16 +101,7 @@ const TabNav = () => {
 
 
 
-    const switchcartUpdate = async (type) => {
-        let value = {
-            user_id: userContext?.userData?._id,
-            type: type
-
-        }
-        let result = await customAxios.post('customer/cart/newshow-cart', value)
-        cartContext.setCart(result?.data?.data)
-
-    }
+    
 
     const _renderIcon = (routeName, selectedTab) => {
         let icon = '';
@@ -142,9 +134,7 @@ const TabNav = () => {
             case 'cart':
                 return (
                     <>
-                        {cartContext?.cart?.product_details?.length > 0 && <View style={{ height: 15, width: 15, borderRadius: 7.5, backgroundColor: 'red', justifyContent: 'center', alignItems: 'center', position: 'absolute', top: 15, right: 20, zIndex: 1 }}>
-                            <Text style={{ color: '#fff', fontSize: 10, fontWeight: 'bold' }}>{cartContext?.cart?.product_details?.length}</Text>
-                        </View>}
+                        
                         {pandaContext?.active === 'green' &&
                             <AntDesign
                                 name={"shoppingcart"}
@@ -164,7 +154,9 @@ const TabNav = () => {
                                 color={routeName === selectedTab ? '#FF6184' : '#FF9FB4'}
                             />
                         }
-
+                        {cartContext?.cart?.product_details?.length > 0 && <View style={{ height: 15, width: 15, borderRadius: 7.5, backgroundColor: 'red', justifyContent: 'center', alignItems: 'center', position: 'absolute', top: 15, right: 20, zIndex: 100 }}>
+                            <Text style={{ color: '#fff', fontSize: 10, fontWeight: 'bold' }}>{cartContext?.cart?.product_details?.length}</Text>
+                        </View>}
                     </>
                 );
             case 'order':
@@ -248,58 +240,47 @@ const TabNav = () => {
                 // else{
                 //     navigate(routeName)
                 // }
-                //navigate(routeName)
-                try {
-                    if(routeName === "home"){
-                        if(route?.name === "Cart" || route?.name === "MyOrders" || route?.name === "MyAccount" || route?.name === "Home" ){
-                            navigate(routeName)
-                        }
-                        else{
-                            console.log('navigation called')
-                            navigation.dispatch(StackActions.popToTop());
-                            const jumpToAction = TabActions.jumpTo('home')
-                            navigation.dispatch(jumpToAction);
-                        }
+                navigate(routeName)
+                //return false;
+                // try {
+                //     if(routeName === "home"){
+                //         if(route?.name === "Cart" || route?.name === "MyOrders" || route?.name === "MyAccount" || route?.name === "Home" ){
+                //             navigate(routeName)
+                //         }
+                //         else{
+                //             console.log('navigation called')
+                //             navigation.dispatch(StackActions.popToTop());
+                //             const jumpToAction = TabActions.jumpTo('home')
+                //             navigation.dispatch(jumpToAction);
+                //         }
                        
-                        // if(navigation.canGoBack()){
-                        //     navigation.dispatch(StackActions.popToTop());
-                        // }
-                        // else{
-                        //     navigate(routeName)
-                        // }
+                //         // if(navigation.canGoBack()){
+                //         //     navigation.dispatch(StackActions.popToTop());
+                //         // }
+                //         // else{
+                //         //     navigate(routeName)
+                //         // }
                         
-                        //navigation.popToTop()
-                    }
-                    else{
+                //         //navigation.popToTop()
+                //     }
+                //     else{
                   
-                        navigate(routeName)
-                    }
+                //         navigate(routeName)
+                //     }
                     
-                } catch (error) {
-                    navigate(routeName)
-                }
+                // } catch (error) {
+                //     navigate(routeName)
+                // }
                 //navigation.popToTop()
 
                
             }
             else{
                 if(routeName === "home"){
-                  
-                    // navigation.navigate(routeName)
-                    startTransition(() => {
-                        navigation.dispatch(
-                            CommonActions.reset({
-                                index: 0,
-                                routes: [
-                                    { name: 'green' },
-                                ],
-                            })
-                        );
-                    })
+                    navigate(routeName)
                 }
                 else{
-                    
-                    navigation.navigate("Login")
+                    navigation.navigate("guestModal")
                 }
                 
             }
@@ -321,19 +302,22 @@ const TabNav = () => {
     };
 
     const gotoPanda = useCallback(() => {
-        switchcartUpdate('panda')
+        //switchcartUpdate('panda')
         pandaContext.setActive('panda')
-        startTransition(() => {
-            navigation.dispatch(
-                CommonActions.reset({
-                    index: 0,
-                    routes: [
-                        { name: 'green' },
-                    ],
-                })
-            );
-        })
-        setShowSwitch(!showSwitch)
+        setShowSwitch(prev => !prev)
+        //cartContext.getCartDetails()
+        //navigation.navigate("home")
+        // startTransition(() => {
+        //     navigation.dispatch(
+        //         CommonActions.reset({
+        //             index: 0,
+        //             routes: [
+        //                 { name: 'home' },
+        //             ],
+        //         })
+        //     );
+        // })
+        //setShowSwitch(!showSwitch)
         // startTransition(() => {
         //     navigation.dispatch(
         //         CommonActions.reset({
@@ -348,19 +332,20 @@ const TabNav = () => {
     }, [showSwitch, cartContext?.cart])
 
     const goToFashion = useCallback(async () => {
-        switchcartUpdate('fashion')
+        //switchcartUpdate('fashion')
         pandaContext.setActive('fashion')
-        startTransition(() => {
-            navigation.dispatch(
-                CommonActions.reset({
-                    index: 0,
-                    routes: [
-                        { name: 'green' },
-                    ],
-                })
-            );
-        })
-        setShowSwitch(!showSwitch)
+        setShowSwitch(prev => !prev)
+        // startTransition(() => {
+        //     navigation.dispatch(
+        //         CommonActions.reset({
+        //             index: 0,
+        //             routes: [
+        //                 { name: 'home' },
+        //             ],
+        //         })
+        //     );
+        // })
+        // setShowSwitch(!showSwitch)
         // if(cartContext?.cart){
         //     await AsyncStorage.setItem("greenCart",JSON.stringify(cartContext?.cart))
         // }
@@ -386,21 +371,24 @@ const TabNav = () => {
 
     }, [cartContext?.cart, showSwitch])
 
-    const goTogreen = useCallback(() => {
-        switchcartUpdate('green')
-        pandaContext.setActive('green')
-        startTransition(() => {
-            navigation.dispatch(
-                CommonActions.reset({
-                    index: 0,
-                    routes: [
-                        { name: 'green' },
-                    ],
-                })
-            );
-        })
 
-        setShowSwitch(!showSwitch)
+    useEffect(() => {
+        //reactotron.log({active: pandaContext?.active})
+        if(userContext?.userData){
+            cartContext.getCartDetails()
+        }
+        
+        navigation.navigate("home")
+       // setShowSwitch(!showSwitch)
+    }, [pandaContext?.active])
+    
+
+    const goTogreen = useCallback(async() => {
+        //switchcartUpdate('green')
+        setShowSwitch(prev => !prev)
+        await pandaContext.setActive('green')
+        
+        
     }, [showSwitch, cartContext?.cart])
 
     const imageswitch = {
@@ -592,7 +580,6 @@ const TabNav = () => {
                                     }}
                                 >
                                     <CustomAnimated
-
                                         onpress={gotoPanda}
                                         imageswitch={imageswitch?.panda}
                                         colors={['#7BE495', '#329D9C']}
@@ -650,14 +637,13 @@ const TabNav = () => {
                 //         if(route?.state?.index > 0){
                 //             navigation.popToTop()
                 //         }
-                //     },
-                    
+                //     },                    
                 // })}
             />
             <CurvedBottomBar.Screen
                 name="cart"
                 position="LEFT"
-                component={CartNav}
+                component={CartScreen}
             />
             <CurvedBottomBar.Screen
                 name="order"

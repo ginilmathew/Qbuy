@@ -5,7 +5,6 @@ import React, { useEffect, useState } from 'react'
 import Geolocation from 'react-native-geolocation-service';
 import Toast from 'react-native-toast-message';
 import axios from 'axios';
-import reactotron from 'reactotron-react-native';
 
 
 const  useLocationHook = () => {

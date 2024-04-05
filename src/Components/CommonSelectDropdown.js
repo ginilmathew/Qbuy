@@ -1,16 +1,23 @@
 import { Image, StyleSheet, Text, View, ScrollView } from 'react-native'
-import React, { useContext, useState } from 'react'
+import React, { useCallback, useContext, useState } from 'react'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import { Dropdown } from 'react-native-element-dropdown';
 import PandaContext from '../contexts/Panda';
 import reactotron from 'reactotron-react-native';
+import { useFocusEffect } from '@react-navigation/native';
 
-const CommonSelectDropdown = ({topLabel, mb, placeholder, data, value, setValue, search, height, mt, width, shadowOpacity, elevation, flex}) => {
+const CommonSelectDropdown = ({topLabel, mb, placeholder, data, value, setValue, search, height, mt, width, shadowOpacity, elevation, flex, index, fieldName, onChange, error, setError }) => {
+
 
     const contextPanda = useContext(PandaContext)
     let active = contextPanda.active
 
     const [isFocus, setIsFocus] = useState(false);
+    const [item, setItem] = useState(value);
+
+    useFocusEffect(useCallback(() => {
+        setItem(value)
+    }, [value]))
 
     const datas = data?.map(opt => {
         return {
@@ -41,7 +48,15 @@ const CommonSelectDropdown = ({topLabel, mb, placeholder, data, value, setValue,
     }
 
     const changeValue = (item) => {
-        setValue(item.label);
+
+        reactotron.log({item})
+        if (onChange) onChange(item?.label, index)
+        if(setValue){
+            setValue(fieldName, item?.label);
+            setError(fieldName, { type: 'custom', message: null })
+        }
+        
+        setItem(item?.label)
         setIsFocus(false);
     }
 
@@ -86,13 +101,15 @@ const CommonSelectDropdown = ({topLabel, mb, placeholder, data, value, setValue,
             valueField="label"
             placeholder={!isFocus ? placeholder ? placeholder : '' : '...'}
             searchPlaceholder="Search..."
-            value={value}
+            value={item}
             onFocus={setFocus}
             onBlur={offFocus}
             onChange={changeValue}
             renderRightIcon={rightIcon}
             itemTextStyle={styles.dropdownText}
-        />    
+        />
+
+          {error && <Text style={styles.errorText}>{error?.message}</Text>}
     </View>
   )
 }
@@ -137,6 +154,11 @@ const styles = StyleSheet.create({
         height: 40,
         fontSize: 13,
         color:'#23233C'
+    },
+    errorText: {
+        fontFamily: 'Poppins-Regular',
+        color: 'red',
+        fontSize: 11,
     },
     dropdownText: {
         fontSize: 13,

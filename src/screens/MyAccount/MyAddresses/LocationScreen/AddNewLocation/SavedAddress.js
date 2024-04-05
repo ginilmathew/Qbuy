@@ -6,7 +6,7 @@ import Toast from 'react-native-toast-message'
 import AddressCard from './AddressCard'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import AuthContext from '../../../../../contexts/Auth'
-import { useNavigation } from '@react-navigation/native'
+import { CommonActions, useNavigation } from '@react-navigation/native'
 import AddressContext from '../../../../../contexts/Address'
 import CartContext from '../../../../../contexts/Cart'
 
@@ -60,7 +60,12 @@ const SavedAddress = ({mode}) => {
         addressContext.setCurrentAddress(item);
         cartContext.setDefaultAddress(item)
         if(mode === "home"){
-            navigation.navigate("green", { screen: "TabNavigator", params: { screen: 'home' } })
+            navigation.dispatch(CommonActions.reset({
+                index: 0,
+                routes: [
+                    { name: 'home' },
+                ],
+            }));
         }
     }
 

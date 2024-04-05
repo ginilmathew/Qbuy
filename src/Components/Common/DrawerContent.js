@@ -14,7 +14,6 @@ import ListItem from '../ListItem'
 import CommonTexts from '../CommonTexts'
 import AuthContext from '../../contexts/Auth'
 import { IMG_URL } from '../../config/constants'
-import reactotron from 'reactotron-react-native'
 
 const DrawerContent = ({ navigation }) => {
 
@@ -49,7 +48,8 @@ const DrawerContent = ({ navigation }) => {
 
 
     return (
-        <ScrollView showsVerticalScrollIndicator={ false } style={ { backgroundColor: '#23233C', } }>
+        // <ScrollView showsVerticalScrollIndicator={ false } style={ { backgroundColor: '#23233C', } }>
+        <View style={{ backgroundColor: '#23233C' }}>
             <SafeAreaView>
 
                 <View style={ { alignItems: 'center', borderBottomColor: '#fff', borderBottomWidth: 2, paddingBottom: 15 } }>
@@ -128,7 +128,8 @@ const DrawerContent = ({ navigation }) => {
                 </View>
 
             </SafeAreaView>
-        </ScrollView>
+            </View>
+        // </ScrollView>
     )
 }
 
@@ -138,7 +139,8 @@ const styles = StyleSheet.create({
     logo: {
         width: 60,
         height: 60,
-        resizeMode: 'contain',
-        marginTop: -30
+        resizeMode: 'cover',
+        marginTop: -35,
+        borderRadius: 50
     },
 })

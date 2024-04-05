@@ -1,22 +1,28 @@
 import { StyleSheet, Text, View } from 'react-native'
-import React, { memo } from 'react'
+import React, { memo, useContext } from 'react'
 import CommonTexts from '../../../Components/CommonTexts'
+import moment from 'moment'
+import PandaContext from '../../../contexts/Panda'
 
 const PandaCoinListCard = memo(({item}) => {
+
+    const contextPanda = useContext(PandaContext)
+    let active = contextPanda.active
+
     return (
         <View 
             style={styles.container}
         >
             <View style={styles.headerView}>
-                <Text style={styles.headerText}>{item?.date}</Text>
+                <Text style={styles.headerText}>{moment(item?.created_at).format('DD/MM/YYYY')}</Text>
             </View>
             <View style={styles.descriptionView}>
                 <Text
                     style={styles.descriptionText}
-                >{item?.description}</Text>
+                >{item?.message}</Text>
             </View>
             <View style={styles.coinTextView}>
-                <Text style={{ color: item?.color, fontFamily:'Poppins-SemiBold', fontSize:18  }}>{item?.coin}</Text>
+                <Text style={{ color: item?.amount < 0 ? '#F32B2B' : active === 'fashion' ? '#2D8FFF' : '#F39E2B', fontFamily:'Poppins-SemiBold', fontSize:18  }}>{item?.amount}</Text>
             </View>
         </View>
     )

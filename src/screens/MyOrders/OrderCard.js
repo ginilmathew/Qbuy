@@ -16,11 +16,13 @@ import { Toast } from 'react-native-toast-message/lib/src/Toast'
 import reactotron from 'reactotron-react-native'
 import { has } from 'lodash'
 import { NativeModules } from "react-native"
+import CommonStatusCard from '../../Components/CommonStatusCard'
 
 
 const { env, mode } = NativeModules.RNENVConfig
 
 const OrderCard = memo(({ item, refreshOrder }) => {
+
 
     const contextPanda = useContext(PandaContext)
     const cartContext = useContext(CartContext)
@@ -191,6 +193,7 @@ const OrderCard = memo(({ item, refreshOrder }) => {
     }
 
     const payAmount = useCallback(async () => {
+        await cartContext.updateCart()
         loadingg.setLoading(true)
         cartContext.setCart(null);
         let data = {
@@ -200,9 +203,10 @@ const OrderCard = memo(({ item, refreshOrder }) => {
         await customAxios.post(`customer/order/paynow`, data)
             .then(async response => {
                 const { data } = response;
-                cartContext.setCart(data?.data)
+                cartContext.getCartDetails()
+                //cartContext.setCart(data?.data)
                 navigation.navigate('cart')
-                refreshOrder();
+                //refreshOrder();
                 // if (data?.status) {
                 //     payWithPayTM(data?.data)
                 // } else {
@@ -226,25 +230,176 @@ const OrderCard = memo(({ item, refreshOrder }) => {
     const OrderCancel = async () => {
         Alert.alert('Warning', 'Are you sure want to cancel order?', [
             {
-              text: 'Cancel',
-              //onPress: () => console.log('Cancel Pressed'),
-              style: 'cancel',
+                text: 'Cancel',
+                //onPress: () => console.log('Cancel Pressed'),
+                style: 'cancel',
             },
-            {text: 'OK', onPress: async() => {
-                try {
-                    await customAxios.post(`customer/customer-order-cancelled`, { id: item?._id })
-                    Toast.show({ type: 'success', text1: 'Order cancelled successfully' })
-                    refreshOrder();
-                } catch (err) {
-                    Toast.show({
-                        type: 'error',
-                        text1: err
-                    });
-        
+            {
+                text: 'OK', onPress: async () => {
+                    try {
+                        await customAxios.post(`customer/customer-order-cancelled`, { id: item?._id })
+                        Toast.show({ type: 'success', text1: 'Order cancelled successfully' })
+                        refreshOrder();
+                    } catch (err) {
+                        Toast.show({
+                            type: 'error',
+                            text1: err
+                        });
+
+                    }
                 }
-            }},
-          ]);
-        
+            },
+        ]);
+
+    }
+
+    const renderStatusLabel = (status) => {
+
+        switch (status) {
+            case "created":
+                return <CommonStatusCard label={status} bg='#BCE4FF' labelColor={'#0098FF'} />
+            case "pending":
+                return <CommonStatusCard label={status} bg='#FFF082' labelColor={'#A99500'} />
+            case "completed":
+                return <CommonStatusCard label={status} bg='#CCF1D3' labelColor={'#58D36E'} />
+            case "cancelled":
+                return <CommonStatusCard label={status} bg='#FFC9C9' labelColor={'#FF7B7B'} />
+            case "customer_cancel":
+                return <CommonStatusCard label={"Cancelled"} bg='#FFC9C9' labelColor={'#FF7B7B'} />
+            default:
+                return <CommonStatusCard label={status === "orderReturn" ? "Return" : status} bg='#FFF082' labelColor={'#A99500'} />
+        }
+    }
+
+
+    const renderActions = () => {
+        if (item?.payment_type === 'COD') {
+            if (item?.status === "completed") {
+                return (
+                    <View style={{ flex: 1, marginTop: 8, flexDirection: 'row', justifyContent: 'space-between' }}>
+                        <CustomButton
+                            onPress={clickDetails}
+                            label={'Details'}
+                            bg={active === 'green' ? '#FF9C0C' : active === 'fashion' ? '#2D8FFF' : '#576FD0'}
+                            // width={width / 3.5}
+                            width={"49%"}
+                        />
+                        <CustomButton
+                            onPress={clickRateOrder}
+                            label={'Rate Order'}
+                            bg='#58D36E'
+                            //width={width / 3.5}
+                            width={"49%"}
+                        />
+                    </View>
+                )
+            }
+            else {
+                return (
+                    <CustomButton
+                        onPress={clickDetails}
+                        label={'View Details'}
+                        bg={active === 'green' ? '#FF9C0C' : active === 'fashion' ? '#2D8FFF' : '#576FD0'}
+                        mt={8}
+                    />
+                )
+            }
+        }
+        else {
+            if (item?.status === "completed") {
+                return (
+                    <View style={{ flex: 1, marginTop: 8, flexDirection: 'row', justifyContent: 'space-between' }}>
+                        <CustomButton
+                            onPress={clickDetails}
+                            label={'Details'}
+                            bg={active === 'green' ? '#FF9C0C' : active === 'fashion' ? '#2D8FFF' : '#576FD0'}
+                            // width={width / 3.5}
+                            width={"49%"}
+                        />
+                        <CustomButton
+                            onPress={clickRateOrder}
+                            label={'Rate Order'}
+                            bg='#58D36E'
+                            //width={width / 3.5}
+                            width={"49%"}
+                        />
+                    </View>
+                )
+            }
+            else if (item?.status !== 'cancelled') {
+                if (item?.payment_status === 'cancelled') {
+                    return (
+                        <View style={{ flex: 1, marginTop: 8, flexDirection: 'row', justifyContent: 'space-between' }}>
+                            <CustomButton
+                                onPress={payAmount}
+                                label={'Pay Now'}
+                                bg={active === 'green' ? '#8ED053' : active === 'fashion' ? '#FF7190' : '#58D36E'}
+
+                                width={"49%"}
+                            />
+                            <CustomButton
+                                onPress={clickDetails}
+                                label={'Details'}
+                                bg={active === 'green' ? '#FF9C0C' : active === 'fashion' ? '#2D8FFF' : '#576FD0'}
+                                // width={width / 3.5}
+                                width={"49%"}
+                            />
+                        </View>
+                    )
+                }
+                else if (item?.payment_status !== 'cancelled') {
+                    if (item?.pendingBalance && parseInt(item?.pendingBalance) > 0) {
+                        return (
+                            <View style={{ flex: 1, marginTop: 8, flexDirection: 'row', justifyContent: 'space-between' }}>
+                                <CustomButton
+                                    onPress={payAmountBalance}
+                                    label={'Pay Balance'}
+                                    bg={active === 'green' ? '#8ED053' : active === 'fashion' ? '#FF7190' : '#58D36E'}
+                                    width={"49%"}
+                                />
+                                <CustomButton
+                                    onPress={clickDetails}
+                                    label={'Details'}
+                                    bg={active === 'green' ? '#FF9C0C' : active === 'fashion' ? '#2D8FFF' : '#576FD0'}
+                                    // width={width / 3.5}
+                                    width={"49%"}
+                                />
+                            </View>
+                        )
+                    }
+                    else {
+                        return (
+                            <CustomButton
+                                onPress={clickDetails}
+                                label={'View Details'}
+                                bg={active === 'green' ? '#FF9C0C' : active === 'fashion' ? '#2D8FFF' : '#576FD0'}
+                                mt={8}
+                            />
+                        )
+                    }
+                }
+                else {
+                    return (
+                        <CustomButton
+                            onPress={clickDetails}
+                            label={'View Details'}
+                            bg={active === 'green' ? '#FF9C0C' : active === 'fashion' ? '#2D8FFF' : '#576FD0'}
+                            mt={8}
+                        />
+                    )
+                }
+            }
+            else {
+                return (
+                    <CustomButton
+                        onPress={clickDetails}
+                        label={'View Details'}
+                        bg={active === 'green' ? '#FF9C0C' : active === 'fashion' ? '#2D8FFF' : '#576FD0'}
+                        mt={8}
+                    />
+                )
+            }
+        }
     }
 
 
@@ -259,149 +414,223 @@ const OrderCard = memo(({ item, refreshOrder }) => {
                     <Text style={styles.dateText}>{moment(item?.created_at).format("DD-MM-YYYY hh:mm A")}</Text>
                 </View>
             </View>
-            <View style={styles.itemsContainer}>
+            <View style={[styles.itemsContainer, { borderBottomWidth:  item?.product_details ? 1 : 0 }]}>
                 <View>
                     <Text style={styles.textRegular}>{'Total Items'}</Text>
                     <Text style={styles.textBold}>{item?.product_details?.length}</Text>
                 </View>
                 <View>
                     <Text style={styles.textRegular}>{'Total Payment'}</Text>
-                    <Text style={styles.textBold}>{((has(item, "pendingBalance")) && item?.pendingBalance > 0) ? item?.pendingBalance : item?.grand_total?.toFixed(2)}</Text>
+                    <Text style={styles.textBold}>{((has(item, "pendingBalance")) && item?.pendingBalance > 0) ? parseFloat(item?.pendingBalance).toFixed(2) : parseFloat(item?.grand_total).toFixed(2)}</Text>
                 </View>
                 <View>
                     <Text style={styles.textRegular}>{'Current Status'}</Text>
-                    <View
+                    {/* <View
                         style={
-                            item?.status === 'pending' ? styles.pendingStatusBox : item?.status === 'completed' ? styles.completedStatusBox : null
+                            item?.status === 'created' ? styles.pendingStatusBox : item?.status === 'completed' ? styles.completedStatusBox : null
                         }
                     >
-                        <Text style={item?.status === 'pending' ? styles.pendingStatusText : item?.status === 'completed' ? styles.completedStatusText : null} >{item?.status}</Text>
-                    </View>
+                        <Text style={item?.status === 'created' ? styles.pendingStatusText : item?.status === 'completed' ? styles.completedStatusText : null} >{item?.status}</Text>
+                    </View> */}
+                    {renderStatusLabel(item?.status)}
                 </View>
             </View>
 
-            <View style={{ backgroundColor: '#fff', paddingBottom: 10, }}>
-                <View style={styles.itemsRow}>
-                    <Text style={styles.textBold}>{'Items'}</Text>
-                    <TouchableOpacity onPress={clickItem}>
-                        <Ionicons name={showItems ? 'chevron-up-circle' : 'chevron-down-circle'} size={22} color={active === 'green' ? '#8ED053' : active === 'fashion' ? '#FF7190' : '#58D36E'} />
-                    </TouchableOpacity>
-                </View>
 
-                {showItems && <>
-                    <View style={styles.itemsHeadingView}>
-                        <View style={{ flex: 0.5 }}>
-                            <Text style={[styles.textRegular, { textAlign: 'left' }]}>{'Product'}</Text>
+            {
+                item?.product_details && (
+                    <View style={{ backgroundColor: '#fff', paddingBottom: 10, }}>
+                        <View style={styles.itemsRow}>
+                            <Text style={styles.textBold}>{'Items'}</Text>
+                            <TouchableOpacity onPress={clickItem}>
+                                <Ionicons name={showItems ? 'chevron-up-circle' : 'chevron-down-circle'} size={22} color={active === 'green' ? '#8ED053' : active === 'fashion' ? '#FF7190' : '#58D36E'} />
+                            </TouchableOpacity>
                         </View>
-                        <Text style={[styles.textBold, { textAlign: 'center' }]}>{'Qty'}</Text>
-                        <Text style={[styles.textBold, { textAlign: 'center' }]}>{'Price'}</Text>
+
+
+                        {showItems && <>
+                            <View style={styles.itemsHeadingView}>
+                                <View style={{ flex: 0.5 }}>
+                                    <Text style={[styles.textBold, { textAlign: 'left' }]}>{'Product'}</Text>
+                                </View>
+                                <Text style={[styles.textBold, { textAlign: 'center' }]}>{'Qty'}</Text>
+                                <Text style={[styles.textBold, { textAlign: 'center' }]}>{'Price'}</Text>
+                            </View>
+
+                            {item?.product_details?.map((ite) =>
+                                <ItemsCard item={ite} key={ite?.product_id} date={item?.created_at} />
+                            )}
+                        </>}
                     </View>
-                    {item?.product_details.map((ite) =>
-                        <ItemsCard item={ite} key={ite?._id} date={item?.created_at} />
-                    )}
-                    <View style={styles.delivery}>
-                        <View style={{ flex: 0.5 }}>
-                            <Text style={[styles.text1, { textAlign: 'left' }]}>{`Delivery Charge`}</Text>
-                        </View>
-                        <Text style={[styles.text1, { textAlign: 'center' }]}></Text>
-                        <Text style={[styles.text1, { textAlign: 'center' }]}>₹ {item?.delivery_charge}</Text>
-                    </View>
-                    <View style={styles.delivery}>
-                        <View style={{ flex: 0.5 }}>
-                            <Text style={[styles.text1, { textAlign: 'left' }]}>{`Platform Charge`}</Text>
-                        </View>
-                        <Text style={[styles.text1, { textAlign: 'center' }]}></Text>
-                        <Text style={[styles.text1, { textAlign: 'center' }]}>₹ {item?.platform_charge}</Text>
-                    </View>
-                </>}
-            </View>
+                )
+            }
 
             <View
-                style={{ backgroundColor: '#fff', paddingBottom: 10, borderTopWidth: showItems ? 0 : 1, borderColor: '#00000029', marginHorizontal: 7 }}
+                style={{ backgroundColor: '#fff', paddingBottom: 10, borderTopWidth: showItems ? 0 : 1, borderColor: '#00000029', marginHorizontal: 7, borderBottomLeftRadius: 15, borderBottomRightRadius: 15 }}
             >
+
                 <View style={styles.shippingView}>
-                    <Text style={styles.textBold}>{'Qbuy Panda Slot Based Shipping'}</Text>
+                    <Text style={styles.textBold}>{'Other Charges'}</Text>
                     <TouchableOpacity onPress={clickAddress}>
                         <Ionicons name={showAddress ? 'chevron-up-circle' : 'chevron-down-circle'} size={22} color={active === 'green' ? '#8ED053' : active === 'fashion' ? '#FF7190' : '#58D36E'} />
                     </TouchableOpacity>
-
                 </View>
-                {showAddress && <View style={styles.addressBox}>
-                    <CommonTexts label={'HOME'} fontSize={13} />
-                    <Text style={styles.addressText}>{item?.shipaddress?.area?.address}</Text>
-                </View>}
 
-                {item?.paymentStatus === 'success' &&
+                {showAddress &&
+                    <>
+                        <View style={styles.chargesStyles}>
+                            <View style={{ flex: 0.5 }}>
+                                <Text style={[styles.textBold, { textAlign: 'left' }]}>{'Charge Name'}</Text>
+                            </View>
+                            <Text style={[styles.textBold, { textAlign: 'center' }]}>{'Amount'}</Text>
+                        </View>
+                        {item?.price_breakup?.map((pri, index) => (
+                            <View key={`${pri?._id}${index}`} style={styles.delivery}>
+                                <View style={{ flex: 0.5 }}>
+                                    <Text style={[styles.text1, { textAlign: 'left' }]}>{pri?.charge_name}</Text>
+                                </View>
+                                <Text style={[styles.text1, { textAlign: 'center' }]}>₹ {pri?.price}</Text>
+                            </View>
+                        ))}
+                    </>
+                }
+
+                {item?.refundAmount * 1 > 0 &&
+                    <View
+                        style={{ backgroundColor: '#fff', paddingBottom: 10, borderTopWidth: showItems ? 0 : 1, borderColor: '#00000029', height: 35, alignItems: 'center', justifyContent: 'center', paddingVertical: 10, marginTop: 10 }}
+                    >
+                        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', display: 'flex', width: '100%' }}>
+                            <Text style={styles.textBold}>{'Refund'}</Text>
+                            <Text style={{ fontWeight: 'bold', fontSize: 12, color: 'blue', fontFamily: 'Poppins-Medium' }}>{item?.refundAmount}</Text>
+                        </View>
+                    </View>}
+                {item?.refund_completed_status === "completed" &&
+                    <View
+                        style={{ backgroundColor: '#fff', paddingBottom: 10, borderTopWidth: showItems ? 0 : 1, borderColor: '#00000029', height: 35, alignItems: 'center', justifyContent: 'center', marginHorizontal: 10 }}
+                    >
+                        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', display: 'flex', width: '100%' }}>
+                            <Text style={{ fontWeight: 'bold', fontSize: 12, color: '#000', fontFamily: 'Poppins-Medium' }}>{'Refund'}</Text>
+                            <Text style={{ fontWeight: 'bold', fontSize: 12, color: 'blue', fontFamily: 'Poppins-Medium' }}>{item?.refund_details?.refund_amount}</Text>
+                            <Text style={{ fontWeight: 'bold', fontSize: 12, color: '#8ED053', fontFamily: 'Poppins-Medium' }}>{'Completed'}</Text>
+                        </View>
+                    </View>}
+                {renderActions()}
+
+                {/* {item?.payment_type === 'COD' &&
                     <>
 
-                        {item?.status === 'pending' ? <CustomButton
-                            onPress={clickDetails}
-                            label={'View Details'}
-                            bg={active === 'green' ? '#FF9C0C' : active === 'fashion' ? '#2D8FFF' : '#576FD0'}
-                            mt={8}
-                        /> : item?.status === 'completed' ?
+                        {item?.status === 'completed' ?
                             <View style={{ flex: 1, marginTop: 8, flexDirection: 'row', justifyContent: 'space-between' }}>
 
                                 <CustomButton
                                     onPress={clickDetails}
                                     label={'Details'}
-                                    bg='#576FD0'
-                                    width={width / 3.5}
-                                />
-                                <CustomButton
-                                    // onPress={() => navigation.navigate('ViewDetails', { item: item, qty: qty, totalRate: totalRate })}
-                                    label={'Reorder'}
-                                    bg='#D0A857'
-                                    width={width / 3.5}
+                                    bg={active === 'green' ? '#FF9C0C' : active === 'fashion' ? '#2D8FFF' : '#576FD0'}
+                                    // width={width / 3.5}
+                                    width={"49%"}
                                 />
                                 <CustomButton
                                     onPress={clickRateOrder}
                                     label={'Rate Order'}
                                     bg='#58D36E'
-                                    width={width / 3.5}
+                                    //width={width / 3.5}
+                                    width={"49%"}
+                                />
+                            </View> : null
+                            //     <CustomButton
+                            //     onPress={clickDetails}
+                            //     label={'View Details'}
+                            //     bg={active === 'green' ? '#FF9C0C' : active === 'fashion' ? '#2D8FFF' : '#576FD0'}
+                            //     mt={8}
+                            // />
+                        }
+                    </>
+
+                } */}
+
+                {/* {item?.payment_type === 'online' &&
+                    <>
+
+                        {item?.status === 'completed' ?
+                            <View style={{ flex: 1, marginTop: 8, flexDirection: 'row', justifyContent: 'space-between' }}>
+
+                                <CustomButton
+                                    onPress={clickDetails}
+                                    label={'Details'}
+                                    bg={active === 'green' ? '#FF9C0C' : active === 'fashion' ? '#2D8FFF' : '#576FD0'}
+                                    // width={width / 3.5}
+                                    width={"49%"}
+                                />
+                                <CustomButton
+                                    onPress={clickRateOrder}
+                                    label={'Rate Order'}
+                                    bg='#58D36E'
+                                    //width={width / 3.5}
+                                    width={"49%"}
                                 />
                             </View> : null
                         }
                     </>
 
-                }
+                } */}
 
-                {(item?.status !== 'cancelled' && item?.payment_status === 'cancelled') && <CustomButton
-                    onPress={payAmount}
-                    label={'Pay Now'}
-                    bg={active === 'green' ? '#8ED053' : active === 'fashion' ? '#FF7190' : '#58D36E'}
-                    mt={8}
-                />}
+                {/* {(item?.status !== 'cancelled' && item?.payment_status === 'cancelled') &&
+                    <View style={{ flex: 1, marginTop: 8, flexDirection: 'row', justifyContent: 'space-between' }}>
+                        <CustomButton
+                            onPress={payAmount}
+                            label={'Pay Now'}
+                            bg={active === 'green' ? '#8ED053' : active === 'fashion' ? '#FF7190' : '#58D36E'}
 
-                {item?.pendingBalance * 1 > 0 && item?.payment_type === "online" && item?.payment_status !== 'cancelled' && <CustomButton
-                    onPress={payAmountBalance}
-                    label={'Pay Balance'}
-                    bg={active === 'green' ? '#8ED053' : active === 'fashion' ? '#FF7190' : '#58D36E'}
-                    mt={8}
-                />}
-
-                {
-                    (item?.status === "onLocation" && item?.customer_status !== "cancelled") && <CustomButton
-                        onPress={OrderCancel}
-                        label={'Cancel Order'}
-                        bg={'#FF7190'}
-                        mt={8}
-                    />
-                }
-            </View>
-            {item?.refundAmount * 1 > 0 &&
-                <View
-                    style={{ backgroundColor: '#fff', paddingBottom: 10, borderTopWidth: showItems ? 0 : 1, borderColor: '#00000029', height: 35, alignItems: 'center', justifyContent: 'center', marginHorizontal: 10 }}
-                >
-                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', display: 'flex', width: '100%' }}>
-                        <Text style={styles.textBold}>{'Refund'}</Text>
-                        <Text style={{ fontWeight: 'bold', fontSize: 12, color: 'blue', fontFamily: 'Poppins-Medium' }}>{item?.refundAmount}</Text>
-                        <TouchableOpacity onPress={clickItem}>
-                            <AntDesign name={'checkcircle'} size={18} color={active === 'green' ? '#8ED053' : active === 'fashion' ? '#FF7190' : '#58D36E'} />
-                        </TouchableOpacity>
+                            width={"49%"}
+                        />
+                        <CustomButton
+                            onPress={clickDetails}
+                            label={'Details'}
+                            bg={active === 'green' ? '#FF9C0C' : active === 'fashion' ? '#2D8FFF' : '#576FD0'}
+                            // width={width / 3.5}
+                            width={"49%"}
+                        />
                     </View>
-                </View>}
-            {item?.customer_status === "cancelled" &&
+                } */}
+
+                {/* {item?.pendingBalance * 1 > 0 && item?.payment_type === "online" && item?.payment_status !== 'cancelled' &&
+                    <View style={{ flex: 1, marginTop: 8, flexDirection: 'row', justifyContent: 'space-between' }}>
+                        <CustomButton
+                            onPress={payAmountBalance}
+                            label={'Pay Balance'}
+                            bg={active === 'green' ? '#8ED053' : active === 'fashion' ? '#FF7190' : '#58D36E'}
+                            width={"49%"}
+                        />
+                        <CustomButton
+                            onPress={clickDetails}
+                            label={'Details'}
+                            bg={active === 'green' ? '#FF9C0C' : active === 'fashion' ? '#2D8FFF' : '#576FD0'}
+                            // width={width / 3.5}
+                            width={"49%"}
+                        />
+                    </View>} */}
+
+                {/* {
+                    (item?.status === "onLocation" && item?.customer_status !== "cancelled") &&
+                    <View style={{ flex: 1, marginTop: 8, flexDirection: 'row', justifyContent: 'space-between' }}>
+                        <CustomButton
+                            onPress={OrderCancel}
+                            label={'Cancel Order'}
+                            bg={'#FF7190'}
+                            width={"49%"}
+                        />
+                        <CustomButton
+                            onPress={clickDetails}
+                            label={'Details'}
+                            bg={active === 'green' ? '#FF9C0C' : active === 'fashion' ? '#2D8FFF' : '#576FD0'}
+                            // width={width / 3.5}
+                            width={"49%"}
+                        />
+                    </View>
+                } */}
+            </View>
+
+            {/* {item?.customer_status === "cancelled" &&
                 <View
                     style={{ backgroundColor: '#fff', paddingBottom: 10, borderTopWidth: showItems ? 0 : 1, borderColor: '#00000029', height: 35, alignItems: 'center', justifyContent: 'center', marginHorizontal: 10 }}
                 >
@@ -410,17 +639,17 @@ const OrderCard = memo(({ item, refreshOrder }) => {
 
 
                     </View>
-                </View>}
-                {item?.refund_completed_status === "completed" &&
+                </View>} */}
+            {/* {item?.refund_completed_status === "completed" &&
                 <View
                     style={{ backgroundColor: '#fff', paddingBottom: 10, borderTopWidth: showItems ? 0 : 1, borderColor: '#00000029', height: 35, alignItems: 'center', justifyContent: 'center', marginHorizontal: 10 }}
                 >
                     <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', display: 'flex', width: '100%' }}>
-                    <Text style={{ fontWeight: 'bold', fontSize: 12, color: '#000', fontFamily: 'Poppins-Medium' }}>{'Refund'}</Text>
+                        <Text style={{ fontWeight: 'bold', fontSize: 12, color: '#000', fontFamily: 'Poppins-Medium' }}>{'Refund'}</Text>
                         <Text style={{ fontWeight: 'bold', fontSize: 12, color: 'blue', fontFamily: 'Poppins-Medium' }}>{item?.refund_details?.refund_amount}</Text>
                         <Text style={{ fontWeight: 'bold', fontSize: 12, color: '#8ED053', fontFamily: 'Poppins-Medium' }}>{'Completed'}</Text>
                     </View>
-                </View>}
+                </View>} */}
 
         </View>
     )
@@ -436,11 +665,12 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         paddingVertical: 10,
         borderBottomWidth: 1,
-        borderColor: '#00000029',
-        paddingHorizontal: 7
+        borderColor: '#e8e8e8',
+        paddingHorizontal: 7,
+        marginHorizontal: -7
     },
     container: {
-        borderRadius: 10,
+        borderRadius: 15,
         shadowOpacity: 0.1,
         shadowRadius: 2,
         marginBottom: 20,
@@ -489,7 +719,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         justifyContent: 'space-between',
         margin: 7,
-        borderBottomWidth: 1,
         paddingBottom: 10,
         borderColor: '#00000029'
     },
@@ -529,7 +758,7 @@ const styles = StyleSheet.create({
     addressText: {
         fontFamily: 'Poppins-Regular',
         color: '#23233C',
-        fontSize: 12, marginTop: 5
+        fontSize: 12,
     },
     shippingView: {
         flexDirection: 'row',
@@ -539,7 +768,6 @@ const styles = StyleSheet.create({
     },
     addressBox: {
         backgroundColor: '#F3F3F3',
-        padding: 10,
         borderRadius: 10
     },
     text1: {
@@ -547,5 +775,19 @@ const styles = StyleSheet.create({
         color: '#23233C',
         fontSize: 12,
     },
-
+    cancelStyle: {
+        fontWeight: 'bold',
+        fontSize: 12,
+        color: 'red',
+        fontFamily: 'Poppins-Medium',
+        marginBottom: 10,
+        marginTop: -5
+    },
+    chargesStyles: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginTop: 10,
+        marginBottom: 10,
+    },
 })
